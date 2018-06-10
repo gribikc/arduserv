@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Content-type: text/plan"
+echo
+#sudo avrdude -p atmega2560 -P /dev/ttyACM0 -c wiring -b 115200 -C /etc/avrdude.conf -D -U flash:w:/home/pi/data/htdocs/arduserv/test.hex
+
+
