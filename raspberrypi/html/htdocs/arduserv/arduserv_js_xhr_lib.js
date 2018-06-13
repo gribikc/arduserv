@@ -1,15 +1,31 @@
-var xhr = new XMLHttpRequest();
+let nmea;// = new nmea_gr();
+let datafall;// = new datafall_gr();
+let sys_data;//=new xmlhttprq_stream_gr();
+let message_db;
+
+var xhr;// = new XMLHttpRequest();
 var xhr_read_point=0;
 var xhr_date = new Date;
 var xhr_fps=0;
 var xhr_bps=0;
 var xhr_temp;
 
-let nmea = new nmea_gr();
-let datafall = new datafall_gr();
+var message_parsing_array=new Array();
+message_parsing_array.push([{type:"nmea"},{mark:"$SYST0"},{inner:"center_div"}]);
+//var arr = [ 1, 'Имя', { name: 'Петя' }, true ];
 
+function main_init(){
+	message_hub=new valid_db_gr(message_parsing_array);
 
-open_hendler();
+	nmea = new nmea_gr(message_hub);
+	datafall = new datafall_gr();
+	
+	sys_stream_nmea = new nmea_gr();
+	sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea);
+	
+	xhr = new XMLHttpRequest();
+	open_hendler();
+}
 function open_hendler(){
 	xhr.open('GET', '/cgi-bin/stream_usart.sh', true);
 	xhr.overrideMimeType('text/plain; charset=x-user-defined');
@@ -60,7 +76,6 @@ function xhr_parse_data(){
 			datafall.clear_data_array();//удаляем прочитанные сообщения
 		}
 
-		
 	//END
 		xhr_read_point=xhr.responseText.length;//двигаем указатель потока
 }
