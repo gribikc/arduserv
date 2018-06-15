@@ -11,16 +11,16 @@ var xhr_bps=0;
 var xhr_temp;
 
 var message_parsing_array=new Array();
-message_parsing_array.push([{type:"nmea"},{mark:"$SYST0"},{inner:"center_div"}]);
-//var arr = [ 1, 'Имя', { name: 'Петя' }, true ];
+message_parsing_array.push({type:"nmea",mark:'$SYST0',inner:"center_div"});
+
 
 function main_init(){
 	message_hub=new valid_db_gr(message_parsing_array);
 
-	nmea = new nmea_gr(message_hub);
+	nmea = new nmea_gr();
 	datafall = new datafall_gr();
 	
-	sys_stream_nmea = new nmea_gr();
+	sys_stream_nmea = new nmea_gr(message_hub);
 	sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea);
 	
 	xhr = new XMLHttpRequest();

@@ -4,17 +4,28 @@
 		//Инициализация
 			constructor(db) {
 				this.db_array=db;
-				console.log(this);
 			}
 		//Парсинг
-			parser_data(){
-				
+			parser_data(type,arr){
+				console.log(this.db_array);
+				console.log(arr);
+				for(var j=0;j<arr.length;j++){
+					for(var i=0;i<this.db_array.length;i++){
+						console.log(type);
+						console.log(arr[i]);
+						console.log(this.db_array);
+						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){
+							document.getElementById(this.db_array[i].inner).innerHTML=(arr[j][1])/1000;
+							//document.getElementById('center_div').innerHTML+=this.db_array[i].mark;
+						}
+					}
+				}
 			}
 	}
 //NMEA
 	class nmea_gr {
 		//Инициализация
-			constructor() {
+			constructor(hub) {
 				this.parser_start_valid=0;				//установка при обнаружении $, сброс про обнаружении конца строки
 				this.nmea_data;							//буфер для выдергивания сообщений
 				this.parser_nmea_array=new Array();
@@ -23,18 +34,22 @@
 				this.end_point=0;
 				this.handler_str;
 				this.next_track;
+				
+				this.hub_handler=hub;
 			}
 		
 		//Парсинг
-			parser_data(){//,start_point,end_point
-				this.end_point=this.handler_str.responseText.length;
+			parser_data(stream){//,start_point,end_point
+				console.log(stream);
+				//this.end_point=this.handler_str.responseText.length;
+				this.end_point=stream.length;
 				for(var i=this.start_point;i<this.end_point;i++){	//обходим все поступившие данные
-					if(this.handler_str.responseText.charAt(i)=='$'){			//Обнаружели начало
+					if(stream.charAt(i)=='$'){			//Обнаружели начало
 						this.parser_start_valid=1;
 						this.nmea_data="$";				//очищаем буфер
 					}else{
-						this.nmea_data+=this.handler_str.responseText.charAt(i);
-						if(this.handler_str.responseText.charCodeAt(i)==10 && this.parser_start_valid==1){//Обнаружели конец////(xhr.responseText.charCodeAt(i-4)=="*" && xhr.responseText.charCodeAt(i-1)==13 || xhr.responseText.charCodeAt(i)==10 && nmea_start_point_valid==1
+						this.nmea_data+=stream.charAt(i);
+						if(stream.charCodeAt(i)==10 && this.parser_start_valid==1){//Обнаружели конец////(xhr.responseText.charCodeAt(i-4)=="*" && xhr.responseText.charCodeAt(i-1)==13 || xhr.responseText.charCodeAt(i)==10 && nmea_start_point_valid==1
 							this.parser_start_valid=0;
 
 							var nmea_array=this.nmea_data.split(",");				//парсинг NMEA
@@ -60,7 +75,8 @@
 				}
 				this.start_point=this.end_point;
 				if(this.parser_nmea_array.length>0 && 1){
-					
+					this.hub_handler.parser_data('nmea',this.parser_nmea_array);
+					this.parser_nmea_array=new Array();
 				}
 			}
 
@@ -69,10 +85,10 @@
 				this.parser_nmea_array=new Array();
 			}
 		//чуть
-			capture_stream(handler){
-				this.handler_str=handler;
-				//console.log(handler);
-			}
+			//capture_stream(handler){
+			//	this.handler_str=handler;
+			//	//console.log(handler);
+			//}
 		//чуть
 		
 	}
@@ -136,10 +152,11 @@
 
 				this.xmlhttprq.send();
 				
-				parser.capture_stream(this.xmlhttprq);
+				//parser.capture_stream(this.xmlhttprq);
 				//this.xmlhttprq.onprogress=parser.parser_data();//!!!//parser(this.xmlhttprq,'abc');
 				this.xmlhttprq.onprogress=function(){
-					parser.parser_data();
+					console.log(this.responseText);
+					parser.parser_data(this.responseText);
 				}
 				
 				//console.log(parser);
