@@ -11,7 +11,38 @@ var xhr_bps=0;
 var xhr_temp;
 
 var message_parsing_array=new Array();
-message_parsing_array.push({type:"nmea",mark:'$SYST0',inner:"center_div"});
+var arr_push={
+	type:"nmea",
+	mark:'$SYST0',
+	matrix:[
+		[0],
+		[
+			1,
+			"center_div",
+			"Температура процессора ",
+			function(a) { return a/1000;},
+			" градусов"
+		],
+		[0]
+	]
+};
+message_parsing_array.push(arr_push);
+
+/*message_parsing_array.push(
+	{ 
+		type:"nmea",
+		mark:'$SYST0',
+		inner:"center_div",
+		matrix:"1" 
+	}
+);/*
+/*{'1'},
+			{
+				innner:"center_div",
+				function(a){
+					return a/1000;
+				}
+			} */
 
 
 function main_init(){

@@ -1,5 +1,5 @@
 'use strict';
-//messageDB
+//messageDB_HUB
 	class valid_db_gr{
 		//Инициализация
 			constructor(db) {
@@ -7,16 +7,16 @@
 			}
 		//Парсинг
 			parser_data(type,arr){
-				console.log(this.db_array);
-				console.log(arr);
 				for(var j=0;j<arr.length;j++){
 					for(var i=0;i<this.db_array.length;i++){
-						console.log(type);
-						console.log(arr[i]);
-						console.log(this.db_array);
-						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){
-							document.getElementById(this.db_array[i].inner).innerHTML=(arr[j][1])/1000;
-							//document.getElementById('center_div').innerHTML+=this.db_array[i].mark;
+						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){//проверяем тип сообщения и индентификатор
+							for(var k=0;k<arr[j].length;k++){
+								if(this.db_array[i].matrix[k][0]==1){
+									document.getElementById(this.db_array[i].matrix[k][1]).innerHTML=this.db_array[i].matrix[k][2];
+									document.getElementById(this.db_array[i].matrix[k][1]).innerHTML+=this.db_array[i].matrix[k][3](arr[j][k])
+									document.getElementById(this.db_array[i].matrix[k][1]).innerHTML+=this.db_array[i].matrix[k][4];
+								}
+							}
 						}
 					}
 				}
@@ -32,16 +32,13 @@
 				
 				this.start_point=0;
 				this.end_point=0;
-				this.handler_str;
-				this.next_track;
 				
 				this.hub_handler=hub;
 			}
 		
 		//Парсинг
-			parser_data(stream){//,start_point,end_point
-				console.log(stream);
-				//this.end_point=this.handler_str.responseText.length;
+			parser_data(stream){
+				//console.log(stream);
 				this.end_point=stream.length;
 				for(var i=this.start_point;i<this.end_point;i++){	//обходим все поступившие данные
 					if(stream.charAt(i)=='$'){			//Обнаружели начало
@@ -58,18 +55,6 @@
 							nmea_array[nmea_array.length]=temp[1];
 							this.parser_nmea_array.push(nmea_array);//!!!
 							//console.log(nmea_array);
-							
-							
-							/*
-							nmea_status.innerHTML="C:"+this.parser_nmea_array.length;
-							nmea_status.innerHTML=this.nmea_data;					//вывод данных
-							nmea_status.innerHTML+="<br>";						
-							for(var j=0;j<nmea_array.length;j++){
-								nmea_status.innerHTML+=j+":";
-								nmea_status.innerHTML+=nmea_array[j];
-								nmea_status.innerHTML+="<br>";
-							}
-							*/
 						}
 					}
 				}
@@ -85,10 +70,7 @@
 				this.parser_nmea_array=new Array();
 			}
 		//чуть
-			//capture_stream(handler){
-			//	this.handler_str=handler;
-			//	//console.log(handler);
-			//}
+
 		//чуть
 		
 	}
@@ -139,8 +121,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//SYSMON
-//NMEA
+//xmlhttprq_stream_gr
 	class xmlhttprq_stream_gr {
 		//Инициализация
 			constructor(url,parser) {
@@ -150,24 +131,21 @@
 				this.xmlhttprq.open('GET', url, true);
 				this.xmlhttprq.overrideMimeType('text/plain; charset=x-user-defined');
 
-				this.xmlhttprq.send();
-				
-				//parser.capture_stream(this.xmlhttprq);
-				//this.xmlhttprq.onprogress=parser.parser_data();//!!!//parser(this.xmlhttprq,'abc');
 				this.xmlhttprq.onprogress=function(){
-					console.log(this.responseText);
+					//console.log(this.responseText);
 					parser.parser_data(this.responseText);
+
 				}
 				
-				//console.log(parser);
-				//this.xmlhttprq.onprogress=function(){
-				//	center_div.innerHTML=this.responseText/1000;
-				//}
+				this.xmlhttprq.send();
 			}
 		//чуть
 		
 		//чуть
 		
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//xmlhttprq_stream_gr
 
