@@ -40,6 +40,9 @@
 			parser_data(stream){
 				//console.log(stream);
 				this.end_point=stream.length;
+				if(this.start_point>=this.end_point){
+					this.start_point=0;
+				}
 				for(var i=this.start_point;i<this.end_point;i++){	//обходим все поступившие данные
 					if(stream.charAt(i)=='$'){			//Обнаружели начало
 						this.parser_start_valid=1;
@@ -125,27 +128,84 @@
 	class xmlhttprq_stream_gr {
 		//Инициализация
 			constructor(url,parser) {
-				this.a='qwerty';
+				//this.url=url;
+				//this.parser=parser;
 				this.xmlhttprq = new XMLHttpRequest();
 				
 				this.xmlhttprq.open('GET', url, true);
-				this.xmlhttprq.overrideMimeType('text/plain; charset=x-user-defined');
-
+				this.xmlhttprq.overrideMimeType('text/plain; charset=x-user-defined');				
+				this.xmlhttprq.send();
+				
 				this.xmlhttprq.onprogress=function(){
 					//console.log(this.responseText);
 					parser.parser_data(this.responseText);
 
 				}
 				
-				this.xmlhttprq.send();
+				this.xmlhttprq.onreadystatechange=function(){//this.check_stage()
+					//console.log(this.readyState);
+					if(this.readyState==4){//DONE
+						this.open('GET', url, true);
+						this.overrideMimeType('text/plain; charset=x-user-defined');					
+						setTimeout(function(e) {e.send()},300,this);//this.send()
+					}
+				}
 			}
 		//чуть
-		
 		//чуть
-		
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//xmlhttprq_stream_gr
+//
+//paper_js_gr
+	class paper_js_gr{
+			////test_paper.activate()
+			//Инициализация
+			constructor(inner) {
+				this.inner=inner;
+				this.paper_image = new paper.PaperScope();//new paper.install(window);
+				this.paper_image.PaperScope();
+				this.paper_image.setup(inner);
+				this.children = this.paper_image.project.activeLayer.children;
+				
+				/*this.i=0;
+				for(this.i = 0; this.i < 10; this.i++){    
+					this.x = Math.floor(Math.random()*(this.canvas_width-50))+20;
+					this.y = Math.floor(Math.random()*(this.canvas_height-50))+20;
+					this.text = new paper.PointText(new this.paper_image.paper.Point(this.x, this.y))
+					this.text.fillColor = 'black';
+					this.text.content =  Math.floor(Math.random()*(100));
+					this.text.fontSize = '20px';
+					this.text.fontFamily = "arial";
+				}*/
+				this.paper_image.view.draw();
+			}
+			//
+			push_graph(value,size){//add_obj
+				//this.canvas_width  = 500;// document.getElementById(this.inner).width;// 500;// $("#canvas").width();
+				//this.canvas_height = 300;// document.getElementById(this.inner).height;//300 $("#canvas").height();
+				
+				this.paper_image.activate();
+				this.move();
+				
+				var x=500-10;
+				var y=300-value-10;
+				
+				var graph_point=new this.paper_image.Path.Rectangle(new this.paper_image.Point(x, y), size,size);
+				graph_point.fillColor='#FF0000';
+				this.paper_image.view.draw();
+			}
+			//
+			move(){
+				this.paper_image.activate();
+				for (var i=0;i<this.children.length;i++){
+					this.children[i].position.x-=5;//this.children[i].width;//5;
+					if(this.children[i].position.x<=10){
+						this.children[i].remove();
+					}
+				}
+				this.paper_image.view.draw();
+			}
+	}
 

@@ -3,6 +3,8 @@ let datafall;// = new datafall_gr();
 let sys_data;//=new xmlhttprq_stream_gr();
 let message_db;
 
+let test_paper;
+
 var xhr;// = new XMLHttpRequest();
 var xhr_read_point=0;
 var xhr_date = new Date;
@@ -11,49 +13,68 @@ var xhr_bps=0;
 var xhr_temp;
 
 var message_parsing_array=new Array();
-var arr_push={
-	type:"nmea",
-	mark:'$SYST0',
-	matrix:[
-		[0],
-		[
-			1,
-			"center_div",
-			"Температура процессора ",
-			function(a) { return a/1000;},
-			" градусов"
-		],
-		[0]
-	]
-};
-message_parsing_array.push(arr_push);
-
-/*message_parsing_array.push(
-	{ 
-		type:"nmea",
+	var arr_push={
+		type:'nmea',
 		mark:'$SYST0',
-		inner:"center_div",
-		matrix:"1" 
-	}
-);/*
-/*{'1'},
-			{
-				innner:"center_div",
-				function(a){
-					return a/1000;
-				}
-			} */
+		matrix:[
+			[0],
+			[
+				1,
+				"center_div",
+				"Температура процессора ",
+				function(a) { test_paper.push_graph(a/1000,5); return a/1000;},//test_paper.push_graph(a/1000,5);
+				" градусов."
+			],
+			[0]
+		]
+	};
+	message_parsing_array.push(arr_push);
+	
+	var arr_push={
+		type:'nmea',
+		mark:'$TSTCNT',
+		matrix:[
+			[0],
+			[
+				1,
+				"xhr_status_div",
+				"Тестовый счетчик ",
+				function(a) { test_paper_cnt.push_graph(a*1,5); return a;},//test_paper_cnt.push_graph(a*1,5);
+				" насчитано."
+			],
+			[0]
+		]
+	};
+	message_parsing_array.push(arr_push);
+	
 
 
+
+//$(document).ready(function(){
 function main_init(){
-	message_hub=new valid_db_gr(message_parsing_array);
+	//STREAM
+		message_hub=new valid_db_gr(message_parsing_array);//хаб сообщений
+
+		sys_stream_nmea = new nmea_gr(message_hub);//
+		sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea);
+		
+		test_cnt_nmea = new nmea_gr(message_hub);//
+		test_cnt_stream=new xmlhttprq_stream_gr('/cgi-bin/test_counter.sh',test_cnt_nmea);
+	
+	//PAPER JS
+		test_paper_cnt=new paper_js_gr('canvas2');//!!!
+		test_paper=new paper_js_gr('canvas3');
+		
+		//console.log(test_paper);
+		//test_paper.add_obj(50,50,5);
+		//test_paper.add_obj(70,70,5);
+		//test_paper.add_obj(150,150,5);
+		//test_paper.move();
+
+
 
 	nmea = new nmea_gr();
-	datafall = new datafall_gr();
-	
-	sys_stream_nmea = new nmea_gr(message_hub);
-	sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea);
-	
+	datafall = new datafall_gr();	
 	xhr = new XMLHttpRequest();
 	open_hendler();
 }
