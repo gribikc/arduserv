@@ -47,6 +47,7 @@ var message_parsing_array=new Array();
 	};
 	message_parsing_array.push(arr_push);
 	
+	
 
 
 
@@ -60,6 +61,9 @@ function main_init(){
 		
 		test_cnt_nmea = new nmea_gr(message_hub);//
 		test_cnt_stream=new xmlhttprq_stream_gr('/cgi-bin/test_counter.sh',test_cnt_nmea);
+		
+		//usb_arduino_nmea = new nmea_gr(message_hub);//
+		//usb_arduino_stream=new xmlhttprq_stream_gr('/cgi-bin/stream_usart.sh',usb_arduino_nmea);
 	
 	//PAPER JS
 		test_paper_cnt=new paper_js_gr('canvas2');//!!!

@@ -23,3 +23,27 @@
 
 //Температура
 	vcgencmd measure_temp
+	cat /sys/class/thermal/thermal_zone0/temp
+	
+	
+	
+	
+//WIFI
+	sudo iwlist wlan0 scan | grep "ESSID\|IE: IEEE"
+	sudo iw dev wlan0 set power_save off
+	
+	
+	
+//Обзее
+	sudo raspi-config
+	sudo dd if=/dev/mccblk0 of=/home/Username/Desktop/raspberrypi-backup.img
+	sudo dd if=/home/Username/Desktop/raspberrypi-backup.img of=/dev/mccblk0
+	
+	
+//1st
+	sudo apt-get install apache2 -y
+	sudo a2enmod cgid
+	sudo systemctl restart apache2
+	chmod 777 /usr/lib/cgi-bin
+	chmod +x fun-script
+	
