@@ -57,10 +57,10 @@ function main_init(){
 		message_hub=new valid_db_gr(message_parsing_array);//хаб сообщений
 
 		sys_stream_nmea = new nmea_gr(message_hub);//
-		sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea);
+		sys_data=new xmlhttprq_stream_gr('/cgi-bin/sys_inf.sh',sys_stream_nmea,"xnr_state_div","SYS:");
 		
 		test_cnt_nmea = new nmea_gr(message_hub);//
-		test_cnt_stream=new xmlhttprq_stream_gr('/cgi-bin/test_counter.sh',test_cnt_nmea);
+		test_cnt_stream=new xmlhttprq_stream_gr('/cgi-bin/test_counter.sh',test_cnt_nmea,"xnr_state_div","TSTCNT:");
 		
 		//usb_arduino_nmea = new nmea_gr(message_hub);//
 		//usb_arduino_stream=new xmlhttprq_stream_gr('/cgi-bin/stream_usart.sh',usb_arduino_nmea);

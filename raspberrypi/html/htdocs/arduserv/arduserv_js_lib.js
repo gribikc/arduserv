@@ -127,31 +127,60 @@
 //xmlhttprq_stream_gr
 	class xmlhttprq_stream_gr {
 		//Инициализация
-			constructor(url,parser) {
+			constructor(url,parser,parent_status_div,name_text) {
 				//this.url=url;
 				//this.parser=parser;
+				var this_of_class=this;
 				this.xmlhttprq = new XMLHttpRequest();
 				
 				this.xmlhttprq.open('GET', url, true);
 				this.xmlhttprq.overrideMimeType('text/plain; charset=x-user-defined');				
 				this.xmlhttprq.send();
 				
-				this.xmlhttprq.onprogress=function(){
+				this.stat_bps=0;
+				this.stat_rp=0;
+				this.tii=setInterval(function(){this_of_class.view_stat();},1000);
+				
+				//if(parent_status_div!==null){
+					this.status_div = document.createElement('div');
+					this.stat_div = document.createElement('div');
+					document.getElementById(parent_status_div).appendChild(this.status_div);
+					document.getElementById(parent_status_div).appendChild(this.stat_div);
+					//console.log(this.status_div);
+				//}
+				
+				this.xmlhttprq.onprogress=function(e){
 					//console.log(this.responseText);
 					parser.parser_data(this.responseText);
 
-				}
+				}				
 				
-				this.xmlhttprq.onreadystatechange=function(){//this.check_stage()
-					//console.log(this.readyState);
+				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
+					//console.log(this_of_class);
+					//console.log(this.status_div);//.innerHTML=this.readyState;
+					//console.log(e);//event
+					//console.log(this);//XMLHttpRequest
+					this_of_class.status_div.innerHTML=name_text;
+					this_of_class.status_div.innerHTML+=this.readyState;
+					this_of_class.status_div.innerHTML+=":"+this.statusText;
+					//readyState;
 					if(this.readyState==4){//DONE
 						this.open('GET', url, true);
 						this.overrideMimeType('text/plain; charset=x-user-defined');					
-						setTimeout(function(e) {e.send()},300,this);//this.send()
+						setTimeout(function(e) {e.send();this.stat_rp=0;},300,this);//this.send()
 					}
 				}
+				
+				//this.tii=setInterval(function(){this_of_class.stat_div.innerHTML+=1},1000);
 			}
 		//чуть
+			view_stat(){
+				//console.log(this);
+				//this.stat_div.innerHTML+=1;
+				this.stat_bps=this.stat_bps*0.9+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.1;
+				this.stat_rp=this.xmlhttprq.responseText.length;
+				this.stat_div.innerHTML='Скорость: '+(this.stat_bps.toFixed(2))+' бит/с.';//bit per second
+			}
 		//чуть
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
