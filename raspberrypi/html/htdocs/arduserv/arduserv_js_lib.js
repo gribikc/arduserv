@@ -146,6 +146,10 @@
 					this.stat_div = document.createElement('div');
 					document.getElementById(parent_status_div).appendChild(this.status_div);
 					document.getElementById(parent_status_div).appendChild(this.stat_div);
+					
+					this.status_div.className = "xmlhttprq_stream_gr_status";
+					this.stat_div.className = "xmlhttprq_stream_gr_stat";
+					
 					//console.log(this.status_div);
 				//}
 				
@@ -161,23 +165,26 @@
 					//console.log(e);//event
 					//console.log(this);//XMLHttpRequest
 					this_of_class.status_div.innerHTML=name_text;
-					this_of_class.status_div.innerHTML+=this.readyState;
-					this_of_class.status_div.innerHTML+=":"+this.statusText;
+					this_of_class.status_div.innerHTML+=""+this.statusText;
+					this_of_class.status_div.innerHTML+="("+this.readyState+")";
 					//readyState;
 					if(this.readyState==4){//DONE
+						this_of_class.stat_rp-=this.responseText.length;
+						//console.log(e);
 						this.open('GET', url, true);
 						this.overrideMimeType('text/plain; charset=x-user-defined');					
-						setTimeout(function(e) {e.send();this.stat_rp=0;},300,this);//this.send()
+						setTimeout(function(e) {e.send();},300,this);//this.send()
 					}
 				}
 				
 				//this.tii=setInterval(function(){this_of_class.stat_div.innerHTML+=1},1000);
+				//console.log(this);
 			}
 		//чуть
 			view_stat(){
 				//console.log(this);
 				//this.stat_div.innerHTML+=1;
-				this.stat_bps=this.stat_bps*0.9+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.1;
+				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
 				this.stat_div.innerHTML='Скорость: '+(this.stat_bps.toFixed(2))+' бит/с.';//bit per second
 			}
@@ -268,3 +275,24 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+function hide_view_inner_gr(inner_html){
+	//document.getElementById(inner).visibility    hidden   visible
+	//document.getElementById(inner).position      absolute unset
+	//document.getElementById(inner).zIndex			0 		unset
+	//alert(document.getElementById(inner).style.visibility);
+	//alert(document.getElementById(inner).style.position);
+	//alert(document.getElementById(inner).style.zIndex);
+	//console.log(document.getElementById(inner_html).style);
+	
+	if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
+	   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
+	   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
+		document.getElementById(inner_html).style.visibility="hidden";
+		document.getElementById(inner_html).style.position="absolute";
+		document.getElementById(inner_html).style.zIndex=-1;
+	}else{
+		document.getElementById(inner_html).style.visibility="visible";
+		document.getElementById(inner_html).style.position="unset";
+		document.getElementById(inner_html).style.zIndex="unset";
+	}
+}
