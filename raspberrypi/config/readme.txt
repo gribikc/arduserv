@@ -69,4 +69,13 @@
 	sudo systemctl restart apache2
 	chmod 777 /usr/lib/cgi-bin
 	chmod +x fun-script
+
+	
+//MySQL
+	sudo mysql
+
+		use mysql;
+		update user set plugin='' where User='root';
+		flush privileges;
+		exit
 	
