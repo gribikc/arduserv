@@ -1,4 +1,7 @@
 'use strict';
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //messageDB_HUB
 	class valid_db_gr{
 		//Инициализация
@@ -7,10 +10,10 @@
 			}
 		//Парсинг
 			parser_data(type,arr){
-				for(var j=0;j<arr.length;j++){
-					for(var i=0;i<this.db_array.length;i++){
+				for(var j=0;j<arr.length;j++){//обход входного массива сообщений
+					for(var i=0;i<this.db_array.length;i++){//обход базданного массива
 						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){//проверяем тип сообщения и индентификатор
-							for(var k=0;k<arr[j].length;k++){
+							for(var k=0;k<arr[j].length;k++){//обход массива сообщения
 								if(this.db_array[i].matrix[k][0]==1){
 									document.getElementById(this.db_array[i].matrix[k][1]).innerHTML=this.db_array[i].matrix[k][2];
 									document.getElementById(this.db_array[i].matrix[k][1]).innerHTML+=this.db_array[i].matrix[k][3](arr[j][k])
@@ -22,8 +25,36 @@
 				}
 			}
 	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//JSON
+	class json_parser_gr {
+		//Инициализация
+			constructor(hub) {
+				this.parser_data_array=new Array();
+			}
+		//Парсинг
+			parser_data(stream){
+				this.parser_data_array=JSON.parse(stream);
+				
+				if(this.parser_data_array.length>0 && 1){
+					this.hub_handler.parser_data('json',this.parser_nmea_array);
+					this.parser_nmea_array=new Array();
+				}
+			}
+		//Сброс данных
+
+		//чуть
+
+		//чуть
+		
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //NMEA
-	class nmea_gr {
+	class nmea_parser_gr {
 		//Инициализация
 			constructor(hub) {
 				this.parser_start_valid=0;				//установка при обнаружении $, сброс про обнаружении конца строки
@@ -35,7 +66,6 @@
 				
 				this.hub_handler=hub;
 			}
-		
 		//Парсинг
 			parser_data(stream){
 				//console.log(stream);
@@ -67,7 +97,6 @@
 					this.parser_nmea_array=new Array();
 				}
 			}
-
 		//Сброс данных
 			clear_nmea_array(){
 				this.parser_nmea_array=new Array();
@@ -92,7 +121,6 @@
 				this.start_point=0;
 				this.end_point=0;
 			}
-		
 		//Парсинг
 			parser_data(handler,start_point,end_point){
 				for(var i=start_point;i<end_point;i++){	//обходим все поступившие данные
@@ -127,36 +155,39 @@
 //xmlhttprq_stream_gr
 	class xmlhttprq_stream_gr {
 		//Инициализация
-			constructor(url,parser,parent_status_div,name_text) {
+			constructor(parameter) {
 				//this.url=url;
 				//this.parser=parser;
 				var this_of_class=this;
+				var this_parameter=parameter;
 				this.xmlhttprq = new XMLHttpRequest();
 				
-				this.xmlhttprq.open('GET', url, true);
-				this.xmlhttprq.overrideMimeType('text/plain; charset=x-user-defined');				
+				this.xmlhttprq.open('GET', parameter.url, true);
+				this.xmlhttprq.overrideMimeType(parameter.mime_type);				
 				this.xmlhttprq.send();
 				
 				this.stat_bps=0;
 				this.stat_rp=0;
-				this.tii=setInterval(function(){this_of_class.view_stat();},1000);
 				
-				//if(parent_status_div!==null){
+				if(parameter.status_en==true){
+					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
+
 					this.status_div = document.createElement('div');
 					this.stat_div = document.createElement('div');
-					document.getElementById(parent_status_div).appendChild(this.status_div);
-					document.getElementById(parent_status_div).appendChild(this.stat_div);
+					document.getElementById(parameter.status_div).appendChild(this.status_div);
+					document.getElementById(parameter.status_div).appendChild(this.stat_div);
 					
-					this.status_div.className = "xmlhttprq_stream_gr_status";
-					this.stat_div.className = "xmlhttprq_stream_gr_stat";
+					this.status_div.className = parameter.status_div_status_css;
+					this.stat_div.className = parameter.status_div_stat_css;
 					
 					//console.log(this.status_div);
-				//}
+				}
 				
 				this.xmlhttprq.onprogress=function(e){
 					//console.log(this.responseText);
-					parser.parser_data(this.responseText);
-
+					if(this_parameter.flush_en==true || this_of_class.readyState==4){
+						parameter.parser.parser_data(this.responseText);
+					}
 				}				
 				
 				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
@@ -164,36 +195,36 @@
 					//console.log(this.status_div);//.innerHTML=this.readyState;
 					//console.log(e);//event
 					//console.log(this);//XMLHttpRequest
-					this_of_class.status_div.innerHTML=name_text;
+					this_of_class.status_div.innerHTML=parameter.status_div_name;
 					this_of_class.status_div.innerHTML+=""+this.statusText;
 					this_of_class.status_div.innerHTML+="("+this.readyState+")";
 					//readyState;
 					if(this.readyState==4){//DONE
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
-						this.open('GET', url, true);
-						this.overrideMimeType('text/plain; charset=x-user-defined');					
-						setTimeout(function(e) {e.send();},300,this);//this.send()
+						if(this_parameter.reload_en==true){
+							this.open('GET', this_parameter.url, true);
+							this.overrideMimeType(this_parameter.mime_type);					
+							setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()
+						}
 					}
 				}
 				
 				//this.tii=setInterval(function(){this_of_class.stat_div.innerHTML+=1},1000);
-				//console.log(this);
+
 			}
 		//чуть
 			view_stat(){
-				//console.log(this);
-				//this.stat_div.innerHTML+=1;
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
 				this.stat_div.innerHTML='Скорость: '+(this.stat_bps.toFixed(2))+' бит/с.';//bit per second
+				//console.log(this);
 			}
 		//чуть
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 //paper_js_gr
 	class paper_js_gr{
 			////test_paper.activate()
@@ -258,7 +289,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 //nrf24l01p_js_gr
 	class nrf24l01p_js_gr{
 			//Инициализация
@@ -274,7 +304,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+//...
 function hide_view_inner_gr(inner_html){
 	//document.getElementById(inner).visibility    hidden   visible
 	//document.getElementById(inner).position      absolute unset
@@ -296,3 +326,7 @@ function hide_view_inner_gr(inner_html){
 		document.getElementById(inner_html).style.zIndex="unset";
 	}
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//...
