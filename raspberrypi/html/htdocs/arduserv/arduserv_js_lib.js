@@ -38,10 +38,15 @@
 			parser_data(stream){
 				this.parser_data_array=JSON.parse(stream);
 				
-				if(this.parser_data_array.length>0 && 1){
+				document.getElementById("gr_db_log_txa").innerHTML+="<br>Size:";
+				document.getElementById("gr_db_log_txa").innerHTML+=this.parser_data_array.length;
+				
+				//alert('123');
+				
+				/*if(this.parser_data_array.length>0 && 1){
 					this.hub_handler.parser_data('json',this.parser_nmea_array);
 					this.parser_nmea_array=new Array();
-				}
+				}*/
 			}
 		//Сброс данных
 
@@ -185,8 +190,9 @@
 				
 				this.xmlhttprq.onprogress=function(e){
 					//console.log(this.responseText);
-					if(this_parameter.flush_en==true || this_of_class.readyState==4){
-						parameter.parser.parser_data(this.responseText);
+					//console.log(this_of_class.xmlhttprq.readyState);
+					if(this_parameter.flush_en==true || this_of_class.xmlhttprq.readyState==4){
+						parameter.parser.parser_data(this.responseText);//!!!
 					}
 				}				
 				
@@ -200,6 +206,7 @@
 					this_of_class.status_div.innerHTML+="("+this.readyState+")";
 					//readyState;
 					if(this.readyState==4){//DONE
+						parameter.parser.parser_data(this.responseText);//!!!
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
 						if(this_parameter.reload_en==true){

@@ -81,8 +81,8 @@
 		
 	root:mysqlpasswd
 
-SELECT `nmea_id`,`nmea_type`,`json`,`time` FROM `nmea` 
-WHERE id_code = '123' & nmea_id > '0'
+SELECT * FROM `nmea` 
+WHERE (`nmea`.`id_code` = '123' && `nmea`.`nmea_id` > 0)
 ORDER BY `nmea`.`time`  ASC
 LIMIT 10
 		

@@ -154,10 +154,10 @@ function main_init(){
 		//USB_uart_
 		//JSON_TEST
 			test_json_param={
-				url: 'php_core_gr/myTutorials.txt',
+				url: 'php_core_gr/get_nmea_from_mysql.php',//'php_core_gr/get_nmea_from_mysql.php',//php_core_gr/myTutorials.txt
 				mime_type: 'text/plain; charset=x-user-defined',
 				status_div_name: "JSON_TEST:",
-				parser: new nmea_parser_gr(message_hub),
+				parser: new json_parser_gr(message_hub),
 				
 				flush_en: false,
 				auto_start: true,
