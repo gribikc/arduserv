@@ -14,7 +14,7 @@
 			if($row_se = mysqli_fetch_assoc($result)){
 				$i++;
 				$delta_time=($row_se['time']-$row['time']);
-				if($delta_time<0.5){//!!!
+				if($row_se['nmea_type']=='$SDDPT' && $delta_time<0.5){//!!!
 					echo(",\n\r    [");
 					echo($row['json']);
 					echo(",");

@@ -2,6 +2,41 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//messageDEEP_MYSQL_TO_MAP
+	class json_deep_to_map_gr{
+		//Инициализация
+			constructor() {
+				
+			}
+		//Парсинг
+			parser_data(type,arr){
+				
+				document.getElementById("gr_db_log_txa").innerHTML="Size:";
+				document.getElementById("gr_db_log_txa").innerHTML+=arr.length;
+				document.getElementById("gr_db_log_txa").innerHTML+='\n';
+				
+				//console.log(arr);
+				
+				var x=0;
+				var y=0;
+				for(var j=1;j<arr.length;j++){//обход входного массива сообщений
+					x=arr[j][0][2]/100;
+					x=x.toFixed(0)*1+(x-x.toFixed(0))*1.666666666;
+					if(arr[j][0][3]!="N"){
+						x=x*(-1);
+					}
+					y=arr[j][0][4]/100;
+					y=y.toFixed(0)*1+(y-y.toFixed(0))*1.666666666;
+					if(arr[j][0][5]!="E"){
+						y=y*(-1);
+					}
+					document.getElementById("gr_db_log_txa").innerHTML+="X:"+x;
+					document.getElementById("gr_db_log_txa").innerHTML+=";Y:"+y;
+					document.getElementById("gr_db_log_txa").innerHTML+=";Y:"+arr[j][1][1]+'\n';
+				}
+			}
+	}
+
 //messageDB_HUB
 	class valid_db_gr{
 		//Инициализация
@@ -33,20 +68,16 @@
 		//Инициализация
 			constructor(hub) {
 				this.parser_data_array=new Array();
+				this.hub_handler=hub;
 			}
 		//Парсинг
 			parser_data(stream){
 				this.parser_data_array=JSON.parse(stream);
-				
-				document.getElementById("gr_db_log_txa").innerHTML+="<br>Size:";
-				document.getElementById("gr_db_log_txa").innerHTML+=this.parser_data_array.length;
-				
-				//alert('123');
-				
-				/*if(this.parser_data_array.length>0 && 1){
-					this.hub_handler.parser_data('json',this.parser_nmea_array);
-					this.parser_nmea_array=new Array();
-				}*/
+								
+				if(this.parser_data_array.length>0 && 1){
+					this.hub_handler.parser_data('json',this.parser_data_array);					
+					this.parser_data_array=new Array();
+				}
 			}
 		//Сброс данных
 

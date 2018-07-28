@@ -1,20 +1,44 @@
 var myMap;
-
-// Дождёмся загрузки API и готовности DOM.
 ymaps.ready(init);
 
-function init () {
-    // Создание экземпляра карты и его привязка к контейнеру с
-    // заданным id ("map").
-    myMap = new ymaps.Map('map', {
-        // При инициализации карты обязательно нужно указать
-        // её центр и коэффициент масштабирования.
-        center: [55.76, 37.64], // Москва
-        zoom: 10,
-		controls: ['zoomControl', 'typeSelector',  'fullscreenControl','RulerControl']//'searchControl''routeButtonControl'
+function init() {
+    // Создаем карту.
+    myMap = new ymaps.Map("map", {
+            center: [56.155172, 30.585121],
+            zoom: 15
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+}
+function yandex_map_add_deep_gr(x,y,deep){
+	// Создаем круг.
+    var myCircle = new ymaps.Circle([
+        // Координаты центра круга.
+        [55.76, 37.64],
+        // Радиус круга в метрах.
+        1
+    ], {
+        // Описываем свойства круга.
+        // Содержимое балуна.
+        balloonContent: "",
+        // Содержимое хинта.
+        hintContent: ""
     }, {
-        searchControlProvider: 'yandex#search'
+        // Задаем опции круга.
+        // Включаем возможность перетаскивания круга.
+        draggable: true,
+        // Цвет заливки.
+        // Последний байт (77) определяет прозрачность.
+        // Прозрачность заливки также можно задать используя опцию "fillOpacity".
+        fillColor: "#DB709350",
+        // Цвет обводки.
+        strokeColor: "#FFFFFF",
+        // Прозрачность обводки.
+        strokeOpacity: 0,
+        // Ширина обводки в пикселях.
+        strokeWidth: 0
     });
 
-
+    // Добавляем круг на карту.
+    myMap.geoObjects.add(myCircle);
 }

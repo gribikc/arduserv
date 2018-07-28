@@ -83,7 +83,8 @@ var message_parsing_array=new Array();
 //$(document).ready(function(){
 function main_init(){
 	//HUB
-		message_hub=new valid_db_gr(message_parsing_array);//хаб сообщений
+		message_hub = new valid_db_gr(message_parsing_array);//хаб сообщений
+		deep_hub    = new json_deep_to_map_gr();
 	//HUB_
 	//STREAM
 		//Системная информация RPi
@@ -103,8 +104,7 @@ function main_init(){
 				status_div_stat_css:"xmlhttprq_stream_gr_stat",
 				
 				reload_en:true,
-				reload_time:1000,
-				
+				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(sys_data_param);//'/cgi-bin/sys_inf.sh',sys_stream_nmea,"xhr_status_div","SYS:");//17*8*3=408
 		//Системная информация RPi_
@@ -125,8 +125,7 @@ function main_init(){
 				status_div_stat_css:"xmlhttprq_stream_gr_stat",
 				
 				reload_en:true,
-				reload_time:1000,
-				
+				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//Тестовый счетчик_
@@ -147,8 +146,7 @@ function main_init(){
 				status_div_stat_css:"xmlhttprq_stream_gr_stat",
 				
 				reload_en:true,
-				reload_time:1000,
-				
+				reload_time:1000
 			};
 			//new xmlhttprq_stream_gr(usb_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//USB_uart_
@@ -157,7 +155,7 @@ function main_init(){
 				url: 'php_core_gr/get_nmea_from_mysql.php',//'php_core_gr/get_nmea_from_mysql.php',//php_core_gr/myTutorials.txt
 				mime_type: 'text/plain; charset=x-user-defined',
 				status_div_name: "JSON_TEST:",
-				parser: new json_parser_gr(message_hub),
+				parser: new json_parser_gr(deep_hub),
 				
 				flush_en: false,
 				auto_start: true,
@@ -169,8 +167,7 @@ function main_init(){
 				status_div_stat_css: "xmlhttprq_stream_gr_stat",
 				
 				reload_en: false,
-				reload_time: 1000,
-				
+				reload_time: 1000
 			};
 			new xmlhttprq_stream_gr(test_json_param);
 		//JSON_TEST_
