@@ -9,12 +9,14 @@ function init() {
         }, {
             searchControlProvider: 'yandex#search'
         });
+		
+	add_text_to_map();
 }
 function yandex_map_add_deep_gr(x,y,deep){
 	// Создаем круг.
     var myCircle = new ymaps.Circle([
         // Координаты центра круга.
-        [55.76, 37.64],
+        [x, y],
         // Радиус круга в метрах.
         1
     ], {
@@ -26,11 +28,12 @@ function yandex_map_add_deep_gr(x,y,deep){
     }, {
         // Задаем опции круга.
         // Включаем возможность перетаскивания круга.
-        draggable: true,
+        draggable: false,
         // Цвет заливки.
         // Последний байт (77) определяет прозрачность.
         // Прозрачность заливки также можно задать используя опцию "fillOpacity".
-        fillColor: "#DB709350",
+        fillColor: "rgb("+deep*30+","+deep*30+","+deep*0+")",//#DB7093"
+		fillOpacity: "50",
         // Цвет обводки.
         strokeColor: "#FFFFFF",
         // Прозрачность обводки.
@@ -41,4 +44,8 @@ function yandex_map_add_deep_gr(x,y,deep){
 
     // Добавляем круг на карту.
     myMap.geoObjects.add(myCircle);
+}
+
+function add_text_to_map(){
+
 }

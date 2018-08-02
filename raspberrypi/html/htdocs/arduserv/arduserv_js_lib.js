@@ -32,7 +32,8 @@
 					}
 					document.getElementById("gr_db_log_txa").innerHTML+="X:"+x;
 					document.getElementById("gr_db_log_txa").innerHTML+=";Y:"+y;
-					document.getElementById("gr_db_log_txa").innerHTML+=";Y:"+arr[j][1][1]+'\n';
+					document.getElementById("gr_db_log_txa").innerHTML+=";D:"+arr[j][1][1]+'\n';
+					yandex_map_add_deep_gr(x,y,arr[j][1][1]);
 				}
 			}
 	}

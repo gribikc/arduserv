@@ -1,4 +1,6 @@
 <?php
+	session_start();
+	
 	$mysql_addr="localhost";
 	$mysql_db="nmea_db_gr";
 

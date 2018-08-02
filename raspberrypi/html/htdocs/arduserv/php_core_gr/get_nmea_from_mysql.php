@@ -1,12 +1,15 @@
 <?php
 	include('config_inc.php');
-	
-	
-	$sql='SELECT * FROM `nmea` WHERE (`nmea`.`id_code` = 123 && `nmea`.`nmea_id` > 0)ORDER BY `nmea`.`time`  ASC LIMIT 10';
+	if(!is_numeric($_SESSION['last_id']) || $_GET["reset"]=="1"){
+		$_SESSION['last_id']=0;
+	}
+
+	$sql='SELECT * FROM `nmea` WHERE (`nmea`.`id_code` = 123 && `nmea`.`nmea_id` > '.$_SESSION['last_id'].') ORDER BY `nmea`.`time`  ASC LIMIT 100';
 	$result = mysqli_query($mysql_db_connect, $sql);
 	//printf("Select вернул %d строк.\n", mysqli_num_rows($result));
 	//echo("<br>");
-	echo("[\n\r    []");
+	//echo($sql);
+	echo("[\n\r    [".$_SESSION['last_id']."]");
 	$num_row=mysqli_num_rows($result);
 	for($i=0;$i<$num_row;$i++){
 		$row = mysqli_fetch_assoc($result);
@@ -20,16 +23,15 @@
 					echo(",");
 					echo($row_se['json']);
 					echo("]");
+					
+					if(is_numeric($row['nmea_id']) && $row['nmea_id']>$_SESSION['last_id']){
+						$_SESSION['last_id']=$row['nmea_id'];
+					}
 				}
 			}
 		}
 	}
 	echo("\n\r]");
-	//echo("}");
-	/*while( $rowst = mysqli_fetch_assoc($result) && $rowse = mysqli_fetch_assoc($result) ){
-        echo($rowst['json']);
-		echo("<br>");
-    }*/
-	
+
 	mysqli_free_result($result);
 ?>

@@ -130,7 +130,7 @@ function main_init(){
 			new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//Тестовый счетчик_
 		//USB_uart
-			usb_uart_stream_param={
+			/*usb_uart_stream_param={
 				url:'/cgi-bin/stream_usart_ttyUSBz.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"USB uart:",
@@ -147,7 +147,7 @@ function main_init(){
 				
 				reload_en:true,
 				reload_time:1000
-			};
+			};*/
 			//new xmlhttprq_stream_gr(usb_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//USB_uart_
 		//JSON_TEST
@@ -166,7 +166,7 @@ function main_init(){
 				status_div_status_css: "xmlhttprq_stream_gr_status",
 				status_div_stat_css: "xmlhttprq_stream_gr_stat",
 				
-				reload_en: false,
+				reload_en: true,
 				reload_time: 1000
 			};
 			new xmlhttprq_stream_gr(test_json_param);
