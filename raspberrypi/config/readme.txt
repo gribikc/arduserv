@@ -15,12 +15,20 @@
 	df -ah
 
 	stress -c 4 -t 900s
+	top | awk '/Cpu/{print substr($LINE,1,match($LINE,/us,/)-1)}'
+	cat < /proc/loadavg
+
 
 //Настройка скриптов
 	chmod +x fun-script
 	sudo ln -s /home/pi/data/htdocs/arduserv /var/www/html/arduserv
 	/usr/lib/cgi-bin
 	# cat your-script.sh | tr -d '\r' > corrected-your-script.sh
+	
+	usermod -a -G dialout www-data
+
+//PHP
+	system("stty -F /dev/ttyAMA0 57600");
 
 
 //Настройка UART
