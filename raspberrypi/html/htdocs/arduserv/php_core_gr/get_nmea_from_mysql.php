@@ -4,14 +4,17 @@
 		$_SESSION['last_id']=0;
 	}
 
-	$sql='SELECT * FROM `nmea` WHERE (`nmea`.`id_code` = 123 && `nmea`.`nmea_id` > '.$_SESSION['last_id'].') ORDER BY `nmea`.`time`  ASC LIMIT 100';
+	$sql='  SELECT * FROM `nmea` 
+			WHERE (`nmea`.`id_code` = 123 && (`nmea`.`nmea_type` = \'$GPGGA\' || `nmea`.`nmea_type` = \'$SDDPT\') &&  `nmea`.`nmea_id` > '.$_SESSION['last_id'].') 
+			ORDER BY `nmea`.`time`  ASC 
+			LIMIT 1000';
 	$result = mysqli_query($mysql_db_connect, $sql);
 	//printf("Select вернул %d строк.\n", mysqli_num_rows($result));
 	//echo("<br>");
 	//echo($sql);
 	echo("[\n\r    [".$_SESSION['last_id']."]");
 	$num_row=mysqli_num_rows($result);
-	for($i=0;$i<$num_row;$i++){
+	for($i=0;$i<($num_row-1);$i++){
 		$row = mysqli_fetch_assoc($result);
 		if($row['nmea_type']=='$GPGGA'){
 			if($row_se = mysqli_fetch_assoc($result)){

@@ -77,6 +77,19 @@
 	sudo systemctl restart apache2
 	chmod 777 /usr/lib/cgi-bin
 	chmod +x fun-script
+	
+	sudo nano /etc/rc.local
+	sudo /usr/lib/cgi-bin/find_conf_tty.sh &
+	sudo /usr/lib/cgi-bin/tty_nmea_php.sh &
+	sudo chmod +s /bin/systemctl
+	sudo chmod 777 /bin/systemctl
+	sudo chmod +s /sbin/halt
+	sudo chmod 777 /sbin/halt
+	sudo chmod +s /sbin/reboot
+	sudo chmod 777 /sbin/reboot
+	sudo chmod +s /dev/initctl
+	sudo chmod 777 /dev/initctl
+
 
 	
 //MySQL

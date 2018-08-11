@@ -1,5 +1,9 @@
 var myMap;
+var deep_points_arr = new Array();
+
 ymaps.ready(init);
+
+
 
 function init() {
     // Создаем карту.
@@ -13,6 +17,20 @@ function init() {
 	add_text_to_map();
 }
 function yandex_map_add_deep_gr(x,y,deep){
+	//console.log('Длинна массива: '+deep_points_arr.length);
+	for(var i=0;i<deep_points_arr.length;i++){
+		if(deep_points_arr[i]['x']==x && deep_points_arr[i]['y']==y){
+			/*if(deep_points_arr[i]['deep']==deep){
+				//console.log('Полное совпадение');
+			}else{
+				console.log('Не совпала глубина:'+deep_points_arr[i]['deep']+'-_-'+deep);
+			}*/
+			//console.log('<HZRF');
+			return;
+		}
+	}
+	
+	var arr_push={x:x,y:y,deep:deep};
 	// Создаем круг.
     var myCircle = new ymaps.Circle([
         // Координаты центра круга.
@@ -44,6 +62,8 @@ function yandex_map_add_deep_gr(x,y,deep){
 
     // Добавляем круг на карту.
     myMap.geoObjects.add(myCircle);
+	//arr_push.push=myCircle;
+	deep_points_arr.push(arr_push);
 }
 
 function add_text_to_map(){
