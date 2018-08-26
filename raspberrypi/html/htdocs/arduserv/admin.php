@@ -33,7 +33,7 @@ echo(date('H:i:s d.m.y'));
 
 echo('<br><b>Пинг ya.ru:</b>');
 echo('<pre>');
-passthru('ping ya.ru -c 1 -W 1');
+passthru('ping 87.250.250.242 -c 1 -W 1');
 echo('</pre>');
 
 echo('<br><b>Настройки сети:</b>');

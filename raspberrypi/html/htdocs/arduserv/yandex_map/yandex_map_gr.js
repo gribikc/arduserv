@@ -40,7 +40,7 @@ function yandex_map_add_deep_gr(x,y,deep){
     ], {
         // Описываем свойства круга.
         // Содержимое балуна.
-        balloonContent: "",
+        balloonContent: deep+" м.",
         // Содержимое хинта.
         hintContent: ""
     }, {
@@ -60,6 +60,8 @@ function yandex_map_add_deep_gr(x,y,deep){
         strokeWidth: 0
     });
 
+	//myCircle.events.add('click', function (e) {alert(deep);})
+	
     // Добавляем круг на карту.
     myMap.geoObjects.add(myCircle);
 	//arr_push.push=myCircle;
