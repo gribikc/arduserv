@@ -1,5 +1,5 @@
-#define nrf24l01_ce 49
-#define nrf24l01_cs 48
+#define nrf24l01_ce 9
+#define nrf24l01_cs 10
 
 #include <SPI.h>
 
