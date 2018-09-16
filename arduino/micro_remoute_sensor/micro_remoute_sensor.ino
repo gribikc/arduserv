@@ -36,6 +36,17 @@ void loop() {
 
   delay(1000);
   nrf24l01_send_message();
+  Serial.println("Send...OK");
   //nrf24l01_init_rx();
+      digitalWrite(nrf24l01_cs, LOW);
+      Serial.print("Carrier Detect");
+      Serial.print(": ");
+      Serial.print(SPI.transfer(9));
+      Serial.print("  ");
+      Serial.print(SPI.transfer(0x00));
+      Serial.print("  ");
+      Serial.print(SPI.transfer(0x00));
+      digitalWrite(nrf24l01_cs, HIGH);
+      Serial.print("\n");
   
 }

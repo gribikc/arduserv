@@ -19,7 +19,7 @@ void setup() {
  
   Serial.println("Start...");
   get_nrf24_config();
-  nrf24l01_init_tx();
+  nrf24l01_init_rx();
   get_nrf24_config();
   Serial.println("NRF...done");
 }
@@ -35,7 +35,29 @@ void loop() {
   }*/
 
   delay(1000);
-  nrf24l01_send_message();
+  //nrf24l01_send_message();
+  //Serial.println("Send...OK");
   //nrf24l01_init_rx();
-  
+      digitalWrite(nrf24l01_cs, LOW);
+      Serial.print("Carrier Detect");
+      Serial.print(": ");
+      Serial.print(SPI.transfer(9));
+      Serial.print(":");
+      Serial.print(SPI.transfer(0x00));
+      digitalWrite(nrf24l01_cs, HIGH);
+      Serial.print(";\n");
+  ///
+    int i;
+    char temp;
+      digitalWrite(nrf24l01_cs, LOW);
+      temp=SPI.transfer(97);
+      if((temp&14)!=14){
+        Serial.print("DATA:");
+        for(i=0;i<=31;i++){
+          Serial.print(":");
+          Serial.print(SPI.transfer(0x00));
+        }
+              Serial.print(";\n");
+      }
+      digitalWrite(nrf24l01_cs, HIGH);
 }
