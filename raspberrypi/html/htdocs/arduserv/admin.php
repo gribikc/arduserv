@@ -2,7 +2,7 @@
 session_start();
 if($_GET['cmd']==1 || $_GET['cmd']=='halt'){
 	delete_get_from_url();
-	system("halt");
+	system("halt");//sleep 10 && echo 123 &
 }
 if($_GET['cmd']==2 || $_GET['cmd']=='reboot'){
 	delete_get_from_url();

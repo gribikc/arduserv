@@ -5,15 +5,18 @@ let message_db;
 
 let test_paper;
 
-var xhr;// = new XMLHttpRequest();
-var xhr_read_point=0;
-var xhr_date = new Date;
-var xhr_fps=0;
-var xhr_bps=0;
-var xhr_temp;
+//var xhr;// = new XMLHttpRequest();
+//var xhr_read_point=0;
+//var xhr_date = new Date;
+//var xhr_fps=0;
+//var xhr_bps=0;
+//var xhr_temp;
 
 var sys_data_param;
 var test_cnt_stream_param;
+
+var autoboat;
+
 
 var message_parsing_array=new Array();
 	var arr_push={
@@ -86,6 +89,8 @@ function main_init(){
 		message_hub = new valid_db_gr(message_parsing_array);//хаб сообщений
 		deep_hub    = new json_deep_to_map_gr();
 	//HUB_
+	///autoboat
+		autoboat=new autoboat_gr();
 	//STREAM
 		//Системная информация RPi
 			sys_data_param={
@@ -149,6 +154,27 @@ function main_init(){
 				reload_time:1000
 			};*/
 			//new xmlhttprq_stream_gr(usb_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+		//USB_uart_
+		//arduino_uart
+			arduino_uart_stream_param={
+				url:'/cgi-bin/stream_usart.sh',
+				mime_type:'text/plain; charset=x-user-defined',
+				status_div_name:"Arduino uart:",
+				parser: autoboat,//new raw_parser_gr(message_hub),
+				
+				flush_en:true,
+				auto_start:true,
+				
+				status_en:true,
+				status_timer:1000,
+				status_div:"xhr_status_div",
+				status_div_status_css:"xmlhttprq_stream_gr_status",
+				status_div_stat_css:"xmlhttprq_stream_gr_stat",
+				
+				reload_en:true,
+				reload_time:1000
+			};
+			new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//USB_uart_
 		//JSON_TEST
 			test_json_param={

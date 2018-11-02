@@ -19,9 +19,9 @@ void setup() {
 
  
   Serial.println("Start...");
-    nrf24l01p.get_config();
-    nrf24l01p.init_tx();
-    nrf24l01p.get_config();
+    //nrf24l01p.get_config();
+    //nrf24l01p.init_tx();
+    //nrf24l01p.get_config();
   Serial.println("NRF...done");
 }
 
@@ -35,8 +35,10 @@ void loop() {
     usb_serial.nmea_parser(Serial.read());
   }*/
 
-  delay(300);
-  nrf24l01p.send_message();
-  Serial.println("Send...OK");
+  delay(1000);
+  //nrf24l01p.send_message();
+  nrf24l01p.send_message_long();
+  //nrf24l01p.scan_PDCD();
+  //Serial.println("Send...OK");
 
 }

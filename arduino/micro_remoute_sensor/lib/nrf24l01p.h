@@ -86,6 +86,7 @@ class gribikc_nrf24l01p{
       void init_rx();
       void init_tx();
       void send_message();
+	  void send_message_long();
 	  void scan_PDCD();
 	  
 	int i;
@@ -114,6 +115,7 @@ bool gribikc_nrf24l01p::write_reg(char addr,char data){//+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 int gribikc_nrf24l01p::read_reg(char addr){//+
+	int i=0;
 	digitalWrite(nrf24l01_cs, LOW);
 		SPI.transfer((0x00|addr));
 		i=SPI.transfer(0x00);//4
@@ -122,6 +124,7 @@ int gribikc_nrf24l01p::read_reg(char addr){//+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 char gribikc_nrf24l01p::print_message(){//+
+	int i;
 	digitalWrite(nrf24l01_cs, LOW);
 	SPI.transfer(R_RX_PAYLOAD);
 	Serial.print("DATA0:");
@@ -135,6 +138,7 @@ char gribikc_nrf24l01p::print_message(){//+
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool gribikc_nrf24l01p::read_message(char *buf,int len){//+
 	//message_available();
+	int i;
 	digitalWrite(nrf24l01_cs, LOW);
 		SPI.transfer(R_RX_PAYLOAD);
 		for(i=0;i<len;i++){
@@ -145,13 +149,14 @@ bool gribikc_nrf24l01p::read_message(char *buf,int len){//+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 void gribikc_nrf24l01p::read_to_s(){//+
+	int i;
 	if(message_available()){  
 		digitalWrite(nrf24l01_cs, LOW);
 			SPI.transfer(R_RX_PAYLOAD);
 			for(i=0;i<32;i++){
-				Serial.print(char(SPI.transfer(0x00)));
+				//Serial.print(char(i));//SPI.transfer(0x00)
+				Serial.write(SPI.transfer(0x00));
 			}
-			Serial.print("\n");
 		digitalWrite(nrf24l01_cs, HIGH);
 	}
 }
@@ -159,6 +164,7 @@ void gribikc_nrf24l01p::read_to_s(){//+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 void gribikc_nrf24l01p::get_config(){//+
+	int i;
 	for(i=0;i<30;i++){
 		Serial.print(i);
 		Serial.print(":");
@@ -255,10 +261,111 @@ void gribikc_nrf24l01p::send_message(){
 		digitalWrite(nrf24l01_cs, HIGH);
 	digitalWrite(nrf24l01_ce, HIGH);
 }
+void gribikc_nrf24l01p::send_message_long(){
+	static char cnt=0;
+	static char hr=0;
+	static char mn=0;
+	static char sc=0;
+	cnt++;
+	if(sc<59){
+		sc++;
+	}else{
+		sc=0;
+		if(mn<59){
+			mn++;
+		}else{
+			mn=0;
+			if(hr<23){
+				hr++;
+			}else{
+				hr=0;
+			}
+		}
+	}
+	
+	init_tx();
+	//digitalWrite(nrf24l01_ce, LOW);
+	digitalWrite(nrf24l01_ce, HIGH);
+		digitalWrite(nrf24l01_cs, LOW);
+			SPI.transfer(W_TX_PAYLOAD);//0-spi fifo-addr
+				SPI.transfer(0xAA);//0
+				SPI.transfer(0xBB);//1
+				SPI.transfer(0x03);//2
+				SPI.transfer(cnt);//3
+				SPI.transfer(0);//4
+				SPI.transfer(0);//5
+				SPI.transfer(hr);//6
+				SPI.transfer(mn);//7
+				SPI.transfer(sc);//8
+				SPI.transfer(0);//9
+				SPI.transfer(0);//10
+				SPI.transfer(0);//11
+				SPI.transfer(0);//12
+				SPI.transfer(0);//13
+				SPI.transfer(0);//14
+				SPI.transfer(0);//15
+				SPI.transfer(0);//16
+				SPI.transfer(0);//17
+				SPI.transfer(0);//18
+				SPI.transfer(0);//19
+				SPI.transfer(0);//20
+				SPI.transfer(0);//21
+				SPI.transfer(0);//22
+				SPI.transfer(0);//23
+				SPI.transfer(0);//24
+				SPI.transfer(0);//25
+				SPI.transfer(0);//26
+				SPI.transfer(0);//27
+				SPI.transfer(0);//28
+				SPI.transfer(0);//29
+				SPI.transfer(0);//30
+				SPI.transfer(0);//31
+		digitalWrite(nrf24l01_cs, HIGH);
+	//digitalWrite(nrf24l01_ce, HIGH);
+		//while(read_reg(FIFO_STATUS)&16!=16){}
+		delay(20);//???
+	//digitalWrite(nrf24l01_ce, LOW);
+		digitalWrite(nrf24l01_cs, LOW);
+			SPI.transfer(W_TX_PAYLOAD);//0-spi fifo-addr
+				SPI.transfer(0);//0
+				SPI.transfer(0);//1
+				SPI.transfer(0);//2
+				SPI.transfer(0);//3
+				SPI.transfer(0);//4
+				SPI.transfer(0);//5
+				SPI.transfer(0);//6
+				SPI.transfer(0);//7
+				SPI.transfer(0);//8
+				SPI.transfer(0);//9
+				SPI.transfer(0);//10
+				SPI.transfer(0);//11
+				SPI.transfer(0);//12
+				SPI.transfer(0);//13
+				SPI.transfer(0);//14
+				SPI.transfer(0);//15
+				SPI.transfer(0);//16
+				SPI.transfer(0);//17
+				SPI.transfer(0);//18
+				SPI.transfer(0);//19
+				SPI.transfer(0);//20
+				SPI.transfer(0);//21
+				SPI.transfer(0);//22
+				SPI.transfer(0);//23
+				SPI.transfer(0);//24
+				SPI.transfer(0);//25
+				SPI.transfer(0);//26
+				SPI.transfer(0);//27
+				SPI.transfer(0);//28
+				SPI.transfer(0);//29
+				SPI.transfer(0xCC);//30
+				SPI.transfer(0xDD);//31
+		digitalWrite(nrf24l01_cs, HIGH);
+	//digitalWrite(nrf24l01_ce, HIGH);
+}
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-void gribikc_nrf24l01p::scan_PDCD(){
+/*void gribikc_nrf24l01p::scan_PDCD(){
 	int cnt=0;
 	int cnt_i=0;
 	int cnt_pdcd=0;
@@ -283,6 +390,47 @@ void gribikc_nrf24l01p::scan_PDCD(){
 		Serial.print(cnt_pdcd,DEC);
 		Serial.print(".");
 	}
+	Serial.println();
+}*/
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+void gribikc_nrf24l01p::scan_PDCD(){
+	int cnt=0;
+	int cnt_i=0;
+	int cnt_pdcd=0;
+	
+	digitalWrite(nrf24l01_ce, LOW);
+	delay(100);
+	init_rx();
+	delay(100);
+	digitalWrite(nrf24l01_ce, LOW);
+	write_reg(CONFIG,PRIM_RX);
+	write_reg(RF_SETUP,s1Mbps);
+	delay(100);
+	
+
+	for(cnt=0;cnt<=125;cnt++){
+		cnt_pdcd=0;
+		for(cnt_i=0;cnt_i<10;cnt_i++){
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			write_reg(RF_CH,cnt);
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			delay(1);
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			digitalWrite(nrf24l01_ce, HIGH);
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			delay(1);
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			digitalWrite(nrf24l01_ce, LOW);
+			cnt_pdcd+=read_reg(RPD)&0x01;
+			delay(1);	
+			cnt_pdcd+=read_reg(RPD)&0x01;
+		}
+		Serial.print(cnt_pdcd,DEC);//,DEC
+		Serial.print(".");
+	}
+
 	Serial.println();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////

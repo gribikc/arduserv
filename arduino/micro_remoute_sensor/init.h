@@ -1,7 +1,7 @@
 void start_init(){
   //SPI init
     SPI.begin();
-    SPI.setClockDivider(SPI_CLOCK_DIV128);
+    SPI.setClockDivider(SPI_CLOCK_DIV4);
     SPI.setBitOrder(MSBFIRST);
   //Initialize serial communication
     Serial.begin(115200);
