@@ -37,7 +37,7 @@
 				this.start_point=0;
 			}
 			for(var i=this.start_point;i<this.end_point;i++){
-				console.log(stream.charCodeAt(i)&0xFF);
+				//console.log(stream.charCodeAt(i)&0xFF);
 				if(this.start_point>=31){
 					if(	(stream.charCodeAt(i)&0xFF)   ==0xDD && (stream.charCodeAt(i-1)&0xFF) ==0xCC && 
 						(stream.charCodeAt(i-62)&0xFF)==0xBB && (stream.charCodeAt(i-63)&0xFF)==0xAA){							//console.log(stream.charCodeAt(i-28)&0xFF);

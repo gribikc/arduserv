@@ -55,6 +55,7 @@
 /* setup of auto re-transmission */
   #define ARD         4 /* 4 bits */
   #define ARC         0 /* 4 bits */
+  #define ARC15				0x0F
 /* RF setup register */
   #define CONT_WAVE   128
   #define PLL_LOCK    16
@@ -64,43 +65,82 @@
   #define m18dBm      0 /* 2 bits */  
   #define m12dBm      2 /* 2 bits */  
   #define m6dBm       4 /* 2 bits */  
-  #define m0dBm       6 /* 2 bits */  
+  #define m0dBm       6 /* 2 bits */
+/* STATUS register */
+  #define RX_DR		0x40		  
 /* Instruction Mnemonics */
   #define R_REGISTER    0x00 /* last 4 bits will indicate reg. address */
   #define W_REGISTER    0x20 /* last 4 bits will indicate reg. address */
   #define W_TX_PAYLOAD	0xA0
   #define R_RX_PAYLOAD	0x61
+  #define FLUSH_TX		0xE1
+  #define FLUSH_RX		0xE2
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 class gribikc_nrf24l01p{
     public:
       bool write_reg(char addr,char data);
+	  bool write_reg_fifo(char addr,char *data,int len);
       int read_reg(char addr);
       bool message_available();
+	  bool message_sent();
       char print_message();
 	  bool read_message(char *buf,int len);
       void read_to_s();
       
       void get_config();
+	  void init();
       void init_rx();
       void init_tx();
+	  void init_rx_shbu();
+	  void send_receipt();
       void send_message();
 	  void send_message_long();
 	  void scan_PDCD();
 	  
 	int i;
-	byte tuner_mode=0;
+	byte tuner_mode=0;//0-IDLE;1-RX;2-TX;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool gribikc_nrf24l01p::message_available(){//+
-	digitalWrite(nrf24l01_cs, LOW);
-		if((SPI.transfer(FIFO_STATUS)&0x0E)!=0x0E){
+	//digitalWrite(nrf24l01_cs, LOW);
+		/*if((SPI.transfer(FIFO_STATUS)&0x0E)!=0x0E){
 			if((SPI.transfer(0x00)&0x03)==2){
 			  digitalWrite(nrf24l01_cs, HIGH); 
 			  return 1;      
 			}
+		}*/
+		/*SPI.transfer(FIFO_STATUS);
+		if((SPI.transfer(0x00)&0x01)==0){
+		  digitalWrite(nrf24l01_cs, HIGH); 
+		  return 1;      
+		}*/
+	digitalWrite(nrf24l01_cs, LOW);
+		if((SPI.transfer(W_REGISTER|STATUS)&MASK_RX_DR)==MASK_RX_DR){
+			SPI.transfer(MASK_RX_DR);
+			digitalWrite(nrf24l01_cs, HIGH); 
+			return 1;      
+		}
+	digitalWrite(nrf24l01_cs, HIGH);
+		
+	digitalWrite(nrf24l01_cs, LOW);
+		SPI.transfer(FIFO_STATUS);
+		if((SPI.transfer(0x00)&0x01)==0){
+		  digitalWrite(nrf24l01_cs, HIGH); 
+		  return 1;      
+		}
+	digitalWrite(nrf24l01_cs, HIGH);
+	return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+bool gribikc_nrf24l01p::message_sent(){//+
+	digitalWrite(nrf24l01_cs, LOW);
+		if((SPI.transfer(W_REGISTER|STATUS)&MASK_TX_DS)==MASK_TX_DS){
+			SPI.transfer(MASK_TX_DS);
+			digitalWrite(nrf24l01_cs, HIGH); 
+			return 1;      
 		}
 	digitalWrite(nrf24l01_cs, HIGH);
 	return 0;
@@ -110,6 +150,16 @@ bool gribikc_nrf24l01p::write_reg(char addr,char data){//+
 	digitalWrite(nrf24l01_cs, LOW);
 		SPI.transfer((W_REGISTER|addr));
 		SPI.transfer(data);//4
+	digitalWrite(nrf24l01_cs, HIGH);
+	return 1;
+}
+bool gribikc_nrf24l01p::write_reg_fifo(char addr,char *data,int len){//
+	int i;
+	digitalWrite(nrf24l01_cs, LOW);
+		SPI.transfer((W_REGISTER|addr));
+		for(i=0;i<len;i++){
+			SPI.transfer(data[i]);//4
+		}
 	digitalWrite(nrf24l01_cs, HIGH);
 	return 1;
 }
@@ -150,14 +200,24 @@ bool gribikc_nrf24l01p::read_message(char *buf,int len){//+
 ///////////////////////////////////////////////////////////////////////////////////////////
 void gribikc_nrf24l01p::read_to_s(){//+
 	int i;
-	if(message_available()){  
-		digitalWrite(nrf24l01_cs, LOW);
-			SPI.transfer(R_RX_PAYLOAD);
-			for(i=0;i<32;i++){
-				//Serial.print(char(i));//SPI.transfer(0x00)
-				Serial.write(SPI.transfer(0x00));
+	if(tuner_mode==1){//0-IDLE;1-RX;2-TX;)
+		if(message_available()){  
+			digitalWrite(nrf24l01_cs, LOW);
+				SPI.transfer(R_RX_PAYLOAD);
+				for(i=0;i<32;i++){//32
+					//Serial.print(char(i));//SPI.transfer(0x00)
+					Serial.write(SPI.transfer(0x00));
+				}
+			digitalWrite(nrf24l01_cs, HIGH);
+			if(!message_available()){
+				init_tx();
+				send_receipt();
 			}
-		digitalWrite(nrf24l01_cs, HIGH);
+		}
+	}else{
+		if(message_sent()){
+			init_rx();
+		}
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,24 +235,63 @@ void gribikc_nrf24l01p::get_config(){//+
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-void gribikc_nrf24l01p::init_rx(){//+
+void gribikc_nrf24l01p::init_rx_shbu(){
 	digitalWrite(nrf24l01_ce, LOW);
-		write_reg(CONFIG,EN_CRC|CRCO|PWR_UP|PRIM_RX);
+		write_reg(CONFIG,EN_CRC|PWR_UP|PRIM_RX);
+		//write_reg(EN_AA,0x00);
+		write_reg(EN_RXADDR,ERX_P0);//ERX_P0|ERX_P1|ERX_P2
+		//write_reg(SETUP_AW,AW5);//!!!???
+		//write_reg(SETUP_RETR,ARC15);
+		//write_reg(RF_CH,0x64);
+		//write_reg(RF_SETUP,s250Kbps|m0dBm);
+		//write_reg(DYNPD,0x00);		
+		write_reg(RX_PW_P0,0x20);
+		//write_reg(RX_PW_P1,0x00);
+		//write_reg(RX_PW_P2,0x00);
+		//write_reg(RX_PW_P3,0x00);
+		//write_reg(RX_PW_P4,0x00);
+		//write_reg(RX_PW_P5,0x00);
+		
+		//write_reg(DYNPD,0x00);
+		//write_reg(FEATURE,0x00);
+	digitalWrite(nrf24l01_ce, HIGH);
+}///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+void gribikc_nrf24l01p::init(){//+
+	digitalWrite(nrf24l01_ce, LOW);
+		write_reg(CONFIG,EN_CRC|CRCO);
 		write_reg(EN_AA,0x00);
-		write_reg(EN_RXADDR,ERX_P0);
+		write_reg(EN_RXADDR,ERX_P0|ERX_P1|ERX_P2);//ERX_P0|ERX_P1|ERX_P2
 		write_reg(SETUP_AW,AW5);
 		write_reg(SETUP_RETR,0x00);
 		write_reg(RF_CH,0x64);
-		write_reg(RF_SETUP,s250Kbps|m0dBm);
+		write_reg(RF_SETUP,s250Kbps|m0dBm);		
 		write_reg(RX_PW_P0,0x20);
 		write_reg(RX_PW_P1,0x20);
 		write_reg(RX_PW_P2,0x20);
-		write_reg(RX_PW_P3,0x20);
-		write_reg(RX_PW_P4,0x20);
-		write_reg(RX_PW_P5,0x20);
+		write_reg(RX_PW_P3,0x00);
+		write_reg(RX_PW_P4,0x00);
+		write_reg(RX_PW_P5,0x00);
 		write_reg(DYNPD,0x00);
 		write_reg(FEATURE,0x00);
 	digitalWrite(nrf24l01_ce, HIGH);
+	tuner_mode=0;//0-IDLE;1-RX;2-TX;
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+void gribikc_nrf24l01p::init_rx(){//+
+	digitalWrite(nrf24l01_ce, LOW);
+		write_reg(CONFIG,EN_CRC|CRCO|PWR_UP|PRIM_RX);
+	digitalWrite(nrf24l01_ce, HIGH);
+	tuner_mode=1;//0-IDLE;1-RX;2-TX;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -202,15 +301,25 @@ void gribikc_nrf24l01p::init_rx(){//+
 ///////////////////////////////////////////////////////////////////////////////////////////
 void gribikc_nrf24l01p::init_tx(){//+
 	digitalWrite(nrf24l01_ce, LOW);
-		write_reg(CONFIG,EN_CRC|CRCO);
-		write_reg(EN_AA,0x00);
-		write_reg(SETUP_AW,AW5);  
-		write_reg(SETUP_RETR,0x00);
-		write_reg(RF_CH,0x64);
-		write_reg(RF_SETUP,s250Kbps|m0dBm);
-		write_reg(DYNPD,0x00);
-		write_reg(FEATURE,0x00);
 		write_reg(CONFIG,EN_CRC|CRCO|PWR_UP);
+	digitalWrite(nrf24l01_ce, HIGH);
+	tuner_mode=2;//0-IDLE;1-RX;2-TX;
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+void gribikc_nrf24l01p::send_receipt(){
+	init_tx();
+	digitalWrite(nrf24l01_ce, LOW);
+		digitalWrite(nrf24l01_cs, LOW);
+			SPI.transfer(W_TX_PAYLOAD);//0-spi fifo-addr
+			for(int i=0;i<32;i++){	
+				SPI.transfer(0xAA);//0
+			}
+		digitalWrite(nrf24l01_cs, HIGH);
 	digitalWrite(nrf24l01_ce, HIGH);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////

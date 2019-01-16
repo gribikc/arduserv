@@ -20,6 +20,7 @@ void setup() {
  
   Serial.println("Start...");
     nrf24l01p.get_config();
+    nrf24l01p.init();
     nrf24l01p.init_rx();
     nrf24l01p.get_config();
   Serial.println("NRF...done");
@@ -29,9 +30,9 @@ void loop() {
   //uart_redirect_s3_s();
   //uart_redirect_s_to_s3();
 
-  /*if(nrf24l01p.message_available()){
+  if(nrf24l01p.message_available()){
     nrf24l01p.print_message();
-  }*/
+  }
   /*if(nrf24l01p.message_available()){
     nrf24l01p.read_message(rx_buf,32);
     for(int i=0;i<32;i++){
@@ -41,5 +42,5 @@ void loop() {
     Serial.println();
   }*/
   //nrf24l01p.scan_PDCD();
-  nrf24l01p.read_to_s();
+  //!!!nrf24l01p.read_to_s();
 }

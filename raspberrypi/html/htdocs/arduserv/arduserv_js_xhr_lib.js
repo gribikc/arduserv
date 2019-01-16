@@ -112,7 +112,7 @@ function main_init(){
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(sys_data_param);//'/cgi-bin/sys_inf.sh',sys_stream_nmea,"xhr_status_div","SYS:");//17*8*3=408
-		//Системная информация RPi_
+		//_Системная информация RPi_
 		//Тестовый счетчик
 			test_cnt_stream_param={
 				url:'/cgi-bin/test_counter.sh',
@@ -133,7 +133,7 @@ function main_init(){
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-		//Тестовый счетчик_
+		//_Тестовый счетчик_
 		//USB_uart
 			/*usb_uart_stream_param={
 				url:'/cgi-bin/stream_usart_ttyUSBz.sh',
@@ -154,7 +154,7 @@ function main_init(){
 				reload_time:1000
 			};*/
 			//new xmlhttprq_stream_gr(usb_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-		//USB_uart_
+		//_USB_uart_
 		//arduino_uart
 			arduino_uart_stream_param={
 				url:'/cgi-bin/stream_usart.sh',
@@ -175,9 +175,9 @@ function main_init(){
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-		//USB_uart_
+		//_arduino_uart
 		//JSON_TEST
-			test_json_param={
+			/*test_json_param={
 				url: 'php_core_gr/get_nmea_from_mysql.php?reset=0',//'php_core_gr/get_nmea_from_mysql.php',//php_core_gr/myTutorials.txt
 				mime_type: 'text/plain; charset=x-user-defined',
 				status_div_name: "JSON_TEST:",
@@ -195,8 +195,8 @@ function main_init(){
 				reload_en: true,
 				reload_time: 1000
 			};
-			new xmlhttprq_stream_gr(test_json_param);
-		//JSON_TEST_
+			new xmlhttprq_stream_gr(test_json_param);*/
+		//_JSON_TEST_
 	//STREAM_
 	//PAPER JS
 		test_paper_cnt=new paper_js_gr('canvas2');//!!!
