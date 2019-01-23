@@ -117,13 +117,13 @@ bool gribikc_nrf24l01p::message_available(){//+
 		  digitalWrite(nrf24l01_cs, HIGH); 
 		  return 1;      
 		}*/
-	digitalWrite(nrf24l01_cs, LOW);
+	/*digitalWrite(nrf24l01_cs, LOW);
 		if((SPI.transfer(W_REGISTER|STATUS)&MASK_RX_DR)==MASK_RX_DR){
 			SPI.transfer(MASK_RX_DR);
 			digitalWrite(nrf24l01_cs, HIGH); 
 			return 1;      
 		}
-	digitalWrite(nrf24l01_cs, HIGH);
+	digitalWrite(nrf24l01_cs, HIGH);*/
 		
 	digitalWrite(nrf24l01_cs, LOW);
 		SPI.transfer(FIFO_STATUS);
@@ -209,16 +209,16 @@ void gribikc_nrf24l01p::read_to_s(){//+
 					Serial.write(SPI.transfer(0x00));
 				}
 			digitalWrite(nrf24l01_cs, HIGH);
-			if(!message_available()){
+			/*if(!message_available()){
 				init_tx();
 				send_receipt();
-			}
+			}*/
 		}
-	}else{
+	}/*else{
 		if(message_sent()){
 			init_rx();
 		}
-	}
+	}*/
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////

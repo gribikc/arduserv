@@ -450,32 +450,33 @@ function hide_view_inner_gr(inner_html){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //...
-function float_from_byte_arr_gr(buf){
+/*function float_from_byte_arr_gr(buf){
 	var sig=0;
 	var por=0;
 	var man=0;
 	
-	if((buf&0x80000000)){/* Знак */
+	if((buf&0x80000000)){//Знак
 		var sig=-1;
 	}else{
 		var sig=1;
 	}
 	
-	por=((buf>>23)&0xFF);/* Порядок */
+	por=((buf>>23)&0xFF);//Порядок
 	
-	if(por!=0){/* Мантисса */
+	if(por!=0){//Мантисса
 		man=((buf& 0x7FFFFF)|0x800000);
 	}else{
 		man=((buf&0x7FFFFF)<<1);
 	}
 	
 	var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
+	return res;
 	
-	/*document.getElementById("debug").innerHTML+=sig+"<br>";
-	document.getElementById("debug").innerHTML+=por+"<br>";
-	document.getElementById("debug").innerHTML+=man+"<br>";
-	document.getElementById("debug").innerHTML+=res+"<br>";*/
-}
+	//document.getElementById("debug").innerHTML+=sig+"<br>";
+	//document.getElementById("debug").innerHTML+=por+"<br>";
+	//document.getElementById("debug").innerHTML+=man+"<br>";
+	//document.getElementById("debug").innerHTML+=res+"<br>";
+}*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
