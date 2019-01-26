@@ -5,6 +5,7 @@ void start_init(){
     SPI.setBitOrder(MSBFIRST);
   //Initialize serial communication
     Serial.begin(115200);
+    while (!Serial) ;
     //Serial1.begin(115200);
     //Serial2.begin(115200);
     //Serial3.begin(115200);//74880

@@ -24,6 +24,7 @@ void setup() {
     nrf24l01p.init_rx();
     nrf24l01p.get_config();
   Serial.println("NRF...done");
+  
 }
 
 void loop() {
@@ -40,8 +41,11 @@ void loop() {
   //nrf24l01p.send_message();
   //nrf24l01p.send_message_long();
   //nrf24l01p.scan_PDCD();
-  Serial.println("Send...OK");
-  delay(500);
+  Serial.print("$TSTCNT,");
+  Serial.print(test_cnt);
+  Serial.print("*36\n");
+  test_cnt++;
+  delay(1000);
   //nrf24l01p.init_rx();
   //if(nrf24l01p.message_available()){
   //  nrf24l01p.print_message();
