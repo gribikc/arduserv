@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.0.2, 2019-02-03T00:16:32. -->
+<!-- Written by QtCreator 4.0.2, 2019-01-26T16:06:00. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{3a3c9da9-c976-49cd-ae75-193e7c95a632}</value>
+  <value type="QByteArray">{25399cd1-9b67-45b8-9a21-6903bcc48aa1}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -285,8 +285,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">micro_web_srv</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">micro_web_srv2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/dron/pic/arduserv/git/arduserv/win/micro_web_srv/micro_web_srv/micro_web_srv.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/dron/pic/ardrpi/git/arduserv/win/micro_web_srv/micro_web_srv/micro_web_srv.pro</value>
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">micro_web_srv.pro</value>
