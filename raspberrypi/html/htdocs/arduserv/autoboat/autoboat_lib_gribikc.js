@@ -69,7 +69,7 @@ function float_from_byte_arr_gr(buf){
 				this.start_point=0;
 			}
 			for(var i=this.start_point;i<this.end_point;i++){
-				//console.log(stream.charCodeAt(i)&0xFF);
+				console.log(stream.charCodeAt(i)&0xFF);
 				if(this.start_point>=96){
 					if(	(stream.charCodeAt(i   )&0xFF)==0xDD && (stream.charCodeAt(i-1 )&0xFF)==0xCC && 
 						(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==0xBB && (stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==0xAA ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);

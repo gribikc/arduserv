@@ -71,11 +71,11 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(sys_data_param);//'/cgi-bin/sys_inf.sh',sys_stream_nmea,"xhr_status_div","SYS:");//17*8*3=408
+			//new xmlhttprq_stream_gr(sys_data_param);//'/cgi-bin/sys_inf.sh',sys_stream_nmea,"xhr_status_div","SYS:");//17*8*3=408
 		//_Системная информация RPi_
 		//arduino_uart
 			arduino_uart_stream_param={
-				url:'/cgi-bin/stream_usart.sh',
+				url:'http://172.20.10.4:3128/',//'/cgi-bin/stream_usart.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"Arduino uart:",
 				parser: autoboat,//new raw_parser_gr(message_hub),
@@ -89,11 +89,12 @@ function main_init(){
 				status_div_status_css:"xmlhttprq_stream_gr_status",
 				status_div_stat_css:"xmlhttprq_stream_gr_stat",
 				
-				reload_en:true,
+				reload_en:false,
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
+		//http://172.20.10.4:3128/
 	//STREAM_
 	//PAPER JS
 		test_paper_cnt=new paper_js_gr('canvas2');//!!!
