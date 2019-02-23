@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 
 #include <QtSerialPort/QtSerialPort>
+#include <QtSerialPort>
 #include <QSerialPortInfo>
 
 #include <QTcpServer>
