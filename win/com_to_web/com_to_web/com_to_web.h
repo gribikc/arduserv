@@ -7,10 +7,6 @@
 #include <QByteArray>
 #include <QDataStream>
 
-
-
-
-
 #include "gr_serial/gr_serial.h"
 #include "gr_bluetooth/gr_bluetooth.h"
 
@@ -20,6 +16,14 @@
 namespace Ui {
 class com_to_web;
 }
+
+
+// java file goes in android/src/com/kdab/training/MyService.java
+//package com.kdab.training;
+//import org.qtproject.qt5.android.bindings.QtService;
+//public class MyService extends QtService
+//{
+//}
 
 class com_to_web : public QMainWindow
 {

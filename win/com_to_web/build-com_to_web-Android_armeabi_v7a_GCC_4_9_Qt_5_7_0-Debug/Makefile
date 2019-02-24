@@ -57,7 +57,7 @@ OBJECTS       = main.obj \
 		gr_serial.obj \
 		gr_bluetooth.obj \
 		moc_com_to_web.obj
-DIST          =  ..\com_to_web\com_to_web.h \
+DIST          = ..\com_to_web\AndroidManifest.xml ..\com_to_web\com_to_web.h \
 		..\com_to_web\gr_serial\gr_serial.h \
 		..\com_to_web\gr_bluetooth\gr_bluetooth.h ..\com_to_web\main.cpp \
 		..\com_to_web\com_to_web.cpp \
@@ -995,7 +995,13 @@ main.obj: ..\com_to_web\main.cpp ../com_to_web/com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qapplication.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qdesktopwidget.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qguiapplication.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qinputmethod.h
+		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qinputmethod.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtGui\QGuiApplication \
+		D:\qt\Qt570\5.7\android_armv7\include\QtAndroidExtras\QtAndroid \
+		D:\qt\Qt570\5.7\android_armv7\include\QtAndroidExtras\qandroidfunctions.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtAndroidExtras\qandroidextrasglobal.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtAndroidExtras\qandroidjniobject.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtAndroidExtras\QAndroidJniObject
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.obj ..\com_to_web\main.cpp
 
 com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
@@ -1279,39 +1285,7 @@ com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergyservicedata.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtBluetooth\qtbluetoothversion.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
-		ui_com_to_web.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QAction \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qaction.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qactiongroup.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QApplication \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qapplication.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qdesktopwidget.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qguiapplication.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qinputmethod.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QButtonGroup \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qbuttongroup.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QHeaderView \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qheaderview.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractitemview.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractscrollarea.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qframe.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractitemdelegate.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qstyleoption.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractspinbox.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qvalidator.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qslider.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractslider.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qstyle.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qtabbar.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qrubberband.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QTextEdit \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qtextedit.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qtextdocument.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qtextoption.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qtextcursor.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qtextformat.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtGui\qpen.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QWidget
+		ui_com_to_web.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o com_to_web.obj ..\com_to_web\com_to_web.cpp
 
 gr_serial.obj: ..\com_to_web\gr_serial\gr_serial.cpp ../com_to_web/gr_serial/gr_serial.h \
