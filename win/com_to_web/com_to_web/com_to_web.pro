@@ -29,7 +29,7 @@ HEADERS  += com_to_web.h\
 
 FORMS    += com_to_web.ui
 
-DISTFILES +=  AndroidManifest.xml
+DISTFILES += 
 
 CONFIG += mobility
 MOBILITY = 

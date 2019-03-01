@@ -4,10 +4,10 @@
 #include <QGuiApplication>
 #include <QDebug>
 
-#include <QtAndroidExtras/QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
+//#include <QtAndroidExtras/QtAndroid>
+//#include <QtAndroidExtras/QAndroidJniObject>
 
-/*int main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     com_to_web w;
@@ -15,8 +15,8 @@
 
 
     return a.exec();
-}*/
-int main(int argc, char *argv[])
+}
+/*int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
@@ -27,4 +27,4 @@ int main(int argc, char *argv[])
         qDebug() << "I am the application";
     }
     return app.exec();
-}
+}*/
