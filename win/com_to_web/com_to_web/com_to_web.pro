@@ -8,6 +8,7 @@ QT       += core gui
 QT       += serialport
 QT       += network
 QT       += bluetooth
+QT       += serialport
 
 CONFIG += c++11
 
@@ -29,8 +30,17 @@ HEADERS  += com_to_web.h\
 
 FORMS    += com_to_web.ui
 
-DISTFILES += 
+DISTFILES += \ 
+    android/AndroidManifest.xml \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradlew \
+    android/res/values/libs.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew.bat
 
 CONFIG += mobility
 MOBILITY = 
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

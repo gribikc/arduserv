@@ -51,6 +51,9 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //socket->peerAddress();
     //QString a=QString(socket->peerName());
     ui->textEdit->insertPlainText("Client connected;\n");
+
+    qDebug() << "Client connected;";
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,8 +71,14 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
        for(int i=0;i<httprqs_parser.size();i++){
            if(httprqs_parser[i].socket==socket){
                //httprqs_parser[i].com_port->serial->close();
-
-               httprqs_parser[i].gr_bt->bt_Socket->close();
+               //if(httprqs_parser[i].bt_parser_valid==1){
+                   if(httprqs_parser[i].gr_bt->bt_Socket){
+                        httprqs_parser[i].gr_bt->bt_Socket->close();
+                    }
+                    httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
+                    httprqs_parser[i].gr_bt->bt_Socket->destroyed();
+                    httprqs_parser[i].gr_bt->destroyed();
+               //}
 
                httprqs_parser.removeAt(i);
                break;
@@ -88,7 +97,6 @@ void com_to_web::readyRead(){ // обработчик входящих сооб�
     }
 
     QTcpSocket *socket = static_cast<QTcpSocket *>(object);
-    QByteArray arr;// =  socket->readAll();
 
     for(int i=0;i<httprqs_parser.size();i++){
         if(httprqs_parser[i].socket==socket){
@@ -103,52 +111,78 @@ void com_to_web::readyRead(){ // обработчик входящих сооб�
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
     int data_size=parser_data->InData.size();
+    QString data=parser_data->InData;
+    QString temp;
+    QStringList list_line = data.split("\r\n");
+    QStringList list_in_line;
+    int int_temp;
+    QByteArray qbt_temp;
+
 
     parser_data->com_parser_valid=0;
 
     if(parser_data->InData[data_size-1]==(char)0x0A && parser_data->InData[data_size-2]==(char)0x0D &&
        parser_data->InData[data_size-3]==(char)0x0A && parser_data->InData[data_size-4]==(char)0x0D     ){
-        ui->textEdit->insertPlainText("Request complite:\n");
-        QString data=parser_data->InData;
-        QString temp;
-        QStringList list_line = data.split("\r\n");
-        QStringList list_in_line;
+        //Request complite
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            parser_data->socket->write("Content-type: text/plan\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+            ui->textEdit->insertPlainText("Request complite:\n");
+        //Parsing request
+            for(int i=0;i<list_line.size();i++){
+                temp=list_line[i];
+                if(temp.contains("GET /R/COM/")){
+                    list_in_line=temp.split("/");
+                    temp=list_in_line[3];
+                    parser_data->com_num=temp.toInt();
+                    temp=list_in_line[4];
+                    parser_data->com_speed=temp.toInt();
+                    parser_data->com_parser_valid=1;//!!!
+                    parser_data->bt_parser_valid=0;
+                }
+                if(temp.contains("GET /R/BT/")){        //GET /R/BT/HC-06/
+                    list_in_line=temp.split("/");
+                    temp=list_in_line[3];
+                    parser_data->bt_dev_name=temp;
 
-        for(int i=0;i<list_line.size();i++){
-            temp=list_line[i];
-            if(temp.contains("GET /R/COM/")){
-                list_in_line=temp.split("/");
-
-                temp=list_in_line[3];
-                parser_data->com_num=temp.toInt();
-                temp=list_in_line[4];
-                parser_data->com_speed=temp.toInt();
-
-                parser_data->com_parser_valid=1;//!!!
-
-
-
-                //printf("GET /COM/;\n");
-                //printf("READ COM%d,%d\n",parser_data->com_num,parser_data->com_speed);
+                    parser_data->com_parser_valid=0;
+                    parser_data->bt_parser_valid=1;
+                }
             }
-        }
+        //Open Socket
+            if(parser_data->bt_parser_valid==0 &&  parser_data->com_parser_valid==0){//No walid request
+                 parser_data->socket->write("No walid request...\n");
+
+                 qbt_temp=QByteArray::number(httprqs_parser.size());
+                 parser_data->socket->write(qbt_temp);
+
+                 //qbt_temp="123";
+                 //qbt_temp+=parser_data->bt_dev_name;
+                 //parser_data->socket->write(qbt_temp);
+
+                 parser_data->socket->write("\r\n");
+                 parser_data->socket->write("\r\n");
+                 parser_data->socket->write("END.\r\n");
+                 //parser_data->socket->close();//!!!
+                 parser_data->gr_bt=new gr_bluetooth;
+                 parser_data->gr_bt->bt_open("",0,parser_data->socket);
+            } else if(parser_data->bt_parser_valid==1 &&  parser_data->com_parser_valid==0){//BT walid request
+                parser_data->gr_bt=new gr_bluetooth;
+                parser_data->gr_bt->bt_open(parser_data->bt_dev_name,1,parser_data->socket);
+            }
+
+            ui->textEdit->insertPlainText("open");
 
 
-        parser_data->socket->write("HTTP/1.1 200 OK\n");
-        parser_data->socket->write("Content-type: text/plan\n");
-        parser_data->socket->write("Connection: keep-alive\n");
-        parser_data->socket->write("Access-Control-Allow-Origin: *\n");
-        parser_data->socket->write("\n");
+
 
         // !!!parser_data->com_port=new gr_serial;
         // !!!parser_data->com_port->serial_open(parser_data->com_num,parser_data->com_speed,parser_data->socket);
-        parser_data->gr_bt=new gr_bluetooth;
-        parser_data->gr_bt->bt_open(parser_data->com_num,parser_data->com_speed,parser_data->socket);
-
-        ui->textEdit->insertPlainText("open");
-
-
-
+        //printf("GET /COM/;\n");
+        //printf("READ COM%d,%d\n",parser_data->com_num,parser_data->com_speed);
+        //QString dev_name, int mode
         /*printf("Data In:\n");
         for(int j=0;j<data_size;j++){
             a=parser_data->InData[j];

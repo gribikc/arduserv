@@ -30,12 +30,12 @@ public:
     {
         if (com_to_web->objectName().isEmpty())
             com_to_web->setObjectName(QStringLiteral("com_to_web"));
-        com_to_web->resize(800, 480);
+        com_to_web->resize(471, 417);
         centralWidget = new QWidget(com_to_web);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(30, 20, 291, 391));
+        textEdit->setGeometry(QRect(10, 10, 451, 401));
         com_to_web->setCentralWidget(centralWidget);
 
         retranslateUi(com_to_web);

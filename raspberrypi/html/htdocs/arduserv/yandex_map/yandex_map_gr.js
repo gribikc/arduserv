@@ -79,10 +79,10 @@ function yandex_map_add_deep_gr(x,y,deep){
 function yandex_map_add_point_gr(x,y,deep){
 	//console.log('Длинна массива: '+deep_points_arr.length);
 	for(var i=0;i<just_point_arr.length;i++){
-		if(just_point_arr.length>=100){
-			//console.log(just_point_arr[i]);
-			//myMap.geoObjects.remove(just_point_arr[i]['point']);
-			//just_point_arr.shift();
+		if(just_point_arr.length>=50){
+			console.log(just_point_arr[i]);
+			myMap.geoObjects.remove(just_point_arr[i]['point']);
+			just_point_arr.shift();
 			//continue;
 		}
 		if(just_point_arr[i]['x']==x && just_point_arr[i]['y']==y){

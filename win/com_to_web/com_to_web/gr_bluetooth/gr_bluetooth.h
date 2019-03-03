@@ -25,14 +25,17 @@ public:
     gr_bluetooth(){}
 
 public:
-    void bt_open(int num,int speed,QTcpSocket *socket_point);
+    void bt_open(QString dev_name, int mode, QTcpSocket *socket_point);
     QTcpSocket *socket;
+    int mode;
+    QString dev_name;
 
     QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent;
     QBluetoothSocket *bt_Socket;
     QBluetoothLocalDevice bt_localDevice;
 private slots:
     void bt_deviceDiscovered(const QBluetoothDeviceInfo &device);
+    void bt_deviceDiscovered_finished();
     void bt_socketError();
     void bt_socketConnected();
     void bt_socketDisconnected();

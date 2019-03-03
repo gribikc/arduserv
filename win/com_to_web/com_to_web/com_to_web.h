@@ -18,13 +18,6 @@ class com_to_web;
 }
 
 
-// java file goes in android/src/com/kdab/training/MyService.java
-//package com.kdab.training;
-//import org.qtproject.qt5.android.bindings.QtService;
-//public class MyService extends QtService
-//{
-//}
-
 class com_to_web : public QMainWindow
 {
     Q_OBJECT
@@ -39,11 +32,17 @@ public:
     typedef struct {
         QTcpSocket  *socket;
         QByteArray  InData;
+        QTimer *timer;
+
         bool com_parser_valid=0;
         int com_num;
         int com_speed;
         int com_bits;
         int com_par;
+
+        bool bt_parser_valid=0;//QString dev_name, int mode
+        QString bt_dev_name;
+        int bt_mode;
 
         gr_serial *com_port;
         gr_bluetooth *gr_bt;

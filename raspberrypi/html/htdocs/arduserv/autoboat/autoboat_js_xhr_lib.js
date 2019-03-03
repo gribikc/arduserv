@@ -75,7 +75,7 @@ function main_init(){
 		//_Системная информация RPi_
 		//arduino_uart
 			arduino_uart_stream_param={
-				url:'http://172.20.10.4:3128/',//'/cgi-bin/stream_usart.sh',
+				url:'http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"Arduino uart:",
 				parser: autoboat,//new raw_parser_gr(message_hub),
