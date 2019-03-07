@@ -72,12 +72,16 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
            if(httprqs_parser[i].socket==socket){
                //httprqs_parser[i].com_port->serial->close();
                //if(httprqs_parser[i].bt_parser_valid==1){
-                   if(httprqs_parser[i].gr_bt->bt_Socket){
-                        httprqs_parser[i].gr_bt->bt_Socket->close();
+                    if(QSysInfo::productType()=="android"){
+                        if(httprqs_parser[i].gr_bt->bt_Socket!=0){
+                            httprqs_parser[i].gr_bt->bt_Socket->close();// disconnectFromService();//disconnected()
+                        }
+                        httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
+                        httprqs_parser[i].gr_bt->bt_Socket->destroyed();
+                        httprqs_parser[i].gr_bt->destroyed();
+                    }else if(QSysInfo::productType()=="windows"){
+                        httprqs_parser[i].com_port->serial->close();
                     }
-                    httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
-                    httprqs_parser[i].gr_bt->bt_Socket->destroyed();
-                    httprqs_parser[i].gr_bt->destroyed();
                //}
 
                httprqs_parser.removeAt(i);
@@ -133,7 +137,7 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
         //Parsing request
             for(int i=0;i<list_line.size();i++){
                 temp=list_line[i];
-                if(temp.contains("GET /R/COM/")){
+                if(temp.contains("GET /R/COM/")){       //GET /R/COM/3/57600/
                     list_in_line=temp.split("/");
                     temp=list_in_line[3];
                     parser_data->com_num=temp.toInt();
@@ -166,11 +170,16 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
                  parser_data->socket->write("\r\n");
                  parser_data->socket->write("END.\r\n");
                  //parser_data->socket->close();//!!!
-                 parser_data->gr_bt=new gr_bluetooth;
-                 parser_data->gr_bt->bt_open("",0,parser_data->socket);
-            } else if(parser_data->bt_parser_valid==1 &&  parser_data->com_parser_valid==0){//BT walid request
+                 if(QSysInfo::productType()=="android"){
+                    parser_data->gr_bt=new gr_bluetooth;
+                    parser_data->gr_bt->bt_open("",0,parser_data->socket);
+                 }
+            } else if(parser_data->bt_parser_valid==1 &&  parser_data->com_parser_valid==0 && QSysInfo::productType()=="android"){//BT walid request
                 parser_data->gr_bt=new gr_bluetooth;
                 parser_data->gr_bt->bt_open(parser_data->bt_dev_name,1,parser_data->socket);
+            } else if(parser_data->bt_parser_valid==0 &&  parser_data->com_parser_valid==1 && QSysInfo::productType()=="windows"){//COM walid request
+                parser_data->com_port=new gr_serial;
+                parser_data->com_port->serial_open(parser_data->com_num,parser_data->com_speed,parser_data->socket);
             }
 
             ui->textEdit->insertPlainText("open");

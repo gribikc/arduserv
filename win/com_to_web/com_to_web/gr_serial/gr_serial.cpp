@@ -6,8 +6,11 @@
 void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
     socket=socket_point;
 
+    QString name="COM"+QString::number(num);
+    qDebug() << name;
     serial=new QSerialPort();//this
-    serial->setPortName("COM5");//78
+    serial->setPortName(name);//78
+
     /*serial->setBaudRate(115200);
     serial->setDataBits(QSerialPort::Data8);
     serial->setDirection(QSerialPort::AllDirections);//!!!
@@ -17,7 +20,7 @@ void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
     if(serial->open(QIODevice::ReadWrite)){
         printf("COMport OPEN\n");
         //serial->setPortName("COM5");//78
-        serial->setBaudRate(115200);
+        serial->setBaudRate(speed);//115200
         serial->setDataBits(QSerialPort::Data8);
         //serial->setDirection(QSerialPort::AllDirections);//!!!
         serial->setParity(QSerialPort::NoParity);
