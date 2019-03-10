@@ -30,24 +30,33 @@ public:
     void gr_sock_srv_start();
 
     typedef struct {
-        QTcpSocket  *socket;
-        QByteArray  InData;
-        QTimer *timer;
+        QTcpSocket  *socket=0;
+        QByteArray  InData=0;
+        QTimer *timer=0;
+
+        bool data_wr=0;
 
         bool com_parser_valid=0;
-        int com_num;
-        int com_speed;
-        int com_bits;
-        int com_par;
+        int com_num=0;
+        int com_speed=0;
+        int com_bits=0;
+        int com_par=0;
 
         bool bt_parser_valid=0;//QString dev_name, int mode
-        QString bt_dev_name;
-        int bt_mode;
+        QString bt_dev_name="";
+        int bt_mode=0;
 
-        gr_serial *com_port;
-        gr_bluetooth *gr_bt;
+        //http_request_parsing
+            int hrp_del=0;//\r\n\r\n -position
+            QMap<QByteArray, QByteArray> hrp_headers;
+            bool hrp_headers_valid=0;
+        //http_request_parsing
+
+        gr_serial *com_port=0;
+        gr_bluetooth *gr_bt=0;
     } gr_httprqs_parser;
 
+    void http_request_parsing(gr_httprqs_parser *parser_data);
     void parser_rqst(gr_httprqs_parser *parser_data);
 
     QTcpServer *server; // указатель на сервер

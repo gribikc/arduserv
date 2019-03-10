@@ -26,12 +26,12 @@ public:
 
 public:
     void bt_open(QString dev_name, int mode, QTcpSocket *socket_point);
-    QTcpSocket *socket;
-    int mode;
-    QString dev_name;
+    QTcpSocket *socket=0;
+    int mode=0;
+    QString dev_name=0;
 
-    QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent;
-    QBluetoothSocket *bt_Socket;
+    QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=0;
+    QBluetoothSocket *bt_Socket=0;
     QBluetoothLocalDevice bt_localDevice;
 private slots:
     void bt_deviceDiscovered(const QBluetoothDeviceInfo &device);

@@ -20,8 +20,8 @@ public:
 public:
     void serial_socketRead();
 public:
-    QSerialPort *serial;
+    QSerialPort *serial=0;
     void serial_open(int num,int speed,QTcpSocket *socket_point);
 
-    QTcpSocket *socket;
+    QTcpSocket *socket=0;
 };

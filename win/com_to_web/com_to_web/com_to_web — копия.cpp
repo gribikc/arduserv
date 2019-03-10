@@ -125,9 +125,9 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
     QString temp;
     QStringList list_line = data.split("\r\n");
     QStringList list_in_line;
+    int int_temp;
     QByteArray qbt_temp;
 
-    http_request_parsing(parser_data);
 
     parser_data->com_parser_valid=0;
     parser_data->bt_parser_valid=0;
@@ -226,39 +226,5 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
             printf("%c",a);
         }
         printf("\n");*/
-    }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-void com_to_web::http_request_parsing(gr_httprqs_parser *parser_data){
-    QByteArrayList header_line = parser_data->InData.split(0x10);
-    QByteArrayList split_line;
-    QString temp;
-
-    int data_size=parser_data->InData.size();
-    if(data_size>=3 && parser_data->hrp_del==0){
-        for(int i=3;i<data_size;i++){
-            if(parser_data->InData[i]==(char)0x0A && parser_data->InData[i-1]==(char)0x0D &&
-               parser_data->InData[i-2]==(char)0x0A && parser_data->InData[i-3]==(char)0x0D){
-                parser_data->hrp_del=i;
-            }
-        }
-    }
-    if(parser_data->hrp_del!=0){
-        for(int i=0;i<header_line.size();i++){
-            temp=header_line[i];
-            if(temp.startsWith("GET ") || temp.startsWith("POST ")){//startsWith
-                parser_data->hrp_headers.insertMulti(header_line[i],"0");
-            }else{
-                split_line=header_line[i].split(':');
-                //QByteArray headerName = split_line[0];
-                //QByteArray headerValue = split_line[1];
-                parser_data->hrp_headers.insertMulti(split_line[0],split_line[1]);
-            }
-            //parser_data->data_wr=temp.contains("GET /W/COM/") ? 1 : 0;
-            //split_line=temp.split("/");
-            //temp=list_in_line[3];
-        }
     }
 }
