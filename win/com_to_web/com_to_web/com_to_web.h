@@ -49,7 +49,7 @@ public:
         //http_request_parsing
             int hrp_del=0;//\r\n\r\n -position
             QMap<QByteArray, QByteArray> hrp_headers;
-            bool hrp_headers_valid=0;
+            int hrp_headers_valid=0;
         //http_request_parsing
 
         gr_serial *com_port=0;
@@ -58,6 +58,8 @@ public:
 
     void http_request_parsing(gr_httprqs_parser *parser_data);
     void parser_rqst(gr_httprqs_parser *parser_data);
+    void postget_request_parsing(gr_httprqs_parser *parser_data);
+    void find_device_and_do(gr_httprqs_parser *parser_data);
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
@@ -68,6 +70,9 @@ public:
 public:
     explicit com_to_web(QWidget *parent = 0);
     ~com_to_web();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::com_to_web *ui;
