@@ -26,8 +26,9 @@ void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
         serial->setParity(QSerialPort::NoParity);
         serial->setStopBits(QSerialPort::OneStop);
         serial->setFlowControl(QSerialPort::NoFlowControl);
-    }else{
-        printf("COMport ERROR\n");
+    }
+    if(!serial->isReadable()){
+        socket->close();
     }
     //connect(serial, SIGNAL(readyRead()), this, SLOT(serial_socketRead()));
     serial->flush();

@@ -81,7 +81,7 @@ var message_parsing_array=new Array();
 	
 function test(){
 	xmlhttprq_test = new XMLHttpRequest();
-	xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/3/115200/', true);//, true
+	xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/5/115200/', true);//, true
 	xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 	xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	var uint8 = new Uint8Array(2);
@@ -138,7 +138,7 @@ function main_init(){
 		//_Системная информация RPi_
 		//Тестовый счетчик
 			test_cnt_stream_param={
-				url:'http://localhost:3128/R/COM/3/115200/',//'/cgi-bin/test_counter.sh',
+				url:'http://localhost:3128/R/COM/5/115200/',//'/cgi-bin/test_counter.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"TSTCNT:",
 				parser: new nmea_parser_gr(message_hub),

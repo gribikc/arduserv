@@ -262,7 +262,7 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
     } else if(parser_data->bt_parser_valid==1 &&  parser_data->com_parser_valid==0 && QSysInfo::productType()=="android"){//BT walid request
         parser_data->gr_bt=new gr_bluetooth;
         parser_data->gr_bt->bt_open(parser_data->bt_dev_name,1,parser_data->socket);
-        ui->textEdit->insertPlainText("       Open bt...\n");
+        ui->textEdit->insertPlainText("        Open bt...\n");
     } else if(parser_data->bt_parser_valid==0 &&  parser_data->com_parser_valid==1 && QSysInfo::productType()=="windows"){//COM walid request
         parser_data->com_port=new gr_serial;
         parser_data->com_port->serial_open(parser_data->com_num,parser_data->com_speed,parser_data->socket);
