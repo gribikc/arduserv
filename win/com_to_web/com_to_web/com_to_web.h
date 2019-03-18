@@ -46,6 +46,8 @@ public:
         QString bt_dev_name="";
         int bt_mode=0;
 
+        int is_dev_dublicate_id=-1;
+
         //http_request_parsing
             int hrp_del=0;//\r\n\r\n -position
             QMap<QByteArray, QByteArray> hrp_headers;

@@ -86,7 +86,7 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
                         //delete(...)
                     }
                 }
-                httprqs_parser.removeAt(i);
+                httprqs_parser.removeAt(i);//!!!//!!!
                 break;
             }
         }
@@ -224,16 +224,19 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
     QByteArray qbt_temp;
-    if(parser_data->data_wr==1){
-        for(int i=0;i<httprqs_parser.size();i++){//ищем открытый сокет с тем же именем
-            if(httprqs_parser[i].socket!=parser_data->socket){
-                if(httprqs_parser[i].com_num==parser_data->com_num && parser_data->com_parser_valid==1){
-                    httprqs_parser[i].com_port->serial->write("123");
-                    ui->textEdit->insertPlainText("        Send data to serial\n");
-                    break;
-                }
-            }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    for(int i=0;i<httprqs_parser.size();i++){//ищем открытый сокет с тем же именем
+        if(httprqs_parser[i].socket!=parser_data->socket && httprqs_parser[i].com_num==parser_data->com_num && parser_data->com_parser_valid==1 && QSysInfo::productType()=="windows"){
+            parser_data->is_dev_dublicate_id=i;
+            ui->textEdit->insertPlainText("        Dublicate find\n");
         }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    if(parser_data->data_wr==0 && parser_data->is_dev_dublicate_id!=-1){//попытка открыть на чтение уже открытое устройство
+        parser_data->socket->close();
+    }else if(parser_data->data_wr==1 && parser_data->is_dev_dublicate_id!=-1){//попытка записать в открытое устройство
+        httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write("123");
+        ui->textEdit->insertPlainText("        Send data to serial\n");
         parser_data->socket->close();
     }else if(parser_data->bt_parser_valid==0 &&  parser_data->com_parser_valid==0){//No walid request
          ui->textEdit->insertPlainText("        No walid request\n");

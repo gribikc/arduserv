@@ -90,6 +90,18 @@ function test(){
 	xmlhttprq_test.send(uint8);
 	//!!!xmlhttprq_test.abort();
 	//xmlhttprq_test.send();
+}
+function test2(){
+	xmlhttprq_test = new XMLHttpRequest();
+	xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/23/115200/', true);//, true
+	xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+	xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	var uint8 = new Uint8Array(2);
+	uint8[0] = 1;
+	uint8[1] = 2;
+	xmlhttprq_test.send(uint8);
+	//!!!xmlhttprq_test.abort();
+	//xmlhttprq_test.send();
 }	
 
 
