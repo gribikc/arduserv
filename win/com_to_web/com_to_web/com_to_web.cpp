@@ -106,8 +106,19 @@ void com_to_web::readyRead(){ // обработчик входящих сооб�
 
     for(int i=0;i<httprqs_parser.size();i++){
         if(httprqs_parser[i].socket==socket){
-            httprqs_parser[i].InData.append(socket->readAll());
-            parser_rqst(&httprqs_parser[i]);
+            if(httprqs_parser[i].external_write_request==1){
+                //socket->readBufferSize();
+                httprqs_parser[i].hrp_del+=socket->readAll().size();//!!!
+                httprqs_parser[httprqs_parser[i].is_dev_dublicate_id].com_port->serial->write(socket->readAll());
+                if(httprqs_parser[i].hrp_headers["Content-Length"].toInt()==(httprqs_parser[i].InData.size()-httprqs_parser[i].hrp_del)){//!!!
+                    httprqs_parser[httprqs_parser[i].is_dev_dublicate_id].external_write_request=0;
+                    httprqs_parser[i].socket->write("DATA SENT SUCCESSFUL");
+                    httprqs_parser[i].socket->close();
+                }
+            }else{
+                httprqs_parser[i].InData.append(socket->readAll());
+                parser_rqst(&httprqs_parser[i]);
+            }
             break;
         }
     }
@@ -233,11 +244,24 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
     if(parser_data->data_wr==0 && parser_data->is_dev_dublicate_id!=-1){//попытка открыть на чтение уже открытое устройство
+        parser_data->socket->write("NOT OPEN PORT BUSY");
         parser_data->socket->close();
     }else if(parser_data->data_wr==1 && parser_data->is_dev_dublicate_id!=-1){//попытка записать в открытое устройство
-        httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write("123");
-        ui->textEdit->insertPlainText("        Send data to serial\n");
-        parser_data->socket->close();
+        if(httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request==0){//проверяем не зането ли устройство
+            httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request=1; //занимаем устройство
+            httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write("123");// !!! //отправляем что есть
+            ui->textEdit->insertPlainText("        Send data to serial\n");//LOG
+            if(parser_data->hrp_headers["Content-Length"].toInt()==(parser_data->InData.size()-parser_data->hrp_del) && parser_data->hrp_headers["Content-Length"].isDetached()){//проверям все ли данные отправлены
+                httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request=0;
+                parser_data->socket->write("DATA SENT SUCCESSFUL");
+                parser_data->socket->close();
+            }else{
+                parser_data->external_write_request=1;//не все данные пришли
+            }
+        }else{
+            parser_data->socket->write("DATA NOT SENT PORT BUSY");
+            parser_data->socket->close();
+        }
     }else if(parser_data->bt_parser_valid==0 &&  parser_data->com_parser_valid==0){//No walid request
          ui->textEdit->insertPlainText("        No walid request\n");
          parser_data->socket->write("No walid request...\n");

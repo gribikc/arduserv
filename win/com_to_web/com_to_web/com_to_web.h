@@ -54,6 +54,9 @@ public:
             int hrp_headers_valid=0;
         //http_request_parsing
 
+        //
+        int external_write_request=0;
+
         gr_serial *com_port=0;
         gr_bluetooth *gr_bt=0;
     } gr_httprqs_parser;
