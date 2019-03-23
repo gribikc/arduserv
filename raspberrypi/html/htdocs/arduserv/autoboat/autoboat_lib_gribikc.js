@@ -69,7 +69,7 @@ function float_from_byte_arr_gr(buf){
 				this.start_point=0;
 			}
 			for(var i=this.start_point;i<this.end_point;i++){
-				console.log(stream.charCodeAt(i)&0xFF);
+				//console.log(stream.charCodeAt(i)&0xFF);
 				if(this.start_point>=96){
 					if(	(stream.charCodeAt(i   )&0xFF)==0xDD && (stream.charCodeAt(i-1 )&0xFF)==0xCC && 
 						(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==0xBB && (stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==0xAA ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
@@ -120,9 +120,14 @@ function float_from_byte_arr_gr(buf){
 				}
 				document.getElementById("autobot_state").innerHTML+=this.telemetry_message[i][0]+": "+this.telemetry_message[i][3]+"<br>";
 				
-				yandex_map_add_point_gr(this.telemetry_message['longitude'][3],this.telemetry_message['latitude'][3],10.3);
-				yandex_map_add_point_gr(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],10.3);
-				//console.log(this.telemetry_message['longitude'][3]);
+				//!!!yandex_map_add_point_gr(this.telemetry_message['longitude'][3],this.telemetry_message['latitude'][3],10.3);
+				if(i=='longitude'){
+					yandex_map_add_point_gr(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],10.3);
+					console.log(this.telemetry_message['longitude'][3]);
+					if(auto_boat_config['auto_move_map_to_boat']){
+						yandex_map_center_map_to(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],0);
+					}
+				}
 			}
 			//console.log(this.telemetry_message);
 			var k=3.1234567890123456789;

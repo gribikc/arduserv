@@ -71,7 +71,7 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
        for(int i=0;i<httprqs_parser.size();i++){
            if(httprqs_parser[i].socket==socket){
                 if(QSysInfo::productType()=="android"){
-                    if(httprqs_parser[i].gr_bt->bt_Socket!=0){
+                    if(httprqs_parser[i].gr_bt->bt_Socket!=nullptr){
                         httprqs_parser[i].gr_bt->bt_Socket->close();// disconnectFromService();//disconnected()
                     }
                     httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();

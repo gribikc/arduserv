@@ -10,12 +10,12 @@ MAKEFILE      = Makefile
 
 ####### Compiler, tools and options
 
-CC            = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-gcc
-CXX           = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
+CC            = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-gcc
+CXX           = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_NETWORK_LIB -DQT_BLUETOOTH_LIB -DQT_CORE_LIB
 CFLAGS        = -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -Wa,--noexecstack -fno-builtin-memmove -g -marm -O0 -fno-omit-frame-pointer -Wall -Wno-psabi -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -Wa,--noexecstack -fno-builtin-memmove -std=c++11 -g -g -marm -O0 -fno-omit-frame-pointer -Wall -Wno-psabi -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I..\com_to_web -I. -ID:\Qt\Qt570\5.7\android_armv7\include -ID:\Qt\Qt570\5.7\android_armv7\include\QtWidgets -ID:\Qt\Qt570\5.7\android_armv7\include\QtGui -ID:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort -ID:\Qt\Qt570\5.7\android_armv7\include\QtNetwork -ID:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth -ID:\Qt\Qt570\5.7\android_armv7\include\QtCore -I. -I. -isystem D:\Qt\android\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include -isystem D:\Qt\android\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include -isystem D:\Qt\android\ndk\platforms\android-9\arch-arm\usr\include -ID:\Qt\Qt570\5.7\android_armv7\mkspecs\android-g++
+INCPATH       = -I..\com_to_web -I. -ID:\Qt\Qt570\5.7\android_armv7\include -ID:\Qt\Qt570\5.7\android_armv7\include\QtWidgets -ID:\Qt\Qt570\5.7\android_armv7\include\QtGui -ID:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort -ID:\Qt\Qt570\5.7\android_armv7\include\QtNetwork -ID:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth -ID:\Qt\Qt570\5.7\android_armv7\include\QtCore -I. -I. -isystem D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include -isystem D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include -isystem D:\qt\ndk\platforms\android-9\arch-arm\usr\include -ID:\Qt\Qt570\5.7\android_armv7\mkspecs\android-g++
 QMAKE         = D:\Qt\Qt570\5.7\android_armv7\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -33,12 +33,12 @@ MOVE          = move
 TAR           = 
 COMPRESS      = 
 DISTNAME      = libcom_to_web.so1.0.0
-DISTDIR = E:\dron\pic\arduserv\git\arduserv\win\com_to_web\build-com_to_web-Android_armeabi_v7a_GCC_4_9_Qt_5_7_0-Debug\.tmp\libcom_to_web.so1.0.0
-LINK          = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
-LFLAGS        = --sysroot=D:\Qt\android\ndk/platforms/android-9/arch-arm/ -Wl,-soname,libcom_to_web.so -Wl,-rpath-link=D:/Qt/Qt570/5.7/android_armv7/lib -Wl,--no-undefined -Wl,-z,noexecstack -shared
-LIBS          = $(SUBLIBS) -LD:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -LD:\Qt\android\ndk/platforms/android-9/arch-arm//usr/lib -LD:/Qt/Qt570/5.7/android_armv7/lib -lQt5Widgets -Lc:/utils/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -Lc:/utils/android-ndk-r10e/platforms/android-9/arch-arm//usr/lib -lQt5Gui -lQt5SerialPort -LD:\Qt\Qt570\5.7\android_armv7/lib -lQt5Network -lQt5Bluetooth -lQt5AndroidExtras -lQt5Core -lGLESv2 -lgnustl_shared -llog -lz -lm -ldl -lc -lgcc
-AR            = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ar cqs
-RANLIB        = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ranlib
+DISTDIR = D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\build-com_to_web-Android_armeabi_v7a_GCC_4_9_Qt_5_7_0-Debug\.tmp\libcom_to_web.so1.0.0
+LINK          = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
+LFLAGS        = --sysroot=D:\qt\ndk/platforms/android-9/arch-arm/ -Wl,-soname,libcom_to_web.so -Wl,-rpath-link=D:/Qt/Qt570/5.7/android_armv7/lib -Wl,--no-undefined -Wl,-z,noexecstack -shared
+LIBS          = $(SUBLIBS) -LD:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -LD:\qt\ndk/platforms/android-9/arch-arm//usr/lib -LD:/Qt/Qt570/5.7/android_armv7/lib -lQt5Widgets -Lc:/utils/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -Lc:/utils/android-ndk-r10e/platforms/android-9/arch-arm//usr/lib -lQt5Gui -lQt5SerialPort -LD:\qt\Qt570\5.7\android_armv7/lib -lQt5Network -lQt5Bluetooth -lQt5AndroidExtras -lQt5Core -lGLESv2 -lgnustl_shared -llog -lz -lm -ldl -lc -lgcc
+AR            = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ar cqs
+RANLIB        = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ranlib
 SED           = $(QMAKE) -install sed
 STRIP         = 
 
@@ -695,7 +695,7 @@ moc_com_to_web.cpp: D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow 
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
 		..\com_to_web\com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe
-	D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/Qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -IE:/dron/pic/arduserv/git/arduserv/win/com_to_web/com_to_web -ID:/Qt/Qt570/5.7/android_armv7/include -ID:/Qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/Qt/Qt570/5.7/android_armv7/include/QtGui -ID:/Qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/Qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/Qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/Qt/Qt570/5.7/android_armv7/include/QtCore -I. -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/include -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -ID:\Qt\android\ndk/platforms/android-9/arch-arm//usr/include ..\com_to_web\com_to_web.h -o moc_com_to_web.cpp
+	D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/Qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -ID:/dron/pic/ardrpi/git/arduserv/win/com_to_web/com_to_web -ID:/Qt/Qt570/5.7/android_armv7/include -ID:/Qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/Qt/Qt570/5.7/android_armv7/include/QtGui -ID:/Qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/Qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/Qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/Qt/Qt570/5.7/android_armv7/include/QtCore -I. -ID:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/include -ID:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -ID:\qt\ndk/platforms/android-9/arch-arm//usr/include ..\com_to_web\com_to_web.h -o moc_com_to_web.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:

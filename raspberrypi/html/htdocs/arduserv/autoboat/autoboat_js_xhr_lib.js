@@ -21,42 +21,92 @@ var autoboat;
 var message_parsing_array=new Array();
 	var arr_push={
 		type:'nmea',
-		mark:'$GRSYS',
+		mark:'$TSTCNT',
 		matrix:[
 			[0],
 			[
 				1,
-				"sys_info_termo",
-				"Температура процессора ",
-				function(a) {return a/1000;},//function(a) { test_paper.push_graph(a/1000,5); return a/1000;},//test_paper.push_graph(a/1000,5);
-				" градусов."
-			],
-			[
-				
-				1,
-				"sys_info_uptime",
-				"Status: ",
-				function(a) { return a;},
-				"."
+				"test_counter_div",
+				"Тестовый счетчик ",
+				function(a) { return a;},//test_paper_cnt.push_graph(a*1,5);//test_paper_cnt.push_graph(a*1,5);
+				" насчитано."
 			],
 			[0]
 		]
 	};
 	message_parsing_array.push(arr_push);
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////	
+	function next_prev_main_wiev_div_in(rf){
+		var i;
+		var inner;
+		var inner_count=document.getElementById("main_wiev_div").childElementCount;
+		var vis_ch_tg=0;
+		for(i=0;i<inner_count;i++){
+			//document.getElementById("main_wiev_div").children[i].
+			inner=document.getElementById("main_wiev_div").children[i];
+			if(vis_ch_tg==1){
+				inner.style.position="absolute";
+				inner.style.visibility="hidden";
+				inner.style.zIndex=-1;
+			}else if(inner.style.visibility=="visible" || inner.style.position=="unset" ||
+					 inner.style.zIndex=="unset"       || inner.style.visibility=="" ||
+					 inner.style.position==""          || inner.style.zIndex==""){
+				inner.style.position="absolute";
+				inner.style.visibility="hidden";
+				inner.style.zIndex=-1;
+				
+				console.log(i);
+				
+				if(rf=='f'){
+					if( !(inner=document.getElementById("main_wiev_div").children[i+1]) ){
+						inner=document.getElementById("main_wiev_div").children[0];
+					}else{
+						i++;
+					}
+				}else{
+					if( !(inner=document.getElementById("main_wiev_div").children[i-1]) ){
+						inner=document.getElementById("main_wiev_div").children[inner_count-1];
+					}else{
+						i--;
+					}
+				}
 
+				inner.style.visibility="visible";
+				inner.style.position="unset";
+				inner.style.zIndex="unset";
+				
+
+				vis_ch_tg=1;
+			}
+		}
+	}
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+auto_boat_config={
+	auto_move_map_to_boat:false,
+	
+	ssf:false
+};
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 //$(document).ready(function(){
 function main_init(){
+	//
+		//start_wiev();
 	//HUB
 		message_hub = new valid_db_gr(message_parsing_array);//хаб сообщений
-	//HUB_
-	///autoboat
+		//autoboat
 		autoboat=new autoboat_gr();
 	//STREAM
-		//Системная информация RPi
-			sys_data_param={
-				url:'/cgi-bin/sys_inf.sh',
+		//Тестовый счетчик
+			test_cnt_stream_param={
+				url:'http://localhost:3128/R/COM/9/115200/',//'/cgi-bin/test_counter.sh',
 				mime_type:'text/plain; charset=x-user-defined',
-				status_div_name:"SYS:",
+				status_div_name:"TSTCNT:",
 				parser: new nmea_parser_gr(message_hub),
 				
 				flush_en:true,
@@ -71,11 +121,11 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			//new xmlhttprq_stream_gr(sys_data_param);//'/cgi-bin/sys_inf.sh',sys_stream_nmea,"xhr_status_div","SYS:");//17*8*3=408
-		//_Системная информация RPi_
+			new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+		//_Тестовый счетчик_
 		//arduino_uart
 			arduino_uart_stream_param={
-				url:'http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url:'http://172.20.10.4:3128/R/BT/HC-06/',//http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"Arduino uart:",
 				parser: autoboat,//new raw_parser_gr(message_hub),
@@ -89,7 +139,7 @@ function main_init(){
 				status_div_status_css:"xmlhttprq_stream_gr_status",
 				status_div_stat_css:"xmlhttprq_stream_gr_stat",
 				
-				reload_en:false,
+				reload_en:true,
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
