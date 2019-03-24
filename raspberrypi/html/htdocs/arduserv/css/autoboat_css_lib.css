@@ -84,13 +84,12 @@ a.menu_up_a_gr {
   font-weight: 700;
   text-decoration: none;
   user-select: none;
-  padding: .5em 2em;
+  padding: .3em 1em;
   outline: none;
   border: 2px solid;
   border-radius: 1px;
   transition: 0.2s;
-  
-  margin: 10px 10px 10px 10px;
+  margin: 5px 5px 5px 5px;
 } 
 a.menu_up_a_gr:hover { background: rgba(255,255,255,.2);}
 a.menu_up_a_gr:active { background: white; }

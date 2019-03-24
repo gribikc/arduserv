@@ -123,7 +123,7 @@ function float_from_byte_arr_gr(buf){
 				//!!!yandex_map_add_point_gr(this.telemetry_message['longitude'][3],this.telemetry_message['latitude'][3],10.3);
 				if(i=='longitude'){
 					yandex_map_add_point_gr(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],10.3);
-					console.log(this.telemetry_message['longitude'][3]);
+					//console.log(this.telemetry_message['longitude'][3]);
 					if(auto_boat_config['auto_move_map_to_boat']){
 						yandex_map_center_map_to(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],0);
 					}

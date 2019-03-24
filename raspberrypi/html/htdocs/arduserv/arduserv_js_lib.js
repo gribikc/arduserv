@@ -324,7 +324,7 @@
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
 						if(this_parameter.reload_en==true){
-							console.log("ar...");
+							//console.log("ar...");
 							this.open('GET', this_parameter.url, true);
 							this.overrideMimeType(this_parameter.mime_type);					
 							setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()

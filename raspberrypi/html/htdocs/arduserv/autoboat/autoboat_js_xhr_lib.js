@@ -59,26 +59,23 @@ var message_parsing_array=new Array();
 				
 				console.log(i);
 				
+				vis_ch_tg=1;
 				if(rf=='f'){
 					if( !(inner=document.getElementById("main_wiev_div").children[i+1]) ){
 						inner=document.getElementById("main_wiev_div").children[0];
-					}else{
-						i++;
 					}
+					i++;
 				}else{
 					if( !(inner=document.getElementById("main_wiev_div").children[i-1]) ){
 						inner=document.getElementById("main_wiev_div").children[inner_count-1];
-					}else{
-						i--;
+						inner_count--;
 					}
 				}
-
+				
+				vis_ch_tg=1;
 				inner.style.visibility="visible";
 				inner.style.position="unset";
 				inner.style.zIndex="unset";
-				
-
-				vis_ch_tg=1;
 			}
 		}
 	}
