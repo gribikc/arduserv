@@ -33,10 +33,13 @@ public:
     QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=0;
     QBluetoothSocket *bt_Socket=0;
     QBluetoothLocalDevice bt_localDevice;
+
+public slots:
+        void bt_socketError(QBluetoothSocket::SocketError error);
 private slots:
     void bt_deviceDiscovered(const QBluetoothDeviceInfo &device);
     void bt_deviceDiscovered_finished();
-    void bt_socketError();
+    // void bt_socketError();
     void bt_socketConnected();
     void bt_socketDisconnected();
     void bt_socketRead();

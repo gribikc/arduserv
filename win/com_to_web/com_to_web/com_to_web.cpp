@@ -71,12 +71,13 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
        for(int i=0;i<httprqs_parser.size();i++){
            if(httprqs_parser[i].socket==socket){
                 if(QSysInfo::productType()=="android"){
-                    if(httprqs_parser[i].gr_bt->bt_Socket!=nullptr){
+                    if(httprqs_parser[i].gr_bt!=nullptr){
                         httprqs_parser[i].gr_bt->bt_Socket->close();// disconnectFromService();//disconnected()
+
+                        httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
+                        httprqs_parser[i].gr_bt->bt_Socket->destroyed();
+                        httprqs_parser[i].gr_bt->destroyed();
                     }
-                    httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
-                    httprqs_parser[i].gr_bt->bt_Socket->destroyed();
-                    httprqs_parser[i].gr_bt->destroyed();
                 }else if(QSysInfo::productType()=="windows" && httprqs_parser[i].data_wr==0){
                     if(httprqs_parser[i].com_port!=nullptr){
                         if(httprqs_parser[i].com_port->serial!=nullptr)
@@ -237,9 +238,16 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
     QByteArray qbt_temp;
     ////////////////////////////////////////////////////////////////////////////////////////////
     for(int i=0;i<httprqs_parser.size();i++){//ищем открытый сокет с тем же именем
-        if(httprqs_parser[i].socket!=parser_data->socket && httprqs_parser[i].com_num==parser_data->com_num && parser_data->com_parser_valid==1 && QSysInfo::productType()=="windows"){
-            parser_data->is_dev_dublicate_id=i;
-            ui->textEdit->insertPlainText("        Dublicate find\n");
+        if(QSysInfo::productType()=="windows"){
+            if(httprqs_parser[i].socket!=parser_data->socket && httprqs_parser[i].com_num==parser_data->com_num && parser_data->com_parser_valid==1){
+                parser_data->is_dev_dublicate_id=i;
+                ui->textEdit->insertPlainText("        Dublicate COM find\n");
+            }
+        }else if(QSysInfo::productType()=="android"){
+            if(httprqs_parser[i].socket!=parser_data->socket && httprqs_parser[i].bt_dev_name==parser_data->bt_dev_name && parser_data->bt_parser_valid==1){
+                parser_data->is_dev_dublicate_id=i;
+                ui->textEdit->insertPlainText("        Dublicate BT find\n");
+            }
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,10 +255,24 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
         parser_data->socket->write("NOT OPEN PORT BUSY");
         parser_data->socket->close();
     }else if(parser_data->data_wr==1 && parser_data->is_dev_dublicate_id!=-1){//попытка записать в открытое устройство
-        if(httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request==0){//проверяем не зането ли устройство
+        if(httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request==0){//проверяем не зането ли устройство еще и на запись
             httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request=1; //занимаем устройство
-            httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write("123");// !!! //отправляем что есть
-            ui->textEdit->insertPlainText("        Send data to serial\n");//LOG
+
+            //
+            //QByteArray x("Pineapple");
+            //QByteArray y = x.right(5);
+            // y == "apple"
+
+            QByteArray  data_to_send=parser_data->InData.right(parser_data->InData.size()-parser_data->hrp_del);//hrp_del
+
+            if(QSysInfo::productType()=="windows"){
+                httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write(data_to_send);// !!! //отправляем что есть
+                ui->textEdit->insertPlainText("        Send data to serial\n");//LOG
+            }else if(QSysInfo::productType()=="android"){
+                httprqs_parser[parser_data->is_dev_dublicate_id].gr_bt->bt_Socket->write(data_to_send);// !!! //отправляем что есть
+                ui->textEdit->insertPlainText("        Send data to BT\n");//LOG
+            }
+
             if(parser_data->hrp_headers["Content-Length"].toInt()==(parser_data->InData.size()-parser_data->hrp_del) && parser_data->hrp_headers["Content-Length"].isDetached()){//проверям все ли данные отправлены
                 httprqs_parser[parser_data->is_dev_dublicate_id].external_write_request=0;
                 parser_data->socket->write("DATA SENT SUCCESSFUL");
@@ -277,12 +299,12 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
          parser_data->socket->write("\r\n");
          parser_data->socket->write("END.\r\n");
          //parser_data->socket->close();//!!!
-         if(QSysInfo::productType()=="android"){
-            parser_data->gr_bt=new gr_bluetooth;
-            parser_data->gr_bt->bt_open("",0,parser_data->socket);
-         }else{
+         //if(QSysInfo::productType()=="android"){
+         //   parser_data->gr_bt=new gr_bluetooth;
+         //   parser_data->gr_bt->bt_open("",0,parser_data->socket);
+         //}else{
              parser_data->socket->close();
-         }
+         //}
     } else if(parser_data->bt_parser_valid==1 &&  parser_data->com_parser_valid==0 && QSysInfo::productType()=="android"){//BT walid request
         parser_data->gr_bt=new gr_bluetooth;
         parser_data->gr_bt->bt_open(parser_data->bt_dev_name,1,parser_data->socket);

@@ -81,12 +81,16 @@ function yandex_map_center_map_to(x,y,mode){
 		x=just_point_arr[just_point_arr.length-1]['x'];
 		y=just_point_arr[just_point_arr.length-1]['y'];
 	}
-	myMap.setCenter([x, y]);
+	//myMap.setCenter([x, y]);
+	myMap.panTo([x, y],{duration:2000,flying:false,safe:true});
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function yandex_map_add_point_gr(x,y,deep){
+	if(x==0 && y==0){
+		return;
+	}
 	//console.log('Длинна массива: '+deep_points_arr.length);
 	for(var i=0;i<just_point_arr.length;i++){
 		if(just_point_arr.length>=50){

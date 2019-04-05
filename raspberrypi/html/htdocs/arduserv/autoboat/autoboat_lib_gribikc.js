@@ -121,7 +121,7 @@ function float_from_byte_arr_gr(buf){
 				document.getElementById("autobot_state").innerHTML+=this.telemetry_message[i][0]+": "+this.telemetry_message[i][3]+"<br>";
 				
 				//!!!yandex_map_add_point_gr(this.telemetry_message['longitude'][3],this.telemetry_message['latitude'][3],10.3);
-				if(i=='longitude'){
+				if(i=='longitude' && this.telemetry_message['NOS'][3]>4){
 					yandex_map_add_point_gr(this.telemetry_message['latitude'][3],this.telemetry_message['longitude'][3],10.3);
 					//console.log(this.telemetry_message['longitude'][3]);
 					if(auto_boat_config['auto_move_map_to_boat']){

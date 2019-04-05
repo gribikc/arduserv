@@ -20,7 +20,11 @@ void gr_bluetooth::bt_open(QString dev_name, int mode, QTcpSocket *socket_point)
             //connect(bt_Socket,          &QBluetoothSocket::readyRead,                           this, &gr_bluetooth::bt_socketRead);
             connect(bt_Socket,          &QBluetoothSocket::connected,                       this, &gr_bluetooth::bt_socketConnected);
             connect(bt_Socket,          &QBluetoothSocket::disconnected,                    this, &gr_bluetooth::bt_socketDisconnected);
+            //connect(bt_Socket,          &QBluetoothSocket::error(QBluetoothSocket::SocketError),this,  &gr_bluetooth::bt_socketError());
+            connect(bt_Socket, QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error),
+                [=](QBluetoothSocket::SocketError error){ bt_socketError(error); });
             // !!!connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_socketRead);//&gr_serial::serial_socketRead
+
 
             bt_discoveryAgent->start();
         //}
@@ -100,7 +104,10 @@ void gr_bluetooth::bt_socketDisconnected(){
     qDebug() << "\r\nПотеря BT связи\n";
     //ui->label_5->setStyleSheet("color: rgb(200, 0, 0);");
 }
-void gr_bluetooth::bt_socketError(){
+void gr_bluetooth::bt_socketError(QBluetoothSocket::SocketError error){
+    qDebug() << error;
+    qDebug() << "\r\nBT ERROR!!!\n";
+    socket->close();
     //QString error_qstr="";
     //error_qstr=error_msg;
     //write_log_file(&error_qstr,3);

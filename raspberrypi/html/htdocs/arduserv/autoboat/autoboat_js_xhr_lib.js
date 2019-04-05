@@ -57,7 +57,7 @@ var message_parsing_array=new Array();
 				inner.style.visibility="hidden";
 				inner.style.zIndex=-1;
 				
-				console.log(i);
+				//console.log(i);
 				
 				vis_ch_tg=1;
 				if(rf=='f'){
@@ -84,9 +84,29 @@ var message_parsing_array=new Array();
 ///////////////////////////////////////////////////////////
 auto_boat_config={
 	auto_move_map_to_boat:false,
+	bap_stream_addr:[
+		['http://192.168.0.122:3128/R/BT/HC-06/'],
+		['http://172.20.10.4:3128/R/BT/HC-06'],
+		['http://localhost:3128/R/COM/9/115200/']
+	],
 	
 	ssf:false
 };
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+function test_send_data1(){
+	xmlhttprq_test = new XMLHttpRequest();
+	xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/28/57600/', true);//, true
+	xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+	xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	var uint8 = new Uint8Array(2);
+	uint8[0] = 1;
+	uint8[1] = 2;
+	xmlhttprq_test.send(uint8);
+	//!!!xmlhttprq_test.abort();
+	//xmlhttprq_test.send();
+}	
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -118,11 +138,11 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			//new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_Тестовый счетчик_
 		//arduino_uart
 			arduino_uart_stream_param={
-				url:'http://172.20.10.4:3128/R/BT/HC-06/',//http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url:'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"Arduino uart:",
 				parser: autoboat,//new raw_parser_gr(message_hub),
