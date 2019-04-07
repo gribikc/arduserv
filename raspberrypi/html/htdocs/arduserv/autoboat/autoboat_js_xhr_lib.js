@@ -141,10 +141,11 @@ function main_init(){
 			//new xmlhttprq_stream_gr(test_cnt_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_Тестовый счетчик_
 		//arduino_uart
-			arduino_uart_stream_param={
-				url:'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+			bap_uart_stream_param={
+				url   :'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url_w :'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
-				status_div_name:"Arduino uart:",
+				status_div_name:"BAP:",
 				parser: autoboat,//new raw_parser_gr(message_hub),
 				
 				flush_en:true,
@@ -159,7 +160,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
 		//http://172.20.10.4:3128/
 	//STREAM_

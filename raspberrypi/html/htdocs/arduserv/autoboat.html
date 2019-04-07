@@ -68,8 +68,53 @@
 			<!---------------------------------------------------------------------------------------------------------->	
 			<div id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
 				<div id="" style="display:inline;" style="border: 3px solid #000000;"><a onclick="test_send_data1();">test_send</a></div>
-				<div id="" style="display:inline;" style="border: 3px solid #000000;">2</div>
-				<div id="" style="display:inline;" style="border: 3px solid #000000;">3</div>
+				<table border="1">
+					<tr>
+						<td colspan="3" align="center">АП</td>
+					</tr>
+					<tr>
+						<td><a onclick="autoboat.send_cmd('nav_ap_start',bap_uart_stream_param.url_w);">Старт</a></td>
+						<td><a onclick="autoboat.send_cmd('nav_ap_reset',bap_uart_stream_param.url_w);">Сброс</a></td>
+						<td><a onclick="autoboat.send_cmd('nav_ap_stop' ,bap_uart_stream_param.url_w);">Стоп</a></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center">Румпель</td>
+					</tr>
+					<tr>
+						<td><a onclick="autoboat.send_cmd('nav_set_rumpel',bap_uart_stream_param.url_w);">Левей</a></td>
+						<td><input value="1" size="5"></td>
+						<td><a onclick="autoboat.send_cmd('nav_set_rumpel',bap_uart_stream_param.url_w);">Правей</a></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center">Курс</td>
+					</tr>
+					<tr>
+						<td><a onclick="autoboat.send_cmd('nav_set_track',bap_uart_stream_param.url_w);">Левей</a></td>
+						<td><input value="1" size="5"></td>
+						<td><a onclick="autoboat.send_cmd('nav_set_track',bap_uart_stream_param.url_w);">Правей</a></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center">Регулятор</td>
+					</tr>
+					<tr>
+						<td>Ke</td>
+						<td><input value="-1" size="5"></td>
+						<td rowspan="3"><a onclick="byte_arr_from_float_gr(12.3);">Установить</a></td>
+					</tr>
+					<tr>
+						<td>Kp</td>
+						<td><input value="1" size="5"></td>
+					</tr>
+					<tr>
+						<td>Ki</td>
+						<td><input value="0.99" size="5"></td>
+					</tr>
+					<!--tr>
+						<td>Левый разворот</td>
+						<td>2</td>
+						<td>Правый разворот</td>
+					</tr-->
+				</table>
 			</div>
 			<!---------------------------------------------------------------------------------------------------------->
 				<canvas id="canvas2" width="500" height="300" style="border: 3px solid #000000;"></canvas>
