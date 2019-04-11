@@ -32,7 +32,7 @@ function byte_arr_from_float_gr(buf){
 	var float32	= new Float32Array(1);
 	float32[0] 	= buf;
 	var float32_ba = new Uint8Array(float32.buffer);
-	console.log(float32_ba);
+	//console.log(float32_ba);
 	return float32_ba;
 }
 //var float32 = new Float32Array([1.2]);
@@ -93,8 +93,8 @@ function byte_arr_from_float_gr(buf){
 				speed:["Скорость",1,46,0],				//-20...-17(float)          ///////////speed:["Скорость",1,20,0],			//-20...-17(float)
 				pilot_error:["ERR",1,50,0],				//ошибка навигации//-16...-13(float)              ///////////pilot_error:["ERR",1,16,0],		//-16...-13(float)
 				pid:["PID",1,54,0],						//Выход регулятора
-				tiller_position_cp:["Положение текущие",1,58,0],	//положение румпеля//-12...-9(float)       ///////////tiller_position:["Положение",1,12,0]	//-12...-9(float)
-				tiller_position:["Положение требуемое",1,62,0],	//положение румпеля
+				tiller_position_cp:["Положение текущие",3,58,0],	//int//положение румпеля//-12...-9(float)       ///////////tiller_position:["Положение",1,12,0]	//-12...-9(float)
+				tiller_position:["Положение требуемое",3,62,0],		//int//положение румпеля
 				point_distance:["Расстояние до точки",1,66,0],
 				current_point:["Текущая точка маршрута",1,70,0]
 			}
@@ -152,6 +152,17 @@ function byte_arr_from_float_gr(buf){
 					//tmp_float_from_byte=tmp_float_from_byte<<8;
 					
 					this.telemetry_message[i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.telemetry_message[i][2]-this.MESSAGE_LEN-4)&0xFF
+				}else if(this.telemetry_message[i][1]==3){
+					tmp_float_from_byte=stream.charCodeAt(end_byte+this.telemetry_message[i][2]-this.MESSAGE_LEN-0)&0xFF;
+					tmp_float_from_byte=tmp_float_from_byte<<8;
+					tmp_float_from_byte+=stream.charCodeAt(end_byte+this.telemetry_message[i][2]-this.MESSAGE_LEN-1)&0xFF;
+					tmp_float_from_byte=tmp_float_from_byte<<8;
+					tmp_float_from_byte+=stream.charCodeAt(end_byte+this.telemetry_message[i][2]-this.MESSAGE_LEN-2)&0xFF;
+					tmp_float_from_byte=tmp_float_from_byte<<8;
+					tmp_float_from_byte+=stream.charCodeAt(end_byte+this.telemetry_message[i][2]-this.MESSAGE_LEN-3)&0xFF;
+					//tmp_float_from_byte=tmp_float_from_byte<<8;
+					
+					this.telemetry_message[i][3]=tmp_float_from_byte;
 				}else{
 					this.telemetry_message[i][3]="undf...";
 				}
@@ -171,10 +182,72 @@ function byte_arr_from_float_gr(buf){
 			//console.log(readBytes(k,1));
 		}		
 		//////////
-		send_cmd(name,url){
+		send_cmd(name,url,mode){
 			//console.log(name);
 			//console.log(url);
 			//console.log(this.upr_cmd[name]);//[name]
+			var send_data=new Uint8Array();
+			var float_byte_array;
+			switch(name){
+				/////////
+				//////////////////////
+				case 'nav_set_rumpel':
+					send_data=this.upr_cmd[name];
+					var incr=document.getElementById(name+"_value_gr").value;
+					if(mode=='left'){
+						incr=incr*(-1);
+					}
+					float_byte_array=byte_arr_from_float_gr(incr);
+					send_data[5]=float_byte_array[0];
+					send_data[6]=float_byte_array[1];
+					send_data[7]=float_byte_array[2];
+					send_data[8]=float_byte_array[3];
+				break
+				/////
+				/////////////////////
+				case 'nav_set_track':
+					send_data=this.upr_cmd[name];
+					var incr=document.getElementById(name+"_value_gr").value;
+					if(mode=='left'){
+						incr=incr*(-1);
+					}
+					float_byte_array=byte_arr_from_float_gr(incr);
+					send_data[5]=float_byte_array[0];
+					send_data[6]=float_byte_array[1];
+					send_data[7]=float_byte_array[2];
+					send_data[8]=float_byte_array[3];
+				break
+				/////
+				////////////////////////
+				case 'nav_set_pidparam':
+					send_data=this.upr_cmd[name];
+					var incr=document.getElementById(name+"_ke_value_gr").value;
+					float_byte_array=byte_arr_from_float_gr(incr);
+					send_data[5]=float_byte_array[0];
+					send_data[6]=float_byte_array[1];
+					send_data[7]=float_byte_array[2];
+					send_data[8]=float_byte_array[3];
+					
+					var incr=document.getElementById(name+"_kp_value_gr").value;
+					float_byte_array=byte_arr_from_float_gr(incr);
+					send_data[9 ]=float_byte_array[0];
+					send_data[10]=float_byte_array[1];
+					send_data[11]=float_byte_array[2];
+					send_data[12]=float_byte_array[3];
+					
+					var incr=document.getElementById(name+"_ki_value_gr").value;
+					float_byte_array=byte_arr_from_float_gr(incr);
+					send_data[13]=float_byte_array[0];
+					send_data[14]=float_byte_array[1];
+					send_data[15]=float_byte_array[2];
+					send_data[16]=float_byte_array[3];
+				break
+				/////
+				////////
+				default:
+					send_data[0]=0;
+				break;
+			}
 			
 			var xmlhttprq_test = new XMLHttpRequest();
 			xmlhttprq_test.open('POST', url, true);//, true
@@ -183,7 +256,8 @@ function byte_arr_from_float_gr(buf){
 			//var uint8 = new Uint8Array(2);
 			//uint8[0] = 1;
 			//uint8[1] = 2;
-			xmlhttprq_test.send(this.upr_cmd[name]);
+			xmlhttprq_test.send(send_data);//this.upr_cmd[name]
+			//console.log(send_data);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

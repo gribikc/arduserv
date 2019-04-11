@@ -213,7 +213,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
     parser_data->data_wr=temp.contains("GET /W/") ? 1 : 0;
     parser_data->data_wr=temp.contains("POST /W/") ? 1 : 0;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if( (temp.contains("GET /R/COM/") || temp.contains("POST /R/COM/") || temp.contains("GET /W/COM/") || temp.contains("POST /W/COM/")) && QSysInfo::productType()=="windows"){       //GET /R/COM/3/57600/
+        if( (temp.contains("GET /R/COM/") || temp.contains("POST /R/COM/") || temp.contains("GET /W/COM/") || temp.contains("POST /W/COM/") ) && QSysInfo::productType()=="windows"){       //GET /R/COM/3/57600/
             list_in_line=temp.split("/");
             temp=list_in_line[3];
             parser_data->com_num=temp.toInt();
@@ -222,7 +222,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->com_parser_valid=1;//!!!
             parser_data->bt_parser_valid=0;
         }
-        if(temp.contains("GET /R/BT/") && QSysInfo::productType()=="android"){        //GET /R/BT/HC-06/
+        if( (temp.contains("GET /R/BT/") || temp.contains("POST /W/BT/") || temp.contains("GET /R/BT/") || temp.contains("POST /W/BT/") ) && QSysInfo::productType()=="android"){        //GET /R/BT/HC-06/
             list_in_line=temp.split("/");
             temp=list_in_line[3];
             parser_data->bt_dev_name=temp;
