@@ -46,6 +46,8 @@ public:
         QString bt_dev_name="";
         int bt_mode=0;
 
+        bool main_page_parser_valid=0;
+
         int is_dev_dublicate_id=-1;
 
         //http_request_parsing
@@ -65,6 +67,8 @@ public:
     void parser_rqst(gr_httprqs_parser *parser_data);
     void postget_request_parsing(gr_httprqs_parser *parser_data);
     void find_device_and_do(gr_httprqs_parser *parser_data);
+
+    void main_page_request_do(gr_httprqs_parser *parser_data);
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
