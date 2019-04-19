@@ -151,6 +151,8 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
             find_device_and_do(parser_data);
         }else if(parser_data->main_page_parser_valid==1){
             main_page_request_do(parser_data);
+        }else if(parser_data->htdocs_page_request_do==1){
+            htdocs_page_request_do(parser_data);
         }else{
             ui->textEdit->insertPlainText("        No walid request\n");
             parser_data->socket->write("No walid request...\n");
@@ -230,17 +232,21 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
     parser_data->data_wr=temp.startsWith("POST /W/") ? 1 : 0;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////
-        //BT || COM
+        //COM
         if( (temp.startsWith("GET /R/COM/") || temp.startsWith("POST /R/COM/") || temp.startsWith("GET /W/COM/") || temp.startsWith("POST /W/COM/") ) && QSysInfo::productType()=="windows"){       //GET /R/COM/3/57600/
             list_in_line=temp.split("/");
             temp=list_in_line[3];
             parser_data->com_num=temp.toInt();
             temp=list_in_line[4];
             parser_data->com_speed=temp.toInt();
+
             parser_data->com_parser_valid=1;//!!!
             parser_data->bt_parser_valid=0;
             parser_data->main_page_parser_valid=0;
+            parser_data->htdocs_page_request_do=0;
         }
+        ///////////////////////////////////
+        //BT
         if( (temp.startsWith("GET /R/BT/") || temp.startsWith("POST /W/BT/") || temp.startsWith("GET /R/BT/") || temp.startsWith("POST /W/BT/") ) && QSysInfo::productType()=="android"){        //GET /R/BT/HC-06/
             list_in_line=temp.split("/");
             temp=list_in_line[3];
@@ -249,6 +255,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->com_parser_valid=0;
             parser_data->bt_parser_valid=1;
             parser_data->main_page_parser_valid=0;
+            parser_data->htdocs_page_request_do=0;
         }
         ///////////////////////////////////
         //MAIN PAGE
@@ -256,10 +263,19 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->com_parser_valid=0;
             parser_data->bt_parser_valid=0;
             parser_data->main_page_parser_valid=1;
+            parser_data->htdocs_page_request_do=0;
         }
         ///////////////////////////////////
         //PAGE
+        if( (temp.startsWith("GET /htdocs") || temp.startsWith("POST /htdocs") ) ){        //GET /R/BT/HC-06/
+            list_in_line=temp.split(" ");
+            parser_data->htdocs_file_query=list_in_line[1];
 
+            parser_data->com_parser_valid=0;
+            parser_data->bt_parser_valid=0;
+            parser_data->main_page_parser_valid=0;
+            parser_data->htdocs_page_request_do=1;
+        }
         ///////////////////////////////////
         //WRITE PAGE
 
@@ -344,6 +360,17 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
     parser_data->socket->write("\r\n");
     parser_data->socket->write("\r\n");
     parser_data->socket->write("END.\r\n");
+
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    get_tree_file("","",parser_data);
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+
     //parser_data->socket->close();//!!!
     //if(QSysInfo::productType()=="android"){
     //   parser_data->gr_bt=new gr_bluetooth;
@@ -356,7 +383,66 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
+void com_to_web::htdocs_page_request_do(gr_httprqs_parser *parser_data){
+    QByteArray qbt_temp;
+    ui->textEdit->insertPlainText("        HtDocs Page request\n");
+    parser_data->socket->write("HtDocs Page request...\n");
 
+    qbt_temp=QByteArray::number(httprqs_parser.size());
+    parser_data->socket->write(qbt_temp);
+
+    parser_data->socket->write("\n");
+    parser_data->socket->write(parser_data->htdocs_file_query.toLocal8Bit());
+
+    parser_data->socket->write("\r\n");
+    parser_data->socket->write("\r\n");
+    parser_data->socket->write("END.\r\n");
+
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    parser_data->socket->close();
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data){
+    QDir dir(dir_patch);
+    dir.setFilter(QDir::AllDirs | QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    dir.setSorting(QDir::Size | QDir::Reversed);
+    QFileInfoList list = dir.entryInfoList();
+
+    parser_data->socket->write("");
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        //parser_data->socket->write(fileInfo.size() );
+        if( fileInfo.isDir() && fileInfo.fileName()!=".." && fileInfo.fileName()!="." ){
+            parser_data->socket->write(prefix_add.toLocal8Bit());
+
+                parser_data->socket->write(fileInfo.absolutePath().toLocal8Bit());
+                parser_data->socket->write("/");
+                    parser_data->socket->write(fileInfo.fileName().toLocal8Bit());
+                parser_data->socket->write("/");
+
+            parser_data->socket->write("\n");
+            get_tree_file( dir.absoluteFilePath( fileInfo.fileName()),(prefix_add+"    "),parser_data);
+        }else if(fileInfo.isFile()){
+            parser_data->socket->write(prefix_add.toLocal8Bit());
+            parser_data->socket->write(fileInfo.fileName().toLocal8Bit());
+                 parser_data->socket->write("(");
+            parser_data->socket->write(QString::number(fileInfo.size()).toLocal8Bit());
+                parser_data->socket->write(")");
+            parser_data->socket->write("\n");
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::on_pushButton_clicked(){
     ui->textEdit->clear();
 }

@@ -142,8 +142,8 @@ function main_init(){
 		//_Тестовый счетчик_
 		//arduino_uart
 			bap_uart_stream_param={
-				url   :'http://192.168.0.122:3128/R/BT/HC-06/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
-				url_w :'http://192.168.0.122:3128/W/BT/HC-06/',//'http://localhost:3128/W/COM/28/57600/',
+				url   :'http://localhost:3128/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url_w :'http://localhost:3128/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"BAP:",
 				parser: autoboat,//new raw_parser_gr(message_hub),

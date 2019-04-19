@@ -46,7 +46,10 @@ public:
         QString bt_dev_name="";
         int bt_mode=0;
 
+        QString htdocs_file_query="";
+
         bool main_page_parser_valid=0;
+        bool htdocs_page_request_do=0;
 
         int is_dev_dublicate_id=-1;
 
@@ -69,6 +72,9 @@ public:
     void find_device_and_do(gr_httprqs_parser *parser_data);
 
     void main_page_request_do(gr_httprqs_parser *parser_data);
+    void htdocs_page_request_do(gr_httprqs_parser *parser_data);
+
+    void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data);
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
