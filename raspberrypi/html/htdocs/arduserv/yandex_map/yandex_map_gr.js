@@ -2,6 +2,8 @@ var myMap;
 var deep_points_arr = new Array();
 var just_point_arr = new Array();
 
+var trip_point_arr = new Array();
+
 ymaps.ready(init);
 
 
@@ -15,7 +17,16 @@ function init() {
             zoom: 15
         }, {
             searchControlProvider: 'yandex#search'
-        });
+        });	
+	
+    myMap.events.add('click', function (e) {
+		if(myMap.balloon.isOpen()){
+			myMap.balloon.close();//Закрыть активный балун
+		}else{
+			var coords = e.get('coords');
+			on_yandex_map_click_gr(coords[0].toPrecision(10),coords[1].toPrecision(10));
+		}
+    });
 		
 	add_text_to_map();
 }
@@ -157,3 +168,62 @@ function add_text_to_map(){
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+function on_yandex_map_click_gr(x,y){
+	//alert(coords[0].toPrecision(10)+';'+coords[1].toPrecision(10));
+	/*
+		1) Начало ввода маршрута
+			0. Очистка переменных и точек карты		F(x)
+			1. добавление точки маршрута 			F(x)//fx_yandex_map_add_trip_point_gr
+			2. удаление точки маршрута				F(x)//fx_yandex_map_delete_trip_point_gr
+			3. вставка точки между
+			4. переcчет индексов массива			F(x)//fx_yandex_map_repair_trip_point_gr
+		2) Завершение ввода маршрута
+			0. настройка параметров(стартовая точка, точка кольца, ...)
+			1. сохранение или передача массива		F(x),F(x)
+		3) Загрузка точек массива из ранее сохраненного
+			0. переход в 1) если надо
+	*/
+	//console.log(x+';'+y);
+	
+	fx_yandex_map_add_trip_point_gr(x,y);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function fx_yandex_map_add_trip_point_gr(x,y){
+	var arr_push={x:0,y:0,deep:0,point:0};
+	var myPlacemark = new ymaps.Placemark(
+		[x, y],{
+			balloonContent: "<br><a onclick='fx_yandex_map_delete_trip_point_gr("+trip_point_arr.length+");'>Удалить точку</a>",
+			//<a onclick='fx_yandex_map_repair_trip_point_gr();'>тест</a>
+			iconContent: trip_point_arr.length,
+
+		},{
+			draggable: true,
+			preset: 'islands#redIcon'
+		}
+	);
+
+	// Добавляем круг на карту.
+    myMap.geoObjects.add(myPlacemark);
+	arr_push['point']=myPlacemark;
+	trip_point_arr.push(arr_push);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function fx_yandex_map_delete_trip_point_gr(id){
+	myMap.geoObjects.remove(trip_point_arr[id]['point']);
+	delete trip_point_arr[id];
+	fx_yandex_map_repair_trip_point_gr();	
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function fx_yandex_map_repair_trip_point_gr(){
+	for(var i=0;i<trip_point_arr.length;i++){
+		console.log( trip_point_arr[i] );
+		//console.log( trip_point_arr[i]['point']['properties']['_data'] );//.properties._data.iconContent
+		//trip_point_arr[i]['point'].['properties'].['_data'].iconContent=i;
+	}
+}
