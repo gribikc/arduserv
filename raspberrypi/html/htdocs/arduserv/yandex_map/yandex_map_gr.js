@@ -173,10 +173,10 @@ function on_yandex_map_click_gr(x,y){
 	/*
 		1) Начало ввода маршрута
 			0. Очистка переменных и точек карты		F(x)
-			1. добавление точки маршрута 			F(x)//fx_yandex_map_add_trip_point_gr
-			2. удаление точки маршрута				F(x)//fx_yandex_map_delete_trip_point_gr
-			3. вставка точки между
-			4. переcчет индексов массива			F(x)//fx_yandex_map_repair_trip_point_gr
+			1. добавление точки маршрута 			F(x)+//fx_yandex_map_addnew_trip_point_gr
+			2. удаление точки маршрута				F(x)+//fx_yandex_map_delete_trip_point_gr
+			3. вставка точки между					F(x)+//fx_yandex_map_middle_trip_point_gr
+			4. переcчет индексов массива			F(x)+//fx_yandex_map_repair_trip_point_gr
 		2) Завершение ввода маршрута
 			0. настройка параметров(стартовая точка, точка кольца, ...)
 			1. сохранение или передача массива		F(x),F(x)
@@ -185,16 +185,17 @@ function on_yandex_map_click_gr(x,y){
 	*/
 	//console.log(x+';'+y);
 	
-	fx_yandex_map_add_trip_point_gr(x,y);
+	fx_yandex_map_addnew_trip_point_gr(x,y);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-function fx_yandex_map_add_trip_point_gr(x,y){
+function fx_yandex_map_addnew_trip_point_gr(x,y){
 	var arr_push={x:0,y:0,deep:0,point:0};
 	var myPlacemark = new ymaps.Placemark(
 		[x, y],{
-			balloonContent: "<br><a onclick='fx_yandex_map_delete_trip_point_gr("+trip_point_arr.length+");'>Удалить точку</a>",
+			balloonContent: "	<a onclick='fx_yandex_map_middle_trip_point_gr("+trip_point_arr.length+");'>Вставить точку перед:"+trip_point_arr.length+"</a><br><br> \
+								<a onclick='fx_yandex_map_delete_trip_point_gr("+trip_point_arr.length+");'>Удалить точку:"+trip_point_arr.length+"</a>",
 			//<a onclick='fx_yandex_map_repair_trip_point_gr();'>тест</a>
 			iconContent: trip_point_arr.length,
 
@@ -213,17 +214,58 @@ function fx_yandex_map_add_trip_point_gr(x,y){
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function fx_yandex_map_delete_trip_point_gr(id){
+	myMap.balloon.close();
+	
 	myMap.geoObjects.remove(trip_point_arr[id]['point']);
-	delete trip_point_arr[id];
+	//delete trip_point_arr[id];
+	trip_point_arr.splice(id,1);
 	fx_yandex_map_repair_trip_point_gr();	
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function fx_yandex_map_repair_trip_point_gr(){
+	myMap.balloon.close();
+	
 	for(var i=0;i<trip_point_arr.length;i++){
-		console.log( trip_point_arr[i] );
-		//console.log( trip_point_arr[i]['point']['properties']['_data'] );//.properties._data.iconContent
-		//trip_point_arr[i]['point'].['properties'].['_data'].iconContent=i;
+		//console.log( trip_point_arr[i] );
+		//console.log( trip_point_arr[i]['point']['properties']['_data']['iconContent'] );//.properties._data.iconContent
+		//trip_point_arr[i]['point']['properties']['_data']['iconContent']=i;
+		//trip_point_arr[i]['point']['properties']['_data']['balloonContent']="<br><a onclick='fx_yandex_map_delete_trip_point_gr("+i+");'>Удалить точку</a>";
+		trip_point_arr[i]['point'].properties.set('iconContent', i);
+		trip_point_arr[i]['point'].properties.set('balloonContent', "	<a onclick='fx_yandex_map_middle_trip_point_gr("+i+");'>Вставить точку перед:"+i+"</a><br><br> \
+																		<a onclick='fx_yandex_map_delete_trip_point_gr("+i+");'>Удалить точку:"+i+"</a>");
+
 	}
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function fx_yandex_map_middle_trip_point_gr(id){
+	if(id==0){return;}
+	
+	
+	//console.log(trip_point_arr[id]['point']['geometry']['_coordinates']);//geometry._coordinates
+	//var coords = trip_point_arr[id]['point']['geometry']['_coordinates'];
+	var x,y;
+	//x=trip_point_arr[id]['point']['geometry']['_coordinates'][0];
+	//y=trip_point_arr[id]['point']['geometry']['_coordinates'][1];
+	//coords = trip_point_arr[id-1]['point']['geometry']['_coordinates'];
+	var st=new Float32Array(2);
+	var rd=new Float32Array(2);
+	st=trip_point_arr[id]['point'].geometry.getCoordinates();
+	rd=trip_point_arr[id-1]['point'].geometry.getCoordinates();
+	
+	x=( parseFloat(rd[0])+parseFloat(st[0]) )/2;
+	y=( parseFloat(rd[1])+parseFloat(st[1]) )/2;
+	
+	console.log(x,y);
+
+	fx_yandex_map_addnew_trip_point_gr(x,y);
+	
+	trip_point_arr.splice( id, 0,trip_point_arr[trip_point_arr.length-1] );//trip_point_arr.splice( (trip_point_arr.length-1),1 )
+	trip_point_arr.splice((trip_point_arr.length-1),1);
+	
+	fx_yandex_map_repair_trip_point_gr();
+	
 }
