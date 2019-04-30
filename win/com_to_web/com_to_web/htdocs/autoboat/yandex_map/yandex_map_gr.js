@@ -259,7 +259,7 @@ function fx_yandex_map_middle_trip_point_gr(id){
 	x=( parseFloat(rd[0])+parseFloat(st[0]) )/2;
 	y=( parseFloat(rd[1])+parseFloat(st[1]) )/2;
 	
-	//console.log(x,y);
+	console.log(x,y);
 
 	fx_yandex_map_addnew_trip_point_gr(x,y);
 	

@@ -148,12 +148,36 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
     if(parser_data->hrp_headers_valid==2){
         //анализируем и делаем
         if(parser_data->com_parser_valid==1 || parser_data->bt_parser_valid==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            parser_data->socket->write("Content-type: text/plan\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
             find_device_and_do(parser_data);
         }else if(parser_data->main_page_parser_valid==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            parser_data->socket->write("Content-type: text/html\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
             main_page_request_do(parser_data);
         }else if(parser_data->htdocs_page_request_do==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            //parser_data->socket->write("Content-type: text/html\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
             htdocs_page_request_do(parser_data);
         }else{
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            parser_data->socket->write("Content-type: text/plan\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
             ui->textEdit->insertPlainText("        No walid request\n");
             parser_data->socket->write("No walid request...\n");
 
@@ -197,11 +221,11 @@ void com_to_web::http_request_parsing(gr_httprqs_parser *parser_data){
     }
     if(parser_data->hrp_del!=0 && parser_data->hrp_headers_valid==0){//Если есть признак завершонного заголовка и еще не обрабатывали
         //Request complite
-        parser_data->socket->write("HTTP/1.1 200 OK\n");
-        parser_data->socket->write("Content-type: text/plan\n");
-        parser_data->socket->write("Connection: keep-alive\n");
-        parser_data->socket->write("Access-Control-Allow-Origin: *\n");
-        parser_data->socket->write("\n");
+        //parser_data->socket->write("HTTP/1.1 200 OK\n");
+        //parser_data->socket->write("Content-type: text/plan\n");
+        //parser_data->socket->write("Connection: keep-alive\n");
+        //parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+        //parser_data->socket->write("\n");
         ui->textEdit->insertPlainText("        Request complite:\n");
 
         for(int i=0;i<header_line.size();i++){
@@ -361,15 +385,8 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
     parser_data->socket->write("\r\n");
     parser_data->socket->write("END.\r\n");
 
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-
-    get_tree_file("","",parser_data);
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-
+    QDir dir;
+    get_tree_file(dir.currentPath()+"/htdocs/","",parser_data);
 
     //parser_data->socket->close();//!!!
     //if(QSysInfo::productType()=="android"){
@@ -386,25 +403,16 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
 void com_to_web::htdocs_page_request_do(gr_httprqs_parser *parser_data){
     QByteArray qbt_temp;
     ui->textEdit->insertPlainText("        HtDocs Page request\n");
-    parser_data->socket->write("HtDocs Page request...\n");
 
-    qbt_temp=QByteArray::number(httprqs_parser.size());
-    parser_data->socket->write(qbt_temp);
+    QDir dir;
+    //dir.currentPath()+"/htdocs/";
+    QString file_str=dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit();
+    QFile file_req(file_str);///dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit());
+    file_req.open(QIODevice::ReadOnly);
 
-    parser_data->socket->write("\n");
-    parser_data->socket->write(parser_data->htdocs_file_query.toLocal8Bit());
+    parser_data->socket->write(file_req.readAll());
+    file_req.close();
 
-    parser_data->socket->write("\r\n");
-    parser_data->socket->write("\r\n");
-    parser_data->socket->write("END.\r\n");
-
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////
     parser_data->socket->close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
