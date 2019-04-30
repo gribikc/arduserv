@@ -17,7 +17,8 @@ void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
     serial->setFlowControl(QSerialPort::NoFlowControl);*/
-    if(serial->open(QIODevice::ReadWrite)){
+    serial->open(QIODevice::ReadWrite);
+    if(serial->isOpen()){
         printf("COMport OPEN\n");
         //serial->setPortName("COM5");//78
         serial->setBaudRate(speed);//115200
@@ -26,6 +27,8 @@ void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
         serial->setParity(QSerialPort::NoParity);
         serial->setStopBits(QSerialPort::OneStop);
         serial->setFlowControl(QSerialPort::NoFlowControl);
+    }else{
+        printf("COMport NOT OPENed\n");
     }
     if(!serial->isReadable()){
         socket->close();
