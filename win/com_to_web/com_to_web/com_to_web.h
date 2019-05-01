@@ -74,7 +74,7 @@ public:
     void main_page_request_do(gr_httprqs_parser *parser_data);
     void htdocs_page_request_do(gr_httprqs_parser *parser_data);
 
-    void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data);
+    void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data, QString base_dir);
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных

@@ -386,7 +386,8 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
     parser_data->socket->write("END.\r\n");
 
     QDir dir;
-    get_tree_file(dir.currentPath()+"/htdocs/","",parser_data);
+    parser_data->socket->write("<br>");
+    get_tree_file(dir.currentPath()+"/htdocs/","",parser_data,dir.currentPath());
 
     //parser_data->socket->close();//!!!
     //if(QSysInfo::productType()=="android"){
@@ -418,8 +419,9 @@ void com_to_web::htdocs_page_request_do(gr_httprqs_parser *parser_data){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data){
+void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data,QString base_dir){
     QDir dir(dir_patch);
+    //QDir::setCurrent(base_dir);
     dir.setFilter(QDir::AllDirs | QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     dir.setSorting(QDir::Size | QDir::Reversed);
     QFileInfoList list = dir.entryInfoList();
@@ -431,20 +433,29 @@ void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs
         if( fileInfo.isDir() && fileInfo.fileName()!=".." && fileInfo.fileName()!="." ){
             parser_data->socket->write(prefix_add.toLocal8Bit());
 
-                parser_data->socket->write(fileInfo.absolutePath().toLocal8Bit());
+                //parser_data->socket->write(fileInfo.absolutePath().toLocal8Bit());
+                parser_data->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,""));
                 parser_data->socket->write("/");
                     parser_data->socket->write(fileInfo.fileName().toLocal8Bit());
                 parser_data->socket->write("/");
 
-            parser_data->socket->write("\n");
-            get_tree_file( dir.absoluteFilePath( fileInfo.fileName()),(prefix_add+"    "),parser_data);
+            parser_data->socket->write("\n<br>");
+            get_tree_file( dir.absoluteFilePath( fileInfo.fileName()),(prefix_add+"&nbsp;&nbsp;&nbsp;&nbsp;"),parser_data,base_dir);
         }else if(fileInfo.isFile()){
             parser_data->socket->write(prefix_add.toLocal8Bit());
+
+            parser_data->socket->write("<a href='");
+            parser_data->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,""));
+            parser_data->socket->write("/");
             parser_data->socket->write(fileInfo.fileName().toLocal8Bit());
+            parser_data->socket->write("'>");
+            parser_data->socket->write(fileInfo.fileName().toLocal8Bit());
+            parser_data->socket->write("</a>");
+
                  parser_data->socket->write("(");
             parser_data->socket->write(QString::number(fileInfo.size()).toLocal8Bit());
                 parser_data->socket->write(")");
-            parser_data->socket->write("\n");
+            parser_data->socket->write("\n<br>");
         }
     }
 }
