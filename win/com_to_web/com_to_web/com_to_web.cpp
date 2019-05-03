@@ -171,6 +171,14 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
             parser_data->socket->write("\n");
 
             htdocs_page_request_do(parser_data);
+        }else if(parser_data->htdocs_db_write_do==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            //parser_data->socket->write("Content-type: text/html\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
+            htdocs_db_write_do(parser_data);
         }else{
             parser_data->socket->write("HTTP/1.1 200 OK\n");
             parser_data->socket->write("Content-type: text/plan\n");
@@ -268,6 +276,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->bt_parser_valid=0;
             parser_data->main_page_parser_valid=0;
             parser_data->htdocs_page_request_do=0;
+            parser_data->htdocs_db_write_do=0;
         }
         ///////////////////////////////////
         //BT
@@ -280,6 +289,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->bt_parser_valid=1;
             parser_data->main_page_parser_valid=0;
             parser_data->htdocs_page_request_do=0;
+            parser_data->htdocs_db_write_do=0;
         }
         ///////////////////////////////////
         //MAIN PAGE
@@ -288,6 +298,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->bt_parser_valid=0;
             parser_data->main_page_parser_valid=1;
             parser_data->htdocs_page_request_do=0;
+            parser_data->htdocs_db_write_do=0;
         }
         ///////////////////////////////////
         //PAGE
@@ -299,12 +310,26 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
             parser_data->bt_parser_valid=0;
             parser_data->main_page_parser_valid=0;
             parser_data->htdocs_page_request_do=1;
+            parser_data->htdocs_db_write_do=0;
         }
         ///////////////////////////////////
         //WRITE PAGE
+        ///////////////////////////////////
+        //WRITE DB
+        if( (temp.startsWith("GET /w/db/") || temp.startsWith("POST /w/db/") ) ){        //GET /R/BT/HC-06/
+            list_in_line=temp.split(" ");
+            parser_data->htdocs_file_query=list_in_line[1];
+
+            parser_data->com_parser_valid=0;
+            parser_data->bt_parser_valid=0;
+            parser_data->main_page_parser_valid=0;
+            parser_data->htdocs_page_request_do=0;
+            parser_data->htdocs_db_write_do=1;
+        }
 
         ///////////////////////////////////
         //GET SYS DATA
+
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -458,6 +483,38 @@ void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs
             parser_data->socket->write("\n<br>");
         }
     }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+void com_to_web::htdocs_db_write_do(gr_httprqs_parser *parser_data){
+    QDir dir;
+    QString file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
+
+    QStringList fpa=parser_data->htdocs_file_query.split("/");
+    for(int i=3;i<fpa.size();i++){
+        file_str=file_str+"/"+fpa[i].toLocal8Bit();
+    }
+    QFile file_req(file_str);
+
+    file_req.setFileName(file_str);
+    QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
+    file_req.rename(nfn);
+    file_req.setFileName(file_str);
+
+    file_req.open(QIODevice::WriteOnly);
+    QByteArray  data_to_send=parser_data->InData.right(parser_data->InData.size()-parser_data->hrp_del);
+    file_req.write(data_to_send);
+    file_req.close();
+
+    ui->textEdit->insertPlainText("        DB WR complite\n");
+
+    //htdocs_page_request_do(parser_data);
+    parser_data->socket->write("\r\n");
+    parser_data->socket->write("\r\n");
+    parser_data->socket->write("END.\r\n");
+
+    parser_data->socket->close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

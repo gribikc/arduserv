@@ -83,8 +83,8 @@
 		//Парсинг
 			parser_data(stream){
 				this.parser_data_array=JSON.parse(stream);
-								
-				if(this.parser_data_array.length>0 && 1){
+				
+				if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
 					this.hub_handler.parser_data('json',this.parser_data_array);					
 					this.parser_data_array=new Array();
 				}

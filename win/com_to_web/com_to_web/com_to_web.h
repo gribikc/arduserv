@@ -50,6 +50,7 @@ public:
 
         bool main_page_parser_valid=0;
         bool htdocs_page_request_do=0;
+        bool htdocs_db_write_do=0;
 
         int is_dev_dublicate_id=-1;
 
@@ -73,6 +74,8 @@ public:
 
     void main_page_request_do(gr_httprqs_parser *parser_data);
     void htdocs_page_request_do(gr_httprqs_parser *parser_data);
+
+    void htdocs_db_write_do(gr_httprqs_parser *parser_data);
 
     void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data, QString base_dir);
 
