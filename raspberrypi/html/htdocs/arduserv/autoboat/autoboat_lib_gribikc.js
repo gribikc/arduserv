@@ -1,6 +1,6 @@
 'use strict';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function float_from_byte_arr_gr(buf){
+/*function float_from_byte_arr_gr(buf){
 	var sig=0;
 	var por=0;
 	var man=0;
@@ -26,15 +26,15 @@ function float_from_byte_arr_gr(buf){
 	//document.getElementById("debug").innerHTML+=por+"<br>";
 	//document.getElementById("debug").innerHTML+=man+"<br>";
 	//document.getElementById("debug").innerHTML+=res+"<br>";
-}
+}*/
 //////////////////
-function byte_arr_from_float_gr(buf){
+/*function byte_arr_from_float_gr(buf){
 	var float32	= new Float32Array(1);
 	float32[0] 	= buf;
 	var float32_ba = new Uint8Array(float32.buffer);
 	//console.log(float32_ba);
 	return float32_ba;
-}
+}*/
 //var float32 = new Float32Array([1.2]);
 //float32
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,3 +263,90 @@ function byte_arr_from_float_gr(buf){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class json_config_read_gr{
+		//Инициализация
+			constructor() {}
+		//Парсинг
+			parser_data(type,arr){
+				//console.log(arr);
+				auto_boat_config=arr;
+				update_config_data();
+			}
+	}
+
+	function autoboat_save_settings_send_db(){
+		var xmlhttprq_test = new XMLHttpRequest();
+		xmlhttprq_test.open('POST', 'http://localhost:3128/w/db/autoboat/config.json', true);//, true
+		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlhttprq_test.send(JSON.stringify(auto_boat_config));
+	}
+
+	function update_config_data(){
+		//document.getElementById("main_settings_edit")
+		var table = document.createElement("table");
+		var tr,td,text,temp;
+        table.setAttribute("border", "2px");
+
+
+		for(var key in auto_boat_config) {
+				tr = document.createElement("tr");
+				td = document.createElement("td");
+				text = document.createTextNode(key);
+				td.appendChild(text);
+				tr.appendChild(td);
+				
+				if(auto_boat_config[key].length>0){
+					td.setAttribute("rowspan", auto_boat_config[key].length);
+					for(var k in auto_boat_config[key]) {//setAttribute("border", "0");
+						td = document.createElement("td");
+						text = document.createTextNode(auto_boat_config[key][k]);
+						td.appendChild(text);
+						tr.appendChild(td);
+						table.appendChild(tr);
+						
+						tr = document.createElement("tr");
+						table.appendChild(tr);
+					}
+					table.removeChild(tr);
+				}else{
+					td = document.createElement("td");
+					text = document.createTextNode(auto_boat_config[key]);
+					td.appendChild(text);
+					tr.appendChild(td);
+					table.appendChild(tr);
+				}
+		}
+
+
+		return document.getElementById("main_settings_edit").appendChild(table);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function autoboat_save_routing_sets_send_db(){
+		var xmlhttprq_test = new XMLHttpRequest();
+		xmlhttprq_test.open('POST', 'http://localhost:3128/w/db/autoboat/routing_sets.json', true);//, true
+		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlhttprq_test.send(JSON.stringify(auto_boat_routing_sets));
+	}	
+
+
+	class json_routing_sets_read_gr{
+		//Инициализация
+			constructor() {}
+		//Парсинг
+			parser_data(type,arr){
+				console.log(arr);
+			}
+	}
+
+	function autoboat_routing_sets_test(){
+		console.log(trip_point_arr);
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

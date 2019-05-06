@@ -3,14 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Cache-Control" content="no-cache">
-	<LINK REL=STYLESHEET TYPE="text/css" HREF="css/autoboat_css_lib.css">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="../css/autoboat_css_lib.css">
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-	<script src="yandex_map/yandex_map_gr.js" type="text/javascript"></script>
+	<script src="../yandex_map/yandex_map_gr.js" type="text/javascript"></script>
 	
-	<script language="javascript" type="text/javascript"  src="paper-full.js"></script>
-	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
-	<script language="javascript" type="text/javascript"  src="autoboat/autoboat_js_xhr_lib.js"></script>
-	<script language="javascript" type="text/javascript"  src="autoboat/autoboat_lib_gribikc.js"></script>
+	<script language="javascript" type="text/javascript"  src="../paper-full.js"></script>
+	<script language="javascript" type="text/javascript"  src="../arduserv_js_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="autoboat_js_xhr_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="autoboat_lib_gribikc.js"></script>
 	<style type="text/css">
 	</style>
 </head>
@@ -22,13 +22,13 @@
 	<!---------------------------------------------------------------------------------------------------------->
 		<!---------------------------------------------------------------------------------------------------------->
 			<div class="menu_top_gr">
-				<a class="img_menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_left');"><img src="css/icons8-menu-50.png"></a>
-					<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img src="css/icons8-double-left-50.png"></a>
+				<a class="img_menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_left');"><img src="../css/icons8-menu-50.png"></a>
+					<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img src="../css/icons8-double-left-50.png"></a>
 				
 				<!--div style="display: inline-block; margin:auto;">Текст</div-->
 				
-				<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img src="css/icons8-settings-50.png"></a>
-					<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img src="css/icons8-double-right-50.png"></a>
+				<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img src="../css/icons8-settings-50.png"></a>
+					<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img src="../css/icons8-double-right-50.png"></a>
 			</div>
 		<!---------------------------------------------------------------------------------------------------------->
 			<div class="menu_sub_left_gr" id="sub_menu_left">
@@ -49,6 +49,7 @@
 		<!---------------------------------------------------------------------------------------------------------->
 			<div class="up_state_div_gr">XNR; GPS; AP; BAT; LINK</div>
 		<!---------------------------------------------------------------------------------------------------------->
+			<a class="menu_up_a_gr" onclick="test_send_db();">_test_</a>
 	<!---------------------------------------------------------------------------------------------------------->
 	<!---------------------------------------------------------------------------------------------------------->	
 	<!---------------------------------------------------------------------------------------------------------->	
@@ -60,6 +61,7 @@
 					<div id="sys_info_termo" style="display:inline;" style="border: 3px solid #000000;">sys_info_div</div>
 					<div id="sys_info_uptime" style="display:inline;" style="border: 3px solid #000000;">sys_info_uptime</div>
 					<div id="xhr_status_div"></div>
+					<div id="xhr_config_div"></div>
 				</div>
 			<!---------------------------------------------------------------------------------------------------------->
 				<div id="autobot_state" style="border: 3px solid #000000;">autobot_state</div>

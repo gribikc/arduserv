@@ -83,8 +83,8 @@
 		//Парсинг
 			parser_data(stream){
 				this.parser_data_array=JSON.parse(stream);
-								
-				if(this.parser_data_array.length>0 && 1){
+				
+				if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
 					this.hub_handler.parser_data('json',this.parser_data_array);					
 					this.parser_data_array=new Array();
 				}
@@ -427,65 +427,69 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //...
-function hide_view_inner_gr(inner_html){
-	//document.getElementById(inner).visibility    hidden   visible
-	//document.getElementById(inner).position      absolute unset
-	//document.getElementById(inner).zIndex			0 		unset
-	//alert(document.getElementById(inner).style.visibility);
-	//alert(document.getElementById(inner).style.position);
-	//alert(document.getElementById(inner).style.zIndex);
-	//console.log(document.getElementById(inner_html).style);
-	
-	if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
-	   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
-	   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
-		document.getElementById(inner_html).style.visibility="hidden";
-		document.getElementById(inner_html).style.position="absolute";
-		document.getElementById(inner_html).style.zIndex=-1;
-	}else{
-		document.getElementById(inner_html).style.visibility="visible";
-		document.getElementById(inner_html).style.position="unset";
-		document.getElementById(inner_html).style.zIndex="unset";
+	function hide_view_inner_gr(inner_html){
+		//document.getElementById(inner).visibility    hidden   visible
+		//document.getElementById(inner).position      absolute unset
+		//document.getElementById(inner).zIndex			0 		unset
+		//alert(document.getElementById(inner).style.visibility);
+		//alert(document.getElementById(inner).style.position);
+		//alert(document.getElementById(inner).style.zIndex);
+		//console.log(document.getElementById(inner_html).style);
+		
+		if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
+		   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
+		   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
+			document.getElementById(inner_html).style.visibility="hidden";
+			document.getElementById(inner_html).style.position="absolute";
+			document.getElementById(inner_html).style.zIndex=-1;
+		}else{
+			document.getElementById(inner_html).style.visibility="visible";
+			document.getElementById(inner_html).style.position="unset";
+			document.getElementById(inner_html).style.zIndex="unset";
+		}
+	}//////////////////////////////////////////
+	///////////////////////////////////////////
+	function hiden_change_inner_gr(inner_html){
+		if(document.getElementById(inner_html).style.visibility=="visible"){
+			document.getElementById(inner_html).style.visibility="hidden";
+		}else{
+			document.getElementById(inner_html).style.visibility="visible";
+		}
 	}
-}
-function hiden_change_inner_gr(inner_html){
-	if(document.getElementById(inner_html).style.visibility=="visible"){
-		document.getElementById(inner_html).style.visibility="hidden";
-	}else{
-		document.getElementById(inner_html).style.visibility="visible";
-	}
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //...
-/*function float_from_byte_arr_gr(buf){
-	var sig=0;
-	var por=0;
-	var man=0;
-	
-	if((buf&0x80000000)){//Знак
-		var sig=-1;
-	}else{
-		var sig=1;
+	function float_from_byte_arr_gr(buf){
+		var sig=0;
+		var por=0;
+		var man=0;
+		
+		if((buf&0x80000000)){//Знак
+			var sig=-1;
+		}else{
+			var sig=1;
+		}
+		
+		por=((buf>>23)&0xFF);//Порядок
+		
+		if(por!=0){//Мантисса
+			man=((buf& 0x7FFFFF)|0x800000);
+		}else{
+			man=((buf&0x7FFFFF)<<1);
+		}
+		
+		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
+		return res;
+	}////////////////////////////////////
+	/////////////////////////////////////
+	function byte_arr_from_float_gr(buf){
+		var float32	= new Float32Array(1);
+		float32[0] 	= buf;
+		var float32_ba = new Uint8Array(float32.buffer);
+		//console.log(float32_ba);
+		return float32_ba;
 	}
-	
-	por=((buf>>23)&0xFF);//Порядок
-	
-	if(por!=0){//Мантисса
-		man=((buf& 0x7FFFFF)|0x800000);
-	}else{
-		man=((buf&0x7FFFFF)<<1);
-	}
-	
-	var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
-	return res;
-	
-	//document.getElementById("debug").innerHTML+=sig+"<br>";
-	//document.getElementById("debug").innerHTML+=por+"<br>";
-	//document.getElementById("debug").innerHTML+=man+"<br>";
-	//document.getElementById("debug").innerHTML+=res+"<br>";
-}*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

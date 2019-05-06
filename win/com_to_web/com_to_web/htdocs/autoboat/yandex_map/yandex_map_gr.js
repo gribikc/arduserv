@@ -207,43 +207,21 @@ function fx_yandex_map_addnew_trip_point_gr(x,y){
 
 		},{
 			draggable: true,
-			preset: 'islands#redIcon'
-		}
-	);
-
-	// Добавляем круг на карту.
-    myMap.geoObjects.add(myPlacemark);
-	arr_push['point']=myPlacemark;
-	trip_point_arr.push(arr_push);
-	
-	/////
-			var myCircle = new ymaps.Circle([
-				// Координаты центра круга.
-				[x, y],
-				// Радиус круга в метрах.
-				10
-			], { }, {
-				// Задаем опции круга.
-				// Включаем возможность перетаскивания круга.
-				draggable: false,
-				// Цвет заливки.
-				// Последний байт (77) определяет прозрачность.
-				// Прозрачность заливки также можно задать используя опцию "fillOpacity".
-				fillColor: "rgb("+255+","+0+","+0+")",//#DB7093"//fillColor: "rgb("+deep*30+","+deep*30+","+deep*0+")",//#DB7093"
-				fillOpacity: "50",
+			preset: 'islands#redIcon',
+			fillOpacity: "50",
 				// Цвет обводки.
 				strokeColor: "#FFFFFF",
 				// Прозрачность обводки.
 				strokeOpacity: 0,
 				// Ширина обводки в пикселях.
 				strokeWidth: 0
-			});
+		}
+	);
 
-			//myCircle.events.add('click', function (e) {alert(deep);})
-			
-			// Добавляем круг на карту.
-			myMap.geoObjects.add(myCircle);	
-	////	
+	// Добавляем круг на карту.
+    myMap.geoObjects.add(myPlacemark);
+	arr_push['point']=myPlacemark;
+	trip_point_arr.push(arr_push);	
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
