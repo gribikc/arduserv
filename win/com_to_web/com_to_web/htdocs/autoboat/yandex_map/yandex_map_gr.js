@@ -257,13 +257,8 @@ function fx_yandex_map_repair_trip_point_gr(){
 function fx_yandex_map_middle_trip_point_gr(id){
 	if(id==0){return;}
 	
-	
-	//console.log(trip_point_arr[id]['point']['geometry']['_coordinates']);//geometry._coordinates
-	//var coords = trip_point_arr[id]['point']['geometry']['_coordinates'];
+
 	var x,y;
-	//x=trip_point_arr[id]['point']['geometry']['_coordinates'][0];
-	//y=trip_point_arr[id]['point']['geometry']['_coordinates'][1];
-	//coords = trip_point_arr[id-1]['point']['geometry']['_coordinates'];
 	var st=new Float32Array(2);
 	var rd=new Float32Array(2);
 	st=trip_point_arr[id]['point'].geometry.getCoordinates();

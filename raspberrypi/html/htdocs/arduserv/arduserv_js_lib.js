@@ -493,4 +493,55 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//create_table
+	function create_table_from_array_gr(arr_in,div){
+		var table = document.createElement("table");
+		var tr,td,text,temp;
+        table.setAttribute("border", "2px");
+		var arr=new Array();
+
+		//console.log(Array.isArray(arr_in));
+		//for(var i=0;i<arr_in.lenght;i++){
+		if(Array.isArray(arr_in)){
+			arr=arr_in[0];
+		}else{
+			arr=arr_in;
+		}
+			//arr=arr_in;
+			console.log(arr_in);
+			for(var key in arr) {
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					text = document.createTextNode(key);
+					td.appendChild(text);
+					tr.appendChild(td);
+				
+					if(arr[key].length>0){
+						td.setAttribute("rowspan", arr[key].length);
+						for(var k in arr[key]) {
+							td = document.createElement("td");
+							text = document.createTextNode(arr[key][k]);
+							td.appendChild(text);
+							tr.appendChild(td);
+							table.appendChild(tr);
+							
+							tr = document.createElement("tr");
+							table.appendChild(tr);
+						}
+						table.removeChild(tr);
+					}else{
+						td = document.createElement("td");
+						text = document.createTextNode(arr[key]);
+						td.appendChild(text);
+						tr.appendChild(td);
+						table.appendChild(tr);
+					}
+			}
+		//}
+
+		document.getElementById(div).appendChild(table);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //...

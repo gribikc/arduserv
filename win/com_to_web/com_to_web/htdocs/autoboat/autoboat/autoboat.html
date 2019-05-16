@@ -32,24 +32,28 @@
 			</div>
 		<!---------------------------------------------------------------------------------------------------------->
 			<div class="menu_sub_left_gr" id="sub_menu_left">
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Статус XNR</a>			<br>
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('autobot_state');">Телеметрия AP</a>	<br>
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas2');">GRAPH#1</a>				<br>
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas3');">GRAPH#2</a>				<br>
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas');">GRAPH#3</a>					<br>
-				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('test_counter_div');">TEST CNT</a>		<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Скрыть ВСЕ</a>			<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Список виджетов</a>		<br>
 				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('map');">Карта</a>						<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('autobot_state');">Телеметрия AP</a>	<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('upr');">Основное управление</a>		<br>
+
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Статус XNR</a>			<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas2');">GRAPH#1</a>				<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas3');">GRAPH#2</a>				<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas');">GRAPH#3</a>					<br>
 			</div>
 			<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
-				<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">MAP CP</a><br>
-				<a class="menu_up_a_gr" onclick="auto_boat_config['auto_move_map_to_boat'] ? auto_boat_config['auto_move_map_to_boat']=0 : auto_boat_config['auto_move_map_to_boat']=1;">MAP FOLLOW</a><br>
-				<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки AP</a><br>
-				<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки общ.</a>
+				<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">Карта->Текущие положение</a><br>
+				<a class="menu_up_a_gr" onclick="auto_boat_config['auto_move_map_to_boat'] ? auto_boat_config['auto_move_map_to_boat']=0 : auto_boat_config['auto_move_map_to_boat']=1;">Карта->Следовать</a><br>
+				<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
+				<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>
+				<a class="menu_up_a_gr" onclick="">Управление маршрутами</a>		
 			</div>
 		<!---------------------------------------------------------------------------------------------------------->
 			<div class="up_state_div_gr">XNR; GPS; AP; BAT; LINK</div>
+			<!--div id="" style="display:inline;" style="border: 3px solid #000000;"><a onclick="test_send_data1();">test_send</a></div-->
 		<!---------------------------------------------------------------------------------------------------------->
-			<a class="menu_up_a_gr" onclick="test_send_db();">_test_</a>
 	<!---------------------------------------------------------------------------------------------------------->
 	<!---------------------------------------------------------------------------------------------------------->	
 	<!---------------------------------------------------------------------------------------------------------->	
@@ -58,19 +62,14 @@
 		<div style="display:block; width:100%; height:100%;" id="main_wiev_div">
 			<!---------------------------------------------------------------------------------------------------------->	
 				<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;">
-					<div id="sys_info_termo" style="display:inline;" style="border: 3px solid #000000;">sys_info_div</div>
-					<div id="sys_info_uptime" style="display:inline;" style="border: 3px solid #000000;">sys_info_uptime</div>
 					<div id="xhr_status_div"></div>
 					<div id="xhr_config_div"></div>
 				</div>
 			<!---------------------------------------------------------------------------------------------------------->
 				<div id="autobot_state" style="border: 3px solid #000000;">autobot_state</div>
 			<!---------------------------------------------------------------------------------------------------------->
-				<div id="test_counter_div" style="border: 3px solid #000000;">test_counter_div</div>
-			<!---------------------------------------------------------------------------------------------------------->
 			<!--<MAIN CONTROL>-->	
 				<div id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
-					<div id="" style="display:inline;" style="border: 3px solid #000000;"><a onclick="test_send_data1();">test_send</a></div>
 					<table border="1">
 						<tr>
 							<td colspan="3" align="center">АП</td>
@@ -120,6 +119,46 @@
 					</table>
 				</div>
 			<!--</MAIN CONTROL>-->
+			<!--<SETTINGS>-->
+				<div id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">main_settings_edit</div>
+			<!--<SETTINGS>-->
+			<!--<routing_sets>-->
+				<div id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">routing_sets</div>
+			<!--<routing_sets>-->
+			<!--<routing_safe>-->
+				Начать ввод маршрута
+				Очистака ввода
+				Отмена вводамаршрута
+				<a onclick="autoboat_routing_sets_test();">TEST</a>
+				<div id="routing_safe" style="background: #FFFFFF;border: 3px solid #000000;">
+					<table>
+						<tr>
+							<td>Точек</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Название</td>
+							<td><input type="text" id="routing_safe_name"></td>
+						</tr>
+						<tr>
+							<td>Стартовая точка</td>
+							<td><input type="text" id="routing_safe_start_point" value="0"></td>
+						</tr>
+						<tr>
+							<td>Петлевая точка</td>
+							<td><input type="text" id="routing_safe_loop_point" value="0"></td>
+						</tr>
+						<tr>
+							<td>Описание</td>
+							<td><textarea id="routing_safe_description"></textarea></td>
+						</tr>
+						<tr>
+							<td>Сохранить</td>
+							<td><input type="button" value="Сохранить маршрут"></td>
+						</tr>
+					</table>
+				</div>
+			<!--<routing_safe>-->
 			<!---------------------------------------------------------------------------------------------------------->
 				<!--<canvas id="canvas2" width="500" height="300" style="border: 3px solid #000000;"></canvas>
 				<canvas id="canvas3" width="500" height="300" style="border: 3px solid #000000;"></canvas>
