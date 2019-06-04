@@ -339,7 +339,11 @@
 			view_stat(){
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
-				this.stat_div.innerHTML='Скорость: '+(this.stat_bps.toFixed(2))+' бит/с.';//bit per second
+				if(this.stat_bps<1000){
+					this.stat_div.innerHTML='Скорость: '+(this.stat_bps.toFixed(2))+' бит/с.';//bit per second
+				}else{
+					this.stat_div.innerHTML='Скорость: '+((this.stat_bps/1000).toFixed(2))+' Kбит/с.';//bit per second
+				}
 				//console.log(this);
 			}
 		//чуть
@@ -489,6 +493,67 @@
 		var float32_ba = new Uint8Array(float32.buffer);
 		//console.log(float32_ba);
 		return float32_ba;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//create_table
+	function create_table_from_array_gr(arr_in,div){
+		
+		var table = document.createElement("table");
+		var tr,td,text,temp;
+        table.setAttribute("border", "2px");
+		var arr=new Array();
+
+		var i=0;
+		do{
+			if(Array.isArray(arr_in)){
+				arr=arr_in[i];
+				if(i>0){
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					td.setAttribute("colspan", 2);
+					text = document.createTextNode("---");
+					td.appendChild(text);
+					tr.appendChild(td);
+					table.appendChild(tr);
+				}
+			}else{
+				arr=arr_in;
+			}
+				for(var key in arr) {
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					text = document.createTextNode(key);
+					td.appendChild(text);
+					tr.appendChild(td);
+				
+					if(arr[key].length>0 && Array.isArray(arr[key])){
+						td.setAttribute("rowspan", arr[key].length);
+						for(var k in arr[key]) {
+							td = document.createElement("td");
+							text = document.createTextNode(arr[key][k]);
+							td.appendChild(text);
+							tr.appendChild(td);
+							table.appendChild(tr);
+							
+							tr = document.createElement("tr");
+							table.appendChild(tr);
+						}
+						table.removeChild(tr);
+					}else{
+						td = document.createElement("td");
+						text = document.createTextNode(arr[key]);
+						td.appendChild(text);
+						tr.appendChild(td);
+						table.appendChild(tr);
+					}
+				}
+			i++;
+		} while(i<arr_in.length)
+		//}
+
+		document.getElementById(div).appendChild(table);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
