@@ -200,7 +200,7 @@ function main_init(){
 			//new xmlhttprq_stream_gr(arduino_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
 		//JSON_TEST
-			/*test_json_param={
+			test_json_param={
 				url: 'php_core_gr/get_nmea_from_mysql.php?reset=0',//'php_core_gr/get_nmea_from_mysql.php',//php_core_gr/myTutorials.txt
 				mime_type: 'text/plain; charset=x-user-defined',
 				status_div_name: "JSON_TEST:",
@@ -218,7 +218,7 @@ function main_init(){
 				reload_en: true,
 				reload_time: 1000
 			};
-			new xmlhttprq_stream_gr(test_json_param);*/
+			new xmlhttprq_stream_gr(test_json_param);
 		//_JSON_TEST_
 	//STREAM_
 	//PAPER JS
