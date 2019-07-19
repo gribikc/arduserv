@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: E:\\dron\\pic\\arduserv\\git\\arduserv\\win\\com_to_web\\com_to_web\\android-build\\src\\org\\kde\\necessitas\\ministro\\IMinistroCallback.aidl
+ * Original file: D:\\dron\\pic\\ardrpi\\git\\arduserv\\win\\com_to_web\\com_to_web\\android-build\\src\\org\\kde\\necessitas\\ministro\\IMinistroCallback.aidl
  */
 package org.kde.necessitas.ministro;
 public interface IMinistroCallback extends android.os.IInterface

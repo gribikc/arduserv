@@ -74,8 +74,10 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
                     if(httprqs_parser[i].gr_bt!=nullptr){
                         httprqs_parser[i].gr_bt->bt_Socket->close();// disconnectFromService();//disconnected()
 
-                        httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
-                        httprqs_parser[i].gr_bt->bt_Socket->destroyed();
+                        //httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
+                        //httprqs_parser[i].gr_bt->bt_Socket->destroyed();
+                        //httprqs_parser[i].gr_bt->destroyed();
+                        httprqs_parser[i].gr_bt->bt_close_all();
                         httprqs_parser[i].gr_bt->destroyed();
                     }
                 }else if(QSysInfo::productType()=="windows" && httprqs_parser[i].data_wr==0){
@@ -370,7 +372,8 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
                 httprqs_parser[parser_data->is_dev_dublicate_id].com_port->serial->write(data_to_send);// !!! //отправляем что есть
                 ui->textEdit->insertPlainText("        Send data to serial\n");//LOG
             }else if(QSysInfo::productType()=="android"){
-                httprqs_parser[parser_data->is_dev_dublicate_id].gr_bt->bt_Socket->write(data_to_send);// !!! //отправляем что есть
+                //httprqs_parser[parser_data->is_dev_dublicate_id].gr_bt->bt_Socket->write(data_to_send);// !!! //отправляем что есть
+                httprqs_parser[parser_data->is_dev_dublicate_id].gr_bt->bt_socketWrite(data_to_send);//communicate from ble
                 ui->textEdit->insertPlainText("        Send data to BT\n");//LOG
             }
 
