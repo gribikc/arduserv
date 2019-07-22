@@ -28,5 +28,7 @@ D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\clas
 D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\classes\org\qtproject\qt5\android\bindings\QtService.class \
 D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\classes\org\qtproject\qt5\android\bindings\QtServiceLoader.class \
 D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\dexedLibs\QtAndroidBluetooth-bundled-341ce155e4f2e2e1dde857b6774ea81e.jar \
+D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\dexedLibs\QtPositioning-bundled-8a4c5a73c94f2e94446e8ae4a8d2e601.jar \
 D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\dexedLibs\QtAndroid-bundled-fdf30d6fed8f63c4fc3eb522f49f8a0b.jar \
 D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\dexedLibs\QtAndroidBearer-bundled-d5ef3cf6003ebccf789ffc3f246ad509.jar \
+D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\com_to_web\android-build\bin\dexedLibs\QtSensors-bundled-669d5b36c96db697127c70469cc90491.jar \

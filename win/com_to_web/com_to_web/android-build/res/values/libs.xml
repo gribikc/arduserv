@@ -14,18 +14,33 @@
      <array name="qt_libs">
          <item>gnustl_shared</item>
 <item>Qt5Core</item>
+<item>Qt5Positioning</item>
+<item>Qt5Network</item>
+<item>Qt5Qml</item>
 <item>Qt5Gui</item>
+<item>Qt5Quick</item>
+<item>Qt5QuickParticles</item>
+<item>Qt5Location</item>
 <item>Qt5Widgets</item>
 <item>Qt5SerialPort</item>
-<item>Qt5Network</item>
 <item>Qt5AndroidExtras</item>
 <item>Qt5Concurrent</item>
 <item>Qt5Bluetooth</item>
+<item>Qt5Sensors</item>
 
      </array>
 
     <array name="bundled_in_lib">
-        <item>libplugins_platforms_android_libqtforandroid.so:plugins/platforms/android/libqtforandroid.so</item>
+        <item>libplugins_bearer_libqandroidbearer.so:plugins/bearer/libqandroidbearer.so</item>
+<item>libplugins_qmltooling_libqmldbg_debugger.so:plugins/qmltooling/libqmldbg_debugger.so</item>
+<item>libplugins_qmltooling_libqmldbg_inspector.so:plugins/qmltooling/libqmldbg_inspector.so</item>
+<item>libplugins_qmltooling_libqmldbg_local.so:plugins/qmltooling/libqmldbg_local.so</item>
+<item>libplugins_qmltooling_libqmldbg_native.so:plugins/qmltooling/libqmldbg_native.so</item>
+<item>libplugins_qmltooling_libqmldbg_profiler.so:plugins/qmltooling/libqmldbg_profiler.so</item>
+<item>libplugins_qmltooling_libqmldbg_quickprofiler.so:plugins/qmltooling/libqmldbg_quickprofiler.so</item>
+<item>libplugins_qmltooling_libqmldbg_server.so:plugins/qmltooling/libqmldbg_server.so</item>
+<item>libplugins_qmltooling_libqmldbg_tcp.so:plugins/qmltooling/libqmldbg_tcp.so</item>
+<item>libplugins_platforms_android_libqtforandroid.so:plugins/platforms/android/libqtforandroid.so</item>
 <item>libplugins_platforms_libqminimal.so:plugins/platforms/libqminimal.so</item>
 <item>libplugins_platforms_libqoffscreen.so:plugins/platforms/libqoffscreen.so</item>
 <item>libplugins_generic_libqevdevkeyboardplugin.so:plugins/generic/libqevdevkeyboardplugin.so</item>
@@ -42,7 +57,15 @@
 <item>libplugins_imageformats_libqtiff.so:plugins/imageformats/libqtiff.so</item>
 <item>libplugins_imageformats_libqwbmp.so:plugins/imageformats/libqwbmp.so</item>
 <item>libplugins_imageformats_libqwebp.so:plugins/imageformats/libqwebp.so</item>
-<item>libplugins_bearer_libqandroidbearer.so:plugins/bearer/libqandroidbearer.so</item>
+<item>libplugins_position_libqtposition_android.so:plugins/position/libqtposition_android.so</item>
+<item>libplugins_position_libqtposition_positionpoll.so:plugins/position/libqtposition_positionpoll.so</item>
+<item>libplugins_geoservices_libqtgeoservices_mapbox.so:plugins/geoservices/libqtgeoservices_mapbox.so</item>
+<item>libplugins_geoservices_libqtgeoservices_nokia.so:plugins/geoservices/libqtgeoservices_nokia.so</item>
+<item>libplugins_geoservices_libqtgeoservices_osm.so:plugins/geoservices/libqtgeoservices_osm.so</item>
+<item>libplugins_sensors_libqtsensors_android.so:plugins/sensors/libqtsensors_android.so</item>
+<item>libplugins_sensors_libqtsensors_generic.so:plugins/sensors/libqtsensors_generic.so</item>
+<item>libplugins_sensorgestures_libqtsensorgestures_plugin.so:plugins/sensorgestures/libqtsensorgestures_plugin.so</item>
+<item>libplugins_sensorgestures_libqtsensorgestures_shakeplugin.so:plugins/sensorgestures/libqtsensorgestures_shakeplugin.so</item>
 
     </array>
     <array name="bundled_in_assets">

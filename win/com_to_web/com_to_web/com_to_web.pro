@@ -9,6 +9,9 @@ QT       += serialport
 QT       += network
 QT       += bluetooth
 QT       += serialport
+QT       += positioning
+QT       += sensors
+QT       += location
 
 CONFIG += c++11
 
@@ -21,12 +24,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         com_to_web.cpp\
     gr_serial/gr_serial.cpp \
-    gr_bluetooth/gr_bluetooth.cpp
+    gr_bluetooth/gr_bluetooth.cpp \
+    gr_gps/gr_gps.cpp
+
 
 
 HEADERS  += com_to_web.h\
     gr_serial/gr_serial.h \
-    gr_bluetooth/gr_bluetooth.h
+    gr_bluetooth/gr_bluetooth.h\
+    gr_gps/gr_gps.h
 
 FORMS    += com_to_web.ui
 

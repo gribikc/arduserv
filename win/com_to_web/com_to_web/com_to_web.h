@@ -7,8 +7,18 @@
 #include <QByteArray>
 #include <QDataStream>
 
-#include "gr_serial/gr_serial.h"
-#include "gr_bluetooth/gr_bluetooth.h"
+
+    //GPS
+    //#include <QGeoSatelliteInfo>
+    //#include <QGeoCoordinate>
+    //#include <QGeoPositionInfo>
+    //#include <QtPositioning>
+    //#include <QGeoPositionInfoSource>
+
+    //EXT
+    #include "gr_serial/gr_serial.h"
+    #include "gr_bluetooth/gr_bluetooth.h"
+    #include "gr_gps/gr_gps.h"
 
 
 
@@ -63,6 +73,11 @@ public:
         //
         int external_write_request=0;
 
+        //GPS
+        bool gps_request_do=0;
+        //void gps_positionnew(const QGeoPositionInfo &info);
+        //QGeoPositionInfoSource *gps_source_pis;
+
         gr_serial *com_port=0;
         gr_bluetooth *gr_bt=0;
     } gr_httprqs_parser;
@@ -81,6 +96,9 @@ public:
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
+
+    //GPS
+    gr_gps gr_gps_point;
 /////////////////////
 
 

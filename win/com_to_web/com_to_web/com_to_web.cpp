@@ -74,9 +74,6 @@ void com_to_web::stateChanged(){ // обработчик статуса, нуж�
                     if(httprqs_parser[i].gr_bt!=nullptr){
                         httprqs_parser[i].gr_bt->bt_Socket->close();// disconnectFromService();//disconnected()
 
-                        //httprqs_parser[i].gr_bt->bt_discoveryAgent->destroyed();
-                        //httprqs_parser[i].gr_bt->bt_Socket->destroyed();
-                        //httprqs_parser[i].gr_bt->destroyed();
                         httprqs_parser[i].gr_bt->bt_close_all();
                         httprqs_parser[i].gr_bt->destroyed();
                     }
@@ -181,6 +178,32 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
             parser_data->socket->write("\n");
 
             htdocs_db_write_do(parser_data);
+        }else if(parser_data->gps_request_do==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            //parser_data->socket->write("Content-type: text/html\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
+
+            ui->textEdit->insertPlainText("        GPS request\n");
+            //parser_data->socket->write("GPS request...\n");
+
+            //GPS
+            gr_gps_point.gps_add_listener(parser_data->socket);
+
+            /*parser_data->gps_source_pis=QGeoPositionInfoSource::createDefaultSource(this);
+            //QGeoPositionInfoSource *source = QGeoPositionInfoSource::createDefaultSource(this);
+            if ( parser_data->gps_source_pis) {
+                parser_data->gps_source_pis->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+                connect( parser_data->gps_source_pis, &QGeoPositionInfoSource::positionUpdated, this,[=](const QGeoPositionInfo &info){
+                    qDebug() << "Position updated:" << info.coordinate();
+                }    );
+                parser_data->gps_source_pis->startUpdates();
+            }else{//qDebug() << "Position updated:" << info.coordinate();
+                qDebug() << "GPS ERROR;";
+            }*/
+
+            //parser_data->socket->close();
         }else{
             parser_data->socket->write("HTTP/1.1 200 OK\n");
             parser_data->socket->write("Content-type: text/plan\n");
@@ -264,6 +287,13 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
 
     parser_data->data_wr=temp.startsWith("GET /W/") ? 1 : 0;//contains
     parser_data->data_wr=temp.startsWith("POST /W/") ? 1 : 0;
+
+    parser_data->com_parser_valid=0;
+    parser_data->bt_parser_valid=0;
+    parser_data->main_page_parser_valid=0;
+    parser_data->htdocs_page_request_do=0;
+    parser_data->htdocs_db_write_do=0;
+    parser_data->gps_request_do=1;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////
         //COM
@@ -331,6 +361,12 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
 
         ///////////////////////////////////
         //GET SYS DATA
+
+        ///////////////////////////////////
+        //GPS
+        if( (temp.startsWith("GET /R/GPS/") || temp.startsWith("POST /R/GPS/") ) ){        //GET /R/BT/HC-06/
+            parser_data->gps_request_do=1;
+        }
 
 
 }
@@ -525,3 +561,24 @@ void com_to_web::htdocs_db_write_do(gr_httprqs_parser *parser_data){
 void com_to_web::on_pushButton_clicked(){
     ui->textEdit->clear();
 }
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/*void com_to_web::gps_positionnew(const QGeoPositionInfo &info){
+    QGeoCoordinate QGeoCoordinate_mas=info.coordinate();
+
+    //altitude=QGeoCoordinate_mas.altitude();//высота
+    //latitude=QGeoCoordinate_mas.latitude();//широта
+    //longitude=QGeoCoordinate_mas.longitude();//долгота
+    //isValid=QGeoCoordinate_mas.isValid();//верность
+    //groundspeed=info.attribute(QGeoPositionInfo::GroundSpeed);
+    //direction=info.attribute(QGeoPositionInfo::Direction);
+    //verticalspeed=info.attribute(QGeoPositionInfo::VerticalSpeed);
+    //magneticvariation=info.attribute(QGeoPositionInfo::MagneticVariation);
+    //horizontalaccuracy=info.attribute(QGeoPositionInfo::HorizontalAccuracy);
+    //verticalaccuracy=info.attribute(QGeoPositionInfo::VerticalAccuracy);
+
+     //qDebug() << QString::number(info.attribute(QGeoPositionInfo::GroundSpeed));
+     qDebug() << "Position updated:" << info.coordinate();
+
+}*/

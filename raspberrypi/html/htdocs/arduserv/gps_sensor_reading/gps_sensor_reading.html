@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="../css/autoboat_css_lib.css">
+
+	<script language="javascript" type="text/javascript"  src="../arduserv_js_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="gps_sensor_reading_js_xhr_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="gps_sensor_reading_lib_gribikc.js"></script>
+</head>
+<body onload="main_init()">
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------------------->
+			<div class="menu_top_gr">
+				<a class="img_menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_left');"><img src="../css/icons8-menu-50.png"></a>
+					<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img src="../css/icons8-double-left-50.png"></a>
+				
+				<!--div style="display: inline-block; margin:auto;">Текст</div-->
+				
+				<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img src="../css/icons8-settings-50.png"></a>
+					<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img src="../css/icons8-double-right-50.png"></a>
+			</div>
+		<!---------------------------------------------------------------------------------------------------------->
+			<div class="menu_sub_left_gr" id="sub_menu_left">
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Скрыть ВСЕ</a>			<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Список виджетов</a>		<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('map');">Карта</a>						<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('autobot_state');">Телеметрия AP</a>	<br>
+				<a class="menu_up_a_gr" onclick="hide_view_inner_gr('upr');">Основное управление</a>		<br>
+
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('sys_status');">Статус XNR</a>			<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas2');">GRAPH#1</a>				<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas3');">GRAPH#2</a>				<br>
+					<a class="menu_up_a_gr" onclick="hide_view_inner_gr('canvas');">GRAPH#3</a>					<br>
+			</div>
+			<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
+				<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">Карта->Текущие положение</a><br>
+				<a class="menu_up_a_gr" onclick="auto_boat_config['auto_move_map_to_boat'] ? auto_boat_config['auto_move_map_to_boat']=0 : auto_boat_config['auto_move_map_to_boat']=1;">Карта->Следовать</a><br>
+				<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
+				<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>
+				<a class="menu_up_a_gr" onclick="">Управление маршрутами</a>		
+			</div>
+		<!---------------------------------------------------------------------------------------------------------->
+			<div class="up_state_div_gr">XNR; GPS; AP; BAT; LINK</div>
+			<!--div id="" style="display:inline;" style="border: 3px solid #000000;"><a onclick="test_send_data1();">test_send</a></div-->
+		<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->
+		<div style="display:block; width:100%; height:100%;" id="main_wiev_div">
+			<!---------------------------------------------------------------------------------------------------------->	
+				<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;">
+					<div id="xhr_status_div"></div>
+					<div id="xhr_config_div"></div>
+					<div id="xhr_routing_sets_div"></div>
+				</div>
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="gps_state" style="border: 3px solid #000000;">gps_state</div>
+			<!---------------------------------------------------------------------------------------------------------->
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="temperature_state" style="border: 3px solid #000000;">temperature_state</div>
+			<!---------------------------------------------------------------------------------------------------------->
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="rotation_state" style="border: 3px solid #000000;">rotation_state</div>
+			<!---------------------------------------------------------------------------------------------------------->
+		</div>
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->	
+	<!---------------------------------------------------------------------------------------------------------->
+	<!---------------------------------------------------------------------------------------------------------->
+</body>
+</html>
+
+
