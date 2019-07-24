@@ -94,6 +94,8 @@ public:
 
     void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data, QString base_dir);
 
+    QString android_htdocs_patch="/storage/3262-3934/com_to_web/";
+
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
 

@@ -293,7 +293,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
     parser_data->main_page_parser_valid=0;
     parser_data->htdocs_page_request_do=0;
     parser_data->htdocs_db_write_do=0;
-    parser_data->gps_request_do=1;
+    parser_data->gps_request_do=0;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////
         //COM
@@ -451,7 +451,15 @@ void com_to_web::main_page_request_do(gr_httprqs_parser *parser_data){
 
     QDir dir;
     parser_data->socket->write("<br>");
-    get_tree_file(dir.currentPath()+"/htdocs/","",parser_data,dir.currentPath());
+    parser_data->socket->write("File tree:");
+    parser_data->socket->write("<br>");
+
+    if(QSysInfo::productType()=="android"){
+        get_tree_file(android_htdocs_patch+"/htdocs/","",parser_data,android_htdocs_patch);
+    }else{
+        get_tree_file(dir.currentPath()+"/htdocs/","",parser_data,dir.currentPath());
+    }
+
 
     //parser_data->socket->close();//!!!
     //if(QSysInfo::productType()=="android"){
@@ -471,7 +479,13 @@ void com_to_web::htdocs_page_request_do(gr_httprqs_parser *parser_data){
 
     QDir dir;
     //dir.currentPath()+"/htdocs/";
-    QString file_str=dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit();
+    QString file_str="";
+    if(QSysInfo::productType()=="android"){
+        file_str=android_htdocs_patch+parser_data->htdocs_file_query.toLocal8Bit();
+    }else{
+        file_str=dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit();
+    }
+    //QString file_str=dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit();
     QFile file_req(file_str);///dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit());
     file_req.open(QIODevice::ReadOnly);
 
@@ -489,6 +503,8 @@ void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs
     dir.setFilter(QDir::AllDirs | QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     dir.setSorting(QDir::Size | QDir::Reversed);
     QFileInfoList list = dir.entryInfoList();
+
+    //qDebug() << dir.entryInfoList().;
 
     parser_data->socket->write("");
     for (int i = 0; i < list.size(); ++i) {
@@ -528,7 +544,13 @@ void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::htdocs_db_write_do(gr_httprqs_parser *parser_data){
     QDir dir;
-    QString file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
+    //QString file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
+    QString file_str="";
+    if(QSysInfo::productType()=="android"){
+        file_str=android_htdocs_patch+"/htdocs/db";
+    }else{
+        file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
+    }
 
     QStringList fpa=parser_data->htdocs_file_query.split("/");
     for(int i=3;i<fpa.size();i++){
@@ -564,21 +586,3 @@ void com_to_web::on_pushButton_clicked(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-/*void com_to_web::gps_positionnew(const QGeoPositionInfo &info){
-    QGeoCoordinate QGeoCoordinate_mas=info.coordinate();
-
-    //altitude=QGeoCoordinate_mas.altitude();//высота
-    //latitude=QGeoCoordinate_mas.latitude();//широта
-    //longitude=QGeoCoordinate_mas.longitude();//долгота
-    //isValid=QGeoCoordinate_mas.isValid();//верность
-    //groundspeed=info.attribute(QGeoPositionInfo::GroundSpeed);
-    //direction=info.attribute(QGeoPositionInfo::Direction);
-    //verticalspeed=info.attribute(QGeoPositionInfo::VerticalSpeed);
-    //magneticvariation=info.attribute(QGeoPositionInfo::MagneticVariation);
-    //horizontalaccuracy=info.attribute(QGeoPositionInfo::HorizontalAccuracy);
-    //verticalaccuracy=info.attribute(QGeoPositionInfo::VerticalAccuracy);
-
-     //qDebug() << QString::number(info.attribute(QGeoPositionInfo::GroundSpeed));
-     qDebug() << "Position updated:" << info.coordinate();
-
-}*/

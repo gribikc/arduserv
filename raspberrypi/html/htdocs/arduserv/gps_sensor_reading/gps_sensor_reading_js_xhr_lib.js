@@ -95,7 +95,7 @@ function main_init(){
 				url_w : "http://172.20.10.2:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"GPS:",
-				parser: gps,//new raw_parser_gr(message_hub),
+				parser: new json_stream_parser_gr(gps),//new raw_parser_gr(message_hub),
 				
 				flush_en:true,
 				auto_start:true,

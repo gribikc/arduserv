@@ -22,6 +22,7 @@ class gr_gps: public QObject{
     public:
 
         QTcpSocket *socket=0;
+        QList<QTcpSocket*> socket_listener;
         gr_gps(){}
         QGeoPositionInfoSource *gps_source;
         void gps_add_listener(QTcpSocket *socket_point);
