@@ -190,20 +190,17 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
 
             //GPS
             gr_gps_point.gps_add_listener(parser_data->socket);
+        }else if(parser_data->rot_sens_request_do==1){
+            parser_data->socket->write("HTTP/1.1 200 OK\n");
+            //parser_data->socket->write("Content-type: text/html\n");
+            parser_data->socket->write("Connection: keep-alive\n");
+            parser_data->socket->write("Access-Control-Allow-Origin: *\n");
+            parser_data->socket->write("\n");
 
-            /*parser_data->gps_source_pis=QGeoPositionInfoSource::createDefaultSource(this);
-            //QGeoPositionInfoSource *source = QGeoPositionInfoSource::createDefaultSource(this);
-            if ( parser_data->gps_source_pis) {
-                parser_data->gps_source_pis->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
-                connect( parser_data->gps_source_pis, &QGeoPositionInfoSource::positionUpdated, this,[=](const QGeoPositionInfo &info){
-                    qDebug() << "Position updated:" << info.coordinate();
-                }    );
-                parser_data->gps_source_pis->startUpdates();
-            }else{//qDebug() << "Position updated:" << info.coordinate();
-                qDebug() << "GPS ERROR;";
-            }*/
+            ui->textEdit->insertPlainText("        ROT SENS request\n");
 
-            //parser_data->socket->close();
+            //GPS
+            gr_rot_sens_point.add_listener(parser_data->socket);
         }else{
             parser_data->socket->write("HTTP/1.1 200 OK\n");
             parser_data->socket->write("Content-type: text/plan\n");
@@ -294,6 +291,7 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
     parser_data->htdocs_page_request_do=0;
     parser_data->htdocs_db_write_do=0;
     parser_data->gps_request_do=0;
+    parser_data->rot_sens_request_do=0;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////
         //COM
@@ -367,8 +365,10 @@ void com_to_web::postget_request_parsing(gr_httprqs_parser *parser_data){
         if( (temp.startsWith("GET /R/GPS/") || temp.startsWith("POST /R/GPS/") ) ){        //GET /R/BT/HC-06/
             parser_data->gps_request_do=1;
         }
-
-
+        //ROT
+        if( (temp.startsWith("GET /R/ROT_SENS/") || temp.startsWith("POST /R/ROT_SENS/") ) ){
+            parser_data->rot_sens_request_do=1;
+        }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -388,6 +388,11 @@ void com_to_web::find_device_and_do(gr_httprqs_parser *parser_data){
                 ui->textEdit->insertPlainText("        Dublicate BT find\n");
             }
         }
+    }
+    if(QSysInfo::productType()=="android" && parser_data->bt_dev_name==" HTTP"){
+       parser_data->gr_bt=new gr_bluetooth;
+       parser_data->gr_bt->bt_open("",0,parser_data->socket);
+       return;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
     if(parser_data->data_wr==0 && parser_data->is_dev_dublicate_id!=-1){//попытка открыть на чтение уже открытое устройство

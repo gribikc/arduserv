@@ -7,6 +7,7 @@
 #include <QGeoPositionInfo>
 #include <QtPositioning>
 #include <QGeoPositionInfoSource>
+#include <QNmeaPositionInfoSource>
 
 #include <QTcpServer>
 #include <QTcpSocket>

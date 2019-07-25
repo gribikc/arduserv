@@ -52,11 +52,13 @@ SOURCES       = main.cpp \
 		com_to_web.cpp \
 		gr_serial\gr_serial.cpp \
 		gr_bluetooth\gr_bluetooth.cpp \
+		gr_rotation\gr_rotation.cpp \
 		gr_gps\gr_gps.cpp moc_com_to_web.cpp
 OBJECTS       = main.obj \
 		com_to_web.obj \
 		gr_serial.obj \
 		gr_bluetooth.obj \
+		gr_rotation.obj \
 		gr_gps.obj \
 		moc_com_to_web.obj
 DIST          = android\AndroidManifest.xml \
@@ -68,10 +70,12 @@ DIST          = android\AndroidManifest.xml \
 		android\gradlew.bat com_to_web.h \
 		gr_serial\gr_serial.h \
 		gr_bluetooth\gr_bluetooth.h \
+		gr_rotation\gr_rotation.h \
 		gr_gps\gr_gps.h main.cpp \
 		com_to_web.cpp \
 		gr_serial\gr_serial.cpp \
 		gr_bluetooth\gr_bluetooth.cpp \
+		gr_rotation\gr_rotation.cpp \
 		gr_gps\gr_gps.cpp
 QMAKE_TARGET  = libcom_to_web.so
 DESTDIR       = 
@@ -399,8 +403,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@if not exist $(DISTDIR) mkdir $(DISTDIR) & if not exist $(DISTDIR) exit 1
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)\
-	$(COPY_FILE) --parents com_to_web.h gr_serial\gr_serial.h gr_bluetooth\gr_bluetooth.h gr_gps\gr_gps.h $(DISTDIR)\
-	$(COPY_FILE) --parents main.cpp com_to_web.cpp gr_serial\gr_serial.cpp gr_bluetooth\gr_bluetooth.cpp gr_gps\gr_gps.cpp $(DISTDIR)\
+	$(COPY_FILE) --parents com_to_web.h gr_serial\gr_serial.h gr_bluetooth\gr_bluetooth.h gr_rotation\gr_rotation.h gr_gps\gr_gps.h $(DISTDIR)\
+	$(COPY_FILE) --parents main.cpp com_to_web.cpp gr_serial\gr_serial.cpp gr_bluetooth\gr_bluetooth.cpp gr_rotation\gr_rotation.cpp gr_gps\gr_gps.cpp $(DISTDIR)\
 	$(COPY_FILE) --parents com_to_web.ui $(DISTDIR)\
 
 
@@ -1044,6 +1048,12 @@ moc_com_to_web.cpp: D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow 
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		gr_rotation\gr_rotation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
 		com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\bin\moc.exe
 	D:\qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -ID:/dron/pic/ardrpi/git/arduserv/win/com_to_web/com_to_web -ID:/qt/Qt570/5.7/android_armv7/include -ID:/qt/Qt570/5.7/android_armv7/include/QtLocation -ID:/qt/Qt570/5.7/android_armv7/include/QtQuick -ID:/qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/qt/Qt570/5.7/android_armv7/include/QtGui -ID:/qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/qt/Qt570/5.7/android_armv7/include/QtQml -ID:/qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/qt/Qt570/5.7/android_armv7/include/QtPositioning -ID:/qt/Qt570/5.7/android_armv7/include/QtSensors -ID:/qt/Qt570/5.7/android_armv7/include/QtCore -ID:/Qt/Qt570/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -ID:/Qt/Qt570/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++ -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward com_to_web.h -o moc_com_to_web.cpp
@@ -1682,6 +1692,12 @@ main.obj: main.cpp com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		gr_rotation/gr_rotation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QApplication \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qapplication.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qdesktopwidget.h \
@@ -2305,6 +2321,12 @@ com_to_web.obj: com_to_web.cpp com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		gr_rotation/gr_rotation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
 		ui_com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QAction \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qaction.h \
@@ -3394,6 +3416,510 @@ gr_bluetooth.obj: gr_bluetooth\gr_bluetooth.cpp gr_bluetooth/gr_bluetooth.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
 		D:\qt\Qt570\5.7\android_armv7\include\QtBluetooth\QLowEnergyController
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_bluetooth.obj gr_bluetooth\gr_bluetooth.cpp
+
+gr_rotation.obj: gr_rotation\gr_rotation.cpp gr_rotation/gr_rotation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QtCoreDepends \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstractanimation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qobject.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qnamespace.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qglobal.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cstddef \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\c++config.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\os_defines.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\cpu_defines.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qconfig.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfeatures.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsystemdetection.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qprocessordetection.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcompilerdetection.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\utility \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_relops.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_pair.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\move.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\concept_check.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\boost_concept_check.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_iterator_base_types.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\type_traits \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\c++0x_warning.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cstdint \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\stdint.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\_types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\machine\_types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\_wchar_limits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\android\api-level.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\initializer_list \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\algorithm \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_algobase.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\functexcept.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\exception_defines.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\cpp_type_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\type_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\numeric_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_iterator_base_funcs.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\debug.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\macros.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\functions.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_function.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\backward\binders.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\formatter.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\typeinfo \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\exception \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\atomic_lockfree_defines.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\exception_ptr.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\nested_exception.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\hash_bytes.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\ptr_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\predefined_ops.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\algobase.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\features.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\basic_iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\parallel.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\compiletime_settings.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cstdio \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\stdio.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\cdefs.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\cdefs_elf.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\posix_types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\stddef.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\compiler.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\posix_types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\machine\kernel.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\sysmacros.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\types.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cstdlib \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\stdlib.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\string.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\malloc.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\alloca.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\strings.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\memory.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\limits \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\cstdint \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\tags.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\settings.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\algorithmfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\find.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\compatibility.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sched.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\time.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\time.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\equally_split.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\find_selectors.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_algo.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\algorithmfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_heap.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_tempbuf.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_construct.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\new \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\alloc_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\alloc_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\memoryfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\allocator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\c++allocator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\new_allocator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\random \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cmath \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\math.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\limits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\limits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\limits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\machine\internal_types.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\machine\limits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\syslimits.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\page.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\string \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stringfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\char_traits.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\postypes.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cwchar \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\wchar.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\time.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\siginfo.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm-generic\siginfo.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\localefwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\c++locale.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\clocale \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\locale.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\iosfwd \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cctype \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\ctype.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\ostream_insert.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\cxxabi_forced.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\range_access.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\basic_string.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\atomicity.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\gthr.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\gthr-default.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\pthread.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\signal.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\signal.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm-generic\signal.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\sigcontext.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\ucontext.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\user.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\unistd.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\select.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\sys\sysconf.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\capability.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\pathconf.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\atomic_word.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\string_conversions.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cerrno \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\errno.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\linux\errno.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm\errno.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm-generic\errno.h \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\asm-generic\errno-base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\functional_hash.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\basic_string.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\random.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\vector \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_uninitialized.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_vector.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_bvector.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\vector.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\vector \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_sequence.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\concurrence.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_sequence.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_iterator.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\vector \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\functional \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tuple \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\array \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\stdexcept \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\array \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\array \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\uses_allocator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_hash_func.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_node.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_trace.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\unordered_map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ext\aligned_buffer.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\hashtable.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\hashtable_policy.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\unordered_map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\unordered_map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_unordered_container.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_unordered_base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_unordered_container.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_local_iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\safe_local_iterator.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\unordered_map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\unordered_base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\unordered_map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\type_traits \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\functional_hash.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\hashtable.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\hashtable_policy.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\unordered_map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\fstream \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\istream \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ios \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\ios_base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\locale_classes.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\locale_classes.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\streambuf \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\streambuf.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\basic_ios.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\locale_facets.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\cwctype \
+		D:\qt\ndk\platforms\android-9\arch-arm\usr\include\wctype.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\ctype_base.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\streambuf_iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\ctype_inline.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\locale_facets.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\basic_ios.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\ostream \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\ostream.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\istream.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\codecvt.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\basic_file.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\c++io.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\fstream.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_algos.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_state.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_hashtable_size.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_container_size.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\sstream \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\sstream.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_map_to_unordered_map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_vector_size.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_vector_to_list.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_list_to_slist.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\impl\profiler_list_to_vector.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\iterator_tracker.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include\bits\opt_random.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\random.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\numeric \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_numeric.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\numeric \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\numericfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\iterator.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\for_each.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\par_loop.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\omp_loop.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\workstealing.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\random_number.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\random \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\cmath \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\gamma.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\special_function_util.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\bessel_function.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\beta_function.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\ell_integral.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\exp_integral.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\hypergeometric.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\legendre_function.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\modified_bessel_func.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\poly_hermite.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\poly_laguerre.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\riemann_zeta.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\random.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\tr1\random.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\for_each_selectors.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\partial_sum.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\algorithm \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\algo.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\sort.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\checkers.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\multiway_mergesort.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\multiway_merge.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\losertree.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\multiseq_selection.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\queue \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\deque \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_deque.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\deque.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\deque \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\deque \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_queue.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\quicksort.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\partition.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\balanced_quicksort.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\queue.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\omp_loop_static.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\search.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\random_shuffle.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\merge.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\unique_copy.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\parallel\set_operations.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtypeinfo.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtypetraits.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qisenum.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsysinfo.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlogging.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qflags.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qatomic.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbasicatomic.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_bootstrap.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qgenericatomic.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_cxx11.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\atomic \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\atomic_base.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_msvc.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qglobalstatic.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmutex.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qnumeric.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qversiontagging.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs_impl.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstring.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qchar.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbytearray.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qrefcount.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qarraydata.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\iterator \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stream_iterator.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstringbuilder.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlist.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qalgorithms.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qiterator.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qhashfunctions.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpair.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\list \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_list.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\list.tcc \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\list \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\list \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraylist.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstringlist.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qregexp.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstringmatcher.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcoreevent.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qscopedpointer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmetatype.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qvarlengtharray.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcontainerfwd.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_tree.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\bits\stl_multimap.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\debug\multimap.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\map \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\map.h \
+		D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include\profile\multimap.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qobject_impl.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qanimationgroup.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qparallelanimationgroup.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpauseanimation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpropertyanimation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qvariantanimation.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qeasingcurve.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qvector.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpoint.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qvariant.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmap.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qdebug.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qhash.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtextstream.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qiodevice.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlocale.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qshareddata.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qset.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcontiguouscache.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer_impl.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsequentialanimationgroup.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtextcodec.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qendian.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlibraryinfo.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qdatetime.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbuffer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qdatastream.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qdir.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfileinfo.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfile.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfiledevice.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qdiriterator.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfileselector.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QObject \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QStringList \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfilesystemwatcher.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlockfile.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qloggingcategory.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qprocess.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qresource.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsavefile.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsettings.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstandardpaths.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstorageinfo.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtemporarydir.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QScopedPointer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtemporaryfile.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qurl.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qurlquery.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstractitemmodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstractproxymodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qidentityproxymodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qitemselectionmodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsortfilterproxymodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstringlistmodel.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qjsonarray.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qjsonvalue.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qjsondocument.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qjsonobject.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstracteventdispatcher.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qeventloop.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstractnativeeventfilter.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbasictimer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcoreapplication.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmath.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmetaobject.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmimedata.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qobjectcleanuphandler.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpointer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsharedmemory.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsignalmapper.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsocketnotifier.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsystemsemaphore.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtimer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtranslator.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qwineventnotifier.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmimedatabase.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmimetype.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfactoryinterface.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlibrary.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qplugin.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qpluginloader.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\quuid.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstractstate.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qabstracttransition.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qeventtransition.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfinalstate.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qhistorystate.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsignaltransition.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstate.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstatemachine.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qexception.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfuture.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfutureinterface.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qrunnable.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qresultstore.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfuturesynchronizer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qfuturewatcher.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qreadwritelock.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsemaphore.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qthread.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qthreadpool.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qthreadstorage.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qwaitcondition.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qarraydataops.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qarraydatapointer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbitarray.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraymatcher.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcache.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcollator.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineoption.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineparser.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qcryptographichash.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qelapsedtimer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qline.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qlinkedlist.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmargins.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qmessageauthenticationcode.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qqueue.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qrect.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qsize.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qregularexpression.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qscopedvaluerollback.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qstack.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtextboundaryfinder.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtimeline.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtimezone.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qversionnumber.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QMetaType \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QVariant \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qhostaddress.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
+		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_rotation.obj gr_rotation\gr_rotation.cpp
 
 gr_gps.obj: gr_gps\gr_gps.cpp gr_gps/gr_gps.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \

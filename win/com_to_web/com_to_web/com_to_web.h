@@ -19,6 +19,7 @@
     #include "gr_serial/gr_serial.h"
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
+    #include "gr_rotation/gr_rotation.h"
 
 
 
@@ -75,8 +76,9 @@ public:
 
         //GPS
         bool gps_request_do=0;
-        //void gps_positionnew(const QGeoPositionInfo &info);
-        //QGeoPositionInfoSource *gps_source_pis;
+        //ROT_SENS
+        bool rot_sens_request_do=0;
+
 
         gr_serial *com_port=0;
         gr_bluetooth *gr_bt=0;
@@ -101,6 +103,8 @@ public:
 
     //GPS
     gr_gps gr_gps_point;
+    //ROT_SENS
+    gr_rotation gr_rot_sens_point;
 /////////////////////
 
 

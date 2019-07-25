@@ -13,6 +13,7 @@ QT       += positioning
 QT       += sensors
 QT       += location
 
+
 CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -25,6 +26,7 @@ SOURCES += main.cpp\
         com_to_web.cpp\
     gr_serial/gr_serial.cpp \
     gr_bluetooth/gr_bluetooth.cpp \
+    gr_rotation/gr_rotation.cpp \
     gr_gps/gr_gps.cpp
 
 
@@ -32,6 +34,7 @@ SOURCES += main.cpp\
 HEADERS  += com_to_web.h\
     gr_serial/gr_serial.h \
     gr_bluetooth/gr_bluetooth.h\
+    gr_rotation/gr_rotation.h \
     gr_gps/gr_gps.h
 
 FORMS    += com_to_web.ui
@@ -49,4 +52,6 @@ CONFIG += mobility
 MOBILITY = 
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+MOBILITY += sensors
 

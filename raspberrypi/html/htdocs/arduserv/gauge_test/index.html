@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+
+	<script language="javascript" type="text/javascript"  src="gauge.js"></script><!--http://bernii.github.io/gauge.js-->
+	<script language="javascript" type="text/javascript"  src="gauge.min.js"></script><!--https://canvas-gauges.com/documentation/examples/-->
+	
+	<script language="javascript">
+		function main_init(){
+			console.log("START");
+			/////////////////////
+			////////////
+			var opts = {
+				angle: 0, // The span of the gauge arc
+				lineWidth: 0.44, // The line thickness
+				radiusScale: 1, // Relative radius
+				pointer: {
+					length: 0.64, // // Relative to gauge radius
+					strokeWidth: 0.044, // The thickness
+					color: '#000000' // Fill color
+				},
+				limitMax: false,     // If false, max value increases automatically if value > maxValue
+				limitMin: false,     // If true, the min value of the gauge will be fixed
+				colorStart: '#6FADCF',   // Colors
+				colorStop: '#8FC0DA',    // just experiment with them
+				strokeColor: '#E0E0E0',  // to see which ones work best for you
+				generateGradient: true,
+				highDpiSupport: true,     // High resolution support
+				
+				/*staticLabels: {
+					font: "10px sans-serif",  // Specifies font
+					labels: [100, 130, 150, 220, 260, 100, 130, 150, 220, 260],  // Print labels at these values
+					color: "#000000",  // Optional: Label text color
+					fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+				},*/
+				// renderTicks is Optional
+				renderTicks: {
+					divisions: 10,
+					divWidth: 1.2,
+					divLength: 1,
+					divColor: '#333333',
+					subDivisions: 3,
+					subLength: 0.5,
+					subWidth: 0.6,
+					subColor: '#666666'
+				}			  
+			};
+			var target = document.getElementById('foo'); // your canvas element
+			var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+			gauge.maxValue = 3000; // set max gauge value
+			gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+			gauge.animationSpeed = 128; // set animation speed (32 is default value)
+			gauge.set(1100); // set actual value
+			////////////////////////////////////
+			/////////////////////////////
+			var gauge = new RadialGauge({
+				renderTo: 'gauge-ps',
+				width: 300,
+				height: 300,
+				units: "Km/h",
+				minValue: 0,
+				startAngle: 90,
+				ticksAngle: 135,
+				valueBox: false,
+				maxValue: 220,
+				majorTicks: [
+					"0",
+					"20",
+					"40",
+					"60",
+					"80",
+					"100",
+					"120",
+					"140",
+					"160",
+					"180",
+					"200",
+					"220"
+				],
+				minorTicks: 2,
+				strokeTicks: true,
+				highlights: [
+					{
+						"from": 160,
+						"to": 220,
+						"color": "rgba(200, 50, 50, .75)"
+					}
+				],
+				colorPlate: "#fff",
+				borderShadowWidth: 0,
+				borders: false,
+				needleType: "arrow",
+				needleWidth: 2,
+				needleCircleSize: 7,
+				needleCircleOuter: true,
+				needleCircleInner: false,
+				animationDuration: 1500,
+				animationRule: "linear"
+			}).draw();
+			gauge.value = "50";
+			///////////////////
+			var gauge_compass = new RadialGauge({
+				renderTo: 'compass',
+				minValue: 0,
+				maxValue: 360,
+				majorTicks: [
+					"N",
+					"NE",
+					"E",
+					"SE",
+					"S",
+					"SW",
+					"W",
+					"NW",
+					"N"
+				],
+				minorTicks: 22,
+				ticksAngle: 360,
+				startAngle: 180,
+				strokeTicks: false,
+				highlights: false,
+				colorPlate: "#33a",
+				colorMajorTicks: "#f5f5f5",
+				colorMinorTicks: "#ddd",
+				colorNumbers: "#ccc",
+				colorNeedle: "rgba(240, 128, 128, 1)",
+				colorNeedleEnd: "rgba(255, 160, 122, .9)",
+				valueBox: false,
+				valueTextShadow: false,
+				colorCircleInner: "#fff",
+				colorNeedleCircleOuter: "#ccc",
+				needleCircleSize: 15,
+				needleCircleOuter: false,
+				animationRule: "linear",
+				needleType: "line",
+				needleStart: 75,
+				needleEnd: 99,
+				needleWidth: 3,
+				borders: true,
+				borderInnerWidth: 0,
+				borderMiddleWidth: 0,
+				borderOuterWidth: 10,
+				colorBorderOuter: "#ccc",
+				colorBorderOuterEnd: "#ccc",
+				colorNeedleShadowDown: "#222",
+				borderShadowWidth: 0,
+				animationTarget: "plate",
+				units: "ᵍ",
+				title: "DIRECTION",
+				fontTitleSize: 19,
+				colorTitle: "#f5f5f5",
+				animationDuration: 1500
+			}).draw();
+			gauge_compass.value = "150";
+		}
+	</script>
+</head>
+<body onload="main_init()">
+	<div id="preview">
+		<canvas width="380" height="150" id="foo"></canvas>
+		<div id="preview-textfield" style="font-size: 100px;">1,400</div>
+	</div>
+	<div>
+	<canvas id="gauge-ps"
+		data-type="radial-gauge"
+		data-width="300"
+		data-height="300"
+		data-units="Km/h"
+		data-min-value="0"
+		data-start-angle="90"
+		data-ticks-angle="180"
+		data-value-box="false"
+		data-max-value="220"
+		data-major-ticks="0,20,40,60,80,100,120,140,160,180,200,220"
+		data-minor-ticks="2"
+		data-stroke-ticks="true"
+		data-highlights='[
+			{"from": 160, "to": 220, "color": "rgba(200, 50, 50, .75)"}
+		]'
+		data-color-plate="#fff"
+		data-border-shadow-width="0"
+		data-borders="false"
+		data-needle-type="arrow"
+		data-needle-width="2"
+		data-needle-circle-size="7"
+		data-needle-circle-outer="true"
+		data-needle-circle-inner="false"
+		data-animation-duration="1500"
+		data-animation-rule="linear"
+	></canvas>
+	<canvas id="compass"
+		data-type="radial-gauge"
+		data-min-value="0"
+		data-max-value="360"
+		data-major-ticks="N,NE,E,SE,S,SW,W,NW,N"
+		data-minor-ticks="22"
+		data-ticks-angle="360"
+		data-start-angle="180"
+		data-stroke-ticks="false"
+		data-highlights="false"
+		data-color-plate="#33a"
+		data-color-major-ticks="#f5f5f5"
+		data-color-minor-ticks="#ddd"
+		data-color-numbers="#ccc"
+		data-color-needle="rgba(240, 128, 128, 1)"
+		data-color-needle-end="rgba(255, 160, 122, .9)"
+		data-value-box="false"
+		data-value-text-shadow="false"
+		data-color-circle-inner="#fff"
+		data-color-needle-circle-outer="#ccc"
+		data-needle-circle-size="15"
+		data-needle-circle-outer="false"
+		data-animation-rule="linear"
+		data-needle-type="line"
+		data-needle-start="75"
+		data-needle-end="99"
+		data-needle-width="3"
+		data-borders="true"
+		data-border-inner-width="0"
+		data-border-middle-width="0"
+		data-border-outer-width="10"
+		data-color-border-outer="#ccc"
+		data-color-border-outer-end="#ccc"
+		data-color-needle-shadow-down="#222"
+		data-border-shadow-width="0"
+		data-animation-target="plate"
+		data-units="ᵍ"
+		data-title="DIRECTION"
+		data-font-title-size="19"
+		data-color-title="#f5f5f5"
+		data-animation-duration="1500"
+	></canvas>
+	</div>
+</body>
+</html>

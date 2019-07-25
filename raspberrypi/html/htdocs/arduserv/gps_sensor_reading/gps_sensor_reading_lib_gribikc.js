@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//autoboat
+//gps
 	class gps_gr{
 		constructor(hub){
 			this.parser_data_array=new Array();
@@ -16,56 +16,25 @@
 		//xdstartjson:{
 		//}:xdstopjson
 		parser_data(type,stream){
-			console.log(type);
-			console.log(stream);
-			/* //console.log(stream);
-			this.end_point=stream.length;
-				if(this.start_point>=this.end_point){
-					this.start_point=0;
+			//console.log(type);
+			//console.log(stream);
+			
+			document.getElementById("gps_state").innerHTML="";
+			for(var key in stream) {
+				document.getElementById("gps_state").innerHTML+=key+": "+stream[key]+"<br>";
+				if(key=="HorizontalAccuracy"){
+					gauge_accuracy.value = stream[key];
+					//console.log(gauge_accuracy);
 				}
-				for(var i=this.start_point;i<this.end_point;i++){
-					//console.log(stream.charCodeAt(i)&0xFF);
-					if(this.start_point>=31){
-						if(	(stream.charAt(i-0)) 	==	"{" &&
-							(stream.charAt(i-1)) 	==	":" &&
-							(stream.charAt(i-2)) 	==	"n" &&
-							(stream.charAt(i-3)) 	==	"o" &&
-							(stream.charAt(i-4)) 	==	"s" &&
-							(stream.charAt(i-5)) 	==	"j" &&
-							(stream.charAt(i-6)) 	==	"t" &&
-							(stream.charAt(i-7)) 	==	"r" &&
-							(stream.charAt(i-8)) 	==	"a" &&
-							(stream.charAt(i-9)) 	==	"t" &&
-							(stream.charAt(i-10)) 	==	"s" &&
-							(stream.charAt(i-11)) 	==	"d" &&
-							(stream.charAt(i-12)) 	==	"x"){//xdstartjson:{
-								//console.log("Find start");
-								this.json_begin_point=i;
-								this.json_begin_point_valid=1;
-						}
-						if(	(stream.charAt(i-0)) 	==	"n" &&
-							(stream.charAt(i-1)) 	==	"o" &&
-							(stream.charAt(i-2)) 	==	"s" &&
-							(stream.charAt(i-3)) 	==	"j" &&
-							(stream.charAt(i-4)) 	==	"p" &&
-							(stream.charAt(i-5)) 	==	"o" &&
-							(stream.charAt(i-6)) 	==	"t" &&
-							(stream.charAt(i-7)) 	==	"s" &&
-							(stream.charAt(i-8)) 	==	"d" &&
-							(stream.charAt(i-9)) 	==	"x" &&
-							(stream.charAt(i-10)) 	==	":" &&
-							(stream.charAt(i-11)) 	==	"}"){//}:xdstopjson
-								//console.log("Find stop");
-								if(this.json_begin_point_valid==1){
-									var temp=stream.slice(this.json_begin_point, i-10);
-									this.parser_data_array=JSON.parse( temp );
-									console.log(this.parser_data_array);
-								}
-								this.json_begin_point_valid=0;
-						}
-					}
+				if(key=="GroundSpeed"){
+					gauge_speedometr.value = stream[key];
+					//console.log(gauge_accuracy);
 				}
-			this.start_point=this.end_point; */
+				if(key=="MagneticVariation"){
+					gauge_compass.value = stream[key];
+					console.log(stream[key]);
+				}
+			}
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
