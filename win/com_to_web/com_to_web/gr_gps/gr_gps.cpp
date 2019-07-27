@@ -80,6 +80,11 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
         data= (data!="nan") ? data : "0";
         send_data+=data;
 
+        send_data+=",\n  \"Timestamp\":";
+        //data=QString::number(info.timestamp().toString());
+        //data= (data!="nan") ? data : "0";
+        send_data+="\""+info.timestamp().toString("dd.MM.yyyy;hh:mm:ss.zzz")+"\"";
+
     send_data+="\n}:xdstopjson\n";
     for(int i=0;i<socket_listener.size();i++){
         if( socket_listener.at(i)->state() != QAbstractSocket::UnconnectedState ){

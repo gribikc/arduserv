@@ -24,6 +24,9 @@ var autoboat;
 			//////////
 			//////////////////////////////////////
 			var gauge_accuracy = 0;
+			//////////
+			//////////////////////////////////////
+			var gauge_accelerometr = 0;
 
 
 
@@ -99,8 +102,8 @@ function main_init(){
 	//_HUB
 	//STREAM
 		//arduino_uart
-			gps_stream_param={
-				url   : "http://192.168.1.44:3128/R/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+			gps_stream_param={//location.hostname
+				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) +"/R/GPS/", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				url_w : "http://192.168.1.44:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"GPS:",
@@ -285,7 +288,78 @@ function main_init(){
 				barBeginCircle: false,
 				value: 3
 			}).draw();
-			gauge_speedometr.value = "10";
-			gauge_compass.value = "45";
-			gauge_accuracy.value = "20";
+			//////////
+			//////////////////////////////
+			gauge_accelerometr = new RadialGauge({
+				renderTo: 'accelerometr',
+				width: 300,
+				height: 300,
+				units: "dm/s",
+				title: "Ускорение",
+				minValue: -10,
+				maxValue: 10,
+				majorTicks: [
+					-10,
+					-8,
+					-6,
+					-4,
+					-2,
+					0,
+					2,
+					4,
+					6,
+					8,
+					10
+				],
+				minorTicks: 2,
+				strokeTicks: true,
+				highlights: [
+					{
+						"from": -50,
+						"to": 0,
+						"color": "rgba(0,0, 255, .3)"
+					},
+					{
+						"from": 0,
+						"to": 50,
+						"color": "rgba(255, 0, 0, .3)"
+					}
+				],
+				ticksAngle: 270,
+				startAngle: 45,
+				colorMajorTicks: "#ddd",
+				colorMinorTicks: "#ddd",
+				colorTitle: "#eee",
+				colorUnits: "#ccc",
+				colorNumbers: "#eee",
+				colorPlate: "#222",
+				borderShadowWidth: 0,
+				borders: true,
+				needleType: "arrow",
+				needleWidth: 2,
+				needleCircleSize: 7,
+				needleCircleOuter: true,
+				needleCircleInner: false,
+				animationDuration: 900,
+				animationRule: "linear",
+				colorBorderOuter: "#333",
+				colorBorderOuterEnd: "#111",
+				colorBorderMiddle: "#222",
+				colorBorderMiddleEnd: "#111",
+				colorBorderInner: "#111",
+				colorBorderInnerEnd: "#333",
+				colorNeedleShadowDown: "#333",
+				colorNeedleCircleOuter: "#333",
+				colorNeedleCircleOuterEnd: "#111",
+				colorNeedleCircleInner: "#111",
+				colorNeedleCircleInnerEnd: "#222",
+				valueBoxBorderRadius: 0,
+				colorValueBoxRect: "#222",
+				colorValueBoxRectEnd: "#333"
+			}).draw();
+			
+			gauge_speedometr.value = 10;
+			gauge_compass.value = 45;
+			gauge_accuracy.value = 20;
+			gauge_accelerometr.value=5;
 }

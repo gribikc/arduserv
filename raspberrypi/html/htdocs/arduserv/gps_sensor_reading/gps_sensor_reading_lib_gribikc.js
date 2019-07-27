@@ -11,28 +11,26 @@
 			this.end_point=0;
 			this.json_begin_point=0;
 			this.json_begin_point_valid=0;
+			
+			this.speed=0;
 		}
 		//////////
 		//xdstartjson:{
 		//}:xdstopjson
 		parser_data(type,stream){
-			//console.log(type);
-			//console.log(stream);
-			
 			document.getElementById("gps_state").innerHTML="";
 			for(var key in stream) {
 				document.getElementById("gps_state").innerHTML+=key+": "+stream[key]+"<br>";
 				if(key=="HorizontalAccuracy"){
 					gauge_accuracy.value = stream[key];
-					//console.log(gauge_accuracy);
 				}
 				if(key=="GroundSpeed"){
-					gauge_speedometr.value = stream[key];
-					//console.log(gauge_accuracy);
+					gauge_speedometr.value = stream[key]*3.6;
+					gauge_accelerometr.value=(stream[key]-this.speed)*3.6;
+					this.speed=stream[key];
 				}
-				if(key=="MagneticVariation"){
+				if(key=="Direction"){
 					gauge_compass.value = stream[key];
-					console.log(stream[key]);
 				}
 			}
 		}

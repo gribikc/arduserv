@@ -1048,12 +1048,18 @@ moc_com_to_web.cpp: D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow 
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
 		gr_rotation\gr_rotation.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\bin\moc.exe
 	D:\qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -ID:/dron/pic/ardrpi/git/arduserv/win/com_to_web/com_to_web -ID:/qt/Qt570/5.7/android_armv7/include -ID:/qt/Qt570/5.7/android_armv7/include/QtLocation -ID:/qt/Qt570/5.7/android_armv7/include/QtQuick -ID:/qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/qt/Qt570/5.7/android_armv7/include/QtGui -ID:/qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/qt/Qt570/5.7/android_armv7/include/QtQml -ID:/qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/qt/Qt570/5.7/android_armv7/include/QtPositioning -ID:/qt/Qt570/5.7/android_armv7/include/QtSensors -ID:/qt/Qt570/5.7/android_armv7/include/QtCore -ID:/Qt/Qt570/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -ID:/Qt/Qt570/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++ -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -ID:/Qt/Qt570/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward com_to_web.h -o moc_com_to_web.cpp
@@ -1692,12 +1698,18 @@ main.obj: main.cpp com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
 		gr_rotation/gr_rotation.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QApplication \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qapplication.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qdesktopwidget.h \
@@ -2321,12 +2333,18 @@ com_to_web.obj: com_to_web.cpp com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
 		gr_rotation/gr_rotation.h \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		ui_com_to_web.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\QAction \
 		D:\qt\Qt570\5.7\android_armv7\include\QtWidgets\qaction.h \
@@ -3903,14 +3921,19 @@ gr_rotation.obj: gr_rotation\gr_rotation.cpp gr_rotation/gr_rotation.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
-		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QMetaType \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QVariant \
 		D:\qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
@@ -4439,6 +4462,7 @@ gr_gps.obj: gr_gps\gr_gps.cpp gr_gps/gr_gps.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
 		D:\qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
