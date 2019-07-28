@@ -32,6 +32,7 @@ public:
     int mode=0;
     int ble_valid=0;
     QString dev_name=0;
+    bool dev_found=0;
 
     QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=0;
     QBluetoothSocket *bt_Socket=0;

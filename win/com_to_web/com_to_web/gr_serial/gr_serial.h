@@ -10,6 +10,8 @@
 #include <QByteArray>
 #include <QDataStream>
 
+#include <QNetworkInterface>
+
 
 
 class gr_serial: public QObject{

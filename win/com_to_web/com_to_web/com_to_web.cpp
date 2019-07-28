@@ -29,7 +29,15 @@ void com_to_web::gr_sock_srv_start(){
     server = new QTcpServer();//this
     server->listen(QHostAddress::Any, 3128);
     if(server->isListening()){
-        ui->textEdit->insertPlainText("Socket start localhost:3128\n");
+        ui->textEdit->insertPlainText("Socket start PORT:3128\n");
+
+        ui->textEdit->insertPlainText("IP:\n");
+        QList<QHostAddress> addr = QNetworkInterface::allAddresses();
+        for(int i=0;i<addr.size();i++){
+            ui->textEdit->insertPlainText(addr.at(i).toString());
+            ui->textEdit->insertPlainText("\n");
+        }
+
 
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }

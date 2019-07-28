@@ -61,7 +61,7 @@ void gr_bluetooth::bt_open(QString dev_name, int mode, QTcpSocket *socket_point)
 //////////////////////////////////////////////
 void gr_bluetooth::bt_deviceDiscovered_finished(){
     qDebug() << "End BT Scann.";
-    if(mode==0){
+    if(mode==0 || dev_found==0){//!!!
         socket->write("\r\n B.B.");
         socket->close();
     }
@@ -94,6 +94,7 @@ void gr_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
         socket->write("\r\n");
 
     }else if(device.name()==dev_name && mode==1){//"HC-06"
+        dev_found=1;
         bt_discoveryAgent->stop();
         QString find_dev;
         find_dev="\nНашли:";
