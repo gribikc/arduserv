@@ -3,10 +3,7 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-void gr_gps::gps_add_listener(QTcpSocket *socket_point){
-    socket=socket_point;
-    socket_listener.append(socket_point);
-
+void gr_gps::listener_added(){
     if (!gps_source) {
         gps_source=QGeoPositionInfoSource::createDefaultSource(this);
         if (gps_source) {
@@ -86,14 +83,7 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
         send_data+="\""+info.timestamp().toString("dd.MM.yyyy;hh:mm:ss.zzz")+"\"";
 
     send_data+="\n}:xdstopjson\n";
-    for(int i=0;i<socket_listener.size();i++){
-        if( socket_listener.at(i)->state() != QAbstractSocket::UnconnectedState ){
-            socket_listener.at(i)->write(send_data);
-        }else{
-            socket_listener.removeAt(i);
-            i--;
-        }
-    }
+    send_data_to_listeners(send_data);
 }
 //
 //
