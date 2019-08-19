@@ -10,12 +10,12 @@ MAKEFILE      = Makefile
 
 ####### Compiler, tools and options
 
-CC            = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-gcc
-CXX           = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_NETWORK_LIB -DQT_BLUETOOTH_LIB -DQT_CORE_LIB
+CC            = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-gcc
+CXX           = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
+DEFINES       = -DQT_QML_DEBUG -DQT_LOCATION_LIB -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_BLUETOOTH_LIB -DQT_POSITIONING_LIB -DQT_SENSORS_LIB -DQT_CORE_LIB
 CFLAGS        = -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -Wa,--noexecstack -fno-builtin-memmove -g -marm -O0 -fno-omit-frame-pointer -Wall -Wno-psabi -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -Wa,--noexecstack -fno-builtin-memmove -std=c++11 -g -g -marm -O0 -fno-omit-frame-pointer -Wall -Wno-psabi -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I..\com_to_web -I. -ID:\Qt\Qt570\5.7\android_armv7\include -ID:\Qt\Qt570\5.7\android_armv7\include\QtWidgets -ID:\Qt\Qt570\5.7\android_armv7\include\QtGui -ID:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort -ID:\Qt\Qt570\5.7\android_armv7\include\QtNetwork -ID:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth -ID:\Qt\Qt570\5.7\android_armv7\include\QtCore -I. -I. -isystem D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include -isystem D:\qt\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include -isystem D:\qt\ndk\platforms\android-9\arch-arm\usr\include -ID:\Qt\Qt570\5.7\android_armv7\mkspecs\android-g++
+INCPATH       = -I..\com_to_web -I. -ID:\Qt\Qt570\5.7\android_armv7\include -ID:\Qt\Qt570\5.7\android_armv7\include\QtLocation -ID:\Qt\Qt570\5.7\android_armv7\include\QtQuick -ID:\Qt\Qt570\5.7\android_armv7\include\QtWidgets -ID:\Qt\Qt570\5.7\android_armv7\include\QtGui -ID:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort -ID:\Qt\Qt570\5.7\android_armv7\include\QtQml -ID:\Qt\Qt570\5.7\android_armv7\include\QtNetwork -ID:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth -ID:\Qt\Qt570\5.7\android_armv7\include\QtPositioning -ID:\Qt\Qt570\5.7\android_armv7\include\QtSensors -ID:\Qt\Qt570\5.7\android_armv7\include\QtCore -I. -I. -isystem D:\Qt\android\ndk\sources\cxx-stl\gnu-libstdc++\4.9\include -isystem D:\Qt\android\ndk\sources\cxx-stl\gnu-libstdc++\4.9\libs\armeabi-v7a\include -isystem D:\Qt\android\ndk\platforms\android-9\arch-arm\usr\include -ID:\Qt\Qt570\5.7\android_armv7\mkspecs\android-g++
 QMAKE         = D:\Qt\Qt570\5.7\android_armv7\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -33,12 +33,12 @@ MOVE          = move
 TAR           = 
 COMPRESS      = 
 DISTNAME      = libcom_to_web.so1.0.0
-DISTDIR = D:\dron\pic\ardrpi\git\arduserv\win\com_to_web\build-com_to_web-Android_armeabi_v7a_GCC_4_9_Qt_5_7_0-Debug\.tmp\libcom_to_web.so1.0.0
-LINK          = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
-LFLAGS        = --sysroot=D:\qt\ndk/platforms/android-9/arch-arm/ -Wl,-soname,libcom_to_web.so -Wl,-rpath-link=D:/Qt/Qt570/5.7/android_armv7/lib -Wl,--no-undefined -Wl,-z,noexecstack -shared
-LIBS          = $(SUBLIBS) -LD:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -LD:\qt\ndk/platforms/android-9/arch-arm//usr/lib -LD:/Qt/Qt570/5.7/android_armv7/lib -lQt5Widgets -Lc:/utils/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -Lc:/utils/android-ndk-r10e/platforms/android-9/arch-arm//usr/lib -lQt5Gui -lQt5SerialPort -LD:\qt\Qt570\5.7\android_armv7/lib -lQt5Network -lQt5Bluetooth -lQt5AndroidExtras -lQt5Core -lGLESv2 -lgnustl_shared -llog -lz -lm -ldl -lc -lgcc
-AR            = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ar cqs
-RANLIB        = D:\qt\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ranlib
+DISTDIR = E:\dron\pic\arduserv\git\arduserv\win\com_to_web\build-com_to_web-Android_armeabi_v7a_GCC_4_9_Qt_5_7_0-Debug\.tmp\libcom_to_web.so1.0.0
+LINK          = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++
+LFLAGS        = --sysroot=D:\Qt\android\ndk/platforms/android-9/arch-arm/ -Wl,-soname,libcom_to_web.so -Wl,-rpath-link=D:/Qt/Qt570/5.7/android_armv7/lib -Wl,--no-undefined -Wl,-z,noexecstack -shared
+LIBS          = $(SUBLIBS) -LD:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -LD:\Qt\android\ndk/platforms/android-9/arch-arm//usr/lib -LD:/Qt/Qt570/5.7/android_armv7/lib -lQt5Location -Lc:/utils/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a -Lc:/utils/android-ndk-r10e/platforms/android-9/arch-arm//usr/lib -LD:\Qt\Qt570\5.7\android_armv7/lib -lQt5Quick -lQt5Widgets -lQt5Gui -lQt5SerialPort -lQt5Qml -lQt5Network -lQt5Bluetooth -lQt5AndroidExtras -lQt5Positioning -lQt5Sensors -lQt5Core -lGLESv2 -lgnustl_shared -llog -lz -lm -ldl -lc -lgcc
+AR            = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ar cqs
+RANLIB        = D:\Qt\android\ndk/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-ranlib
 SED           = $(QMAKE) -install sed
 STRIP         = 
 
@@ -50,13 +50,21 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ..\com_to_web\main.cpp \
 		..\com_to_web\com_to_web.cpp \
+		..\com_to_web\gr_data_source\gr_data_source.cpp \
 		..\com_to_web\gr_serial\gr_serial.cpp \
-		..\com_to_web\gr_bluetooth\gr_bluetooth.cpp moc_com_to_web.cpp
+		..\com_to_web\gr_bluetooth\gr_bluetooth.cpp \
+		..\com_to_web\gr_rotation\gr_rotation.cpp \
+		..\com_to_web\gr_gps\gr_gps.cpp moc_com_to_web.cpp \
+		moc_gr_data_source.cpp
 OBJECTS       = main.obj \
 		com_to_web.obj \
+		gr_data_source.obj \
 		gr_serial.obj \
 		gr_bluetooth.obj \
-		moc_com_to_web.obj
+		gr_rotation.obj \
+		gr_gps.obj \
+		moc_com_to_web.obj \
+		moc_gr_data_source.obj
 DIST          = ..\com_to_web\android\AndroidManifest.xml \
 		..\com_to_web\android\gradle\wrapper\gradle-wrapper.jar \
 		..\com_to_web\android\gradlew \
@@ -64,11 +72,17 @@ DIST          = ..\com_to_web\android\AndroidManifest.xml \
 		..\com_to_web\android\build.gradle \
 		..\com_to_web\android\gradle\wrapper\gradle-wrapper.properties \
 		..\com_to_web\android\gradlew.bat ..\com_to_web\com_to_web.h \
+		..\com_to_web\gr_data_source\gr_data_source.h \
 		..\com_to_web\gr_serial\gr_serial.h \
-		..\com_to_web\gr_bluetooth\gr_bluetooth.h ..\com_to_web\main.cpp \
+		..\com_to_web\gr_bluetooth\gr_bluetooth.h \
+		..\com_to_web\gr_rotation\gr_rotation.h \
+		..\com_to_web\gr_gps\gr_gps.h ..\com_to_web\main.cpp \
 		..\com_to_web\com_to_web.cpp \
+		..\com_to_web\gr_data_source\gr_data_source.cpp \
 		..\com_to_web\gr_serial\gr_serial.cpp \
-		..\com_to_web\gr_bluetooth\gr_bluetooth.cpp
+		..\com_to_web\gr_bluetooth\gr_bluetooth.cpp \
+		..\com_to_web\gr_rotation\gr_rotation.cpp \
+		..\com_to_web\gr_gps\gr_gps.cpp
 QMAKE_TARGET  = libcom_to_web.so
 DESTDIR       = 
 TARGET        = libcom_to_web.so
@@ -218,11 +232,16 @@ Makefile: ..\com_to_web\com_to_web.pro D:\Qt\Qt570\5.7\android_armv7\mkspecs\and
 		D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\yacc.prf \
 		D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\lex.prf \
 		..\com_to_web\com_to_web.pro \
+		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Location.prl \
+		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Quick.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Widgets.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Gui.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5SerialPort.prl \
+		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Qml.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Network.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Bluetooth.prl \
+		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Positioning.prl \
+		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Sensors.prl \
 		D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Core.prl
 	$(QMAKE) -spec android-g++ "CONFIG+=debug" "CONFIG+=qml_debug" -o Makefile ..\com_to_web\com_to_web.pro
 D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\spec_pre.prf:
@@ -363,11 +382,16 @@ D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\exceptions.prf:
 D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\yacc.prf:
 D:\Qt\Qt570\5.7\android_armv7\mkspecs\features\lex.prf:
 ..\com_to_web\com_to_web.pro:
+D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Location.prl:
+D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Quick.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Widgets.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Gui.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5SerialPort.prl:
+D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Qml.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Network.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Bluetooth.prl:
+D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Positioning.prl:
+D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Sensors.prl:
 D:\Qt\Qt570\5.7\android_armv7\lib\libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -spec android-g++ "CONFIG+=debug" "CONFIG+=qml_debug" -o Makefile ..\com_to_web\com_to_web.pro
@@ -383,8 +407,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@if not exist $(DISTDIR) mkdir $(DISTDIR) & if not exist $(DISTDIR) exit 1
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)\
-	$(COPY_FILE) --parents ..\com_to_web\com_to_web.h ..\com_to_web\gr_serial\gr_serial.h ..\com_to_web\gr_bluetooth\gr_bluetooth.h $(DISTDIR)\
-	$(COPY_FILE) --parents ..\com_to_web\main.cpp ..\com_to_web\com_to_web.cpp ..\com_to_web\gr_serial\gr_serial.cpp ..\com_to_web\gr_bluetooth\gr_bluetooth.cpp $(DISTDIR)\
+	$(COPY_FILE) --parents ..\com_to_web\com_to_web.h ..\com_to_web\gr_data_source\gr_data_source.h ..\com_to_web\gr_serial\gr_serial.h ..\com_to_web\gr_bluetooth\gr_bluetooth.h ..\com_to_web\gr_rotation\gr_rotation.h ..\com_to_web\gr_gps\gr_gps.h $(DISTDIR)\
+	$(COPY_FILE) --parents ..\com_to_web\main.cpp ..\com_to_web\com_to_web.cpp ..\com_to_web\gr_data_source\gr_data_source.cpp ..\com_to_web\gr_serial\gr_serial.cpp ..\com_to_web\gr_bluetooth\gr_bluetooth.cpp ..\com_to_web\gr_rotation\gr_rotation.cpp ..\com_to_web\gr_gps\gr_gps.cpp $(DISTDIR)\
 	$(COPY_FILE) --parents ..\com_to_web\com_to_web.ui $(DISTDIR)\
 
 
@@ -410,9 +434,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_com_to_web.cpp
+compiler_moc_header_make_all: moc_com_to_web.cpp moc_gr_data_source.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_com_to_web.cpp
+	-$(DEL_FILE) moc_com_to_web.cpp moc_gr_data_source.cpp
 moc_com_to_web.cpp: D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qmainwindow.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qwidget.h \
@@ -640,6 +664,8 @@ moc_com_to_web.cpp: D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow 
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qserialportinfo.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qtserialportversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\QSerialPortInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QNetworkInterface \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qnetworkinterface.h \
 		..\com_to_web\gr_bluetooth\gr_bluetooth.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetooth \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetoothDepends \
@@ -693,9 +719,246 @@ moc_com_to_web.cpp: D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QMainWindow 
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergyservicedata.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qtbluetoothversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QLowEnergyController \
+		..\com_to_web\gr_gps\gr_gps.h \
+		..\com_to_web\gr_data_source\gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qpositioningglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoCoordinate \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocoordinate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QSharedDataPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDateTime \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioning \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioningDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoShape \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoshape.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorsource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocircle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeolocation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosourcefactory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
+		..\com_to_web\gr_rotation\gr_rotation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		..\com_to_web\com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe
-	D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/Qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -ID:/dron/pic/ardrpi/git/arduserv/win/com_to_web/com_to_web -ID:/Qt/Qt570/5.7/android_armv7/include -ID:/Qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/Qt/Qt570/5.7/android_armv7/include/QtGui -ID:/Qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/Qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/Qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/Qt/Qt570/5.7/android_armv7/include/QtCore -I. -ID:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/include -ID:\qt\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -ID:\qt\ndk/platforms/android-9/arch-arm//usr/include ..\com_to_web\com_to_web.h -o moc_com_to_web.cpp
+	D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/Qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -IE:/dron/pic/arduserv/git/arduserv/win/com_to_web/com_to_web -ID:/Qt/Qt570/5.7/android_armv7/include -ID:/Qt/Qt570/5.7/android_armv7/include/QtLocation -ID:/Qt/Qt570/5.7/android_armv7/include/QtQuick -ID:/Qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/Qt/Qt570/5.7/android_armv7/include/QtGui -ID:/Qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/Qt/Qt570/5.7/android_armv7/include/QtQml -ID:/Qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/Qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/Qt/Qt570/5.7/android_armv7/include/QtPositioning -ID:/Qt/Qt570/5.7/android_armv7/include/QtSensors -ID:/Qt/Qt570/5.7/android_armv7/include/QtCore -I. -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/include -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -ID:\Qt\android\ndk/platforms/android-9/arch-arm//usr/include ..\com_to_web\com_to_web.h -o moc_com_to_web.cpp
+
+moc_gr_data_source.cpp: D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCoreDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnamespace.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qconfig.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfeatures.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocessordetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcompilerdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypeinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypetraits.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qisenum.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsysinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlogging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qflags.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasicatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_bootstrap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qgenericatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_cxx11.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_msvc.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobalstatic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmutex.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnumeric.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversiontagging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstring.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qchar.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrefcount.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringbuilder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qalgorithms.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhashfunctions.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpair.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraylist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregexp.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringmatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreevent.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetatype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvarlengtharray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontainerfwd.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qparallelanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpauseanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpropertyanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariantanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeasingcurve.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpoint.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariant.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdebug.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiodevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlocale.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qshareddata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qset.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontiguouscache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsequentialanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextcodec.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qendian.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibraryinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatetime.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbuffer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatastream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfiledevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdiriterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileselector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QObject \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QStringList \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfilesystemwatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlockfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qloggingcategory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocess.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsavefile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsettings.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstandardpaths.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstorageinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporarydir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QScopedPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporaryfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurlquery.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractitemmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qidentityproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qitemselectionmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsortfilterproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlistmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonvalue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsondocument.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracteventdispatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventloop.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractnativeeventfilter.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasictimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreapplication.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmath.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetaobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectcleanuphandler.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedmemory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignalmapper.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsocketnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtranslator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwineventnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedatabase.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimetype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfactoryinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibrary.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qplugin.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpluginloader.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\quuid.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracttransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventtransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfinalstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhistorystate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignaltransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstatemachine.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qexception.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuture.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfutureinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrunnable.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresultstore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturesynchronizer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturewatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qreadwritelock.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthread.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadpool.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadstorage.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwaitcondition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydataops.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydatapointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbitarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraymatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcollator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineoption.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineparser.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcryptographichash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qelapsedtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlinkedlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmargins.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmessageauthenticationcode.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qqueue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrect.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsize.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregularexpression.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedvaluerollback.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstack.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextboundaryfinder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimeline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimezone.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversionnumber.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qhostaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDebug \
+		..\com_to_web\gr_data_source\gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe
+	D:\Qt\Qt570\5.7\android_armv7\bin\moc.exe $(DEFINES) -ID:/Qt/Qt570/5.7/android_armv7/mkspecs/android-g++ -IE:/dron/pic/arduserv/git/arduserv/win/com_to_web/com_to_web -ID:/Qt/Qt570/5.7/android_armv7/include -ID:/Qt/Qt570/5.7/android_armv7/include/QtLocation -ID:/Qt/Qt570/5.7/android_armv7/include/QtQuick -ID:/Qt/Qt570/5.7/android_armv7/include/QtWidgets -ID:/Qt/Qt570/5.7/android_armv7/include/QtGui -ID:/Qt/Qt570/5.7/android_armv7/include/QtSerialPort -ID:/Qt/Qt570/5.7/android_armv7/include/QtQml -ID:/Qt/Qt570/5.7/android_armv7/include/QtNetwork -ID:/Qt/Qt570/5.7/android_armv7/include/QtBluetooth -ID:/Qt/Qt570/5.7/android_armv7/include/QtPositioning -ID:/Qt/Qt570/5.7/android_armv7/include/QtSensors -ID:/Qt/Qt570/5.7/android_armv7/include/QtCore -I. -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/include -ID:\Qt\android\ndk/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -ID:\Qt\android\ndk/platforms/android-9/arch-arm//usr/include ..\com_to_web\gr_data_source\gr_data_source.h -o moc_gr_data_source.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -944,6 +1207,8 @@ main.obj: ..\com_to_web\main.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qserialportinfo.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qtserialportversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\QSerialPortInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QNetworkInterface \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qnetworkinterface.h \
 		../com_to_web/gr_bluetooth/gr_bluetooth.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetooth \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetoothDepends \
@@ -997,6 +1262,49 @@ main.obj: ..\com_to_web\main.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergyservicedata.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qtbluetoothversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QLowEnergyController \
+		../com_to_web/gr_gps/gr_gps.h \
+		../com_to_web/gr_data_source/gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qpositioningglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoCoordinate \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocoordinate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QSharedDataPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDateTime \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioning \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioningDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoShape \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoshape.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorsource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocircle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeolocation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosourcefactory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
+		../com_to_web/gr_rotation/gr_rotation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QApplication \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qapplication.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qdesktopwidget.h \
@@ -1233,6 +1541,8 @@ com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qserialportinfo.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\qtserialportversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtSerialPort\QSerialPortInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QNetworkInterface \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qnetworkinterface.h \
 		../com_to_web/gr_bluetooth/gr_bluetooth.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetooth \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QtBluetoothDepends \
@@ -1286,6 +1596,49 @@ com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergyservicedata.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qtbluetoothversion.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QLowEnergyController \
+		../com_to_web/gr_gps/gr_gps.h \
+		../com_to_web/gr_data_source/gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qpositioningglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoCoordinate \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocoordinate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QSharedDataPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDateTime \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioning \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioningDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoShape \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoshape.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorsource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocircle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeolocation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosourcefactory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource \
+		../com_to_web/gr_rotation/gr_rotation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
 		..\com_to_web\ui_com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QAction \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qaction.h \
@@ -1311,6 +1664,9 @@ com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qstyle.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qtabbar.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qrubberband.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QPushButton \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qpushbutton.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qabstractbutton.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QTextEdit \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\qtextedit.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtGui\qtextdocument.h \
@@ -1320,6 +1676,199 @@ com_to_web.obj: ..\com_to_web\com_to_web.cpp ../com_to_web/com_to_web.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtGui\qpen.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtWidgets\QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o com_to_web.obj ..\com_to_web\com_to_web.cpp
+
+gr_data_source.obj: ..\com_to_web\gr_data_source\gr_data_source.cpp ../com_to_web/gr_data_source/gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCoreDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnamespace.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qconfig.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfeatures.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocessordetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcompilerdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypeinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypetraits.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qisenum.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsysinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlogging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qflags.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasicatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_bootstrap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qgenericatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_cxx11.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_msvc.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobalstatic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmutex.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnumeric.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversiontagging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstring.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qchar.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrefcount.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringbuilder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qalgorithms.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhashfunctions.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpair.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraylist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregexp.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringmatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreevent.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetatype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvarlengtharray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontainerfwd.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qparallelanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpauseanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpropertyanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariantanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeasingcurve.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpoint.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariant.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdebug.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiodevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlocale.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qshareddata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qset.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontiguouscache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsequentialanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextcodec.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qendian.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibraryinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatetime.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbuffer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatastream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfiledevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdiriterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileselector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QObject \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QStringList \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfilesystemwatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlockfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qloggingcategory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocess.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsavefile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsettings.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstandardpaths.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstorageinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporarydir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QScopedPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporaryfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurlquery.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractitemmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qidentityproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qitemselectionmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsortfilterproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlistmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonvalue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsondocument.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracteventdispatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventloop.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractnativeeventfilter.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasictimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreapplication.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmath.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetaobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectcleanuphandler.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedmemory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignalmapper.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsocketnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtranslator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwineventnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedatabase.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimetype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfactoryinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibrary.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qplugin.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpluginloader.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\quuid.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracttransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventtransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfinalstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhistorystate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignaltransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstatemachine.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qexception.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuture.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfutureinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrunnable.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresultstore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturesynchronizer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturewatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qreadwritelock.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthread.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadpool.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadstorage.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwaitcondition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydataops.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydatapointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbitarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraymatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcollator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineoption.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineparser.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcryptographichash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qelapsedtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlinkedlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmargins.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmessageauthenticationcode.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qqueue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrect.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsize.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregularexpression.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedvaluerollback.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstack.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextboundaryfinder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimeline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimezone.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversionnumber.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qhostaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_data_source.obj ..\com_to_web\gr_data_source\gr_data_source.cpp
 
 gr_serial.obj: ..\com_to_web\gr_serial\gr_serial.cpp ../com_to_web/gr_serial/gr_serial.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
@@ -1517,7 +2066,9 @@ gr_serial.obj: ..\com_to_web\gr_serial\gr_serial.cpp ../com_to_web/gr_serial/gr_
 		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
-		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QNetworkInterface \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qnetworkinterface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_serial.obj ..\com_to_web\gr_serial\gr_serial.cpp
 
 gr_bluetooth.obj: ..\com_to_web\gr_bluetooth\gr_bluetooth.cpp ../com_to_web/gr_bluetooth/gr_bluetooth.h \
@@ -1761,11 +2312,447 @@ gr_bluetooth.obj: ..\com_to_web\gr_bluetooth\gr_bluetooth.cpp ../com_to_web/gr_b
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergydescriptordata.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qlowenergyservicedata.h \
 		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\qtbluetoothversion.h \
-		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer
+		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QBluetoothServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtBluetooth\QLowEnergyController
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_bluetooth.obj ..\com_to_web\gr_bluetooth\gr_bluetooth.cpp
+
+gr_rotation.obj: ..\com_to_web\gr_rotation\gr_rotation.cpp ../com_to_web/gr_rotation/gr_rotation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCoreDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnamespace.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qconfig.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfeatures.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocessordetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcompilerdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypeinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypetraits.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qisenum.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsysinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlogging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qflags.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasicatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_bootstrap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qgenericatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_cxx11.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_msvc.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobalstatic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmutex.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnumeric.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversiontagging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstring.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qchar.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrefcount.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringbuilder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qalgorithms.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhashfunctions.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpair.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraylist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregexp.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringmatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreevent.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetatype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvarlengtharray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontainerfwd.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qparallelanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpauseanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpropertyanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariantanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeasingcurve.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpoint.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariant.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdebug.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiodevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlocale.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qshareddata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qset.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontiguouscache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsequentialanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextcodec.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qendian.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibraryinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatetime.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbuffer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatastream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfiledevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdiriterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileselector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QObject \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QStringList \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfilesystemwatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlockfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qloggingcategory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocess.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsavefile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsettings.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstandardpaths.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstorageinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporarydir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QScopedPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporaryfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurlquery.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractitemmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qidentityproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qitemselectionmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsortfilterproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlistmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonvalue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsondocument.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracteventdispatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventloop.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractnativeeventfilter.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasictimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreapplication.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmath.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetaobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectcleanuphandler.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedmemory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignalmapper.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsocketnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtranslator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwineventnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedatabase.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimetype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfactoryinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibrary.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qplugin.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpluginloader.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\quuid.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracttransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventtransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfinalstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhistorystate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignaltransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstatemachine.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qexception.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuture.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfutureinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrunnable.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresultstore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturesynchronizer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturewatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qreadwritelock.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthread.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadpool.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadstorage.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwaitcondition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydataops.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydatapointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbitarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraymatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcollator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineoption.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineparser.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcryptographichash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qelapsedtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlinkedlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmargins.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmessageauthenticationcode.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qqueue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrect.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsize.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregularexpression.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedvaluerollback.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstack.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextboundaryfinder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimeline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimezone.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversionnumber.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qsensorsglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QMetaType \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QVariant \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QPair \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationSensor \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qrotationsensor.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QRotationReading \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\qaccelerometer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtSensors\QAccelerometerReading \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qhostaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_rotation.obj ..\com_to_web\gr_rotation\gr_rotation.cpp
+
+gr_gps.obj: ..\com_to_web\gr_gps\gr_gps.cpp ../com_to_web/gr_gps/gr_gps.h \
+		../com_to_web/gr_data_source/gr_data_source.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCore \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QtCoreDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnamespace.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qconfig.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfeatures.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocessordetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcompilerdetection.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypeinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtypetraits.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qisenum.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsysinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlogging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qflags.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasicatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_bootstrap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qgenericatomic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_cxx11.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qatomic_msvc.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qglobalstatic.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmutex.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qnumeric.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversiontagging.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectdefs_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstring.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qchar.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrefcount.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringbuilder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qalgorithms.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhashfunctions.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpair.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraylist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregexp.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringmatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreevent.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetatype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvarlengtharray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontainerfwd.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobject_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qparallelanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpauseanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpropertyanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariantanimation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeasingcurve.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpoint.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qvariant.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmap.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdebug.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qiodevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlocale.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qshareddata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qset.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcontiguouscache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedpointer_impl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsequentialanimationgroup.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextcodec.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qendian.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibraryinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatetime.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbuffer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdatastream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfiledevice.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qdiriterator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfileselector.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QObject \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QStringList \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfilesystemwatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlockfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qloggingcategory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qprocess.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsavefile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsettings.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstandardpaths.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstorageinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporarydir.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QScopedPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtemporaryfile.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurl.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qurlquery.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractitemmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qidentityproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qitemselectionmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsortfilterproxymodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstringlistmodel.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonvalue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsondocument.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qjsonobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracteventdispatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventloop.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractnativeeventfilter.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbasictimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcoreapplication.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmath.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmetaobject.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedata.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qobjectcleanuphandler.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsharedmemory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignalmapper.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsocketnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsystemsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtranslator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwineventnotifier.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimedatabase.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmimetype.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfactoryinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlibrary.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qplugin.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qpluginloader.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\quuid.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstractstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qabstracttransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qeventtransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfinalstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qhistorystate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsignaltransition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstatemachine.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qexception.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuture.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfutureinterface.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrunnable.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qresultstore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturesynchronizer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qfuturewatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qreadwritelock.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsemaphore.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthread.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadpool.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qthreadstorage.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qwaitcondition.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydataops.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qarraydatapointer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbitarray.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qbytearraymatcher.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcache.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcollator.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineoption.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcommandlineparser.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qcryptographichash.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qelapsedtimer.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qlinkedlist.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmargins.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qmessageauthenticationcode.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qqueue.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qrect.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qsize.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qregularexpression.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qscopedvaluerollback.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qstack.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtextboundaryfinder.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimeline.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtimezone.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qversionnumber.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qxmlstream.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\qtcoreversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QCoreApplication \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpServer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpserver.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qabstractsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qhostaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\QTcpSocket \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtNetwork\qtcpsocket.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QByteArray \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDataStream \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDebug \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qpositioningglobal.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoCoordinate \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocoordinate.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QMetaType \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QString \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QSharedDataPointer \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QDateTime \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioning \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QtPositioningDepends \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoaddress.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorinfo.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoShape \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoshape.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QVariantMap \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeoareamonitorsource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorInfo \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoPositionInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeocircle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeolocation.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeopositioninfosourcefactory.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoSatelliteInfoSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeosatelliteinfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtCore\QList \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QGeoAreaMonitorSource \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qgeorectangle.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qnmeapositioninfosource.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\qtpositioningversion.h \
+		D:\Qt\Qt570\5.7\android_armv7\include\QtPositioning\QNmeaPositionInfoSource
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gr_gps.obj ..\com_to_web\gr_gps\gr_gps.cpp
 
 moc_com_to_web.obj: moc_com_to_web.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_com_to_web.obj moc_com_to_web.cpp
+
+moc_gr_data_source.obj: moc_gr_data_source.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gr_data_source.obj moc_gr_data_source.cpp
 
 ####### Install
 

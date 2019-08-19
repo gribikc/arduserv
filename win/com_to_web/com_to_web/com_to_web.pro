@@ -30,8 +30,6 @@ SOURCES +=  main.cpp\
             gr_rotation/gr_rotation.cpp \
             gr_gps/gr_gps.cpp
 
-
-
 HEADERS  += com_to_web.h\
             gr_data_source/gr_data_source.h\
             gr_serial/gr_serial.h \

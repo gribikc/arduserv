@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\dron\\pic\\ardrpi\\git\\arduserv\\win\\com_to_web\\com_to_web\\android-build\\src\\org\\kde\\necessitas\\ministro\\IMinistro.aidl
+ * Original file: E:\\dron\\pic\\arduserv\\git\\arduserv\\win\\com_to_web\\com_to_web\\android-build\\src\\org\\kde\\necessitas\\ministro\\IMinistro.aidl
  */
 package org.kde.necessitas.ministro;
 public interface IMinistro extends android.os.IInterface

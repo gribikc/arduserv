@@ -1,30 +1,36 @@
 #include "gr_gps.h"
 
-//
-//
 ////////////////////////////////////////////////////////////////////////////
-void gr_gps::listener_added(){
-    if (!gps_source) {
-        gps_source=QGeoPositionInfoSource::createDefaultSource(this);
-        if (gps_source) {
-            gps_source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
-            connect( gps_source, &QGeoPositionInfoSource::positionUpdated, this,&gr_gps::gps_positionnew);
-            gps_source->startUpdates();
-        }else{
-            socket_point->close();
-        }
-    }else{
-        gps_source->startUpdates();
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void gr_gps::init_gps(){
+    gps_source=QGeoPositionInfoSource::createDefaultSource(this);
+    if (gps_source) {
+        gps_source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+        connect( gps_source, &QGeoPositionInfoSource::positionUpdated, this,&gr_gps::gps_positionnew);
     }
 }
-///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/// Virtual ///
+    void gr_gps::socket_added(){
+        if (gps_source) {
+            gps_source->startUpdates();
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    void gr_gps::no_more_sockets(){
+        if (gps_source) {
+            gps_source->stopUpdates();
+        }
+    }
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
     QByteArray data;
     QByteArray send_data="";
-
-    if(socket_listener.size()==0){
-        gps_source->stopUpdates();
-    }
 
     send_data+="xdstartjson:{";//info.coordinate().altitude();
         send_data+="\n   \"altitude\":";
@@ -83,7 +89,7 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
         send_data+="\""+info.timestamp().toString("dd.MM.yyyy;hh:mm:ss.zzz")+"\"";
 
     send_data+="\n}:xdstopjson\n";
-    send_data_to_listeners(send_data);
+    send_data_to_sockets(&send_data);
 }
 //
 //

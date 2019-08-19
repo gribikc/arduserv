@@ -6,16 +6,10 @@
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QDataStream>
-
-
-    //GPS
-    //#include <QGeoSatelliteInfo>
-    //#include <QGeoCoordinate>
-    //#include <QGeoPositionInfo>
-    //#include <QtPositioning>
-    //#include <QGeoPositionInfoSource>
+#include <QNetworkInterface>
 
     //EXT
+    //#include "gr_data_source/gr_data_source.h"
     #include "gr_serial/gr_serial.h"
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"

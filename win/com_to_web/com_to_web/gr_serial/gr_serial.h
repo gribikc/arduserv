@@ -1,29 +1,19 @@
-#include <QtCore>
-#include <QObject>
-#include <QCoreApplication>
-
+#include "gr_data_source/gr_data_source.h"
 #include <QtSerialPort/QtSerialPort>
 #include <QSerialPortInfo>
 
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QByteArray>
-#include <QDataStream>
+class gr_serial:public gr_data_source{
+        Q_OBJECT
+    public:
+        gr_serial(int num,int speed,QTcpSocket *socket):gr_data_source(socket){
+            serial_open(num,speed);
+        }
 
-#include <QNetworkInterface>
+        QSerialPort *serial=0;
 
-
-
-class gr_serial: public QObject{
-    //Q_OBJECT
-public:
-    gr_serial(){}
-
-public:
-    void serial_socketRead();
-public:
-    QSerialPort *serial=0;
-    void serial_open(int num,int speed,QTcpSocket *socket_point);
-
-    QTcpSocket *socket=0;
+        virtual void no_more_sockets();
+        virtual void write_data(QByteArray *data);
+    private slots:
+        void serial_open(int num,int speed);
+        void serial_read();
 };

@@ -1,5 +1,4 @@
-#include <gr_data_source/gr_data_source.h>
-
+#include "gr_data_source/gr_data_source.h"
 #include <QGeoSatelliteInfo>
 #include <QGeoCoordinate>
 #include <QGeoPositionInfo>
@@ -8,14 +7,17 @@
 #include <QNmeaPositionInfoSource>
 
 
-class gr_gps: public QObject,public gr_data_source{
-        //Q_OBJECT
+class gr_gps: public gr_data_source{
     public:
-        //gr_gps(QTcpSocket socket):gr_data_source(socket);
-        gr_gps(){}
+        gr_gps():gr_data_source(){
+            init_gps();
+        }
+
         QGeoPositionInfoSource *gps_source;
 
-        void virtual listener_added();
+        void virtual socket_added();
+        void virtual no_more_sockets();
     private slots:
+        void init_gps();
         void gps_positionnew(const QGeoPositionInfo &info);
 };

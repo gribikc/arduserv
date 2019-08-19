@@ -1,26 +1,18 @@
 #include "gr_serial.h"
 
-//
-//
-//
-void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
-    socket=socket_point;
-
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void gr_serial::serial_open(int num, int speed){
     QString name="COM"+QString::number(num);
     qDebug() << name;
+
     serial=new QSerialPort();//this
     serial->setPortName(name);//78
 
-    /*serial->setBaudRate(115200);
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setDirection(QSerialPort::AllDirections);//!!!
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);*/
     serial->open(QIODevice::ReadWrite);
     if(serial->isOpen()){
-        printf("COMport OPEN\n");
-        //serial->setPortName("COM5");//78
+        qDebug() << "COMport OPEN\n";
         serial->setBaudRate(speed);//115200
         serial->setDataBits(QSerialPort::Data8);
         //serial->setDirection(QSerialPort::AllDirections);//!!!
@@ -28,25 +20,36 @@ void gr_serial::serial_open(int num, int speed, QTcpSocket *socket_point){
         serial->setStopBits(QSerialPort::OneStop);
         serial->setFlowControl(QSerialPort::NoFlowControl);
     }else{
-        printf("COMport NOT OPENed\n");
+       qDebug() << "COMport NOT OPENed\n";
     }
-    if(!serial->isReadable()){
-        socket->close();
-    }
-    //connect(serial, SIGNAL(readyRead()), this, SLOT(serial_socketRead()));
+    //if(!serial->isReadable()){
+    //    socket->close();
+    //}
+
     serial->flush();
     serial->write("D");
     serial->readAll();
-    connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_socketRead);//&gr_serial::serial_socketRead
+    connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_read);
 }
-//
-//
-//
-void gr_serial::serial_socketRead(){
-    //QByteArray in_data=serial->readAll();
-    //uart_parser_data(in_data);
-    socket->write(serial->readAll());
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void gr_serial::no_more_sockets(){
+    serial->close();//!!!
 }
-//
-//
-//
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void gr_serial::serial_read(){
+    QByteArray in_data=serial->readAll();
+    send_data_to_sockets(&in_data);
+}
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void gr_serial::write_data(QByteArray *data){
+    serial->write(*data);
+}
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
