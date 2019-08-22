@@ -10,6 +10,7 @@
 
     //EXT
     //#include "gr_data_source/gr_data_source.h"
+    #include "gr_http_client/gr_http_client.h"
     #include "gr_serial/gr_serial.h"
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
@@ -31,6 +32,7 @@ public slots:
     void incommingConnection(); // обработчик входящего подключения
     void readyRead(); // обработчик входящих данных
     void stateChanged(); // обработчик изменения состояния вещающего
+    void client_requestComplete(gr_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
 public:
     void gr_sock_srv_start();
 

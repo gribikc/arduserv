@@ -48,8 +48,11 @@ void com_to_web::gr_sock_srv_start(){
 void com_to_web::incommingConnection(){ // обработчик подключений
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
 
-    connect(socket, &QTcpSocket::stateChanged, this, &com_to_web::stateChanged); // делаем обработчик изменения статуса сокета
-    connect(socket, &QTcpSocket::readyRead, this, &com_to_web::readyRead);
+    gr_http_client *abv=new gr_http_client(socket);
+    //connect(abv,&gr_http_client::requestComplete, this, [=](){qDebug() << "socket";} );//&com_to_web::client_requestComplete);
+    connect(abv,&gr_http_client::requestComplete, this,&com_to_web::client_requestComplete);
+    //connect(socket, &QTcpSocket::stateChanged, this, &com_to_web::stateChanged); // делаем обработчик изменения статуса сокета
+    //connect(socket, &QTcpSocket::readyRead, this, &com_to_web::readyRead);
 
     gr_httprqs_parser temp_gr_httprqs_parser;
     temp_gr_httprqs_parser.socket=socket;
@@ -62,6 +65,21 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 
     qDebug() << "Client connected;";
 
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+void com_to_web::client_requestComplete(gr_http_client *http_client){
+    //int a=http_client->is_rsw("/dev/gps");
+    //QStringList b=http_client->get_list_param();
+    //
+    QStringList b;
+    if(http_client->is_rsw("/dev/r/com/11/57600/")>0){
+        b=http_client->get_list_param();
+        gr_serial *a=new gr_serial(QString(b.at(4)).toInt(),QString(b.at(5)).toInt(),http_client->socket);
+    }
+    //
+    qDebug() << "Ok";
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,14 @@
+INPUT(
+./release\main.o
+./release\com_to_web.o
+./release\gr_data_source.o
+./release\gr_serial.o
+./release\gr_bluetooth.o
+./release\gr_rotation.o
+./release\gr_gps.o
+./release\gr_http_client.o
+./release\moc_com_to_web.o
+./release\moc_gr_data_source.o
+./release\moc_gr_serial.o
+./release\moc_gr_http_client.o
+);
