@@ -9,14 +9,23 @@ gr_http_client::gr_http_client(QTcpSocket *socket) : QObject(){
 ////////////////////////////////
 ////////////////////////////////
 void gr_http_client::readyRead(){
+    indata.append(socket->readAll());
     if(hrp_headers_valid==0){
-        indata.append(socket->readAll());
         http_request_parsing();
         if(hrp_headers_valid==1){
             //signal
             emit requestComplete(this);
         }
+    }else if(hrp_headers_valid==1){
+        if(indata.size()>=contentlength){
+            indata.remove(0,hrp_del);
+            emit dataComplete(this);
+        }
     }
+
+    //if(hrp_del!=0 && hrp_headers_valid==1){
+    //    indata.remove(0,hrp_del);
+    //}
 }
 ////////////////////////////////////
 ////////////////////////////////////
@@ -58,6 +67,7 @@ void gr_http_client::http_request_parsing(){
                 split_line=header_line[i].split(':');
                 if(split_line.size()==2){
                     hrp_headers.insertMulti("Content-Length",split_line[1]);
+                    contentlength=split_line[1].toInt();
                 }
             }
         }

@@ -19,8 +19,9 @@ class gr_http_client : public QObject
 public:
     explicit gr_http_client(QTcpSocket  *socket);
 
-    QTcpSocket  *socket=0;
-    QByteArray  indata=0;
+    QTcpSocket  *socket=nullptr;
+    QByteArray  indata="";
+    int contentlength=0;
     //http_request_parsing
         int hrp_del=0;//\r\n\r\n -position
         QMap<QByteArray, QByteArray> hrp_headers;
@@ -36,8 +37,8 @@ public slots:
     void http_request_parsing();
 
 signals:
-    void requestComplete(gr_http_client *gr_http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
-
+    void requestComplete(gr_http_client *gr_http_client);
+    void dataComplete(gr_http_client *gr_http_client);
 
 };
 
