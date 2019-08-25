@@ -13,8 +13,8 @@
 		//////////
 		//xdstartjson:{
 		//}:xdstopjson
-		parser_data(type,stream){
-			document.getElementById("gps_state").innerHTML+="stream";
+		parser_data(stream){
+			document.getElementById("simple_test").innerHTML=stream;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

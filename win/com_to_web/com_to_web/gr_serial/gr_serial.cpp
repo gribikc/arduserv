@@ -22,9 +22,6 @@ void gr_serial::serial_open(int num, int speed){
     }else{
        qDebug() << "COMport NOT OPENed\n";
     }
-    //if(!serial->isReadable()){
-    //    socket->close();
-    //}
 
     serial->flush();
     serial->write("D");
@@ -36,6 +33,9 @@ void gr_serial::serial_open(int num, int speed){
 ////////////////////////////////////////////////////////////////////////////
 void gr_serial::no_more_sockets(){
     serial->close();//!!!
+    serial->deleteLater();// deleteLater()
+    this->deleteLater();
+    qDebug() << "COM Close;";
 }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////

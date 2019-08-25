@@ -72,16 +72,14 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::client_requestComplete(gr_http_client *http_client){
-    QStringList b=http_client->get_list_param();
+    QStringList list_param=http_client->get_list_param();
 
     if(http_client->is_rsw("/dev/r/com/")>0){
-        gr_serial *a=new gr_serial(QString(b.at(4)).toInt(),QString(b.at(5)).toInt(),http_client->socket);
-        a->write_data(&http_client->indata);
+        dev_manager.add_client("COM",list_param,http_client->socket);
+        //a->write_data(&http_client->indata);//!!!
     }
 
-
-    //
-    qDebug() << "Ok";
+    http_client->destroyed();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

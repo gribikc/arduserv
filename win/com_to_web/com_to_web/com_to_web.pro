@@ -29,7 +29,8 @@ SOURCES +=  main.cpp\
             gr_bluetooth/gr_bluetooth.cpp \
             gr_rotation/gr_rotation.cpp \
             gr_gps/gr_gps.cpp \
-    gr_http_client/gr_http_client.cpp
+    gr_http_client/gr_http_client.cpp \
+    gr_dev_manager/gr_dev_manager.cpp
 
 HEADERS  += com_to_web.h\
             gr_data_source/gr_data_source.h\
@@ -37,7 +38,8 @@ HEADERS  += com_to_web.h\
             gr_bluetooth/gr_bluetooth.h\
             gr_rotation/gr_rotation.h \
             gr_gps/gr_gps.h \
-    gr_http_client/gr_http_client.h
+    gr_http_client/gr_http_client.h \
+    gr_dev_manager/gr_dev_manager.h
 
 FORMS    += com_to_web.ui
 

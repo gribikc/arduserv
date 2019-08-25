@@ -13,19 +13,15 @@ void gr_http_client::readyRead(){
     if(hrp_headers_valid==0){
         http_request_parsing();
         if(hrp_headers_valid==1){
-            //signal
             emit requestComplete(this);
         }
-    }else if(hrp_headers_valid==1){
+    }
+    if(hrp_headers_valid==1){
         if(indata.size()>=contentlength){
             indata.remove(0,hrp_del);
             emit dataComplete(this);
         }
     }
-
-    //if(hrp_del!=0 && hrp_headers_valid==1){
-    //    indata.remove(0,hrp_del);
-    //}
 }
 ////////////////////////////////////
 ////////////////////////////////////
@@ -83,7 +79,7 @@ int gr_http_client::is_rsw(QString name){
     if( temp==name ){
         return 2;
     }else{
-        if( temp.startsWith(name) ){
+        if( temp.startsWith(name,Qt::CaseInsensitive) ){
             return 1;
         }else{
             return 0;
@@ -99,7 +95,7 @@ QStringList gr_http_client::get_list_param(){
     socket->write("Connection: keep-alive\n");
     socket->write("Access-Control-Allow-Origin: *\n");
     socket->write("\n");
-
+    qDebug()<<"Header Sent;";
 
     QString temp=hrp_headers["Query"];
     QStringList list_in_line=temp.split(" ");

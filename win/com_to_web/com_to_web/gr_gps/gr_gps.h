@@ -1,3 +1,6 @@
+#ifndef GR_GPS_H
+#define GR_GPS_H
+
 #include "gr_data_source/gr_data_source.h"
 #include <QGeoSatelliteInfo>
 #include <QGeoCoordinate>
@@ -9,7 +12,7 @@
 
 class gr_gps: public gr_data_source{
     public:
-        gr_gps():gr_data_source(){
+        gr_gps():gr_data_source("GPS",""){
             init_gps();
         }
 
@@ -21,3 +24,5 @@ class gr_gps: public gr_data_source{
         void init_gps();
         void gps_positionnew(const QGeoPositionInfo &info);
 };
+
+#endif //

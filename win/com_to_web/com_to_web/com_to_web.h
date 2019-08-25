@@ -10,6 +10,7 @@
 
     //EXT
     //#include "gr_data_source/gr_data_source.h"
+    #include "gr_dev_manager/gr_dev_manager.h"
     #include "gr_http_client/gr_http_client.h"
     #include "gr_serial/gr_serial.h"
     #include "gr_bluetooth/gr_bluetooth.h"
@@ -96,6 +97,10 @@ public:
 
     QTcpServer *server; // указатель на сервер
     QList<gr_httprqs_parser> httprqs_parser; // получатели данных
+
+    QList<void*> test;
+
+    gr_dev_manager dev_manager;
 
     //GPS
     gr_gps gr_gps_point;
