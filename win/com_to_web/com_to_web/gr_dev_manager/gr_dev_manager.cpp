@@ -14,7 +14,7 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
             dev=static_cast <gr_data_source*>(gr_devices.at(i));
             if (dev->type == type && dev->dev_name==list_param[4]){
                 qDebug() << "Device Is opened;";
-                dev->add_socket(socket);
+                dev->add_client(socket);
                 is_dev_find=1;
             }
         }

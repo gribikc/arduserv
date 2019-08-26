@@ -22,23 +22,23 @@ class gr_data_source: public QObject{
         Q_OBJECT
     public:
         gr_data_source(QString type,QString dev_name);
-        gr_data_source(QString type,QString dev_name,QTcpSocket *socket);
+        gr_data_source(QString type,QString dev_name,void *client);
 
-        QList<QTcpSocket*> sockets_list;//Массив получателей данных
+        QList<QTcpSocket*> client_list;//Массив получателей данных
 
         QString type="";    //COM   //BT    //GPS   //SENSOR
         QString dev_name="";//7     //HC-05 //      //ROT
 
-        void add_socket(QTcpSocket *socket);
-        void sub_socket(QTcpSocket *socket);
-        void send_data_to_sockets(QByteArray *data);
+        void add_client(QTcpSocket *client);
+        void sub_client(QTcpSocket *client);
+        void send_data_to_client(QByteArray *data);
         virtual void write_data(QByteArray *data){};
-        virtual void socket_added(){};
-        virtual void no_more_sockets(){};
+        virtual void client_added(){};
+        virtual void no_more_client(){};
 
 public slots:
-        void socket_readyRead(); // обработчик входящих данных
-        void socket_stateChanged(); // обработчик изменения состояния вещающего
+        void client_readyRead(); // обработчик входящих данных
+        void client_stateChanged(); // обработчик изменения состояния вещающего
     private slots:
 
 };

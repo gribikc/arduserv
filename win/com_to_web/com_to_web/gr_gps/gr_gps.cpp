@@ -89,7 +89,7 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
         send_data+="\""+info.timestamp().toString("dd.MM.yyyy;hh:mm:ss.zzz")+"\"";
 
     send_data+="\n}:xdstopjson\n";
-    send_data_to_sockets(&send_data);
+    send_data_to_client(&send_data);
 }
 //
 //

@@ -216,7 +216,7 @@ void com_to_web::parser_rqst(gr_httprqs_parser *parser_data){
 
             //GPS
             //gr_gps_point.gps_add_listener(parser_data->socket);
-            gr_gps_point.add_socket(parser_data->socket);
+            //gr_gps_point.add_socket(parser_data->socket);
         }else if(parser_data->rot_sens_request_do==1){
             parser_data->socket->write("HTTP/1.1 200 OK\n");
             //parser_data->socket->write("Content-type: text/html\n");

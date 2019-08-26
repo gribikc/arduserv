@@ -9,62 +9,62 @@
         this->dev_name=dev_name;
     }
     ////////////////////////////////////////////////////////////////////////////
-    gr_data_source::gr_data_source(QString type, QString dev_name, QTcpSocket *socket){
+    gr_data_source::gr_data_source(QString type, QString dev_name, void *client){
         this->type=type;
         this->dev_name=dev_name;
-        add_socket(socket);
+        add_client(static_cast<QTcpSocket*>(client));
     }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-/// ADD/SUB SOCKET
-    void gr_data_source::add_socket(QTcpSocket *socket){
-        sockets_list.append(socket);
-        connect(socket, &QTcpSocket::stateChanged, this, &gr_data_source::socket_stateChanged);
-        connect(socket, &QTcpSocket::readyRead, this, &gr_data_source::socket_readyRead);
-        socket_added();
+/// ADD/SUB client
+    void gr_data_source::add_client(QTcpSocket *client){
+        client_list.append(client);
+        connect(client, &QTcpSocket::stateChanged, this, &gr_data_source::client_stateChanged);
+        connect(client, &QTcpSocket::readyRead, this, &gr_data_source::client_readyRead);
+        client_added();
     }
-    void gr_data_source::sub_socket(QTcpSocket *socket){
-        sockets_list.removeOne(socket);
-        if(sockets_list.size()==0){
-            no_more_sockets();
+    void gr_data_source::sub_client(QTcpSocket *client){
+        client_list.removeOne(client);
+        if(client_list.size()==0){
+            no_more_client();
         }
     }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 /// SEND TO ALL
-    void gr_data_source::send_data_to_sockets(QByteArray *data){
-        for(int i=0;i<sockets_list.size();i++){
-            if( sockets_list.at(i)->state() != QAbstractSocket::UnconnectedState ){
-                sockets_list.at(i)->write(*data);
+    void gr_data_source::send_data_to_client(QByteArray *data){
+        for(int i=0;i<client_list.size();i++){
+            if( client_list.at(i)->state() != QAbstractSocket::UnconnectedState ){
+                client_list.at(i)->write(*data);
             }else{
-                sockets_list.removeAt(i);
+                client_list.removeAt(i);
                 i--;
             }
         }
-        if(sockets_list.size()==0){
-            no_more_sockets();
+        if(client_list.size()==0){
+            no_more_client();
         }
     }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-/// SOCKET EVENT
-    void gr_data_source::socket_readyRead(){
+/// client EVENT
+    void gr_data_source::client_readyRead(){
         QObject * object = QObject::sender();
-        QTcpSocket *socket = static_cast<QTcpSocket *>(object);
-        qDebug()<<"New Data from Socket;";//!!!
+        QTcpSocket *client = static_cast<QTcpSocket *>(object);
+        qDebug()<<"New Data from Client;";//!!!
     }
     ////////////////////////////////////
     ////////////////////////////////////
     ////////////////////////////////////
-    void gr_data_source::socket_stateChanged(){
+    void gr_data_source::client_stateChanged(){
         QObject * object = QObject::sender();
-        QTcpSocket *socket = static_cast<QTcpSocket *>(object);
-        if (socket->state() == QAbstractSocket::UnconnectedState){
-           qDebug()<<"Socket Disconnected;";
-           sub_socket(socket);
+        QTcpSocket *client = static_cast<QTcpSocket *>(object);
+        if (client->state() == QAbstractSocket::UnconnectedState){
+           qDebug()<<"Client Disconnected;";
+           sub_client(client);
         }
     }
 ////////////////////////////////////
