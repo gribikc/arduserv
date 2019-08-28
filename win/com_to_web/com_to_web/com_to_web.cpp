@@ -72,11 +72,29 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::client_requestComplete(gr_http_client *http_client){
+    /*  0      /1      /2          /3          /4      /5
+     *--------------------------------------------------------------------------------
+     *  ---главная страница(FILE,HTML,AJAX),(htdocs/main.html)||(htdocs/index.html)---
+     *  null   /
+     *  ---файловая система(FILE-RAW)-------------------------------------------------
+     *  null   /htdocs /(d/i/r/fi.le)
+     *  ---системные инструменты(JSON,HTML,RAW)---------------------------------------
+     *  null   /sys    /tree       /(h,j,r,...)
+     *  ---база данных(JSON,RAW)------------------------------------------------------
+     *  null   /db     /(r,w,s)    /(name)
+     *  ---устройства(RAW,JSON)-------------------------------------------------------
+     *  null   /dev    /com        /(w,r,s)    /(num)  /(speed)/
+     *  null   /dev    /sens       /(w,r,s)    /(type) /
+     *  null   /dev    /bt         /(w,r,s)    /(name)
+     *  null   /dev    /gps        /(w,r,s)    /
+     *--------------------------------------------------------------------------------
+     *
+     *
+     */
     QStringList list_param=http_client->get_list_param();
 
     if(http_client->is_rsw("/dev/r/com/")>0){
-        dev_manager.add_client("COM",list_param,http_client->socket);
-        //a->write_data(&http_client->indata);//!!!
+        dev_manager.add_client("COM",list_param,&http_client->indata,http_client->socket);
     }
 
     http_client->destroyed();

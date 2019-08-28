@@ -28,13 +28,14 @@ class gr_data_source: public QObject{
 
         QString type="";    //COM   //BT    //GPS   //SENSOR
         QString dev_name="";//7     //HC-05 //      //ROT
+        QByteArray indata;
 
         void add_client(QTcpSocket *client);
         void sub_client(QTcpSocket *client);
         void send_data_to_client(QByteArray *data);
-        virtual void write_data(QByteArray *data){};
-        virtual void client_added(){};
-        virtual void no_more_client(){};
+        virtual void write_data(QByteArray *data){}
+        virtual void client_added(){}
+        virtual void no_more_client(){}
 
 public slots:
         void client_readyRead(); // обработчик входящих данных

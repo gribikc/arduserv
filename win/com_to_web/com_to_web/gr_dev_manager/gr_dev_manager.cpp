@@ -7,21 +7,23 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
 //
 //
 //
-    void gr_dev_manager::add_client(QString type, QStringList list_param, QTcpSocket *socket){
+    void gr_dev_manager::add_client(QString type, QStringList list_param,QByteArray *indata,QTcpSocket *socket){
         bool is_dev_find=0;
         gr_data_source *dev;
-        for (int i = 0; i < gr_devices.size(); i++) {
+        for (int i = 0; i < gr_devices.size(); i++) {//поиск такогоже устройства
             dev=static_cast <gr_data_source*>(gr_devices.at(i));
             if (dev->type == type && dev->dev_name==list_param[4]){
                 qDebug() << "Device Is opened;";
                 dev->add_client(socket);
+                dev->write_data(indata);
                 is_dev_find=1;
             }
         }
-        if(is_dev_find==0){
+        if(is_dev_find==0){//нет такогоже устройства
             if(type=="COM"){
                 gr_serial *dev_new=new gr_serial(QString(list_param.at(4)).toInt(),QString(list_param.at(5)).toInt(),socket);
                 gr_devices.append(dev_new);
+                dev_new->write_data(indata);
                 connect(dev_new,&QObject::destroyed,this,&gr_dev_manager::dev_was_destroyed);
                 qDebug() << "Create New Device;";
             }

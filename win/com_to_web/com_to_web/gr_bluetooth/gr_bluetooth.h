@@ -28,14 +28,14 @@ public:
 
 public:
     void bt_open(QString dev_name, int mode, QTcpSocket *socket_point);
-    QTcpSocket *socket=0;
+    QTcpSocket *socket=nullptr;
     int mode=0;
     int ble_valid=0;
-    QString dev_name=0;
+    QString dev_name=nullptr;
     bool dev_found=0;
 
-    QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=0;
-    QBluetoothSocket *bt_Socket=0;
+    QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=nullptr;
+    QBluetoothSocket *bt_Socket=nullptr;
     QBluetoothLocalDevice bt_localDevice;
     QBluetoothDeviceInfo bt_deviceinfo;
     QLowEnergyController *ble_control;

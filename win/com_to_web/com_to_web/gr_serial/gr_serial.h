@@ -12,7 +12,7 @@ class gr_serial:public gr_data_source{
             serial_open(num,speed);
         }
 
-        QSerialPort *serial=0;
+        QSerialPort *serial=nullptr;
 
         virtual void no_more_client();//no_more_sockets()
         virtual void write_data(QByteArray *data);

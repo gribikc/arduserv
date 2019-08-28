@@ -10,9 +10,9 @@ class gr_dev_manager : public QObject
 {
     Q_OBJECT
 public:
-    explicit gr_dev_manager(QObject *parent = 0);
+    explicit gr_dev_manager(QObject *parent = nullptr);
 
-    void add_client(QString type, QStringList list_param,QTcpSocket *socket);
+    void add_client(QString type, QStringList list_param,QByteArray *indata,QTcpSocket *socket);
 
     QList<void*> gr_devices;
 signals:
