@@ -1,0 +1,4 @@
+androidBuildToolsVersion=29.0.2
+androidCompileSdkVersion=21
+buildDir=build
+qt5AndroidDir=D:/Qt/5.13.0/android_armv7/src/android/java

@@ -37,6 +37,7 @@ class gr_data_source: public QObject{
         virtual void client_added(){}
         virtual void no_more_client(){}
 
+        void close_all_client();
 public slots:
         void client_readyRead(); // обработчик входящих данных
         void client_stateChanged(); // обработчик изменения состояния вещающего

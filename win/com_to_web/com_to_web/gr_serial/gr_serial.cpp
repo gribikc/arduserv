@@ -21,6 +21,7 @@ void gr_serial::serial_open(int num, int speed){
         serial->setFlowControl(QSerialPort::NoFlowControl);
     }else{
        qDebug() << "COMport NOT OPENed\n";
+       close_all_client();
     }
 
     serial->flush();

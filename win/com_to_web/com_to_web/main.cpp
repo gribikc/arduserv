@@ -1,8 +1,12 @@
 #include "com_to_web.h"
+
 #include <QApplication>
 
 #include <QGuiApplication>
 #include <QDebug>
+
+
+
 
 int main(int argc, char *argv[])
 {

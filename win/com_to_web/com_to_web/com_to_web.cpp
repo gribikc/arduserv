@@ -72,28 +72,9 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::client_requestComplete(gr_http_client *http_client){
-    /*  0      /1      /2          /3          /4      /5
-     *--------------------------------------------------------------------------------
-     *  ---главная страница(FILE,HTML,AJAX),(htdocs/main.html)||(htdocs/index.html)---
-     *  null   /
-     *  ---файловая система(FILE-RAW)-------------------------------------------------
-     *  null   /htdocs /(d/i/r/fi.le)
-     *  ---системные инструменты(JSON,HTML,RAW)---------------------------------------
-     *  null   /sys    /tree       /(h,j,r,...)
-     *  ---база данных(JSON,RAW)------------------------------------------------------
-     *  null   /db     /(r,w,s)    /(name)
-     *  ---устройства(RAW,JSON)-------------------------------------------------------
-     *  null   /dev    /com        /(w,r,s)    /(num)  /(speed)/
-     *  null   /dev    /sens       /(w,r,s)    /(type) /
-     *  null   /dev    /bt         /(w,r,s)    /(name)
-     *  null   /dev    /gps        /(w,r,s)    /
-     *--------------------------------------------------------------------------------
-     *
-     *
-     */
     QStringList list_param=http_client->get_list_param();
 
-    if(http_client->is_rsw("/dev/r/com/")>0){
+    if(http_client->is_rsw("/dev/com/")>0){
         dev_manager.add_client("COM",list_param,&http_client->indata,http_client->socket);
     }
 
@@ -288,8 +269,7 @@ void com_to_web::http_request_parsing(gr_httprqs_parser *parser_data){
     int data_size=parser_data->InData.size();
     if(data_size>=3 && parser_data->hrp_del==0){//Ищем конец запроса
         for(int i=3;i<data_size;i++){
-            if(parser_data->InData[i]==(char)0x0A && parser_data->InData[i-1]==(char)0x0D &&
-               parser_data->InData[i-2]==(char)0x0A && parser_data->InData[i-3]==(char)0x0D){
+            if(parser_data->InData[i]==(char)0x0A && parser_data->InData[i-1]==(char)0x0D && parser_data->InData[i-2]==(char)0x0A && parser_data->InData[i-3]==(char)0x0D){
                 parser_data->hrp_del=i+1;
             }
         }

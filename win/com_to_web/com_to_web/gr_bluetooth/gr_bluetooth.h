@@ -13,7 +13,8 @@
 #include <qbluetoothaddress.h>
 #include <qbluetoothdevicediscoveryagent.h>
 #include <qbluetoothlocaldevice.h>
-#include <qbluetoothglobal.h>
+//#include <qbluetoothglobal.h>
+//<QtBluetooth/qtbluetoothglobal.h>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
 

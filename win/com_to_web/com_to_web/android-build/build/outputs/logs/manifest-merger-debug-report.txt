@@ -1,0 +1,221 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:1-99:12
+INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:1-99:12
+INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:1-99:12
+INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:1-99:12
+INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:1-99:12
+	package
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:11-53
+	android:versionName
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:113-138
+		INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml
+		INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:54-112
+	android:versionCode
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:139-162
+		INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml
+		INJECTED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml
+	android:installLocation
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:2:163-193
+uses-sdk
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:3:5-73
+	android:targetSdkVersion
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:3:42-71
+	android:minSdkVersion
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:3:15-41
+uses-permission#android.permission.INTERNET
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:7:9-71
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:7:26-68
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:8:22-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:9:5-79
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:9:22-76
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:10:5-79
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:10:22-76
+uses-permission#android.permission.BLUETOOTH
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:11:5-68
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:11:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:12:5-74
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:12:22-71
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:13:5-81
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:13:22-78
+uses-feature#0x00020000
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:18:9-82
+	android:glEsVersion
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:18:23-55
+	android:required
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:18:56-79
+supports-screens
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:20:5-135
+	android:largeScreens
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:20:23-50
+	android:smallScreens
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:20:106-133
+	android:normalScreens
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:20:51-79
+	android:anyDensity
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:20:80-105
+application
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:22:5-97:19
+	android:label
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:22:117-143
+	android:hardwareAccelerated
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:22:18-52
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:22:53-116
+activity#org.qtproject.qt5.android.bindings.QtActivity
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:23:9-93:16
+	android:screenOrientation
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:26:19-58
+	android:label
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:25:19-45
+	android:launchMode
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:27:19-49
+	android:configChanges
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:23:19-188
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:24:19-79
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:28:13-31:29
+action#android.intent.action.MAIN
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:29:17-68
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:29:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:30:17-76
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:30:27-74
+meta-data#android.app.lib_name
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:37:13-88
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:37:60-86
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:37:24-59
+meta-data#android.app.qt_sources_resource_id
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:38:13-112
+	android:resource
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:38:74-110
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:38:24-73
+meta-data#android.app.repository
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:39:13-87
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:39:62-85
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:39:24-61
+meta-data#android.app.qt_libs_resource_id
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:40:13-106
+	android:resource
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:40:71-104
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:40:24-70
+meta-data#android.app.bundled_libs_resource_id
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:41:13-116
+	android:resource
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:41:76-114
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:41:24-75
+meta-data#android.app.bundle_local_qt_libs
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:43:13-91
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:43:72-89
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:43:24-71
+meta-data#android.app.bundled_in_lib_resource_id
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:44:13-120
+	android:resource
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:44:78-118
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:44:24-77
+meta-data#android.app.bundled_in_assets_resource_id
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:45:13-126
+	android:resource
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:45:81-124
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:45:24-80
+meta-data#android.app.use_local_qt_libs
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:47:13-88
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:47:69-86
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:47:24-68
+meta-data#android.app.libs_prefix
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:48:13-100
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:48:63-98
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:48:24-62
+meta-data#android.app.load_local_libs
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:49:13-275
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:49:67-273
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:49:24-66
+meta-data#android.app.load_local_jars
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:50:13-199
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:50:67-197
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:50:24-66
+meta-data#android.app.static_init_classes
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:51:13-205
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:51:71-203
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:51:24-70
+meta-data#android.app.ministro_not_found_msg
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:55:13-122
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:55:24-70
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:55:71-120
+meta-data#android.app.ministro_needed_msg
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:56:13-116
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:56:24-67
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:56:68-114
+meta-data#android.app.fatal_error_msg
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:57:13-108
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:57:24-63
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:57:64-106
+meta-data#android.app.unsupported_android_version
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:58:13-132
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:58:24-75
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:58:76-130
+meta-data#android.app.background_running
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:77:13-93
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:77:70-91
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:77:24-69
+meta-data#android.app.auto_screen_scale_factor
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:81:13-99
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:81:76-97
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:81:24-75
+meta-data#android.app.extract_android_style
+ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:91:13-98
+	android:value
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:91:73-96
+	android:name
+		ADDED from D:\dron\pic\arduserv\win\com_to_web\com_to_web\android-build\AndroidManifest.xml:91:24-72

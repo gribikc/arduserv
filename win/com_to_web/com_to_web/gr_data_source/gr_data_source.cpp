@@ -70,3 +70,8 @@
 ////////////////////////////////////
 ////////////////////////////////////
 ////////////////////////////////////
+    void gr_data_source::close_all_client(){
+        for (int i=0;i<client_list.size();i++) {
+            client_list.at(i)->close();
+        }
+    }

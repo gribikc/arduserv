@@ -3,8 +3,8 @@
 # Project created by QtCreator 2019-02-23T12:42:26
 #
 #-------------------------------------------------
-
 QT       += core gui
+QT       -= gui
 QT       += serialport
 QT       += network
 QT       += bluetooth
@@ -43,19 +43,28 @@ HEADERS  += com_to_web.h\
 
 FORMS    += com_to_web.ui
 
-DISTFILES += \ 
-    android/AndroidManifest.xml \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradlew \
-    android/res/values/libs.xml \
-    android/build.gradle \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+#DISTFILES += \
+#    android/AndroidManifest.xml \
+#    android/gradle/wrapper/gradle-wrapper.jar \
+#    android/gradlew \
+#    android/res/values/libs.xml \
+#    android/build.gradle \
+#    android/gradle/wrapper/gradle-wrapper.properties \
+#    android/gradlew.bat
 
 CONFIG += mobility
 MOBILITY = 
 
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+#!!!ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android!!!#
 
 MOBILITY += sensors
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+android {
+    QMAKE_LFLAGS += -nostdlib++
+}
 
