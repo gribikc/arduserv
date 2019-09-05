@@ -30,6 +30,9 @@ public:
 
         int is_rsw(QString name);
         QStringList get_list_param();
+        void send_html_header();
+        void send_data_header();
+        void send_neutral_header();
 public slots:
     void readyRead(); // обработчик входящих данных
     void stateChanged(); // обработчик изменения состояния вещающего

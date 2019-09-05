@@ -31,81 +31,37 @@ class com_to_web : public QMainWindow
 /////////////////////
 public slots:
     void incommingConnection(); // обработчик входящего подключения
-    void readyRead(); // обработчик входящих данных
-    void stateChanged(); // обработчик изменения состояния вещающего
+    //void readyRead(); // обработчик входящих данных
+    //void stateChanged(); // обработчик изменения состояния вещающего
     void client_requestComplete(gr_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
 public:
     void gr_sock_srv_start();
 
-    typedef struct {
-        QTcpSocket  *socket=0;
-        QByteArray  InData=0;
-        QTimer *timer=0;
 
-        bool data_wr=0;
+    //void http_request_parsing(gr_httprqs_parser *parser_data);
+    //void parser_rqst(gr_httprqs_parser *parser_data);
+    //void postget_request_parsing(gr_httprqs_parser *parser_data);
+    //void find_device_and_do(gr_httprqs_parser *parser_data);
 
-        bool com_parser_valid=0;
-        int com_num=0;
-        int com_speed=0;
-        int com_bits=0;
-        int com_par=0;
+    void main_page_request_do(QTcpSocket *socket);
+    void get_tree_file(QString dir_patch, QString prefix_add, QTcpSocket *socket, QString base_dir);
+    void htdocs_page_request_do(QStringList list_param, QTcpSocket *socket);
+    void htdocs_db_write_do(QStringList list_param, QTcpSocket *socket);
 
-        bool bt_parser_valid=0;//QString dev_name, int mode
-        QString bt_dev_name="";
-        int bt_mode=0;
-
-        QString htdocs_file_query="";
-
-        bool main_page_parser_valid=0;
-        bool htdocs_page_request_do=0;
-        bool htdocs_db_write_do=0;
-
-        int is_dev_dublicate_id=-1;
-
-        //http_request_parsing
-            int hrp_del=0;//\r\n\r\n -position
-            QMap<QByteArray, QByteArray> hrp_headers;
-            int hrp_headers_valid=0;
-        //http_request_parsing
-
-        //
-        int external_write_request=0;
-
-        //GPS
-        bool gps_request_do=0;
-        //ROT_SENS
-        bool rot_sens_request_do=0;
-
-
-        gr_serial *com_port=0;
-        gr_bluetooth *gr_bt=0;
-    } gr_httprqs_parser;
-
-    void http_request_parsing(gr_httprqs_parser *parser_data);
-    void parser_rqst(gr_httprqs_parser *parser_data);
-    void postget_request_parsing(gr_httprqs_parser *parser_data);
-    void find_device_and_do(gr_httprqs_parser *parser_data);
-
-    void main_page_request_do(gr_httprqs_parser *parser_data);
-    void htdocs_page_request_do(gr_httprqs_parser *parser_data);
-
-    void htdocs_db_write_do(gr_httprqs_parser *parser_data);
-
-    void get_tree_file(QString dir_patch, QString prefix_add, gr_httprqs_parser *parser_data, QString base_dir);
 
     QString android_htdocs_patch="/storage/3262-3934/com_to_web/";
 
     QTcpServer *server; // указатель на сервер
-    QList<gr_httprqs_parser> httprqs_parser; // получатели данных
+    //QList<gr_httprqs_parser> httprqs_parser; // получатели данных
 
     QList<void*> test;
 
     gr_dev_manager dev_manager;
 
     //GPS
-    gr_gps gr_gps_point;
+    //gr_gps gr_gps_point;
     //ROT_SENS
-    gr_rotation gr_rot_sens_point;
+    //gr_rotation gr_rot_sens_point;
 /////////////////////
 
 

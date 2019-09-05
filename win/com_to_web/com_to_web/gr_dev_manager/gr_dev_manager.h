@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "gr_serial/gr_serial.h"
+#include "gr_bluetooth/gr_bluetooth.h"
 #include "gr_gps/gr_gps.h"
 
 class gr_dev_manager : public QObject

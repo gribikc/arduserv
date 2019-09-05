@@ -1,3 +1,7 @@
+#ifndef GR_bluetooth_H
+#define GR_bluetooth_H
+#include "gr_data_source/gr_data_source.h"
+
 #include <QtCore>
 #include <QObject>
 #include <QCoreApplication>
@@ -22,17 +26,21 @@
 
 
 
-class gr_bluetooth: public QObject{
-    //Q_OBJECT
+class GR_bluetooth:public gr_data_source{
+    Q_OBJECT
 public:
-    gr_bluetooth(){}
+    GR_bluetooth(QString name, int mode, QTcpSocket *socket):gr_data_source("BT",name,static_cast<void*>(socket)){
+        bt_open(name,mode,socket);//mode
+    }
+    virtual void no_more_client();//no_more_sockets()
+    virtual void write_data(QByteArray *data);
 
 public:
     void bt_open(QString dev_name, int mode, QTcpSocket *socket_point);
     QTcpSocket *socket=nullptr;
     int mode=0;
     int ble_valid=0;
-    QString dev_name=nullptr;
+    QString dev_name="";
     bool dev_found=0;
 
     QBluetoothDeviceDiscoveryAgent *bt_discoveryAgent=nullptr;
@@ -53,7 +61,7 @@ private slots:
     void ble_serviceDiscovered(const QBluetoothUuid &gatt);
     void ble_control_connect();
     void ble_data_read(const QLowEnergyCharacteristic &c,const QByteArray &value);
-    void ble_data_read2(const QLowEnergyDescriptor &c,const QByteArray &value);
+    //void ble_data_read2(const QLowEnergyDescriptor &c,const QByteArray &value);
     void ble_srv_state_ch(QLowEnergyService::ServiceState s);
     void ble_control_error(QLowEnergyController::Error value);
     void ble_control_disconnected();
@@ -63,3 +71,5 @@ private slots:
     void bt_socketRead();
 
 };
+
+#endif //

@@ -33,6 +33,7 @@ SOURCES +=  main.cpp\
     gr_dev_manager/gr_dev_manager.cpp
 
 HEADERS  += com_to_web.h\
+    file_system.h \
             gr_data_source/gr_data_source.h\
             gr_serial/gr_serial.h \
             gr_bluetooth/gr_bluetooth.h\
@@ -66,5 +67,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 android {
     QMAKE_LFLAGS += -nostdlib++
+}
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
 }
 

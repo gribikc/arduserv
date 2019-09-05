@@ -8,22 +8,20 @@ void gr_gps::init_gps(){
     if (gps_source) {
         gps_source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
         connect( gps_source, &QGeoPositionInfoSource::positionUpdated, this,&gr_gps::gps_positionnew);
+        gps_source->startUpdates();
     }
 }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 /// Virtual ///
-    void gr_gps::socket_added(){
-        if (gps_source) {
-            gps_source->startUpdates();
-        }
-    }
-    ////////////////////////////////////////////////////////////////////////////
-    void gr_gps::no_more_sockets(){
+   void gr_gps::no_more_client(){
         if (gps_source) {
             gps_source->stopUpdates();
         }
+        gps_source->deleteLater();
+        this->deleteLater();
+        qDebug() << "GPS Close;";
     }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
@@ -33,7 +31,7 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
     QByteArray send_data="";
 
     send_data+="xdstartjson:{";//info.coordinate().altitude();
-        send_data+="\n   \"altitude\":";
+        send_data+="\n  \"altitude\":";
         data=QString::number(info.coordinate().altitude()).toLocal8Bit();
         data= (data!="nan") ? data : "0";
         send_data+=data;

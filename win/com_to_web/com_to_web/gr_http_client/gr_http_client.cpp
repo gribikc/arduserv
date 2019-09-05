@@ -90,11 +90,11 @@ int gr_http_client::is_rsw(QString name){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 QStringList gr_http_client::get_list_param(){
-    socket->write("HTTP/1.1 200 OK\n");
-    socket->write("Content-type: text/plan\n");
-    socket->write("Connection: keep-alive\n");
-    socket->write("Access-Control-Allow-Origin: *\n");
-    socket->write("\n");
+    //socket->write("HTTP/1.1 200 OK\n");
+    //socket->write("Content-type: text/plan\n");
+    //socket->write("Connection: keep-alive\n");
+    //socket->write("Access-Control-Allow-Origin: *\n");
+    //socket->write("\n");
     qDebug()<<"Header Sent;";
 
     QString temp=hrp_headers["Query"];
@@ -106,7 +106,26 @@ QStringList gr_http_client::get_list_param(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    void gr_http_client::send_data_header(){
+        socket->write("HTTP/1.1 200 OK\n");
+        socket->write("Content-type: text/plan\n");
+        socket->write("Connection: keep-alive\n");
+        socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("\n");
+    }
+    void gr_http_client::send_html_header(){
+        socket->write("HTTP/1.1 200 OK\n");
+        socket->write("Content-type: text/html\n");
+        socket->write("Connection: keep-alive\n");
+        socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("\n");
+    }
+    void gr_http_client::send_neutral_header(){
+        socket->write("HTTP/1.1 200 OK\n");
+        socket->write("Connection: keep-alive\n");
+        socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("\n");
+    }
 
 
 

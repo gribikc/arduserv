@@ -12,14 +12,13 @@
 
 class gr_gps: public gr_data_source{
     public:
-        gr_gps():gr_data_source("GPS",""){
+        gr_gps(QTcpSocket *socket):gr_data_source("GPS","",static_cast<void*>(socket)){
             init_gps();
         }
 
         QGeoPositionInfoSource *gps_source;
 
-        void virtual socket_added();
-        void virtual no_more_sockets();
+        void virtual no_more_client();
     private slots:
         void init_gps();
         void gps_positionnew(const QGeoPositionInfo &info);
