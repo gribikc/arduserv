@@ -19,7 +19,6 @@ var autoboat;
 	var test=0;
 
 
-
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////	
@@ -93,11 +92,12 @@ function main_init(){
 	//STREAM
 		//arduino_uart
 			simple_test_stream_param={//location.hostname
-				url   : (document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" ) +"/dev/com/r/3/57600", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url   : (document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" ) +"/dev/com/r/29/115200", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				url_w : "127.0.0.1:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"SP:",
-				parser: simple_test_gr,//new raw_parser_gr(message_hub),
+				//parser: new json_stream_parser_gr(simple_test_gr),//new raw_parser_gr(message_hub),
+				  parser: new nmea_parser_gr(simple_test_gr),
 				
 				flush_en:true,
 				auto_start:true,

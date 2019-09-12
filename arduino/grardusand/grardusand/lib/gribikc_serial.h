@@ -111,6 +111,18 @@ void gribikc_check_serial(){
 }
 ////////////////////////////////
 ////////////////////////////////
+	char uart_both_redirect(Stream* a,Stream* b){
+	  char in_byte;
+	  while(a->available()){ 
+		in_byte=a->read(); 
+		b->print(in_byte); 
+	  }
+	  while(b->available()){ 
+		in_byte=b->read(); 
+		a->print(in_byte); 
+	  }
+	  return in_byte;
+	}
 	void uart_both_redirect_s1_s(){
 	  char in_byte;
 	  while(Serial1.available()){ 

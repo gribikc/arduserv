@@ -89,12 +89,72 @@
 					this.parser_data_array=new Array();
 				}
 			}
-		//Сброс данных
-
-		//чуть
-
-		//чуть
-		
+	}
+//
+//
+//
+//JSON_STREAM
+	class json_stream_parser_gr{
+		//Инициализация
+			constructor(hub){
+				this.parser_data_array=new Array();
+				this.hub_handler=hub;
+				this.start_point=0;
+				this.end_point=0;
+				this.json_begin_point=0;
+				this.json_begin_point_valid=0;
+			}
+		//Парсинг
+			parser_data(stream){
+				this.end_point=stream.length;
+					if(this.start_point>=this.end_point){
+						this.start_point=0;
+					}
+					for(var i=this.start_point;i<this.end_point;i++){
+						if(this.start_point>=31){
+							if(	(stream.charAt(i-0)) 	==	"{" &&
+								(stream.charAt(i-1)) 	==	":" &&
+								(stream.charAt(i-2)) 	==	"n" &&
+								(stream.charAt(i-3)) 	==	"o" &&
+								(stream.charAt(i-4)) 	==	"s" &&
+								(stream.charAt(i-5)) 	==	"j" &&
+								(stream.charAt(i-6)) 	==	"t" &&
+								(stream.charAt(i-7)) 	==	"r" &&
+								(stream.charAt(i-8)) 	==	"a" &&
+								(stream.charAt(i-9)) 	==	"t" &&
+								(stream.charAt(i-10)) 	==	"s" &&
+								(stream.charAt(i-11)) 	==	"d" &&
+								(stream.charAt(i-12)) 	==	"x"){//xdstartjson:{
+									this.json_begin_point=i;
+									this.json_begin_point_valid=1;
+							}
+							if(	(stream.charAt(i-0)) 	==	"n" &&
+								(stream.charAt(i-1)) 	==	"o" &&
+								(stream.charAt(i-2)) 	==	"s" &&
+								(stream.charAt(i-3)) 	==	"j" &&
+								(stream.charAt(i-4)) 	==	"p" &&
+								(stream.charAt(i-5)) 	==	"o" &&
+								(stream.charAt(i-6)) 	==	"t" &&
+								(stream.charAt(i-7)) 	==	"s" &&
+								(stream.charAt(i-8)) 	==	"d" &&
+								(stream.charAt(i-9)) 	==	"x" &&
+								(stream.charAt(i-10)) 	==	":" &&
+								(stream.charAt(i-11)) 	==	"}"){//}:xdstopjson
+									if(this.json_begin_point_valid==1){
+										this.parser_data_array=JSON.parse( stream.slice(this.json_begin_point, i-10) );
+				
+										if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
+											this.hub_handler.parser_data('json',this.parser_data_array);					
+											this.parser_data_array=new Array();
+										}
+										//console.log(this.parser_data_array);
+									}
+									this.json_begin_point_valid=0;
+							}
+						}
+					}
+				this.start_point=this.end_point;
+			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,9 +375,11 @@
 					//console.log(this.status_div);//.innerHTML=this.readyState;
 					//console.log(e);//event
 					//console.log(this);//XMLHttpRequest
-					this_of_class.status_div.innerHTML=parameter.status_div_name;
-					this_of_class.status_div.innerHTML+=""+this.statusText;
-					this_of_class.status_div.innerHTML+="("+this.readyState+")";
+					if(parameter.status_en==true){
+						this_of_class.status_div.innerHTML=parameter.status_div_name;
+						this_of_class.status_div.innerHTML+=""+this.statusText;
+						this_of_class.status_div.innerHTML+="("+this.readyState+")";
+					}
 					//readyState;
 					if(this.readyState==4){//DONE
 						parameter.parser.parser_data(this.responseText);//!!!
@@ -555,6 +617,16 @@
 
 		document.getElementById(div).appendChild(table);
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function key_array_to_inner(array,inner){
+	document.getElementById(inner).innerHTML="";
+	var stream=array;
+	for(var key in stream) {
+		document.getElementById(inner).innerHTML+=key+": "+stream[key]+"<br>";
+	}
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

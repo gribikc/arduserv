@@ -1,26 +1,23 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'gr_http_client.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.13.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../gr_http_client/gr_http_client.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'gr_http_client.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.13.0. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_gr_http_client_t {
     QByteArrayData data[8];
     char stringdata0[105];
@@ -51,7 +48,7 @@ QT_MOC_LITERAL(7, 84, 20) // "http_request_parsing"
 static const uint qt_meta_data_gr_http_client[] = {
 
  // content:
-       8,       // revision
+       7,       // revision
        0,       // classname
        0,    0, // classinfo
        5,   14, // methods
@@ -85,7 +82,7 @@ static const uint qt_meta_data_gr_http_client[] = {
 void gr_http_client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<gr_http_client *>(_o);
+        gr_http_client *_t = static_cast<gr_http_client *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->requestComplete((*reinterpret_cast< gr_http_client*(*)>(_a[1]))); break;
@@ -115,16 +112,17 @@ void gr_http_client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
+        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            using _t = void (gr_http_client::*)(gr_http_client * );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&gr_http_client::requestComplete)) {
+            typedef void (gr_http_client::*_t)(gr_http_client * );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&gr_http_client::requestComplete)) {
                 *result = 0;
                 return;
             }
         }
         {
-            using _t = void (gr_http_client::*)(gr_http_client * );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&gr_http_client::dataComplete)) {
+            typedef void (gr_http_client::*_t)(gr_http_client * );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&gr_http_client::dataComplete)) {
                 *result = 1;
                 return;
             }
@@ -132,14 +130,10 @@ void gr_http_client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject gr_http_client::staticMetaObject = { {
-    &QObject::staticMetaObject,
-    qt_meta_stringdata_gr_http_client.data,
-    qt_meta_data_gr_http_client,
-    qt_static_metacall,
-    nullptr,
-    nullptr
-} };
+const QMetaObject gr_http_client::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_gr_http_client.data,
+      qt_meta_data_gr_http_client,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+};
 
 
 const QMetaObject *gr_http_client::metaObject() const
@@ -149,9 +143,9 @@ const QMetaObject *gr_http_client::metaObject() const
 
 void *gr_http_client::qt_metacast(const char *_clname)
 {
-    if (!_clname) return nullptr;
+    if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_gr_http_client.stringdata0))
-        return static_cast<void*>(this);
+        return static_cast<void*>(const_cast< gr_http_client*>(this));
     return QObject::qt_metacast(_clname);
 }
 
@@ -175,15 +169,14 @@ int gr_http_client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void gr_http_client::requestComplete(gr_http_client * _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void gr_http_client::dataComplete(gr_http_client * _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
-QT_WARNING_POP
 QT_END_MOC_NAMESPACE

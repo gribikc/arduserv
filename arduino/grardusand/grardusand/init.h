@@ -24,32 +24,32 @@ void start_init(){
     delay(3000);
     user_stream->println("Init...done.");
 }
-//
-//
-//
-void init_sd(){
-  if (!card.init(SPI_HALF_SPEED, SD_cs)) {
-    user_stream->println("SD_init...Fail");
-  } else {
-    user_stream->println("SD_init...Done");
-    if (volume.init(card)) {
-      user_stream->println("SD_volume...Done");
-    }else{
-      user_stream->println("SD_volume...FALSE");  
-    }
-  }  
-  uint32_t volumesize;
-
-  volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
-  volumesize *= volume.clusterCount();       // we'll have a lot of clusters
-  volumesize /= 2;                           // SD card blocks are always 512 bytes (2 blocks are 1KB)
-  volumesize /= 1024;
-  user_stream->print("SD_size (Gb):  ");
-  user_stream->println((float)volumesize / 1024.0);      
-}
-//
-//
-//
+//////////////////
+/////////////////
+////////////////
+  void init_sd(){
+    if (!card.init(SPI_HALF_SPEED, SD_cs)) {
+      user_stream->println("SD_init...Fail");
+    } else {
+      user_stream->println("SD_init...Done");
+      if (volume.init(card)) {
+        user_stream->println("SD_volume...Done");
+      }else{
+        user_stream->println("SD_volume...FALSE");  
+      }
+    }  
+    uint32_t volumesize;
+  
+    volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
+    volumesize *= volume.clusterCount();       // we'll have a lot of clusters
+    volumesize /= 2;                           // SD card blocks are always 512 bytes (2 blocks are 1KB)
+    volumesize /= 1024;
+    user_stream->print("SD_size (Gb):  ");
+    user_stream->println((float)volumesize / 1024.0);      
+  }
+////////////////////////
+///////////////////////
+//////////////////////
   void init_BME280(){
       if(bme.begin()){
         user_stream->println("BMP_init...DONE");
@@ -63,18 +63,32 @@ void init_sd(){
         user_stream->println("BMP_init...FALSE");  
       }  
   }
-  void BME280_send_data() {
+  ///
+  void BME280_send_nmea() {
     user_stream->print("$BME280,thpa,");
-    user_stream->print(bme.readTemperature());
+      user_stream->print(bme.readTemperature());
     user_stream->print(",");
-    user_stream->print(bme.readHumidity());
+      user_stream->print(bme.readHumidity());
     user_stream->print(",");
-    user_stream->print(bme.readPressure() / 100.0F);//1013.25hPa~760mmHg~1atm~101.325kPa
+      user_stream->print(bme.readPressure() / 100.0F);//1013.25hPa~760mmHg~1atm~101.325kPa
     user_stream->print(",");
-    user_stream->print(bme.readAltitude(1013.25));//1013.25hPa~760mmHg~1atm~101.325kPa
+      user_stream->print(bme.readAltitude(1013.25));//1013.25hPa~760mmHg~1atm~101.325kPa
     user_stream->print(",0*00");
     user_stream->println();
   }
-//
-//
-//
+  ///
+  void BME280_send_json() {
+    user_stream->print("xdstartjson:{\n");
+    user_stream->print(" \"temperature\":");
+      user_stream->print(bme.readTemperature());
+    user_stream->print(",\n \"humidity\":");
+      user_stream->print(bme.readHumidity());
+    user_stream->print(",\n \"pressure\":");
+      user_stream->print(bme.readPressure() / 100.0F);//1013.25hPa~760mmHg~1atm~101.325kPa
+    user_stream->print(",\n \"altitude\":");
+      user_stream->print(bme.readAltitude(1013.25));//1013.25hPa~760mmHg~1atm~101.325kPa
+    user_stream->print("\n}:xdstopjson\n");
+  }
+/////////////////////
+/////////////////////
+/////////////////////
