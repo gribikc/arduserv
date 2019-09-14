@@ -23,9 +23,6 @@ com_to_web::~com_to_web()
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::gr_sock_srv_start(){
     server = new QTcpServer();//this
     server->listen(QHostAddress::Any, 3128);
@@ -39,7 +36,6 @@ void com_to_web::gr_sock_srv_start(){
             ui->textEdit->insertPlainText("\n");
         }
 
-
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }
 }
@@ -48,10 +44,11 @@ void com_to_web::gr_sock_srv_start(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::incommingConnection(){ // обработчик подключений
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
+    qintptr sdscrp=socket->socketDescriptor();
 
-    gr_http_client *abv=new gr_http_client(socket);
-    //connect(abv,&gr_http_client::requestComplete, this,&com_to_web::client_requestComplete);
-    connect(abv,&gr_http_client::dataComplete, this,&com_to_web::client_requestComplete);
+    GR_http_client *abv=new GR_http_client(sdscrp);
+    //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
+    connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
 
     //socket->peerAddress();
     //QString a=QString(socket->peerName());
@@ -62,53 +59,53 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void com_to_web::client_requestComplete(gr_http_client *http_client){
+void com_to_web::client_requestComplete(GR_http_client *http_client){
     QStringList list_param=http_client->get_list_param();
     //////////////////////////       ///////
     if(http_client->is_rsw("/dev")>0){
         http_client->send_data_header();
-        dev_manager.add_client("",list_param,&http_client->indata,http_client->socket);
+        dev_manager.add_client(http_client);
     //////////////////////////////  ////////
     }else if(http_client->is_rsw("/")==2){
         http_client->send_html_header();
-        http_client->socket->write("Main Page!");
-        http_client->socket->close();
+        http_client->write("Main Page!");
+        http_client->close();
     ////////////////////////////////        ///////
     }else if(http_client->is_rsw("/sys/tree")>0){
         http_client->send_html_header();
         if(QSysInfo::productType()=="android"){
-            get_tree_file(android_htdocs_patch+"/htdocs/","",http_client->socket,android_htdocs_patch);
+            get_tree_file(android_htdocs_patch+"/htdocs/","",http_client,android_htdocs_patch);
         }else{
             QDir dir;
-            get_tree_file(dir.currentPath()+"/htdocs/","",http_client->socket,dir.currentPath());
+            get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
         }
-        http_client->socket->close();
+        http_client->close();
     ////////////////////////////////     ////////
     }else if(http_client->is_rsw("/htdocs")>0){
         http_client->send_neutral_header();
-        htdocs_page_request_do(list_param,http_client->socket);
+        htdocs_page_request_do(list_param,http_client);
     ////////
     }else if(http_client->is_rsw("/favicon.ico")==2){
         http_client->send_html_header();
-        http_client->socket->write("Nice try to get favicon.ico :)))");
-        http_client->socket->close();
+        http_client->write("Nice try to get favicon.ico :)))");
+        http_client->close();
     }else{
         http_client->send_html_header();
-        http_client->socket->write("400 Bad Request!<br>\n");
-        http_client->socket->write("Try:<br>\n");
-        http_client->socket->write("/                                   <br>\n");
-        http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
-        http_client->socket->write("/sys/tree/(h,j,r,...)               <br>\n");
-        http_client->socket->write("/db/(r,w,s)/(name)                  <br>\n");
-        http_client->socket->write("/dev/com/(w,r,s,l)/(num)/(speed)/   <br>\n");
-        http_client->socket->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
-        http_client->socket->write("/dev/bt/(w,r,s,l)/(name)            <br>\n");
-        http_client->socket->write("/dev/gps/(w,r,s)/                   <br>\n");
+        http_client->write("400 Bad Request!<br>\n");
+        http_client->write("Try:<br>\n");
+        http_client->write("/                                   <br>\n");
+        http_client->write("/htdocs/(d/i/r/fi.le)               <br>\n");
+        http_client->write("/sys/tree/(h,j,r,...)               <br>\n");
+        http_client->write("/db/(r,w,s)/(name)                  <br>\n");
+        http_client->write("/dev/com/(w,r,s,l)/(num)/(speed)/   <br>\n");
+        http_client->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
+        http_client->write("/dev/bt/(w,r,s,l)/(name)            <br>\n");
+        http_client->write("/dev/gps/(w,r,s)/                   <br>\n");
 
-        http_client->socket->close();
+        http_client->close();
     }
 
-    http_client->destroyed();
+    //http_client->destroyed();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

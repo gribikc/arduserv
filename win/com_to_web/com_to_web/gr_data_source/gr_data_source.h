@@ -16,6 +16,8 @@
 
 #include <QDebug>
 
+#include <gr_http_client/gr_http_client.h>
+
 
 
 class gr_data_source: public QObject{
@@ -24,14 +26,15 @@ class gr_data_source: public QObject{
         gr_data_source(QString type,QString dev_name);
         gr_data_source(QString type,QString dev_name,void *client);
 
-        QList<QTcpSocket*> client_list;//Массив получателей данных
+        //QList<QTcpSocket*> client_list;//Массив получателей данных
+        QList<GR_http_client*> client_list;
 
         QString type="";    //COM   //BT    //GPS   //SENSOR
         QString dev_name="";//7     //HC-05 //      //ROT
         QByteArray indata;
 
-        void add_client(QTcpSocket *client);
-        void sub_client(QTcpSocket *client);
+        void add_client(void *client);
+        void sub_client(void *client);
         void send_data_to_client(QByteArray *data);
         virtual void write_data(QByteArray *data){}
         virtual void client_added(){}

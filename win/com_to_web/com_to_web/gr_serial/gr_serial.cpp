@@ -29,6 +29,31 @@ void gr_serial::serial_open(int num, int speed){
     serial->readAll();
     connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_read);
 }
+
+void gr_serial::serial_list(){
+    serial=new QSerialPort();
+    //qDebug()<<QSerialPortInfo::availablePorts();
+    QList<QSerialPortInfo> la=QSerialPortInfo::availablePorts();
+    for(int i=0;i<la.size();i++){
+        qDebug() << la.at(i).portName();
+        qDebug() << la.at(i).isBusy();
+        qDebug() << la.at(i).description();
+        qDebug() << la.at(i).manufacturer();
+
+        QByteArray data;
+        data=la.at(i).portName().toLocal8Bit();
+            send_data_to_client(&data);
+        data=la.at(i).isBusy() ? QString("Busy").toLocal8Bit() : QString("free").toLocal8Bit();
+            send_data_to_client(&data);
+        data=la.at(i).description().toLocal8Bit();
+            send_data_to_client(&data);
+        data=la.at(i).manufacturer().toLocal8Bit();
+            send_data_to_client(&data);
+        data="<br>\n\r";
+            send_data_to_client(&data);
+    }
+    close_all_client();
+}
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////

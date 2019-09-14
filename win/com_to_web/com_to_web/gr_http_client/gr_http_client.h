@@ -13,13 +13,17 @@
 
 #include <QDebug>
 
-class gr_http_client : public QObject
-{
+//class GR_http_client  : public QObject
+//{
+//    Q_OBJECT
+
+class GR_http_client  : public QTcpSocket{
     Q_OBJECT
 public:
-    explicit gr_http_client(QTcpSocket  *socket);
+    explicit GR_http_client(int sdscrp);
+    //explicit GR_http_client(QTcpSocket  *socket):QTcpSocket(this);
 
-    QTcpSocket  *socket=nullptr;
+    //QTcpSocket  *socket=nullptr;
     QByteArray  indata="";
     int contentlength=0;
     //http_request_parsing
@@ -40,8 +44,8 @@ public slots:
     void http_request_parsing();
 
 signals:
-    void requestComplete(gr_http_client *gr_http_client);
-    void dataComplete(gr_http_client *gr_http_client);
+    void requestComplete(GR_http_client *gr_http_client);
+    void dataComplete(GR_http_client *gr_http_client);
 
 };
 

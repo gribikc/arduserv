@@ -33,7 +33,9 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
     *  0      /1      /2          /3          /4      /5
     *                 /type       /mode       /name   /params
     */
-    void gr_dev_manager::add_client(QString type, QStringList list_param,QByteArray *indata,QTcpSocket *socket){
+    void gr_dev_manager::add_client(GR_http_client *http_client){
+        QStringList list_param=http_client->get_list_param();
+
         bool is_dev_find=0;
         gr_data_source *dev=nullptr;
         void *dev_new=nullptr;
@@ -44,37 +46,42 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
         }
 
         QString dev_type=list_param.at(2).toUpper();
-        QString dev_mode=list_param.at(3).toLower();
+        QString dev_mode=list_param.at(3).toUpper();
         QString dev_name=list_param.at(4);
         QString dev_param_z=list_param.at(5);
         //
+        ////DEV_MOD
+        if(dev_mode==""){
+            dev_mode="R";
+        }
 
         for (int i = 0; i < gr_devices.size(); i++) {//поиск такогоже устройства
             dev=static_cast <gr_data_source*>(gr_devices.at(i));
-            if (dev->type == dev_type && dev->dev_name==dev_name){
+            if(dev->type == dev_type && dev->dev_name==dev_name && dev_name!="" && dev_mode!="L"){
                 qDebug() << "Device Is opened;";
-                dev->add_client(socket);
-                dev->write_data(indata);
+                dev->add_client(http_client);
+                dev->write_data(&http_client->indata);
                 is_dev_find=1;
             }
         }
+
         if(!is_dev_find){//нет такогоже устройства
             if(dev_type=="COM"){
-                dev_new=new gr_serial(dev_name.toInt(),dev_param_z.toInt(),socket);
+                dev_new=new gr_serial(dev_name.toInt(),dev_param_z.toInt(),dev_mode,http_client);
             }else if (dev_type=="BT") {
-                dev_new=new GR_bluetooth(dev_name,0,socket);
+                dev_new=new GR_bluetooth(dev_name,0,http_client);
             }else if(dev_type=="GPS"){
-                dev_new=new gr_gps(socket);
+                dev_new=new gr_gps(http_client);
             }else{
-                socket->write("404 Device not found.");
-                socket->close();
+                http_client->write("404 Device not found.");
+                http_client->close();
             }
 
             if(dev_new!=nullptr){
                 qDebug() << "Dev add tolist";
                 gr_devices.append(dev_new);
                 dev=static_cast <gr_data_source*>(dev_new);
-                dev->write_data(indata);
+                dev->write_data(&http_client->indata);
 
                 connect(dev,&QObject::destroyed,this,&gr_dev_manager::dev_was_destroyed);
                 qDebug() << "Create New Device;";

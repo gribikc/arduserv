@@ -33,7 +33,7 @@ public slots:
     void incommingConnection(); // обработчик входящего подключения
     //void readyRead(); // обработчик входящих данных
     //void stateChanged(); // обработчик изменения состояния вещающего
-    void client_requestComplete(gr_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
+    void client_requestComplete(GR_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
 public:
     void gr_sock_srv_start();
 

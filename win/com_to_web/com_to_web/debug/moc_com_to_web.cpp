@@ -33,13 +33,13 @@ QT_MOC_LITERAL(0, 0, 10), // "com_to_web"
 QT_MOC_LITERAL(1, 11, 19), // "incommingConnection"
 QT_MOC_LITERAL(2, 31, 0), // ""
 QT_MOC_LITERAL(3, 32, 22), // "client_requestComplete"
-QT_MOC_LITERAL(4, 55, 15), // "gr_http_client*"
+QT_MOC_LITERAL(4, 55, 15), // "GR_http_client*"
 QT_MOC_LITERAL(5, 71, 11), // "http_client"
 QT_MOC_LITERAL(6, 83, 21) // "on_pushButton_clicked"
 
     },
     "com_to_web\0incommingConnection\0\0"
-    "client_requestComplete\0gr_http_client*\0"
+    "client_requestComplete\0GR_http_client*\0"
     "http_client\0on_pushButton_clicked"
 };
 #undef QT_MOC_LITERAL
@@ -77,7 +77,7 @@ void com_to_web::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->incommingConnection(); break;
-        case 1: _t->client_requestComplete((*reinterpret_cast< gr_http_client*(*)>(_a[1]))); break;
+        case 1: _t->client_requestComplete((*reinterpret_cast< GR_http_client*(*)>(_a[1]))); break;
         case 2: _t->on_pushButton_clicked(); break;
         default: ;
         }
@@ -88,7 +88,7 @@ void com_to_web::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< gr_http_client* >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< GR_http_client* >(); break;
             }
             break;
         }

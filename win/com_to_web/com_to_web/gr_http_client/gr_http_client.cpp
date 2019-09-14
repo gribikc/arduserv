@@ -1,15 +1,16 @@
 #include "gr_http_client.h"
 
-gr_http_client::gr_http_client(QTcpSocket *socket) : QObject(){
-    this->socket=socket;
-    connect(socket, &QTcpSocket::stateChanged, this, &gr_http_client::stateChanged);
-    connect(socket, &QTcpSocket::readyRead, this, &gr_http_client::readyRead);
+GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
+    //this->socket=this;
+    this->setSocketDescriptor(sdscrp);
+    connect(this, &QTcpSocket::stateChanged, this, &GR_http_client::stateChanged);
+    connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
 }
 ////////////////////////////////
 ////////////////////////////////
 ////////////////////////////////
-void gr_http_client::readyRead(){
-    indata.append(socket->readAll());
+void GR_http_client::readyRead(){
+    indata.append(readAll());
     if(hrp_headers_valid==0){
         http_request_parsing();
         if(hrp_headers_valid==1){
@@ -26,13 +27,13 @@ void gr_http_client::readyRead(){
 ////////////////////////////////////
 ////////////////////////////////////
 ////////////////////////////////////
-void gr_http_client::stateChanged(){
+void GR_http_client::stateChanged(){
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void gr_http_client::http_request_parsing(){
+void GR_http_client::http_request_parsing(){
     QList<QByteArray> header_line = indata.split( 0x0D );
     QList<QByteArray> split_line;
     QString temp;
@@ -72,7 +73,7 @@ void gr_http_client::http_request_parsing(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-int gr_http_client::is_rsw(QString name){
+int GR_http_client::is_rsw(QString name){
     QString temp=hrp_headers["Query"];
     QStringList list_in_line=temp.split(" ");
     temp=list_in_line[1];
@@ -89,14 +90,7 @@ int gr_http_client::is_rsw(QString name){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-QStringList gr_http_client::get_list_param(){
-    //socket->write("HTTP/1.1 200 OK\n");
-    //socket->write("Content-type: text/plan\n");
-    //socket->write("Connection: keep-alive\n");
-    //socket->write("Access-Control-Allow-Origin: *\n");
-    //socket->write("\n");
-    qDebug()<<"Header Sent;";
-
+QStringList GR_http_client::get_list_param(){
     QString temp=hrp_headers["Query"];
     QStringList list_in_line=temp.split(" ");
     temp=list_in_line[1];
@@ -106,25 +100,25 @@ QStringList gr_http_client::get_list_param(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-    void gr_http_client::send_data_header(){
-        socket->write("HTTP/1.1 200 OK\n");
-        socket->write("Content-type: text/plan\n");
-        socket->write("Connection: keep-alive\n");
-        socket->write("Access-Control-Allow-Origin: *\n");
-        socket->write("\n");
+    void GR_http_client::send_data_header(){
+        write("HTTP/1.1 200 OK\n");
+        write("Content-type: text/plan\n");
+        write("Connection: keep-alive\n");
+        write("Access-Control-Allow-Origin: *\n");
+        write("\n");
     }
-    void gr_http_client::send_html_header(){
-        socket->write("HTTP/1.1 200 OK\n");
-        socket->write("Content-type: text/html\n");
-        socket->write("Connection: keep-alive\n");
-        socket->write("Access-Control-Allow-Origin: *\n");
-        socket->write("\n");
+    void GR_http_client::send_html_header(){
+        write("HTTP/1.1 200 OK\n");
+        write("Content-type: text/html\n");
+        write("Connection: keep-alive\n");
+        write("Access-Control-Allow-Origin: *\n");
+        write("\n");
     }
-    void gr_http_client::send_neutral_header(){
-        socket->write("HTTP/1.1 200 OK\n");
-        socket->write("Connection: keep-alive\n");
-        socket->write("Access-Control-Allow-Origin: *\n");
-        socket->write("\n");
+    void GR_http_client::send_neutral_header(){
+        write("HTTP/1.1 200 OK\n");
+        write("Connection: keep-alive\n");
+        write("Access-Control-Allow-Origin: *\n");
+        write("\n");
     }
 
 

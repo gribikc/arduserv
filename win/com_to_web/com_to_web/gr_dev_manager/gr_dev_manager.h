@@ -6,6 +6,7 @@
 #include "gr_serial/gr_serial.h"
 #include "gr_bluetooth/gr_bluetooth.h"
 #include "gr_gps/gr_gps.h"
+#include "gr_http_client/gr_http_client.h"
 
 class gr_dev_manager : public QObject
 {
@@ -13,7 +14,7 @@ class gr_dev_manager : public QObject
 public:
     explicit gr_dev_manager(QObject *parent = nullptr);
 
-    void add_client(QString type, QStringList list_param,QByteArray *indata,QTcpSocket *socket);
+    void add_client(GR_http_client *http_client);
 
     QList<void*> gr_devices;
 signals:

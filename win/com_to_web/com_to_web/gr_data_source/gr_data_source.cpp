@@ -12,20 +12,21 @@
     gr_data_source::gr_data_source(QString type, QString dev_name, void *client){
         this->type=type;
         this->dev_name=dev_name;
-        add_client(static_cast<QTcpSocket*>(client));
+
+        add_client(client);
     }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 /// ADD/SUB client
-    void gr_data_source::add_client(QTcpSocket *client){
-        client_list.append(client);
-        connect(client, &QTcpSocket::stateChanged, this, &gr_data_source::client_stateChanged);
-        connect(client, &QTcpSocket::readyRead, this, &gr_data_source::client_readyRead);
+    void gr_data_source::add_client(void *client){
+        client_list.append(static_cast<GR_http_client*>(client));
+        connect(static_cast<QTcpSocket*>(client), &QTcpSocket::stateChanged, this, &gr_data_source::client_stateChanged);
+        connect(static_cast<QTcpSocket*>(client), &QTcpSocket::readyRead, this, &gr_data_source::client_readyRead);
         client_added();
     }
-    void gr_data_source::sub_client(QTcpSocket *client){
-        client_list.removeOne(client);
+    void gr_data_source::sub_client(void *client){
+        client_list.removeOne(static_cast<GR_http_client*>(client));
         if(client_list.size()==0){
             no_more_client();
         }

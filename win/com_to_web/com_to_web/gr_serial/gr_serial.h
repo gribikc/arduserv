@@ -8,8 +8,12 @@
 class gr_serial:public gr_data_source{
         Q_OBJECT
     public:
-        gr_serial(int num,int speed,QTcpSocket *socket):gr_data_source("COM",QString::number(num),static_cast<void*>(socket)){
-            serial_open(num,speed);
+        gr_serial(int num,int speed,QString mode,QTcpSocket *socket):gr_data_source("COM",QString::number(num),static_cast<void*>(socket)){
+            if(mode.toLocal8Bit()=="L"){
+                serial_list();
+            }else{
+                serial_open(num,speed);
+            }
         }
 
         QSerialPort *serial=nullptr;
@@ -19,6 +23,7 @@ class gr_serial:public gr_data_source{
     private slots:
         void serial_open(int num,int speed);
         void serial_read();
+        void serial_list();
 };
 
 #endif //
