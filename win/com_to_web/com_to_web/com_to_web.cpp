@@ -35,7 +35,7 @@ void com_to_web::gr_sock_srv_start(){
             ui->textEdit->insertPlainText(addr.at(i).toString());
             ui->textEdit->insertPlainText("\n");
         }
-
+        server->setMaxPendingConnections(9999);
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }
 }
@@ -55,6 +55,7 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     ui->textEdit->insertPlainText("Client connected...\n");
 
     qDebug() << "Client connected;";
+    GR_logger::log("Client connected");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

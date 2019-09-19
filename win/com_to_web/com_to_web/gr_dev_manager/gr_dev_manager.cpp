@@ -54,6 +54,9 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
         if(dev_mode==""){
             dev_mode="R";
         }
+        if(dev_name=="" && dev_type=="GPS"){
+            dev_name="GPS";
+        }
 
         for (int i = 0; i < gr_devices.size(); i++) {//поиск такогоже устройства
             dev=static_cast <gr_data_source*>(gr_devices.at(i));
@@ -69,11 +72,13 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
             if(dev_type=="COM"){
                 dev_new=new gr_serial(dev_name.toInt(),dev_param_z.toInt(),dev_mode,http_client);
             }else if (dev_type=="BT") {
-                dev_new=new GR_bluetooth(dev_name,0,http_client);
+                dev_new=new GR_bluetooth(dev_name,dev_mode,http_client);
             }else if(dev_type=="GPS"){
                 dev_new=new gr_gps(http_client);
+            }else if(dev_type=="SENS"){
+                dev_new=new GR_sensor(dev_name,dev_mode,http_client);
             }else{
-                http_client->write("404 Device not found.");
+                http_client->write("404 Device Type not found.");
                 http_client->close();
             }
 

@@ -20,6 +20,7 @@ void GR_http_client::readyRead(){
     if(hrp_headers_valid==1){
         if(indata.size()>=contentlength){
             indata.remove(0,hrp_del);
+            list_param=get_list_param();
             emit dataComplete(this);
         }
     }

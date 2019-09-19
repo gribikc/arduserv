@@ -2,8 +2,7 @@
 //
 //
 //
-void GR_bluetooth::bt_open(QString dev_name, int mode, QTcpSocket *socket_point){
-    socket=socket_point;
+void GR_bluetooth::bt_open(QString dev_name, QString mode){
     GR_bluetooth::mode=mode;
     GR_bluetooth::dev_name=dev_name;
     //////////////////////////////////
@@ -17,7 +16,10 @@ void GR_bluetooth::bt_open(QString dev_name, int mode, QTcpSocket *socket_point)
         connect(bt_discoveryAgent,  &QBluetoothDeviceDiscoveryAgent::finished,  this, &GR_bluetooth::bt_deviceDiscovered_finished);//(&QBluetoothDeviceInfo)
 
         bt_discoveryAgent->start();
-
+        if(mode=="L"){
+            QByteArray data_to_send="[\n    {}";
+            send_data_to_client(&data_to_send);
+        }
 }
 //////////////////////////////////////////////
 //////////////////////////////////////////////
@@ -26,21 +28,22 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
     QString temp_qstring;
     QByteArray temp_qbarray;
     QByteArray data_to_send="";
-    if(mode==0 && device.isValid()){
-        data_to_send+="Device: ";
+    if(mode=="L" && device.isValid()){
+        data_to_send+=",\n    {";
+        data_to_send+="\n        \"Device\":\"";
             temp_qstring=device.name();
             temp_qbarray=temp_qstring.toUtf8();
             data_to_send+=temp_qbarray;
-        data_to_send+=" Rssi: ";
+        data_to_send+="\",\n        \"Rssi\":";
             temp_qbarray=QByteArray::number(device.rssi());
             data_to_send+=temp_qbarray;
-        data_to_send+=" Addr: ";
+        data_to_send+=",\n        \"Addr\":\"";
             temp_qstring=device.address().toString();
             temp_qbarray=temp_qstring.toUtf8();
             data_to_send+=temp_qbarray;
-        data_to_send+="\r\n";
+        data_to_send+="\"\n    }";
         send_data_to_client(&data_to_send);
-    }else if(device.name()==dev_name && mode==1){//"HC-06"
+    }else if(device.name()==dev_name && mode!="L"){//"HC-06"
         dev_found=1;
         bt_discoveryAgent->stop();
         QString find_dev;
@@ -81,7 +84,11 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
 //////////////////////////////////////////////
 void GR_bluetooth::bt_deviceDiscovered_finished(){
     qDebug() << "End BT Scann.";
-    if(mode==0 || dev_found==0){//!!!
+    if(mode=="L"){
+        QByteArray data_to_send="\n]";
+        send_data_to_client(&data_to_send);
+    }
+    if(mode=="L" || dev_found==0){//!!!
         close_all_client();
     }
 }
@@ -100,6 +107,9 @@ void GR_bluetooth::bt_deviceDiscovered_finished(){
             if (ble_service) {
                 connect(ble_service,&QLowEnergyService::stateChanged,this,&GR_bluetooth::ble_srv_state_ch);
                 connect(ble_service,&QLowEnergyService::characteristicChanged,this,&GR_bluetooth::ble_data_read);
+                connect(ble_service,&QLowEnergyService::characteristicWritten,this,&GR_bluetooth::characteristicWritten);
+                //void characteristicWritten(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
+
                 ble_service->discoverDetails();
                 qDebug() << "Service BLE Found.";
             } else {
@@ -108,6 +118,9 @@ void GR_bluetooth::bt_deviceDiscovered_finished(){
             }
         }
     }
+    void GR_bluetooth::characteristicWritten(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue){
+        data_was_sended();
+    }
     //////////////////////////////////////////////
     //////////////////////////////////////////////
     void GR_bluetooth::ble_srv_state_ch(QLowEnergyService::ServiceState s){
@@ -115,6 +128,8 @@ void GR_bluetooth::bt_deviceDiscovered_finished(){
             QList<QLowEnergyCharacteristic> characteristics  = ble_service->characteristics();
             auto hrChar = characteristics[0].descriptors();
             ble_service->writeDescriptor(hrChar[0], QByteArray::fromHex("0100"));// enable notification
+            is_writed=1;
+            write_data(nullptr);
         }
     }
     //////////////////////////////////////////////
@@ -154,23 +169,34 @@ void GR_bluetooth::bt_deviceDiscovered_finished(){
         }
     }
     void GR_bluetooth::write_data(QByteArray *data){
-        if(ble_valid==1){
-            //ble_service->writeCharacteristic(ble_service->characteristics().at(0),*data);//!!!
-        }else{
-            //bt_Socket->write(*data);
+        if(data!=nullptr){
+            indata.append(*data);
+        }
+        if(indata.size()>0){
+            if(ble_valid==1 && is_writed){
+                //ble_service->writeCharacteristic(ble_service->characteristics().at(0),*data);//!!!
+                ble_service->writeCharacteristic(ble_service->characteristics().at(0),indata, QLowEnergyService::WriteWithResponse);
+                indata.clear();
+            }else if(is_writed){
+                bt_Socket->write(indata);
+                indata.clear();
+            }
         }
     }
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 //////////////////////////////////////////////
-    void GR_bluetooth::bt_socketConnected(){
+    void GR_bluetooth::bt_socketConnected(){//!!!
        qDebug() << "\r\nСвязь BT установлена\n";
+       is_writed=1;
+       write_data(nullptr);
     }
     //////////////////////////////////////////////
     //////////////////////////////////////////////
     void GR_bluetooth::bt_socketDisconnected(){
         qDebug() << "\r\nПотеря BT связи\n";
+        is_writed=0;
         close_all_client();
     }
     //////////////////////////////////////////////

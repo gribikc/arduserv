@@ -1,3 +1,6 @@
+//#include <Adafruit_CircuitPlayground.h>
+//#include <Adafruit_Circuit_Playground.h>
+
 
 #define nrf24l01_ce 42
 #define nrf24l01_cs 41
@@ -44,9 +47,9 @@ void loop() {
     //BME280_send_data();
     //delay(1000);
 
-    a=uart_both_redirect(&Serial,&Serial1);
+    uart_both_redirect(&Serial,&Serial2);
 
-    if((long_timer_cnt-bme280_tcnt)>100000 && a==10){
+    if((long_timer_cnt-bme280_tcnt)>300000){
       bme280_tcnt=long_timer_cnt;
       //BME280_send_json();
       BME280_send_nmea();

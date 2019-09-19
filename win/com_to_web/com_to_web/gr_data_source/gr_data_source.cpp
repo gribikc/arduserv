@@ -76,3 +76,13 @@
             client_list.at(i)->close();
         }
     }
+////////////////////////////////////
+////////////////////////////////////
+////////////////////////////////////
+void gr_data_source::data_was_sended(){
+    for (int i=0;i<client_list.size();i++) {
+        if(client_list.at(i)->list_param[3].toUpper()=="W"){
+            client_list.at(i)->close();
+        }
+    }
+}

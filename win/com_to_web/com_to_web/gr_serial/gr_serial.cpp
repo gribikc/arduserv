@@ -34,24 +34,23 @@ void gr_serial::serial_list(){
     serial=new QSerialPort();
     //qDebug()<<QSerialPortInfo::availablePorts();
     QList<QSerialPortInfo> la=QSerialPortInfo::availablePorts();
-    for(int i=0;i<la.size();i++){
-        qDebug() << la.at(i).portName();
-        qDebug() << la.at(i).isBusy();
-        qDebug() << la.at(i).description();
-        qDebug() << la.at(i).manufacturer();
+    QByteArray data="";
 
-        QByteArray data;
-        data=la.at(i).portName().toLocal8Bit();
-            send_data_to_client(&data);
-        data=la.at(i).isBusy() ? QString("Busy").toLocal8Bit() : QString("free").toLocal8Bit();
-            send_data_to_client(&data);
-        data=la.at(i).description().toLocal8Bit();
-            send_data_to_client(&data);
-        data=la.at(i).manufacturer().toLocal8Bit();
-            send_data_to_client(&data);
-        data="<br>\n\r";
-            send_data_to_client(&data);
+    data="[\n    {}";
+    for(int i=0;i<la.size();i++){
+        data+=",\n    {";
+            data+="\n        \"port_name\":\"";
+                data+=la.at(i).portName().toLocal8Bit();
+            data+="\",\n        \"is_busy\":";
+                data+=la.at(i).isBusy() ? QString("1").toLocal8Bit() : QString("0").toLocal8Bit();
+            data+=",\n        \"description\":\"";
+                data+=la.at(i).description().toLocal8Bit();
+            data+="\",\n        \"manufacturer\":\"";
+                data+=la.at(i).manufacturer().toLocal8Bit();
+        data+="\"\n    }";
     }
+    data+="\n]";
+    send_data_to_client(&data);
     close_all_client();
 }
 ////////////////////////////////////////////////////////////////////////////

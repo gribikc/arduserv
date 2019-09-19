@@ -22,7 +22,7 @@ class gr_rotation: public QObject{
         //Q_OBJECT
     public:
 
-        QTcpSocket *socket=0;
+        QTcpSocket *socket=nullptr;
         QList<QTcpSocket*> socket_listener;
         QRotationSensor *sensor=new QRotationSensor(this);
         //QAccelerometer *sensor=new QAccelerometer;

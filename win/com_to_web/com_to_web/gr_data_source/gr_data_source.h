@@ -32,11 +32,13 @@ class gr_data_source: public QObject{
         QString type="";    //COM   //BT    //GPS   //SENSOR
         QString dev_name="";//7     //HC-05 //      //ROT
         QByteArray indata;
+        bool is_writed=0;
 
         void add_client(void *client);
         void sub_client(void *client);
         void send_data_to_client(QByteArray *data);
-        virtual void write_data(QByteArray *data){}
+        void data_was_sended();
+        virtual void write_data(QByteArray *data){data->clear();}
         virtual void client_added(){}
         virtual void no_more_client(){}
 

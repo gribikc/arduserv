@@ -30,6 +30,7 @@ public:
         int hrp_del=0;//\r\n\r\n -position
         QMap<QByteArray, QByteArray> hrp_headers;
         bool hrp_headers_valid=0;
+        QStringList list_param;
     //http_request_parsing
 
         int is_rsw(QString name);

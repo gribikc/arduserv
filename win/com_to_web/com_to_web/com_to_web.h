@@ -15,7 +15,8 @@
     #include "gr_serial/gr_serial.h"
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
-    #include "gr_rotation/gr_rotation.h"
+    #include "gr_sensor/gr_sensor.h"
+    #include "gr_logger/gr_logger.h"
 
 
 

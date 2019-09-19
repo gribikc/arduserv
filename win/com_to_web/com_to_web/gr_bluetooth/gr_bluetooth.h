@@ -29,16 +29,16 @@
 class GR_bluetooth:public gr_data_source{
     Q_OBJECT
 public:
-    GR_bluetooth(QString name, int mode, QTcpSocket *socket):gr_data_source("BT",name,static_cast<void*>(socket)){
-        bt_open(name,mode,socket);//mode
+    GR_bluetooth(QString name, QString mode, void *socket):gr_data_source("BT",name,static_cast<void*>(socket)){
+        bt_open(name,mode);//mode
     }
     virtual void no_more_client();//no_more_sockets()
     virtual void write_data(QByteArray *data);
 
 public:
-    void bt_open(QString dev_name, int mode, QTcpSocket *socket_point);
+    void bt_open(QString dev_name, QString mode);
     QTcpSocket *socket=nullptr;
-    int mode=0;
+    QString mode="";
     int ble_valid=0;
     QString dev_name="";
     bool dev_found=0;
@@ -50,6 +50,7 @@ public:
     QLowEnergyController *ble_control;
     QLowEnergyService *ble_service;
 
+    void characteristicWritten(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue);
 public slots:
         void bt_socketError(QBluetoothSocket::SocketError error);
         void bt_socketWrite(QByteArray data);
