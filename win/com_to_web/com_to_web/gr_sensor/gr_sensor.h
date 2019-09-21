@@ -4,11 +4,16 @@
 
 #include "gr_data_source/gr_data_source.h"
 #include <QSensor>
+
 #include <QRotationSensor>
 #include <QRotationReading>
 
 #include <QAccelerometer>
 #include <QAccelerometerReading>
+
+#include <QMagnetometer>
+#include <QAmbientLightSensor>
+
 
 
 class GR_sensor: public gr_data_source{
@@ -21,10 +26,17 @@ class GR_sensor: public gr_data_source{
         virtual void no_more_client();
 
 
-        //QRotationSensor *sensor=new QRotationSensor(this);
-        QAccelerometer *sensor=new QAccelerometer(this);
+        QRotationSensor     *rot_sensor=new QRotationSensor(this);
+        QAccelerometer      *acc_sensor=new QAccelerometer(this);
+        QMagnetometer       *mag_sensor=new QMagnetometer(this);
+        QAmbientLightSensor *ambl_sensor=new QAmbientLightSensor(this);
+
         void sensor_start();
-        void read_changed();
+        void read_changed(QString prefix);
+        void init_acc();
+        void init_mag();
+        void init_ambl();
+        void init_rot();
 };
 
 #endif // GR_SENSOR_H
