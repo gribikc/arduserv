@@ -14,11 +14,11 @@
 		//xdstartjson:{
 		//}:xdstopjson
 		parser_data(type,stream){
-			//key_array_to_inner(stream,"simple_test");
+			key_array_to_inner(stream,"simple_test");
 			//console.log(stream);
 			
 
-			for(var i=0;i<stream.length;i++){
+			/*for(var i=0;i<stream.length;i++){
 				if(stream[i][0]=="$BME280"){
 					key_array_to_inner(stream[i],"simple_test");
 				}
@@ -29,7 +29,7 @@
 				if(stream[i][0]=="$GNGGA"){
 					key_array_to_inner(stream[i],"GNGGA");
 				}
-			}
+			}*/
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

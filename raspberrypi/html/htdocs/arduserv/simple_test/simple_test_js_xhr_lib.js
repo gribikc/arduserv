@@ -105,7 +105,7 @@ function main_init(){
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"SP:",
 				//parser: new json_stream_parser_gr(simple_test_gr),//new raw_parser_gr(message_hub),
-				  parser: new nmea_parser_gr(simple_test_gr),
+				  parser: new json_stream_parser_gr(simple_test_gr),
 				
 				flush_en:true,
 				auto_start:true,

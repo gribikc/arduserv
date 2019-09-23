@@ -51,7 +51,7 @@ void loop() {
 
     if((long_timer_cnt-bme280_tcnt)>300000){
       bme280_tcnt=long_timer_cnt;
-      //BME280_send_json();
-      BME280_send_nmea();
+      BME280_send_json();
+      //BME280_send_nmea();
     }
 }
