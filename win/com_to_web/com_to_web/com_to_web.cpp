@@ -2,6 +2,8 @@
 #include "file_system.h"
 #include "ui_com_to_web.h"
 
+QList<QString> GR_logger::m_messages = {};
+QList<GR_logger::data_log> GR_logger::log_info = {};
 
 com_to_web::com_to_web(QWidget *parent) :
     QMainWindow(parent),
@@ -54,8 +56,9 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //QString a=QString(socket->peerName());
     ui->textEdit->insertPlainText("Client connected...\n");
 
-    qDebug() << "Client connected;";
-    GR_logger::log("Client connected");
+    //qDebug() << "Client connected;";
+    //GR_logger::log("Client connected");
+    GR_logger::log(abv,"Client connected;");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +92,14 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
     }else if(http_client->is_rsw("/favicon.ico")==2){
         http_client->send_html_header();
         http_client->write("Nice try to get favicon.ico :)))");
+        http_client->close();
+    }else if(http_client->is_rsw("/sys/log")>0){
+        http_client->send_html_header();
+        if(http_client->is_rsw("/sys/log/c")>0){
+            GR_logger::clear();
+        }else{
+            GR_logger::send_log_to_socket_json(http_client);
+        }
         http_client->close();
     }else{
         http_client->send_html_header();

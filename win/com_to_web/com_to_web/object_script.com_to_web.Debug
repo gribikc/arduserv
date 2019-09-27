@@ -1,0 +1,16 @@
+debug/main.o
+debug/com_to_web.o
+debug/gr_data_source.o
+debug/gr_logger.o
+debug/gr_sensor.o
+debug/gr_serial.o
+debug/gr_bluetooth.o
+debug/gr_gps.o
+debug/gr_http_client.o
+debug/gr_dev_manager.o
+debug/moc_com_to_web.o
+debug/moc_gr_data_source.o
+debug/moc_gr_serial.o
+debug/moc_gr_bluetooth.o
+debug/moc_gr_http_client.o
+debug/moc_gr_dev_manager.o

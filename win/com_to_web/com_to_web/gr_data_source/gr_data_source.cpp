@@ -1,4 +1,5 @@
 #include "gr_data_source.h"
+#include <gr_logger/gr_logger.h>
 
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,7 @@
         QTcpSocket *client = static_cast<QTcpSocket *>(object);
         if (client->state() == QAbstractSocket::UnconnectedState){
            qDebug()<<"Client Disconnected;";
+           GR_logger::log(this,"DS Client Disconnected");
            sub_client(client);
         }
     }

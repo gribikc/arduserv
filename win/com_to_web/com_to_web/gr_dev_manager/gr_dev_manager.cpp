@@ -1,5 +1,5 @@
 #include "gr_dev_manager.h"
-
+#include <gr_logger/gr_logger.h>
 gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
 {
 
@@ -41,6 +41,8 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
         void *dev_new=nullptr;
 
         qDebug() << "DevManager add_client";
+        GR_logger::log(this,"DevManager add_client");
+
         for(int i=list_param.size();i<10;i++){
             list_param.append("");
         }
@@ -62,6 +64,7 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
             dev=static_cast <gr_data_source*>(gr_devices.at(i));
             if(dev->type == dev_type && dev->dev_name==dev_name && dev_name!="" && dev_mode!="L"){
                 qDebug() << "Device Is opened;";
+                GR_logger::log(this,"DevManager Device Is opened");
                 dev->add_client(http_client);
                 dev->write_data(&http_client->indata);
                 is_dev_find=1;
@@ -84,12 +87,14 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
 
             if(dev_new!=nullptr){
                 qDebug() << "Dev add tolist";
+                GR_logger::log(this,"DevManager Dev add tolist");
                 gr_devices.append(dev_new);
                 dev=static_cast <gr_data_source*>(dev_new);
                 dev->write_data(&http_client->indata);
 
                 connect(dev,&QObject::destroyed,this,&gr_dev_manager::dev_was_destroyed);
                 qDebug() << "Create New Device;";
+                GR_logger::log(this,"DevManager Create New Device");
             }
         }
     }
@@ -103,6 +108,7 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
             if(gr_devices.at(i) == static_cast<void*>(object) ){
                 gr_devices.removeAt(i);
                 qDebug() << "Device Was Removed";
+                GR_logger::log(this,"DevManager Device Was Removed");
             }
         }
     }

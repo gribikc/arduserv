@@ -13,6 +13,7 @@
 
 #include <QDebug>
 
+
 //class GR_http_client  : public QObject
 //{
 //    Q_OBJECT
@@ -31,6 +32,7 @@ public:
         QMap<QByteArray, QByteArray> hrp_headers;
         bool hrp_headers_valid=0;
         QStringList list_param;
+        QString ip_addr=0;
     //http_request_parsing
 
         int is_rsw(QString name);

@@ -1,8 +1,10 @@
 #include "gr_http_client.h"
+#include <gr_logger/gr_logger.h>
 
 GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
     //this->socket=this;
     this->setSocketDescriptor(sdscrp);
+    ip_addr=this->peerAddress().toString();
     connect(this, &QTcpSocket::stateChanged, this, &GR_http_client::stateChanged);
     connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
 }
@@ -15,6 +17,8 @@ void GR_http_client::readyRead(){
         http_request_parsing();
         if(hrp_headers_valid==1){
             emit requestComplete(this);
+            qDebug() << "Request complite:\n";
+            GR_logger::log(this,"Http Request Complite");
         }
     }
     if(hrp_headers_valid==1){
@@ -22,6 +26,8 @@ void GR_http_client::readyRead(){
             indata.remove(0,hrp_del);
             list_param=get_list_param();
             emit dataComplete(this);
+            qDebug() << "Request complite:\n";
+            GR_logger::log(this,"Http Data Complete");
         }
     }
 }
@@ -29,7 +35,8 @@ void GR_http_client::readyRead(){
 ////////////////////////////////////
 ////////////////////////////////////
 void GR_http_client::stateChanged(){
-
+    qDebug() << "Request complite:\n";
+    GR_logger::log(this,"Http State Changed");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,8 +61,6 @@ void GR_http_client::http_request_parsing(){
         //User-Agent: Mozilla/4.0 (compatible; MSIE 5.0; Windows 98)
         //Range: bytes=88080384-
         //Referer: http://example.org/
-        qDebug() << "Request complite:\n";
-
         for(int i=0;i<header_line.size();i++){
             temp=header_line[i];
             if((temp.startsWith("GET ") || temp.startsWith("POST ")) && hrp_headers_valid==0){//startsWith
@@ -107,6 +112,7 @@ QStringList GR_http_client::get_list_param(){
         write("Connection: keep-alive\n");
         write("Access-Control-Allow-Origin: *\n");
         write("\n");
+        GR_logger::log(this,"Send Data header");
     }
     void GR_http_client::send_html_header(){
         write("HTTP/1.1 200 OK\n");
@@ -114,12 +120,14 @@ QStringList GR_http_client::get_list_param(){
         write("Connection: keep-alive\n");
         write("Access-Control-Allow-Origin: *\n");
         write("\n");
+        GR_logger::log(this,"Send HTML header");
     }
     void GR_http_client::send_neutral_header(){
         write("HTTP/1.1 200 OK\n");
         write("Connection: keep-alive\n");
         write("Access-Control-Allow-Origin: *\n");
         write("\n");
+        GR_logger::log(this,"Send Neutral header");
     }
 
 

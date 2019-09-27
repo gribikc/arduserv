@@ -9,6 +9,7 @@
 #include <QNetworkInterface>
 
     //EXT
+    #include "gr_logger/gr_logger.h"
     //#include "gr_data_source/gr_data_source.h"
     #include "gr_dev_manager/gr_dev_manager.h"
     #include "gr_http_client/gr_http_client.h"
@@ -16,7 +17,6 @@
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
     #include "gr_sensor/gr_sensor.h"
-    #include "gr_logger/gr_logger.h"
 
 
 
@@ -50,7 +50,7 @@ public:
     void htdocs_db_write_do(QStringList list_param, QTcpSocket *socket);
 
 
-    QString android_htdocs_patch="/storage/3262-3934/com_to_web/";
+    QString android_htdocs_patch="/storage/3262-3934/com_to_web";
 
     QTcpServer *server; // указатель на сервер
     //QList<gr_httprqs_parser> httprqs_parser; // получатели данных
