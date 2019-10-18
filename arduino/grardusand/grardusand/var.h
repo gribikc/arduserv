@@ -16,5 +16,5 @@ gribikc_nrf24l01p nrf24l01p;
 
 Adafruit_BME280 bme;
 
-Stream* user_stream=&Serial2;
-Stream* dev_stream=&Serial2;
+Stream* user_stream=&Serial;
+Stream* dev_stream=&Serial;

@@ -20,14 +20,14 @@
 void setup() {
   start_init();
   
-  init_sd();
+  //init_sd();
   
-  user_stream->println("Start...");
+  /*user_stream->println("Start...");
     nrf24l01p.get_config();
     nrf24l01p.init();
     nrf24l01p.init_rx();
     nrf24l01p.get_config();
-  user_stream->println("NRF...done");
+  user_stream->println("NRF...done");*/
   
   init_sd();
 
