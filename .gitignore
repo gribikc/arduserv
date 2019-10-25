@@ -9,3 +9,8 @@ win/com_to_web/com_to_web/debug/com_to_web.exe
 *.exe
 *.o
 *.exe
+win/com_to_web/build-com_to_web-Desktop_Qt_5_7_0_MinGW_32bit-Debug/Makefile
+win/com_to_web/build-com_to_web-Desktop_Qt_5_7_0_MinGW_32bit-Debug/Makefile.Debug
+win/com_to_web/build-com_to_web-Desktop_Qt_5_7_0_MinGW_32bit-Debug/object_script.com_to_web.Debug
+*.Release
+*.21
