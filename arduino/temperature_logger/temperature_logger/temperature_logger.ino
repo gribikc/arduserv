@@ -7,6 +7,8 @@
   #define SD_cs 10
   #define RXLED 17 // The RX LED has a defined Arduino pin
   #define TXLED 30 // The TX LED has a defined Arduino pin
+
+  //#define data_file "data_log_bmp180.log"
   
   Stream* user_stream=&Serial;
   Stream* dev_stream=&Serial;
@@ -58,65 +60,96 @@
 ///////////////////////
 //////////////////////
   void bmp180_write_and_send(){
-    File dataFile = SD.open("datalog.dat", FILE_WRITE);
-    if (!dataFile) {
-      user_stream->print("xdstartjson:{\n");
-      user_stream->print("    \"type\":\"error\",\n");
-      user_stream->print("    \"message\":\"File Error\"\n");
-      user_stream->print("}:xdstopjson");
-    }
+    //1013.25hPa~760mmHg~1atm~101.325kPa
+    static long unsigned int count=0;
+    static signed char cnt=0;
+    float temperature;
+
     sensors_event_t event;
     bmp.getEvent(&event);
     if (event.pressure){
-      float temperature;
       bmp.getTemperature(&temperature);
       
-      user_stream->print("xdstartjson:{\n");                                          dataFile.print("xdstartjson:{\n");
-      
-      user_stream->print("    \"type\":\"bmp_cur\",\n");
-      user_stream->print("    \"Pressure\":");                                        dataFile.print("    \"Pressure\":\"");
-      user_stream->print(event.pressure);                                             dataFile.print(event.pressure);
-      user_stream->print(",\n");                                                      dataFile.print(",\n");
-      user_stream->print("    \"Temperature\":");                                     dataFile.print("    \"Temperature\":");
-      user_stream->print(temperature);                                                dataFile.print(temperature);
-      user_stream->print("\n");                                                       dataFile.print("\n");
-      
-      user_stream->print("}:xdstopjson");                                               dataFile.print("}:xdstopjson");
+      user_stream->print("xdstartjson:{\n");                                          //dataFile.print("data:");
+      user_stream->print("    \"type\":\"bmp_cur\",\n");                              //dataFile.print("type:bmp180,");
+      user_stream->print("    \"count\":");                                           //dataFile.print("cnt:");
+      user_stream->print(count);                                                      //dataFile.print(count);
+      user_stream->print(",\n");                                                      //dataFile.print(",");
+      user_stream->print("    \"cnt\":");                                           //dataFile.print("cnt:");
+      user_stream->print(cnt);                                                      //dataFile.print(count);
+      user_stream->print(",\n");                                                      //dataFile.print(",");
+      user_stream->print("    \"Pressure\":");                                        //dataFile.print("hpa:");
+      user_stream->print(event.pressure);                                             //dataFile.print(event.pressure);
+      user_stream->print(",\n");                                                      //dataFile.print(",");
+      user_stream->print("    \"Temperature\":");                                     //dataFile.print("celsius:");
+      user_stream->print(temperature);                                                //dataFile.print(temperature);
+      user_stream->print("\n");                                                       //dataFile.print("\n");
+      user_stream->print("}:xdstopjson");                                             //dataFile.print("\n");
+
+      if(cnt>=59){
+        cnt=-1;
+        File dataFile = SD.open("bmp180.log", FILE_WRITE);
+        if (!dataFile) {
+          user_stream->print("xdstartjson:{\n");
+          user_stream->print("    \"type\":\"error\",\n");
+          user_stream->print("    \"message\":\"File Error\"\n");
+          user_stream->print("}:xdstopjson");
+        }else{
+          dataFile.print("type:bmp180,");
+          dataFile.print("count:");
+          dataFile.print(count);
+          dataFile.print(",");
+          dataFile.print("hpa:");
+          dataFile.print(event.pressure);
+          dataFile.print(",");
+          dataFile.print("celsius:");
+          dataFile.print(temperature);
+          dataFile.print("\n");
+          count++;
+        }
+        dataFile.flush();
+        dataFile.close();
+      }
     }else{
       user_stream->print("xdstartjson:{\n");
       user_stream->print("    \"type\":\"error\",\n");
       user_stream->print("    \"message\":\"Sensor Error\"\n");
       user_stream->print("}:xdstopjson");
     }
-    dataFile.flush();
+    cnt++;
+  }
+////////////////////////
+///////////////////////
+//////////////////////
+  void invert_gpo(int gpo){
+    //Serial.println(digitalRead(gpo));
+    if(digitalRead(gpo)){
+      digitalWrite(gpo,HIGH);
+    }else{
+      digitalWrite(gpo,LOW);
+    }
+  }
+////////////////////////
+///////////////////////
+//////////////////////
+  void send_state(){
+    File dataFile = SD.open("bmp180.log");
+    if (!dataFile) {
+      user_stream->print("xdstartjson:{\n");
+      user_stream->print("    \"type\":\"error\",\n");
+      user_stream->print("    \"message\":\"File Error\"\n");
+      user_stream->print("}:xdstopjson");
+    }
+  
+    user_stream->print("xdstartjson:{\n");
+    user_stream->print("    \"type\":\"status\",\n");
+    user_stream->print("    \"file_size\":");
+    user_stream->print(dataFile.size());
+    user_stream->print("\n");
+    user_stream->print("}:xdstopjson");
+    
     dataFile.close();
   }
 ////////////////////////
 ///////////////////////
 //////////////////////
-void invert_gpo(int gpo){
-  //Serial.println(digitalRead(gpo));
-  if(digitalRead(gpo)){
-    digitalWrite(gpo,HIGH);
-  }else{
-    digitalWrite(gpo,LOW);
-  }
-}
-////////////////////////
-///////////////////////
-//////////////////////
-void send_state(){
-  File dataFile = SD.open("datalog.dat");
-
-  user_stream->print("xdstartjson:{\n");
-  user_stream->print("    \"type\":\"status\",\n");
-  user_stream->print("    \"file_size\":");
-  user_stream->print(dataFile.size());
-  //user_stream->print(",\n");
-  //user_stream->print("    \"available\":");
-  //user_stream->print(dataFile.available());
-  user_stream->print("\n");
-  user_stream->print("}:xdstopjson");
-  
-  dataFile.close();
-}
