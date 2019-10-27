@@ -19,6 +19,7 @@ void gr_serial::serial_open(int num, int speed){
         serial->setParity(QSerialPort::NoParity);
         serial->setStopBits(QSerialPort::OneStop);
         serial->setFlowControl(QSerialPort::NoFlowControl);
+        serial->setDataTerminalReady(1);
     }else{
        qDebug() << "COMport NOT OPENed\n";
        close_all_client();
