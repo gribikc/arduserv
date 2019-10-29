@@ -5,7 +5,7 @@ GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
     //this->socket=this;
     this->setSocketDescriptor(sdscrp);
     ip_addr=this->peerAddress().toString();
-    connect(this, &QTcpSocket::stateChanged, this, &GR_http_client::stateChanged);
+    connect(this, &QTcpSocket::disconnected, this, &GR_http_client::disconnected);
     connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
 }
 ////////////////////////////////
@@ -32,13 +32,9 @@ void GR_http_client::readyRead(){
 ////////////////////////////////////
 ////////////////////////////////////
 ////////////////////////////////////
-void GR_http_client::stateChanged(){
-    QObject * object = QObject::sender();
-    QTcpSocket *client = static_cast<QTcpSocket *>(object);
-    if (client->state() == QAbstractSocket::UnconnectedState){
-        GR_logger::log(this,"Http Client Disconnected");
-    }
-    client->deleteLater();
+void GR_http_client::disconnected(){
+    GR_logger::log(this,"Http Client Disconnected");
+    this->deleteLater();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

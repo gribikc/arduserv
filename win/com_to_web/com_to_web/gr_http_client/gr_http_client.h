@@ -42,7 +42,7 @@ public:
         void send_neutral_header();
 public slots:
     void readyRead(); // обработчик входящих данных
-    void stateChanged(); // обработчик изменения состояния вещающего
+    void disconnected(); // обработчик изменения состояния вещающего
 
     void http_request_parsing();
 
