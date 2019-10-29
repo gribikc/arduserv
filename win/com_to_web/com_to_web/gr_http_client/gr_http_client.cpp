@@ -17,7 +17,6 @@ void GR_http_client::readyRead(){
         http_request_parsing();
         if(hrp_headers_valid==1){
             emit requestComplete(this);
-            qDebug() << "Request complite:\n";
             GR_logger::log(this,"Http Request Complite");
         }
     }
@@ -26,7 +25,6 @@ void GR_http_client::readyRead(){
             indata.remove(0,hrp_del);
             list_param=get_list_param();
             emit dataComplete(this);
-            qDebug() << "Request complite:\n";
             GR_logger::log(this,"Http Data Complete");
         }
     }
@@ -35,8 +33,12 @@ void GR_http_client::readyRead(){
 ////////////////////////////////////
 ////////////////////////////////////
 void GR_http_client::stateChanged(){
-    qDebug() << "Request complite:\n";
-    GR_logger::log(this,"Http State Changed");
+    QObject * object = QObject::sender();
+    QTcpSocket *client = static_cast<QTcpSocket *>(object);
+    if (client->state() == QAbstractSocket::UnconnectedState){
+        GR_logger::log(this,"Http Client Disconnected");
+    }
+    client->deleteLater();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

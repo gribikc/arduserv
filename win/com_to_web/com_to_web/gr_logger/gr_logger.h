@@ -37,7 +37,7 @@ class GR_logger{
             if(client!=nullptr){
                 //data.params.append(client->isOpen() ? "Opened" : "Close");
                 data.params.append(client->ip_addr);
-                data.params.append(client->hrp_headers["Query"]!="" ? ("Q:"+client->hrp_headers["Query"]) :
+                data.params.append(client->hrp_headers.contains("Query") ? ("Q:"+client->hrp_headers["Query"]) :
                                                                       ("I:"+client->indata.left(70).replace("\n","").replace("\r","")));
             }else if(data_src!=nullptr){
                 data.params.append("Clients:"+QString::number(data_src->client_list.size()));

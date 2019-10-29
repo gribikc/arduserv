@@ -17,6 +17,7 @@
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
     #include "gr_sensor/gr_sensor.h"
+    #include "gr_tcp_client/gr_tcp_client.h"
 
 
 

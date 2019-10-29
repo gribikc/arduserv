@@ -70,6 +70,10 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->send_data_header();
         dev_manager.add_client(http_client);
     //////////////////////////////  ////////
+    }else if(http_client->is_rsw("/sys/tcp/")>0){
+        http_client->send_data_header();
+        new gr_tcp_client(http_client);
+        //http_client->close();
     }else if(http_client->is_rsw("/")==2){
         http_client->send_html_header();
         http_client->write("Main Page!");
