@@ -4,6 +4,9 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 
+#include "gr_serial.h"
+
+
   #define SD_cs 10
   #define RXLED 17 // The RX LED has a defined Arduino pin
   #define TXLED 30 // The TX LED has a defined Arduino pin
