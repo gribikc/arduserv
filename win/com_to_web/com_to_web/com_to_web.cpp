@@ -81,11 +81,11 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->close();
     ////////////////////////////////        ///////
     }else if(http_client->is_rsw("/sys/tree")>0){
+        QDir dir;
         http_client->send_html_header();
         if(QSysInfo::productType()=="android"){
             get_tree_file(android_htdocs_patch+"/htdocs/","",http_client,android_htdocs_patch);
         }else{
-            QDir dir;
             get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
         }
         GR_logger::log(this,"CtW Htdocs Tree");

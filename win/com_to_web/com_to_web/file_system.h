@@ -38,12 +38,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
     void com_to_web::get_tree_file(QString dir_patch, QString prefix_add, QTcpSocket *socket,QString base_dir){
         QDir dir(dir_patch);
-        //QDir::setCurrent(base_dir);
+        if (!dir.exists()){
+            socket->write("Dir not found<br>\n");
+            socket->write(dir_patch.toLocal8Bit());
+        }
+
         dir.setFilter(QDir::AllDirs | QDir::Files | QDir::Hidden | QDir::NoSymLinks);
         dir.setSorting(QDir::Size | QDir::Reversed);
         QFileInfoList list = dir.entryInfoList();
-
-        //qDebug() << dir.entryInfoList().;
 
         socket->write("");
         for (int i = 0; i < list.size(); ++i) {

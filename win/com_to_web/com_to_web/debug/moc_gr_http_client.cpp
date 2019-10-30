@@ -39,13 +39,13 @@ QT_MOC_LITERAL(3, 32, 15), // "GR_http_client*"
 QT_MOC_LITERAL(4, 48, 14), // "gr_http_client"
 QT_MOC_LITERAL(5, 63, 12), // "dataComplete"
 QT_MOC_LITERAL(6, 76, 9), // "readyRead"
-QT_MOC_LITERAL(7, 86, 12), // "stateChanged"
+QT_MOC_LITERAL(7, 86, 12), // "disconnected"
 QT_MOC_LITERAL(8, 99, 20) // "http_request_parsing"
 
     },
     "GR_http_client\0requestComplete\0\0"
     "GR_http_client*\0gr_http_client\0"
-    "dataComplete\0readyRead\0stateChanged\0"
+    "dataComplete\0readyRead\0disconnected\0"
     "http_request_parsing"
 };
 #undef QT_MOC_LITERAL
@@ -93,7 +93,7 @@ void GR_http_client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 0: _t->requestComplete((*reinterpret_cast< GR_http_client*(*)>(_a[1]))); break;
         case 1: _t->dataComplete((*reinterpret_cast< GR_http_client*(*)>(_a[1]))); break;
         case 2: _t->readyRead(); break;
-        case 3: _t->stateChanged(); break;
+        case 3: _t->disconnected(); break;
         case 4: _t->http_request_parsing(); break;
         default: ;
         }
