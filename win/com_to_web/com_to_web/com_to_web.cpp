@@ -56,9 +56,7 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //QString a=QString(socket->peerName());
     ui->textEdit->insertPlainText("Client connected...\n");
 
-    //qDebug() << "Client connected;";
-    //GR_logger::log("Client connected");
-    GR_logger::log(abv,"Client connected;");
+    GR_logger::log(abv,"CtW Client connected;");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,11 +67,12 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
     if(http_client->is_rsw("/dev")>0){
         http_client->send_data_header();
         dev_manager.add_client(http_client);
+        GR_logger::log(this,"CtW Dev");
     //////////////////////////////  ////////
     }else if(http_client->is_rsw("/sys/tcp/")>0){
         http_client->send_data_header();
         new gr_tcp_client(http_client);
-        //http_client->close();
+        GR_logger::log(this,"CtW Tcp");
     }else if(http_client->is_rsw("/")==2){
         http_client->send_html_header();
         http_client->write("Main Page!");

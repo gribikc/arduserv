@@ -10,7 +10,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#include "lib/nrf24l01p.h"
+//#include "lib/nrf24l01p.h"
 #include "lib/gribikc_serial.h"
 #include <Adafruit_BME280.h>
 #include "var.h"

@@ -19,3 +19,5 @@ win/com_to_web/build-com_to_web-Desktop_Qt_5_13_0_MinGW_32_bit-Release/Makefile
 *.Debug
 *.Debug
 *.Release
+*.Release
+*.Debug

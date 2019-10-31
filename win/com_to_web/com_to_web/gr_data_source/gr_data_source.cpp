@@ -65,7 +65,6 @@
         QObject * object = QObject::sender();
         QTcpSocket *client = static_cast<QTcpSocket *>(object);
         if (client->state() == QAbstractSocket::UnconnectedState){
-           qDebug()<<"Client Disconnected;";
            GR_logger::log(this,"DS Client Disconnected");
            sub_client(client);
         }
