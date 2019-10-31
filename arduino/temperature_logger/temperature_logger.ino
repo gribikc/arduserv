@@ -16,6 +16,8 @@
   Stream* user_stream=&Serial;
   Stream* dev_stream=&Serial;
 
+  gr_serial uart_data;
+
   Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
   long unsigned int loop_cnt=0;
@@ -55,9 +57,19 @@
 /////////////////
 ////////////////
   void loop() {
-    bmp180_write_and_send();
-    send_state();
-    delay(1000);
+    //bmp180_write_and_send();
+    //send_state();
+    if(uart_data.do_rx(user_stream)){
+      user_stream->print("xdstartjson:{\n");
+      user_stream->print("    \"type\":\"info\",\n");
+      user_stream->print("    \"byte\":\"");
+      //user_stream->print(uart_data.rx_buf[(uart_data.rx_buf_point-MESSAGE_SIZE_OF+2)&(RX_BUF_SIZE_OF)],HEX);
+      user_stream->print(uart_data.get_id(),HEX);
+      user_stream->print("\",\n");
+      user_stream->print("    \"message\":\"new message\"\n");
+      user_stream->print("}:xdstopjson");
+    }
+    //delay(1000);
   }
 ////////////////////////
 ///////////////////////

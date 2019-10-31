@@ -20,7 +20,8 @@ class gr_serial:public gr_data_source{
 
         virtual void no_more_client();//no_more_sockets()
         virtual void write_data(QByteArray *data);
-    private slots:
+        void bytesWritten();
+private slots:
         void serial_open(int num,int speed);
         void serial_read();
         void serial_list();

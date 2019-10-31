@@ -29,6 +29,7 @@ void gr_serial::serial_open(int num, int speed){
     serial->write("D");
     serial->readAll();
     connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_read);
+    connect(serial, &QSerialPort::bytesWritten, this, &gr_serial::bytesWritten);
 }
 
 void gr_serial::serial_list(){
@@ -83,6 +84,9 @@ void gr_serial::write_data(QByteArray *data){
     }else{
         indata.append(*data);
     }
+}
+void gr_serial::bytesWritten(){
+    data_was_sended();
 }
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
