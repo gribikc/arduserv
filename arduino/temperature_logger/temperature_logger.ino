@@ -1,3 +1,13 @@
+#define dtd_bmp 0
+#define dtd_tst 1
+#define dtd_count 2
+
+#define SD_cs 49
+#define RXLED 17 // The RX LED has a defined Arduino pin
+#define TXLED 30 // The TX LED has a defined Arduino pin
+
+
+
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
@@ -5,12 +15,6 @@
 #include <Adafruit_BMP085_U.h>
 
 #include "gr_serial.h"
-
-
-
-  #define SD_cs 10
-  #define RXLED 17 // The RX LED has a defined Arduino pin
-  #define TXLED 30 // The TX LED has a defined Arduino pin
 
   //#define data_file "data_log_bmp180.log"
   
@@ -57,7 +61,29 @@
 //////////////////
 /////////////////
 ////////////////
+  int check_time(unsigned int id,unsigned long m_sec){
+    static unsigned long mils[dtd_count];
+    unsigned long cur_mils=micros();
+    unsigned long delta=cur_mils-mils[id];
+    if(delta>m_sec){
+      mils[dtd_tst]=cur_mils-(delta-m_sec);
+      return 1;
+    }
+    return 0;
+  }
+//////////////////
+/////////////////
+////////////////
   void loop() {
+    if(check_time(dtd_tst,1000000)){
+      user_stream->print("xdstartjson:{\n");
+      user_stream->print("    \"type\":\"info\",\n");
+      user_stream->print("    \"byte\":\"");
+      user_stream->print(micros());
+      user_stream->print("\",\n");
+      user_stream->print("    \"message\":\"Timer0\"\n");
+      user_stream->print("}:xdstopjson");
+    }
     //bmp180_write_and_send();
     //send_state();
     if(uart_data.do_rx(user_stream)){
