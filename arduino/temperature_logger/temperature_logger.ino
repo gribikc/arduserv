@@ -7,6 +7,7 @@
 #include "gr_serial.h"
 
 
+
   #define SD_cs 10
   #define RXLED 17 // The RX LED has a defined Arduino pin
   #define TXLED 30 // The TX LED has a defined Arduino pin
@@ -69,7 +70,7 @@
       user_stream->print("    \"message\":\"new message\"\n");
       user_stream->print("}:xdstopjson");
     }
-    //delay(1000);
+    //delay(10000);
   }
 ////////////////////////
 ///////////////////////

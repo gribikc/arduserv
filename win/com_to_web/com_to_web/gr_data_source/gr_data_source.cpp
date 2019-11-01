@@ -22,7 +22,7 @@
 /// ADD/SUB client
     void gr_data_source::add_client(void *client){
         client_list.append(static_cast<GR_http_client*>(client));
-        connect(static_cast<QTcpSocket*>(client), &QTcpSocket::stateChanged, this, &gr_data_source::client_stateChanged);
+        connect(static_cast<QTcpSocket*>(client), &QTcpSocket::disconnected, this, &gr_data_source::client_stateChanged);
         connect(static_cast<QTcpSocket*>(client), &QTcpSocket::readyRead, this, &gr_data_source::client_readyRead);
         client_added();
     }
@@ -73,6 +73,7 @@
 ////////////////////////////////////
 ////////////////////////////////////
     void gr_data_source::close_all_client(){
+        GR_logger::log(this,"DS Close All Clients");
         for (int i=0;i<client_list.size();i++) {
             client_list.at(i)->close();
         }
@@ -81,6 +82,7 @@
 ////////////////////////////////////
 ////////////////////////////////////
 void gr_data_source::data_was_sended(){
+    GR_logger::log(this,"DS Data Was Send");
     for (int i=0;i<client_list.size();i++) {
         if(client_list.at(i)->list_param[3].toUpper()=="W"){
             client_list.at(i)->close();
