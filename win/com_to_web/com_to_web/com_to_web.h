@@ -48,7 +48,7 @@ public:
     void main_page_request_do(QTcpSocket *socket);
     void get_tree_file(QString dir_patch, QString prefix_add, QTcpSocket *socket, QString base_dir);
     void htdocs_page_request_do(QStringList list_param, QTcpSocket *socket);
-    void htdocs_db_write_do(QStringList list_param, QTcpSocket *socket);
+    void htdocs_db_write_do(QTcpSocket *socket);
 
 
     QString android_htdocs_patch="/storage/3262-3934/com_to_web";

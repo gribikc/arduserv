@@ -338,6 +338,7 @@
 				//this.parser=parser;
 				var this_of_class=this;
 				var this_parameter=parameter;
+				this.parameter=parameter;
 				this.xmlhttprq = new XMLHttpRequest();
 			
 				this.xmlhttprq.open('GET', parameter.url, true);
@@ -347,6 +348,8 @@
 				
 				this.stat_bps=0;
 				this.stat_rp=0;
+				this.last_statusText="";
+				this.last_readyState=0;
 				
 				if(parameter.status_en==true){
 					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
@@ -370,16 +373,18 @@
 					}
 				}				
 				
-				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
+				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();    
 					//console.log(this_of_class);
 					//console.log(this.status_div);//.innerHTML=this.readyState;
 					//console.log(e);//event
 					//console.log(this);//XMLHttpRequest
-					if(parameter.status_en==true){
+					/*if(parameter.status_en==true){
 						this_of_class.status_div.innerHTML=parameter.status_div_name;
 						this_of_class.status_div.innerHTML+=""+this.statusText;
 						this_of_class.status_div.innerHTML+="("+this.readyState+")";
-					}
+					}*/
+					//this_of_class.last_statusText=this.statusText;
+					//this_of_class.last_readyState=this.readyState;
 					//readyState;
 					if(this.readyState==4){//DONE
 						parameter.parser.parser_data(this.responseText);//!!!
@@ -399,6 +404,11 @@
 			}
 		//чуть
 			view_stat(){
+				this.status_div.innerHTML=this.parameter.status_div_name;
+				this.status_div.innerHTML+=""+this.xmlhttprq.statusText;
+				this.status_div.innerHTML+="("+this.xmlhttprq.readyState+")";
+				//this.status_div.innerHTML+="<a onclick=\"view_stat();\">test</a>";				
+				
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
 				if(this.stat_bps<1000){
@@ -406,7 +416,9 @@
 				}else{
 					this.stat_div.innerHTML='Скорость: '+((this.stat_bps/1000).toFixed(2))+' Kбит/с.';//bit per second
 				}
-				//console.log(this);
+				//console.log(this.name);
+				//console.log(this_of_class);
+				//console.log(this.parameter);
 			}
 		//чуть
 	}

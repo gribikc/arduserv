@@ -79,15 +79,43 @@ void start_init(){
   ///
   void BME280_send_json() {
     user_stream->print("xdstartjson:{\n");
-    user_stream->print(" \"temperature\":");
+    user_stream->print("    \"type\":\"bmp_cur\",\n");
+    user_stream->print(" \"Temperature\":");
       user_stream->print(bme.readTemperature());
-    user_stream->print(",\n \"humidity\":");
+    user_stream->print(",\n \"Humidity\":");
       user_stream->print(bme.readHumidity());
-    user_stream->print(",\n \"pressure\":");
+    user_stream->print(",\n \"Pressure\":");
       user_stream->print(bme.readPressure() / 100.0F);//1013.25hPa~760mmHg~1atm~101.325kPa
-    user_stream->print(",\n \"altitude\":");
+    user_stream->print(",\n \"Altitude\":");
       user_stream->print(bme.readAltitude(1013.25));//1013.25hPa~760mmHg~1atm~101.325kPa
     user_stream->print("\n}:xdstopjson\n");
+  }
+  void BME280_save_to_file() {
+    unsigned long count=0;
+    File dataFile = SD.open("bmp180.log", FILE_WRITE);
+    if (!dataFile) {
+      user_stream->print("xdstartjson:{\n");
+      user_stream->print("    \"type\":\"error\",\n");
+      user_stream->print("    \"message\":\"File Error\"\n");
+      user_stream->print("}:xdstopjson");
+    }else{
+      dataFile.print("type:bmp180,");
+      dataFile.print("count:");
+      dataFile.print(count);
+      dataFile.print(",");
+      dataFile.print(",hpa:");
+      dataFile.print(bme.readPressure());
+      dataFile.print(",");
+      dataFile.print("celsius:");
+      dataFile.print(bme.readTemperature());
+      dataFile.print(",");
+      dataFile.print("humidity:");
+      dataFile.print(bme.readHumidity());
+      dataFile.print("\n");
+      count++;
+    }
+    dataFile.flush();
+    dataFile.close();
   }
 /////////////////////
 /////////////////////

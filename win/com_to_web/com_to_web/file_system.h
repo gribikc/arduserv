@@ -110,8 +110,8 @@ void com_to_web::htdocs_page_request_do(QStringList list_param,QTcpSocket *socke
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void com_to_web::htdocs_db_write_do(QStringList list_param, QTcpSocket *socket){
-    /*QDir dir;
+void com_to_web::htdocs_db_write_do(QTcpSocket *socket){
+    QDir dir;
     //QString file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
     QString file_str="";
     if(QSysInfo::productType()=="android"){
@@ -120,30 +120,34 @@ void com_to_web::htdocs_db_write_do(QStringList list_param, QTcpSocket *socket){
         file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
     }
 
-    QStringList fpa=list_param->htdocs_file_query.split("/");
+    //QStringList fpa=list_param->htdocs_file_query.split("/");
+    //static_cast<GR_http_client*>(socket);
+    QStringList fpa=static_cast<GR_http_client*>(socket)->list_param;//  .htdocs_file_query.split("/");
     for(int i=3;i<fpa.size();i++){
         file_str=file_str+"/"+fpa[i].toLocal8Bit();
     }
     QFile file_req(file_str);
 
-    file_req.setFileName(file_str);
-    QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
-    file_req.rename(nfn);
-    file_req.setFileName(file_str);
+    //Если такойфайлужеесть сохраняем копию
+        file_req.setFileName(file_str);
+        QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
+        file_req.rename(nfn);
+        file_req.setFileName(file_str);
 
-    file_req.open(QIODevice::WriteOnly);
-    QByteArray  data_to_send=list_param->InData.right(list_param->InData.size()-list_param->hrp_del);
-    file_req.write(data_to_send);
-    file_req.close();
+    //Сохраняем данные в фал
+        file_req.open(QIODevice::WriteOnly);
+        QByteArray  data_to_send=static_cast<GR_http_client*>(socket)->indata;
+        file_req.write(data_to_send);
+        file_req.close();
 
     ui->textEdit->insertPlainText("        DB WR complite\n");
 
-    //htdocs_page_request_do(parser_data);
-    list_param->socket->write("\r\n");
-    list_param->socket->write("\r\n");
-    list_param->socket->write("END.\r\n");
-
-    list_param->socket->close();*/
+    //Отчет
+        socket->write("\r\n");
+        socket->write("\r\n");
+        socket->write("END.\r\n");
+    //Завершаем
+        socket->close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

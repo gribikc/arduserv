@@ -11,8 +11,8 @@ SdVolume volume;
 SdFile root;
 
 
-gribikc_serial usb_serial;
-gribikc_nrf24l01p nrf24l01p;
+gr_serial uart_data;
+//gribikc_nrf24l01p nrf24l01p;
 
 Adafruit_BME280 bme;
 

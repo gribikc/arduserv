@@ -5,6 +5,9 @@ let message_db;
 
 let test_paper;
 
+
+let stsp;
+
 //var xhr;// = new XMLHttpRequest();
 //var xhr_read_point=0;
 //var xhr_date = new Date;
@@ -119,7 +122,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(simple_test_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			stsp=new xmlhttprq_stream_gr(simple_test_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
 	///////////////////
 }
