@@ -1,7 +1,7 @@
 //////////////////
 /////////////////
 ////////////////
-  int check_time(unsigned int id,unsigned long m_sec){
+  int check_time(unsigned int id,unsigned long m_sec){//if (millis() % 5000 == 0) {  
     static unsigned long mils[dtd_count];
     unsigned long cur_mils=micros();
     unsigned long delta=cur_mils-mils[id];

@@ -60,7 +60,7 @@ void loop() {
       user_stream->print("}:xdstopjson");
     }
 
-    if(check_time(1,5000000)){
+    if(check_time(1,5000000)){//
       user_stream->print("xdstartjson:{\n");
       user_stream->print("    \"type\":\"info\",\n");
       user_stream->print("    \"byte\":\"");
