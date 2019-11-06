@@ -2,7 +2,7 @@
 #define dtd_tst 1
 #define dtd_count 2//к-во процессов нужно для массива
 
-#define SD_cs 49
+#define SD_cs 10
 #define RXLED 17 // The RX LED has a defined Arduino pin
 #define TXLED 30 // The TX LED has a defined Arduino pin
 
@@ -15,6 +15,7 @@
 #include <Adafruit_BMP085_U.h>
 
 #include "gr_serial.h"
+#include "gr_ard_lib.h"
 
   //#define data_file "data_log_bmp180.log"
   
@@ -57,11 +58,12 @@
       user_stream->print("    \"type\":\"log\",\n");
       user_stream->print("    \"message\":\"Loop Start\"\n");
       user_stream->print("}:xdstopjson");
+      check_time(0,0);
   }
 //////////////////
 /////////////////
 ////////////////
-  int check_time(unsigned int id,unsigned long m_sec){
+  /*int check_time(unsigned int id,unsigned long m_sec){
     static unsigned long mils[]={};
     unsigned long cur_mils=micros();
     unsigned long delta=cur_mils-mils[id];
@@ -70,40 +72,17 @@
       return 1;
     }
     return 0;
-  }
+  }*/
 //////////////////
 /////////////////
 ////////////////
   void loop() {
-    if(check_time(0,3000000)){
-      user_stream->print("xdstartjson:{\n");
-      user_stream->print("    \"type\":\"info\",\n");
-      user_stream->print("    \"byte\":\"");
-      user_stream->print(micros());
-      user_stream->print("\",\n");
-      user_stream->print("    \"message\":\"Timer0(3)\"\n");
-      user_stream->print("}:xdstopjson");
+    if(check_time(0,1000000)){
+      bmp180_write_and_send();
+      send_state();
     }
-    if(check_time(1,4000000)){
-      user_stream->print("xdstartjson:{\n");
-      user_stream->print("    \"type\":\"info\",\n");
-      user_stream->print("    \"byte\":\"");
-      user_stream->print(micros());
-      user_stream->print("\",\n");
-      user_stream->print("    \"message\":\"Timer1(4)\"\n");
-      user_stream->print("}:xdstopjson");
-    }
-    if(check_time(2,5000000)){
-      user_stream->print("xdstartjson:{\n");
-      user_stream->print("    \"type\":\"info\",\n");
-      user_stream->print("    \"byte\":\"");
-      user_stream->print(micros());
-      user_stream->print("\",\n");
-      user_stream->print("    \"message\":\"Timer2(5)\"\n");
-      user_stream->print("}:xdstopjson");
-    }
-    bmp180_write_and_send();
-    send_state();
+    //bmp180_write_and_send();
+    //send_state();
     if(uart_data.do_rx(user_stream)){
       user_stream->print("xdstartjson:{\n");
       user_stream->print("    \"type\":\"info\",\n");
