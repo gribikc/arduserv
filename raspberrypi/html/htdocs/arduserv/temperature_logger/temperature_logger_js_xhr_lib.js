@@ -1,25 +1,6 @@
-let nmea;// = new nmea_gr();
-let datafall;// = new datafall_gr();
-let sys_data;//=new xmlhttprq_stream_gr();
-let message_db;
 
-let test_paper;
+let xhrsc=[];
 
-
-let stsp;
-
-//var xhr;// = new XMLHttpRequest();
-//var xhr_read_point=0;
-//var xhr_date = new Date;
-//var xhr_fps=0;
-//var xhr_bps=0;
-//var xhr_temp;
-
-var sys_data_param;
-var test_cnt_stream_param;
-
-var autoboat;
-	var test=0;
 
 
 ///////////////////////////////////////////////////////////
@@ -94,21 +75,22 @@ var autoboat;
 function main_init(){
 
 	//HUB
-
-		//autoboat
-		simple_test_gr=new simple_test_gr();
+	//xhrsc.filter(id => id.parameter.name=="SP_:");
+	//xhrsc.filter(id => id.parameter.name=="SP")[0].
+	//xhrsc.find(currentValue  => currentValue.parameter.name=="SP").test();
+	//xhrsc.find(elem  => elem.parameter.name=="SP").test();
 	//_HUB
 	//STREAM
 		//arduino_uart
 			simple_test_stream_param={//location.hostname
-				url   : (document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" ) +"/dev/com/r/8/115200", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url   : (document.location.protocol=="file:" ? "http://172.18.26.112:3128" : "" ) +"/dev/com/r/4/115200", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				//url   : (document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" ) +"/dev/bt/r/grardusand/",
 				//url:"http://192.168.0.100:3128/dev/bt/r/grardusand/",
 				url_w : "127.0.0.1:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
-				status_div_name:"SP:",
+				name:"SP",
 				//parser: new json_stream_parser_gr(simple_test_gr),//new raw_parser_gr(message_hub),
-				  parser: new json_stream_parser_gr(simple_test_gr),
+				  parser: new json_stream_parser_gr(new simple_test_gr()),
 				
 				flush_en:true,
 				auto_start:true,
@@ -122,7 +104,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			stsp=new xmlhttprq_stream_gr(simple_test_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param));//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
 	///////////////////
 }

@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//gps
+//
 	class simple_test_gr{
 		constructor(hub){
 			this.parser_data_array=new Array();
@@ -15,7 +15,7 @@
 		//}:xdstopjson
 		parser_data(type,stream){
 			key_array_to_inner(stream,"simple_test");
-			console.log(stream);
+			//console.log(stream);
 			if(stream["type"]=="bmp_cur"){
 				document.getElementById("cur_temp").innerHTML= "Температура : "	+stream["Temperature"]+" градусов.<br>";
 				document.getElementById("cur_temp").innerHTML+="Давление : "	+(stream["Pressure"]*7.501/10).toPrecision(6)+" мм.Р.ст.<br>";

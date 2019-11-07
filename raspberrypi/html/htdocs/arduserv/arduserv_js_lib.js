@@ -404,10 +404,15 @@
 			}
 		//чуть
 			view_stat(){
-				this.status_div.innerHTML=this.parameter.status_div_name;
+				this.status_div.
+				this.status_div.innerHTML=this.parameter.name+":";
 				this.status_div.innerHTML+=""+this.xmlhttprq.statusText;
 				this.status_div.innerHTML+="("+this.xmlhttprq.readyState+")";
-				//this.status_div.innerHTML+="<a onclick=\"view_stat();\">test</a>";				
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").test();'>test</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").close_c();'>Close</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").open_c();'>Open</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").freeze_c();'>Freeze</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").reload_en_inv_c();'>Reload_inv</a>";				
 				
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
@@ -421,6 +426,35 @@
 				//console.log(this.parameter);
 			}
 		//чуть
+			test(){
+				console.log("Test;");
+				return 1;
+			}
+			close_c(){
+				this.parameter.reload_en=false;
+				this.xmlhttprq.abort();
+			}
+			open_c(){
+				//this.parameter.reload_en=true;
+				this.xmlhttprq.open('GET', this.parameter.url, true);
+				this.xmlhttprq.overrideMimeType(this.parameter.mime_type);				
+				//this.xmlhttprq.timeout = 30000;
+				this.xmlhttprq.send();
+			}
+			freeze_c(){
+				this.close_c();
+				setTimeout(function(e) {e.open_c();},5000,this);
+			}
+			reload_en_inv_c(){
+				if(this.parameter.reload_en==false){
+					this.parameter.reload_en==true;
+				}else{
+					this.parameter.reload_en==false;
+				}
+			}
+			//close()//stop()
+			//open()//start()
+			//freeze()
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
