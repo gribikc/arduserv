@@ -352,15 +352,16 @@
 				this.last_readyState=0;
 				
 				if(parameter.status_en==true){
-					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
-
 					this.status_div = document.createElement('div');
 					this.stat_div = document.createElement('div');
-					document.getElementById(parameter.status_div).appendChild(this.status_div);
-					document.getElementById(parameter.status_div).appendChild(this.stat_div);
-					
 					this.status_div.className = parameter.status_div_status_css;
 					this.stat_div.className = parameter.status_div_stat_css;
+					var main_status_div=document.createElement('div');
+					main_status_div.appendChild(this.status_div);
+					main_status_div.appendChild(this.stat_div);
+					document.getElementById(parameter.status_div).appendChild(main_status_div);
+				
+					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
 					
 					//console.log(this.status_div);
 				}
@@ -404,7 +405,6 @@
 			}
 		//чуть
 			view_stat(){
-				this.status_div.
 				this.status_div.innerHTML=this.parameter.name+":";
 				this.status_div.innerHTML+=""+this.xmlhttprq.statusText;
 				this.status_div.innerHTML+="("+this.xmlhttprq.readyState+")";
