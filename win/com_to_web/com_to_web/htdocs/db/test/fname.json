@@ -1,0 +1,32 @@
+[
+	{
+		"name_of_gr": "test_name",
+		"type_of_gr": "test_type",
+		"description_of_gr": "test_description",
+		"value_of_gr": "test_value"
+	},{
+		"name_of_gr": "test_name",
+		"type_of_gr": "test_type",
+		"description_of_gr": "test_description",
+		"value_of_gr": "asav a vavaraw;, [ momaomrommmoawm owamfoawmfmawofmawofm mwafmoawmfoamfm ofmaw mm wa ma mwf m w"
+	},{
+		"name_of_gr": "test_name2",
+		"type_of_gr": "test_type2",
+		"description_of_gr": "test_description2",
+		"value_of_gr": 
+			[
+				[
+					"59.77897906",
+					"30.76047615"
+				],
+				[
+					"59.77897906",
+					"30.76305107"
+				],
+				[
+					"59.77900070",
+					"30.76708511"
+				]
+			]
+	}
+]

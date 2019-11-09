@@ -31,10 +31,10 @@ void setup() {
     nrf24l01p.get_config();
   user_stream->println("NRF...done");*/
   
-  init_sd();
+  //init_sd();
 
   init_BME280();
-  //check_time(0,0);
+  check_time(0,0);
 }
 void loop() {
   
@@ -49,18 +49,8 @@ void loop() {
     //delay(1000);
 
     //uart_both_redirect(&Serial,&Serial2);
-    if(uart_data.do_rx(user_stream)){
-      user_stream->print("xdstartjson:{\n");
-      user_stream->print("    \"type\":\"info\",\n");
-      user_stream->print("    \"byte\":\"");
-      //user_stream->print(uart_data.rx_buf[(uart_data.rx_buf_point-MESSAGE_SIZE_OF+2)&(RX_BUF_SIZE_OF)],HEX);
-      user_stream->print(uart_data.get_id(),HEX);
-      user_stream->print("\",\n");
-      user_stream->print("    \"message\":\"new message\"\n");
-      user_stream->print("}:xdstopjson");
-    }
 
-    if(check_time(1,5000000)){//
+    /*if(check_time(1,5000000)){//
       user_stream->print("xdstartjson:{\n");
       user_stream->print("    \"type\":\"info\",\n");
       user_stream->print("    \"byte\":\"");
@@ -68,7 +58,7 @@ void loop() {
       user_stream->print("\",\n");
       user_stream->print("    \"message\":\"Timer0(3)\"\n");
       user_stream->print("}:xdstopjson");
-    }
+    }*/
 
     if(uart_data.do_rx(user_stream)){
       event_uart_rx_message();

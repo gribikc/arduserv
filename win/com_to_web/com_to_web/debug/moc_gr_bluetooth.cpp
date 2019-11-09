@@ -1,26 +1,23 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'gr_bluetooth.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.13.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../gr_bluetooth/gr_bluetooth.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'gr_bluetooth.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.13.0. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GR_bluetooth_t {
     QByteArrayData data[29];
     char stringdata0[461];
@@ -81,7 +78,7 @@ QT_MOC_LITERAL(28, 447, 13) // "bt_socketRead"
 static const uint qt_meta_data_GR_bluetooth[] = {
 
  // content:
-       8,       // revision
+       7,       // revision
        0,       // classname
        0,    0, // classinfo
       14,   14, // methods
@@ -129,7 +126,7 @@ static const uint qt_meta_data_GR_bluetooth[] = {
 void GR_bluetooth::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<GR_bluetooth *>(_o);
+        GR_bluetooth *_t = static_cast<GR_bluetooth *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->bt_socketError((*reinterpret_cast< QBluetoothSocket::SocketError(*)>(_a[1]))); break;
@@ -165,13 +162,6 @@ void GR_bluetooth::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
                 *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QBluetoothUuid >(); break;
             }
             break;
-        case 7:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QLowEnergyCharacteristic >(); break;
-            }
-            break;
         case 8:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
@@ -190,14 +180,10 @@ void GR_bluetooth::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject GR_bluetooth::staticMetaObject = { {
-    &gr_data_source::staticMetaObject,
-    qt_meta_stringdata_GR_bluetooth.data,
-    qt_meta_data_GR_bluetooth,
-    qt_static_metacall,
-    nullptr,
-    nullptr
-} };
+const QMetaObject GR_bluetooth::staticMetaObject = {
+    { &gr_data_source::staticMetaObject, qt_meta_stringdata_GR_bluetooth.data,
+      qt_meta_data_GR_bluetooth,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+};
 
 
 const QMetaObject *GR_bluetooth::metaObject() const
@@ -207,9 +193,9 @@ const QMetaObject *GR_bluetooth::metaObject() const
 
 void *GR_bluetooth::qt_metacast(const char *_clname)
 {
-    if (!_clname) return nullptr;
+    if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_GR_bluetooth.stringdata0))
-        return static_cast<void*>(this);
+        return static_cast<void*>(const_cast< GR_bluetooth*>(this));
     return gr_data_source::qt_metacast(_clname);
 }
 
@@ -229,5 +215,4 @@ int GR_bluetooth::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     }
     return _id;
 }
-QT_WARNING_POP
 QT_END_MOC_NAMESPACE

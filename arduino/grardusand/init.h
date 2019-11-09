@@ -22,6 +22,12 @@ void start_init(){
     SPI.transfer(0); //�� �����
   //
     delay(3000);
+
+    if(!SD.exists("bmp180.log")){
+      File myFile;
+      myFile=SD.open("bmp180.log", FILE_WRITE);
+      myFile.close();
+    }
     user_stream->println("Init...done.");
 }
 //////////////////
