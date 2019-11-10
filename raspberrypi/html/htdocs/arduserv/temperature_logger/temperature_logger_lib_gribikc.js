@@ -16,15 +16,15 @@
 		parser_data(type,stream){
 			//console.log(stream);
 			if(stream["type"]=="error"){
-				key_array_to_inner(stream,"error_log");
+				//!!!key_array_to_inner(stream,"error_log");
 			}else if(stream["type"]=="bmp_cur"){
-				document.getElementById("cur_temp").innerHTML= "Температура : "	+stream["Temperature"]+" градусов.<br>";
-				document.getElementById("cur_temp").innerHTML+="Давление : "	+(stream["Pressure"]*7.501/10).toPrecision(5)+" мм.Р.ст.<br>";
+				//!!!document.getElementById("cur_temp").innerHTML= "Температура : "	+stream["Temperature"]+" градусов.<br>";
+				//!!!document.getElementById("cur_temp").innerHTML+="Давление : "	+(stream["Pressure"]*7.501/10).toPrecision(5)+" мм.Р.ст.<br>";
 				
 				document.getElementById("in_air_temperature").innerHTML=stream["Temperature"];
 				document.getElementById("in_air_pressure").innerHTML=(stream["Pressure"]*7.501/10).toPrecision(5);
 			}else{
-				key_array_to_inner(stream,"simple_test");
+				//!!!key_array_to_inner(stream,"simple_test");
 			}
 		}
 	}
