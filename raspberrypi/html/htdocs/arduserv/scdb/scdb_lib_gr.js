@@ -10,7 +10,8 @@
 		//////////
 		parser_data(type,stream){
 			console.log(stream);
-			create_table_from_array_to_db_gr(stream,"tbl_db")
+			create_table_from_array_to_db_gr(stream,"tbl_db");
+			create_table_from_array_gr(stream,"tbl_db")
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@
 				text = document.createTextNode('Имя');
 				td.appendChild(text);
 				tr.appendChild(td);
-				
+
 				td = document.createElement("td");
 				text = document.createTextNode('Тип');
 				td.appendChild(text);
