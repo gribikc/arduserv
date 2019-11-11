@@ -9,9 +9,9 @@
 		}
 		//////////
 		parser_data(type,stream){
-			console.log(stream);
-			create_table_from_array_to_db_gr(stream,"tbl_db");
-			create_table_from_array_gr(stream,"tbl_db")
+			//console.log(stream);
+			create_form_from_array_to_db_gr("","conf",stream,"tbl_db2");
+			create_table_from_array_gr(stream,"tbl_db");
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,108 +29,26 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function create_table_from_array_to_db_gr(arr_in,div){
-		
-		var table = document.createElement("table");
-		var tr,td,text,temp;
-        table.setAttribute("border", "2px");
+	function create_form_from_array_to_db_gr(pre_fix,name,arr_in,div){
 		var arr=new Array();
 		var i=0;
-		
-			tr = document.createElement("tr");
-				td = document.createElement("td");
-				text = document.createTextNode('Имя');
-				td.appendChild(text);
-				tr.appendChild(td);
 
-				td = document.createElement("td");
-				text = document.createTextNode('Тип');
-				td.appendChild(text);
-				tr.appendChild(td);
-				
-				td = document.createElement("td");
-				text = document.createTextNode('Описание');
-				td.appendChild(text);
-				tr.appendChild(td);
-				
-				td = document.createElement("td");
-				text = document.createTextNode('значение');
-				td.appendChild(text);
-				tr.appendChild(td);
-			table.appendChild(tr);
-		
-		
-		for(i=0;i<arr_in.length;i++){
-			tr = document.createElement("tr");
-				td = document.createElement("td");
-				text = document.createTextNode(arr_in[i]['name_of_gr']);
-				td.appendChild(text);
-				tr.appendChild(td);
-				
-				td = document.createElement("td");
-				text = document.createTextNode(arr_in[i]['type_of_gr']);
-				td.appendChild(text);
-				tr.appendChild(td);
-				
-				td = document.createElement("td");
-				text = document.createTextNode(arr_in[i]['description_of_gr']);
-				td.appendChild(text);
-				tr.appendChild(td);
-				
-				td = document.createElement("td");
-				text = document.createTextNode(arr_in[i]['value_of_gr']);
-				td.appendChild(text);
-				tr.appendChild(td);
-			table.appendChild(tr);
-		}
-
-		/*var i=0;
 		do{
 			if(Array.isArray(arr_in)){
 				arr=arr_in[i];
-				if(i>0){
-					tr = document.createElement("tr");
-					td = document.createElement("td");
-					td.setAttribute("colspan", 2);
-					text = document.createTextNode("---");
-					td.appendChild(text);
-					tr.appendChild(td);
-					table.appendChild(tr);
-				}
 			}else{
 				arr=arr_in;
 			}
-				for(var key in arr) {
-					tr = document.createElement("tr");
-					td = document.createElement("td");
-					text = document.createTextNode(key);
-					td.appendChild(text);
-					tr.appendChild(td);
-				
-					if(arr[key].length>0 && Array.isArray(arr[key])){
-						td.setAttribute("rowspan", arr[key].length);
-						for(var k in arr[key]) {
-							td = document.createElement("td");
-							text = document.createTextNode(arr[key][k]);
-							td.appendChild(text);
-							tr.appendChild(td);
-							table.appendChild(tr);
-							
-							tr = document.createElement("tr");
-							table.appendChild(tr);
-						}
-						table.removeChild(tr);
-					}else{
-						td = document.createElement("td");
-						text = document.createTextNode(arr[key]);
-						td.appendChild(text);
-						tr.appendChild(td);
-						table.appendChild(tr);
-					}
+			//arr=arr_in[i];
+			
+			for(var key in arr) {
+				if(Array.isArray(arr[key])){//if(arr[key].length>0 && Array.isArray(arr[key])){
+					create_form_from_array_to_db_gr(pre_fix+" ",key,arr[key],div);
+				//}else if(){
+				}else{
+					console.log(pre_fix+name+"["+i+"]["+key+"]=="+arr[key]);
 				}
+			}
 			i++;
-		} while(i<arr_in.length)*/
-		//}
-
-		document.getElementById(div).appendChild(table);
+		} while(i<arr_in.length)
 	}
