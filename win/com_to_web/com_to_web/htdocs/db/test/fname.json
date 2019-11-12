@@ -1,5 +1,9 @@
 [
 	{
+		"a":[0,1,2],
+		"b":[0,1,2],
+		"c":[0,1,2]
+	},{
 		"name_of_gr": "test_name0",
 		"type_of_gr": "test_type0",
 		"description_of_gr": "test_description0",
@@ -36,6 +40,14 @@
 			[
 				{
 					"name0":"59",
+					"a":[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
 					"name1":"30"
 				},{
 					"name0":"60",

@@ -5,47 +5,35 @@
 		"description_of_gr": "test_description0",
 		"value_of_gr": "test_value0"
 	},
-        "b":{
+	"b":{
 		"name_of_gr": "test_name1",
 		"type_of_gr": "test_type1",
 		"description_of_gr": "test_description1",
 		"value_of_gr": "asav a vavaraw;a ma mwf m w"
 	},
-        "c":{
-		"name_of_gr": "test_name2",
-		"type_of_gr": "test_type2",
-		"description_of_gr": "test_description2",
-		"value_of_gr": 
-			[
-				[
-					"59.77897906",
-					"30.76047615"
-				],
-				[
-					"59.77897906",
-					"30.76305107"
-				],
-				[
-					"59.77900070",
-					"30.76708511"
-				]
-			]
-	},
-        "d":{
+	"c":{
 		"name_of_gr": "test_name2",
 		"type_of_gr": "test_type2",
 		"description_of_gr": "test_description2",
 		"value_of_gr": 
 			[
 				{
-					"name0":"59",
-					"name1":"30"
+					"name0_":"59",
+					"a":[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"name1_":"30"
 				},{
-					"name0":"60",
-					"name1":"61"
+					"name0_":"60",
+					"name1_":"61"
 				},{
-					"name0":"abc",
-					"name1":"de"
+					"name0_":"abc",
+					"name1_":"de"
 				}
 			]
 	}
