@@ -38,19 +38,17 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function create_div_from_array_to_db_gr(pre_fix,name,arr,div){
-		//var arr=new Array();
 		var i=0;
-		var div_c = document.createElement("div");
-		div.appendChild(div_c);
 		
 		for(var key in arr) {
-			var div_c_c = document.createElement("div");
-			div_c.appendChild(div_c_c);
+			var div_c = document.createElement("div");
+			div.appendChild(div_c);
+			div_c.id=key;
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
-				div_c_c.innerHTML+=pre_fix;
 				create_div_from_array_to_db_gr(pre_fix+"|",key,arr[key],div_c);//!!!div_c
 			}else{
-				div_c_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
+				//div_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
+				div_c.innerHTML=arr[key];
 			}
 		}
 		i++;

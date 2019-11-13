@@ -49,6 +49,6 @@ function main_init(){
 			reload_en:false,
 			reload_time:1000
 		};
-		xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param2));
+		//xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param2));
 	//////////////////////////////////////////////////////////////////
 }
