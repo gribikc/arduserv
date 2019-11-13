@@ -11,14 +11,15 @@
 		//////////
 		parser_data(type,stream){
 			//console.log(stream);
+			console.log(stream);
 			
 			var div_p = document.createElement("div");
 			document.getElementById(this.div).appendChild(div_p);
-			
 			create_div_from_array_to_db_gr("","conf",stream,div_p);
-			create_array_from_div_to_db_gr(div_p);
 			
-			//create_table_from_array_gr(stream,"tbl_db");
+			var arr=new Array();
+			create_array_from_div_to_db_gr(arr,div_p);
+			console.log(arr);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,36 +40,40 @@
 	function create_div_from_array_to_db_gr(pre_fix,name,arr,div){
 		//var arr=new Array();
 		var i=0;
-
-		//do{
-			var div_c = document.createElement("div");
-			//div_c.style='border: solid;';
-			div.appendChild(div_c);
-			
-			//if(Array.isArray(arr_in) || Object.prototype.toString.call(arr[key])==='[object Object]'){
-			//	arr=arr_in[i];
-			//}else{
-			//	arr=arr_in;
-			//}
-			
-			for(var key in arr) {
-				var div_c_c = document.createElement("div");
-				div_c.appendChild(div_c_c);
-				if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
-					create_div_from_array_to_db_gr(pre_fix+"|",key,arr[key],div_c);//!!!div_c
-				}else{
-					div_c_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
-				}
+		var div_c = document.createElement("div");
+		div.appendChild(div_c);
+		
+		for(var key in arr) {
+			var div_c_c = document.createElement("div");
+			div_c.appendChild(div_c_c);
+			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
+				div_c_c.innerHTML+=pre_fix;
+				create_div_from_array_to_db_gr(pre_fix+"|",key,arr[key],div_c);//!!!div_c
+			}else{
+				div_c_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
 			}
-			i++;
-		//} while(i<arr_in.length)
+		}
+		i++;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function create_array_from_div_to_db_gr(div_p){
+	function create_array_from_div_to_db_gr(arr,div){
 		//document.getElementById("tbl_db").children[0]
-		console.log(div_p.element)
+		//childElementCount: 4
+		//id: ""
+		//localName: "div"
+		//console.log(div.children[0].children);
+		var i=0;
+		for(i=0;i<div.childElementCount;i++){
+			if(div.children[i].childElementCount>0){
+				arr.push(new Array());
+				create_array_from_div_to_db_gr(arr,div.children[i]);
+			}else{
+				//console.log(div.children[i]);
+				arr.push(div.children[i].innerText);
+			}
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
