@@ -11,15 +11,26 @@
 		//////////
 		parser_data(type,stream){
 			//console.log(stream);
-			console.log(stream);
 			
 			var div_p = document.createElement("div");
 			document.getElementById(this.div).appendChild(div_p);
 			create_div_from_array_to_db_gr("","conf",stream,div_p);
 			
-			var arr=new Array();
-			create_array_from_div_to_db_gr(arr,div_p);
+			var arr=new Object();//Object//Array//
+			
+			arr=create_array_from_div_to_db_gr(div_p);
+			
+			console.log(stream);
+			//console.log(JSON.stringify(stream),null, '\t');
+			
 			console.log(arr);
+			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
+			
+			if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
+				console.log("equal!!!");
+			}else{
+				console.log("NOT equal!!!");
+			}
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,8 +58,7 @@
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				create_div_from_array_to_db_gr(pre_fix+"|",key,arr[key],div_c);//!!!div_c
 			}else{
-				//div_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
-				div_c.innerHTML=arr[key];
+				div_c.innerHTML=arr[key];//div_c.innerHTML+=pre_fix+"-"+name+"["+i+"]["+key+"]:"+arr[key];
 			}
 		}
 		i++;
@@ -56,22 +66,40 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function create_array_from_div_to_db_gr(arr,div){
+	function create_array_from_div_to_db_gr(div){
 		//document.getElementById("tbl_db").children[0]
 		//childElementCount: 4
 		//id: ""
 		//localName: "div"
 		//console.log(div.children[0].children);
+		
+		var arr=new Array();//Object//Array//
 		var i=0;
+		var a_cnt=0;
+		var is_num=0;
+		
 		for(i=0;i<div.childElementCount;i++){
+			is_num=0;
+			if(div.children[i].id==i){
+				is_num=1;
+				a_cnt++;
+			}
+			
 			if(div.children[i].childElementCount>0){
-				arr.push(new Array());
-				create_array_from_div_to_db_gr(arr,div.children[i]);
+				arr[div.children[i].id]=(create_array_from_div_to_db_gr(div.children[i]));
 			}else{
-				//console.log(div.children[i]);
-				arr.push(div.children[i].innerText);
+				if((is_num)){
+					arr.push(div.children[i].innerText);
+				}else{
+					arr[div.children[i].id]=(div.children[i].innerText);
+				}
 			}
 		}
+		
+		if(a_cnt!=div.childElementCount){
+			arr=Object.assign({},arr);
+		}
+		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

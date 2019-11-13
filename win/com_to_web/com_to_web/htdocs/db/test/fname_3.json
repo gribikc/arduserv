@@ -1,5 +1,6 @@
 {
 	"name_of_gr": "test_name0",
+	"try":[1,2,3],
 	"type_of_gr": "test_type0",
 	"description_of_gr": "test_description0",
 	"value_of_g": "test_value0"
