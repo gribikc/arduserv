@@ -31,19 +31,20 @@
 			}else{
 				console.log("NOT equal!!!");
 			}
+			
+			save_db(arr);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function autoboat_save_routing_sets_send_db(){
+	function save_db(arr){
 		var xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', 'http://127.0.0.1:3128/htdocs/db/test/fname.json', true);//, true
+		xmlhttprq_test.open('POST', 'http://172.18.26.112:3128/db/w/test/fname.json', true);//, true
 		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xmlhttprq_test.send(JSON.stringify(auto_boat_routing_sets,null, '\t'));
-		//console.log(auto_boat_routing_sets);
-		//console.log(JSON.stringify(auto_boat_routing_sets,null, ' '));
+		xmlhttprq_test.send(JSON.stringify(arr,null, '\t'));
+		console.log(JSON.stringify(arr,null, '\t'));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +92,11 @@
 				if((is_num)){
 					arr.push(div.children[i].innerText);
 				}else{
-					arr[div.children[i].id]=(div.children[i].innerText);
+					if(isFinite(div.children[i].innerText)){
+						arr[div.children[i].id]=Number(div.children[i].innerText);
+					}else{
+						arr[div.children[i].id]=div.children[i].innerText;
+					}
 				}
 			}
 		}
