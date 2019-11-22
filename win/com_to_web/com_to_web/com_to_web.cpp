@@ -74,6 +74,13 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         new gr_tcp_client(http_client);
         GR_logger::log(this,"CtW Tcp");
     //////////////////////////////  ////////
+    }else if(http_client->is_rsw("/sys/udp/")>0){
+        //http_client->send_data_header();
+        //http_client->send_html_header();
+        http_client->send_neutral_header();
+        new gr_udp_client(http_client);
+        GR_logger::log(this,"CtW UDP");
+    //////////////////////////////  ////////
     }else if(http_client->is_rsw("/")==2){
         http_client->send_html_header();
         http_client->write("Main Page!");

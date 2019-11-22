@@ -18,6 +18,7 @@
     #include "gr_gps/gr_gps.h"
     #include "gr_sensor/gr_sensor.h"
     #include "gr_tcp_client/gr_tcp_client.h"
+    #include "gr_udp_client/gr_udp_client.h"
 
 
 
