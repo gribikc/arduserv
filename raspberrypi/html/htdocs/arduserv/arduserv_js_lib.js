@@ -341,10 +341,13 @@
 				this.parameter=parameter;
 				this.xmlhttprq = new XMLHttpRequest();
 			
-				this.xmlhttprq.open('GET', parameter.url, true);
+				//this.xmlhttprq.open('GET', parameter.url, true);//!!!
+				this.is_post=('post_data' in parameter) ? 1 : 0;
+
+				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
 				this.xmlhttprq.overrideMimeType(parameter.mime_type);				
 				//this.xmlhttprq.timeout = 30000;
-				this.xmlhttprq.send();
+				this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
 				
 				this.stat_bps=0;
 				this.stat_rp=0;

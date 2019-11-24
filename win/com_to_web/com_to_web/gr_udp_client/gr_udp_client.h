@@ -7,7 +7,7 @@
 #include <QtCore/QByteArray>
 #include <QtNetwork/QUdpSocket>
 #include <QtNetwork/QHostAddress>
-#include <QNetworkDatagram>
+//#include <QNetworkDatagram>//!!!
 #include <gr_http_client/gr_http_client.h>
 
 class gr_udp_client : public QObject
