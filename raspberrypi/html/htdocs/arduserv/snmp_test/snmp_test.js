@@ -22,7 +22,8 @@ function main_init(){
 		simple_test_stream_param={//location.hostname
 			//url   : (document.location.protocol=="file:" ? "http://172.18.26.112:3128" : "" ) +"/dev/com/r/34/115200", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 			//url   : "http://127.0.0.1:3128/htdocs/db/test/fname_2.json",
-			url   : "http://127.0.0.1:3128/sys/udp/172.18.26.107/161/",
+			//url   : "http://127.0.0.1:3128/sys/udp/172.18.26.122/161/",
+			url   : "http://127.0.0.1:3128/sys/udp/192.168.27.239/161/",
 			url_w : "127.0.0.1:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 			mime_type:'text/plain; charset=x-user-defined',
 			post_data:snmp_q_t_arr,
