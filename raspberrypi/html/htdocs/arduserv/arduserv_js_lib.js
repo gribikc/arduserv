@@ -91,11 +91,13 @@
 				console.log(arr);	
 				document.getElementById('test_data_0').innerHTML=stream;
 				
+				console.log('===============================================');
 				var k = {start: 2,l_size:0};
 				console.log(this.get_data(stream,k));//0//5
 				console.log(this.get_data(stream,k));//0//5
 				console.log(this.get_data(stream,k));//0//5
 				console.log(k);
+				console.log('===============================================');
 				//console.log(this.get_data(stream,k));//0//5
 
 				/*var k=0;
