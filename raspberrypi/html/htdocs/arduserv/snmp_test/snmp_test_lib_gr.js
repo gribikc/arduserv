@@ -20,7 +20,7 @@
 			//this.div=div;
 		}
 		//////////
-		parser_data(stream){
+		parser_data(type,stream){
 			console.log(stream);
 
 			var arr=new Uint8Array(stream.length);

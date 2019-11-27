@@ -70,6 +70,93 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//SNMP
+	/*
+	
+	*/
+	class snmp_parser_gr {
+		//Инициализация
+			constructor(hub) {
+				this.parser_data_array=new Array();
+				this.hub_handler=hub;
+			}
+		//Парсинг
+			parser_data(stream){
+				//this.parser_data_array
+				console.log(stream);
+				var arr=new Uint8Array(stream.length);
+				for(var i=0;i<stream.length;i++){
+					arr[i]=stream.charCodeAt(i);
+				}
+				console.log(arr);	
+				document.getElementById('test_data_0').innerHTML=stream;
+				
+				var k = {start: 2,l_size:0};
+				console.log(this.get_data(stream,k));//0//5
+				console.log(this.get_data(stream,k));//0//5
+				console.log(this.get_data(stream,k));//0//5
+				console.log(k);
+				//console.log(this.get_data(stream,k));//0//5
+
+				/*var k=0;
+				this.parser_data_array['header']=stream.charCodeAt(k);
+				k++;
+				this.parser_data_array['len']=stream.charCodeAt(k);
+					if(this.parser_data_array['len']>127){
+						//чото типо по формуле вычеслить длинну
+					}
+				k++;
+				this.parser_data_array['version']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:"+stream.charCodeAt(k+2);
+				k=k+3;
+				this.parser_data_array['community']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:";
+				this.parser_data_array['community']+=stream[k+2]+stream[k+3]+stream[k+4]+stream[k+5]+stream[k+6]+stream[k+7];
+				k=k+8;
+				this.parser_data_array['snmp_response']="type: "+stream.charCodeAt(k)+" ,length:"+stream.charCodeAt(k+1);
+				k=k+2;
+				this.parser_data_array['snmp_request_id']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:"+stream.charCodeAt(k+2);
+				
+				this.hub_handler.parser_data('snmp',this.parser_data_array);*/
+			}
+			get_data(arr,index){
+				var k=index.start;
+				var data=new Array();
+				//Integer(0x02),String(0x04),Object ID(0x06),varBind(0x30),SNMP RESPONSE(0xA2)
+					data['type']=arr.charCodeAt(k)&255;
+					k++;
+				//LENGTH
+					data['len']=0;
+					if(arr[k]>127){
+						var l_of_len=arr[k]&(127);
+						var len=0;
+						index.l_size=l_of_len;
+						for(var i=0;i<l_of_len;i++){
+							len=len*255+arr[k+1+i];
+							k++;
+						}
+					}else{
+						data['len']=arr.charCodeAt(k);
+						k++;
+					}
+				//DATA
+					data['data']=new Array();;
+					for(var i=0;i<data['len'];i++){
+						if(data['type']==0x04){
+							data['data']+=arr.charAt(k);
+						}else{
+							//data['data']+=arr[k];
+							//data['data']+=arr.charCodeAt(k);
+							data['data'][i]=arr[k];
+						}
+						k++;
+					}
+				/////
+				index.start=k;
+				return data;
+			}
+	}
+//
+//
+//
 //JSON
 	/*
 	Принимает поток данных конечной длинны генерируемый сервером(php&mysql) заранее структурированный
