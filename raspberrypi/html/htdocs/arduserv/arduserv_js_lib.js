@@ -91,12 +91,37 @@
 				console.log(arr);	
 				document.getElementById('test_data_0').innerHTML=stream;
 				
+				
+				
 				console.log('===============================================');
-				var k = {start: 2,l_size:0};
-				console.log(this.get_data(stream,k));//0//5
-				console.log(this.get_data(stream,k));//0//5
-				console.log(this.get_data(stream,k));//0//5
-				console.log(k);
+					/*var k = {start: 0,l_size:0};
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);
+					
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);
+					
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);	
+					
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);	
+					
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);*/
+				console.log('===============================================');		
+				/*var k = {start: 0,l_size:0};
+				for(var i=0;i<stream.length;i++){
+					console.log(arr=this.get_data(stream,k));//0//5
+					if(arr['type']>0x10){k.start=k.l_size;}
+					console.log(k);
+					i=k.start;
+				}*/
 				console.log('===============================================');
 				//console.log(this.get_data(stream,k));//0//5
 
@@ -118,7 +143,37 @@
 				this.parser_data_array['snmp_request_id']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:"+stream.charCodeAt(k+2);
 				
 				this.hub_handler.parser_data('snmp',this.parser_data_array);*/
+				var k = {start: 4,l_size:0};
+				console.log(this.get_data(stream,k));//0//5
+				var k = {start: 7,l_size:0};
+				console.log(this.get_data(stream,k));//0//5
+				var k = {start: 15,l_size:0};
+				console.log(this.get_data(stream,k));//0//5
+				console.log('======================SNMP_TREE=========================');
+				console.log(this.snmp_tree(stream,0));
 			}
+			/////////////////////
+			snmp_tree(arr,index){
+				var k = {start: index,l_size:0};
+				var array;
+				var array_ret=[];
+				for(var i=0;i<arr.length;i++){
+					array=this.get_data(arr,k);//0//5
+					if(array['type']>0x10){
+						array=this.snmp_tree(array['data'],0);
+						//array_ret[i]=array;
+						array_ret.push(array);
+					}else{
+						//array_ret[array.type]=array;
+						array_ret.push(array);
+					}
+					//array_ret[array.type]=array;
+					//console.log('type',array.type);
+					i=k.start;
+				}
+				return array_ret;
+			}			
+			/////////////////////
 			get_data(arr,index){
 				var k=index.start;
 				var data=new Array();
@@ -127,16 +182,19 @@
 					k++;
 				//LENGTH
 					data['len']=0;
-					if(arr[k]>127){
-						var l_of_len=arr[k]&(127);
+					if((arr.charCodeAt(k)&255)>127){
+						var l_of_len=arr.charCodeAt(k)&(127);
 						var len=0;
-						index.l_size=l_of_len;
+						index.l_size=l_of_len+1;
+						k++;
 						for(var i=0;i<l_of_len;i++){
-							len=len*255+arr[k+1+i];
+							len*=256;
+							len+=arr.charCodeAt(k)&255;
 							k++;
 						}
+						data['len']=len;
 					}else{
-						data['len']=arr.charCodeAt(k);
+						data['len']=arr.charCodeAt(k)&255;
 						k++;
 					}
 				//DATA
@@ -147,7 +205,8 @@
 						}else{
 							//data['data']+=arr[k];
 							//data['data']+=arr.charCodeAt(k);
-							data['data'][i]=arr[k];
+							//data['data'][i]=arr.charCodeAt(k)&255;
+							data['data']+=arr.charAt(k);
 						}
 						k++;
 					}
