@@ -161,14 +161,8 @@
 					array=this.get_data(arr,k);//0//5
 					if(array['type']>0x10){
 						array=this.snmp_tree(array['data'],0);
-						//array_ret[i]=array;
-						array_ret.push(array);
-					}else{
-						//array_ret[array.type]=array;
-						array_ret.push(array);
 					}
-					//array_ret[array.type]=array;
-					//console.log('type',array.type);
+					array_ret.push(array);
 					i=k.start;
 				}
 				return array_ret;
