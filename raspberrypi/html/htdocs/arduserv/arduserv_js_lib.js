@@ -94,120 +94,136 @@
 				
 				
 				console.log('===============================================');
-					/*var k = {start: 0,l_size:0};
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);
-					
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);
-					
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);	
-					
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);	
-					
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);*/
+				var oid="1.3.6.1.4.1.23512.1001.112.80.8080.211.1.0";
+				this.snmp_query(oid,1);
 				console.log('===============================================');		
-				/*var k = {start: 0,l_size:0};
-				for(var i=0;i<stream.length;i++){
-					console.log(arr=this.get_data(stream,k));//0//5
-					if(arr['type']>0x10){k.start=k.l_size;}
-					console.log(k);
-					i=k.start;
-				}*/
-				console.log('===============================================');
-				//console.log(this.get_data(stream,k));//0//5
 
-				/*var k=0;
-				this.parser_data_array['header']=stream.charCodeAt(k);
-				k++;
-				this.parser_data_array['len']=stream.charCodeAt(k);
-					if(this.parser_data_array['len']>127){
-						//чото типо по формуле вычеслить длинну
-					}
-				k++;
-				this.parser_data_array['version']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:"+stream.charCodeAt(k+2);
-				k=k+3;
-				this.parser_data_array['community']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:";
-				this.parser_data_array['community']+=stream[k+2]+stream[k+3]+stream[k+4]+stream[k+5]+stream[k+6]+stream[k+7];
-				k=k+8;
-				this.parser_data_array['snmp_response']="type: "+stream.charCodeAt(k)+" ,length:"+stream.charCodeAt(k+1);
-				k=k+2;
-				this.parser_data_array['snmp_request_id']="type:"+stream.charCodeAt(k)+",length:"+stream.charCodeAt(k+1)+",value:"+stream.charCodeAt(k+2);
-				
-				this.hub_handler.parser_data('snmp',this.parser_data_array);*/
-				var k = {start: 4,l_size:0};
-				console.log(this.get_data(stream,k));//0//5
-				var k = {start: 7,l_size:0};
-				console.log(this.get_data(stream,k));//0//5
-				var k = {start: 15,l_size:0};
-				console.log(this.get_data(stream,k));//0//5
+				console.log('===============================================');
+
 				console.log('======================SNMP_TREE=========================');
 				console.log(this.snmp_tree(stream,0));
 			}
+			///////////////////////////////////////////////////////////////
+			//////////////////////////////////////////
 			/////////////////////
-			snmp_tree(arr,index){
-				var k = {start: index,l_size:0};
-				var array;
-				var array_ret=[];
-				for(var i=0;i<arr.length;i++){
-					array=this.get_data(arr,k);//0//5
-					if(array['type']>0x10){
-						array=this.snmp_tree(array['data'],0);
-					}
-					array_ret.push(array);
-					i=k.start;
+				snmp_query(oid,type){//1-input(get);0-output(set)
+					var arr=[];
+					arr[0]=0x30;//ASN.1 header
+						arr[1]=0x00;//!!!XX;//L
+							arr[2]=0x02;//T
+								arr[3]=0x01;//L
+								arr[4]=0x01;//Version
+							arr[5]=0x04;//T
+								arr[6]=0x06;//L
+								arr[8]=0x75;//u
+								arr[9]=0x62;//b
+								arr[7]=0x70;//P
+								arr[10]=0x6C;//l
+								arr[11]=0x69;//i
+								arr[12]=0x63;//c
+							arr[13]=0xA0;//SNMP GET/SET request
+								arr[14]=0x00;//!!!00;L
+									arr[15]=0x02;//SNMP request ID
+										arr[16]=0x01;//L
+										arr[17]=0x01;//Version
+									arr[18]=0x02;//SNMP error status
+										arr[19]=0x01;//L
+										arr[20]=0x00;//Version
+									arr[21]=0x02;//SNMP index:
+										arr[22]=0x01;//L
+										arr[23]=0x00;//Version
+									arr[24]=0x30;//varBind list
+										arr[25]=0x00;//!!!XX;//L
+										arr[26]=0x30;//varBind
+											arr[27]=0x00;//!!!XX;//L
+											arr[28]=0x06;//Object ID
+												arr[29]=0x00;//!!!XX;//L
+												arr[30]=0x2b;
+												var oid_arr=oid.split(".");
+												//127-0x7f
+												//128-0x8100
+												//129-0x8101
+												//130-0x8102
+												//560-0x8430
+												//674-0x8522
+												//65535-0x83FF7F
+												var oid_b_s=0;
+												var len_div=0;
+												for(var i=2;i<oid_arr.length;i++){
+													oid_b_s=0;
+													len_div=oid_arr[i];
+													do{
+														len_div=len_div>>7;
+														oid_b_s++;
+														//console.log(len_div);
+													} while(len_div>0)
+													console.log(oid_b_s,len_div);
+												}
+											
+											//arr[28]=0x05;//varBind
+											//	arr[29]=0x00;//L
 				}
-				return array_ret;
-			}			
+			///////////////////////////////////////////////////////////////
+			//////////////////////////////////////////
 			/////////////////////
-			get_data(arr,index){
-				var k=index.start;
-				var data=new Array();
-				//Integer(0x02),String(0x04),Object ID(0x06),varBind(0x30),SNMP RESPONSE(0xA2)
-					data['type']=arr.charCodeAt(k)&255;
-					k++;
-				//LENGTH
-					data['len']=0;
-					if((arr.charCodeAt(k)&255)>127){
-						var l_of_len=arr.charCodeAt(k)&(127);
-						var len=0;
-						index.l_size=l_of_len+1;
+				snmp_tree(arr,index){
+					var k = {start: index,l_size:0};
+					var array;
+					var array_ret=[];
+					for(var i=0;i<arr.length;i++){
+						array=this.get_data(arr,k);//0//5
+						if(array['type']>0x10){
+							array=this.snmp_tree(array['data'],0);
+						}
+						array_ret.push(array);
+						i=k.start;
+					}
+					return array_ret;
+				}			
+				/////////////////////
+				get_data(arr,index){
+					var k=index.start;
+					var data=new Array();
+					//Integer(0x02),String(0x04),Object ID(0x06),varBind(0x30),SNMP RESPONSE(0xA2)
+						data['type']=arr.charCodeAt(k)&255;
 						k++;
-						for(var i=0;i<l_of_len;i++){
-							len*=256;
-							len+=arr.charCodeAt(k)&255;
+					//LENGTH
+						data['len']=0;
+						if((arr.charCodeAt(k)&255)>127){
+							var l_of_len=arr.charCodeAt(k)&(127);
+							var len=0;
+							index.l_size=l_of_len+1;
+							k++;
+							for(var i=0;i<l_of_len;i++){
+								len*=256;
+								len+=arr.charCodeAt(k)&255;
+								k++;
+							}
+							data['len']=len;
+						}else{
+							data['len']=arr.charCodeAt(k)&255;
 							k++;
 						}
-						data['len']=len;
-					}else{
-						data['len']=arr.charCodeAt(k)&255;
-						k++;
-					}
-				//DATA
-					data['data']=new Array();;
-					for(var i=0;i<data['len'];i++){
-						if(data['type']==0x04){
-							data['data']+=arr.charAt(k);
-						}else{
-							//data['data']+=arr[k];
-							//data['data']+=arr.charCodeAt(k);
-							//data['data'][i]=arr.charCodeAt(k)&255;
-							data['data']+=arr.charAt(k);
+					//DATA
+						data['data']=new Array();;
+						for(var i=0;i<data['len'];i++){
+							if(data['type']==0x04){
+								data['data']+=arr.charAt(k);
+							}else{
+								//data['data']+=arr[k];
+								//data['data']+=arr.charCodeAt(k);
+								//data['data'][i]=arr.charCodeAt(k)&255;
+								data['data']+=arr.charAt(k);
+							}
+							k++;
 						}
-						k++;
-					}
-				/////
-				index.start=k;
-				return data;
-			}
+					/////
+					index.start=k;
+					return data;
+				}
+			/////////////////////
+			//////////////////////////////////////////
+			///////////////////////////////////////////////////////////////
 	}
 //
 //
