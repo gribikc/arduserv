@@ -40,21 +40,15 @@
 
 //
 	class snmp_test_gr{
-		constructor(){
+		constructor(div){
 			//this.hub_handler=hub;
-			//this.div=div;
+			this.div=div;
 		}
 		//////////
 		parser_data(type,stream){
 			console.log(stream);
-
-			var arr=new Uint8Array(stream.length);
-			for(var i=0;i<stream.length;i++){
-				arr[i]=stream.charCodeAt(i);
-			}
-			console.log(arr);
-			
-			document.getElementById('test_data_0').innerHTML=stream;
+			key_array_to_inner(stream[0][2][3][0][1],this.div);
+			console.log(stream[0][2][3][0][1]);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

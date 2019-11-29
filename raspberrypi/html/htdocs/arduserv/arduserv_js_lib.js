@@ -82,87 +82,20 @@
 			}
 		//Парсинг
 			parser_data(stream){
-				//this.parser_data_array
-				console.log(stream);
-				var arr=new Uint8Array(stream.length);
-				for(var i=0;i<stream.length;i++){
-					arr[i]=stream.charCodeAt(i);
-				}
-				console.log(arr);	
-				document.getElementById('test_data_0').innerHTML=stream;
-				
-				
-				
-				console.log('===============================================');
-				var oid="1.3.6.1.4.1.23512.1001.112.80.8080.211.1.0";
-				this.snmp_query(oid,1);
-				console.log('===============================================');		
+					console.log(stream);
+					var arr=new Uint8Array(stream.length);
+					for(var i=0;i<stream.length;i++){
+						arr[i]=stream.charCodeAt(i);
+					}
+					console.log(arr);
+					document.getElementById('test_data_0').innerHTML=stream;
 
-				console.log('===============================================');
-
-				console.log('======================SNMP_TREE=========================');
-				console.log(this.snmp_tree(stream,0));
+					this.hub_handler.parser_data('snmp',this.snmp_tree(stream,0));
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
 			/////////////////////
-				snmp_query(oid,type){//1-input(get);0-output(set)
-					var arr=[];
-					arr[0]=0x30;//ASN.1 header
-						arr[1]=0x00;//!!!XX;//L
-							arr[2]=0x02;//T
-								arr[3]=0x01;//L
-								arr[4]=0x01;//Version
-							arr[5]=0x04;//T
-								arr[6]=0x06;//L
-								arr[8]=0x75;//u
-								arr[9]=0x62;//b
-								arr[7]=0x70;//P
-								arr[10]=0x6C;//l
-								arr[11]=0x69;//i
-								arr[12]=0x63;//c
-							arr[13]=0xA0;//SNMP GET/SET request
-								arr[14]=0x00;//!!!00;L
-									arr[15]=0x02;//SNMP request ID
-										arr[16]=0x01;//L
-										arr[17]=0x01;//Version
-									arr[18]=0x02;//SNMP error status
-										arr[19]=0x01;//L
-										arr[20]=0x00;//Version
-									arr[21]=0x02;//SNMP index:
-										arr[22]=0x01;//L
-										arr[23]=0x00;//Version
-									arr[24]=0x30;//varBind list
-										arr[25]=0x00;//!!!XX;//L
-										arr[26]=0x30;//varBind
-											arr[27]=0x00;//!!!XX;//L
-											arr[28]=0x06;//Object ID
-												arr[29]=0x00;//!!!XX;//L
-												arr[30]=0x2b;
-												var oid_arr=oid.split(".");
-												//127-0x7f
-												//128-0x8100
-												//129-0x8101
-												//130-0x8102
-												//560-0x8430
-												//674-0x8522
-												//65535-0x83FF7F
-												var oid_b_s=0;
-												var len_div=0;
-												for(var i=2;i<oid_arr.length;i++){
-													oid_b_s=0;
-													len_div=oid_arr[i];
-													do{
-														len_div=len_div>>7;
-														oid_b_s++;
-														//console.log(len_div);
-													} while(len_div>0)
-													console.log(oid_b_s,len_div);
-												}
-											
-											//arr[28]=0x05;//varBind
-											//	arr[29]=0x00;//L
-				}
+				
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
 			/////////////////////
@@ -823,6 +756,68 @@
 		//}
 
 		document.getElementById(div).appendChild(table);
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+	function snmp_query(oid,type){//1-input(get);0-output(set)
+		var arr=[];
+		arr[0]=0x30;//ASN.1 header
+			arr[1]=0x00;//!!!XX;//L
+				arr[2]=0x02;//T
+					arr[3]=0x01;//L
+					arr[4]=0x01;//Version
+				arr[5]=0x04;//T
+					arr[6]=0x06;//L
+					arr[8]=0x75;//u
+					arr[9]=0x62;//b
+					arr[7]=0x70;//P
+					arr[10]=0x6C;//l
+					arr[11]=0x69;//i
+					arr[12]=0x63;//c
+				arr[13]=0xA0;//SNMP GET/SET request
+					arr[14]=0x00;//!!!00;L
+						arr[15]=0x02;//SNMP request ID
+							arr[16]=0x01;//L
+							arr[17]=0x01;//Version
+						arr[18]=0x02;//SNMP error status
+							arr[19]=0x01;//L
+							arr[20]=0x00;//Version
+						arr[21]=0x02;//SNMP index:
+							arr[22]=0x01;//L
+							arr[23]=0x00;//Version
+						arr[24]=0x30;//varBind list
+							arr[25]=0x00;//!!!XX;//L
+							arr[26]=0x30;//varBind
+								arr[27]=0x00;//!!!XX;//L
+								arr[28]=0x06;//Object ID
+									arr[29]=0x00;//!!!XX;//L
+									arr[30]=0x2b;
+									var oid_arr=oid.split(".");
+									var size_of_oid=1;
+									for(var i=2;i<oid_arr.length;i++){
+										var oid_decode=oid_arr[i];
+										for(var j=4;j>=0;j--){
+											var a=(oid_decode>>(7*j));
+											oid_decode=oid_decode-a*(128<<(j-1)*7);
+											if(a>0 && j>0){
+												a^=0x80;
+											}
+											if(a>0 || j==0){
+												arr.push(a);
+												size_of_oid++;
+											}
+										}
+									}
+									arr[29]=size_of_oid;
+									arr[27]=arr[29]+4;
+									arr[25]=arr[27]+2;
+									arr[14]=arr[27]+13;
+									arr[1] =arr[14]+13;
+								arr.push(0x05);//varBind
+									arr.push(0x00);//L
+								
+		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
