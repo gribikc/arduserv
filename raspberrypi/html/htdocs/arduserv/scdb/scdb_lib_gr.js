@@ -14,7 +14,7 @@
 			
 			var div_p = document.createElement("div");
 			document.getElementById(this.div).appendChild(div_p);
-			create_div_from_array_to_db_gr("","conf",stream,div_p);
+			create_div_from_array_to_db_gr("conf",stream,div_p);
 			
 			var arr=new Object();//Object//Array//
 			
@@ -32,7 +32,7 @@
 				console.log("NOT equal!!!");
 			}
 			
-			save_db(arr);
+			//save_db(arr);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function save_db(arr){
 		var xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', 'http://172.18.26.112:3128/db/w/test/fname.json', true);//, true
+		xmlhttprq_test.open('POST', 'http://127.0.0.1:3128/db/w/test/fname.json', true);//, true
 		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xmlhttprq_test.send(JSON.stringify(arr,null, '\t'));
@@ -49,7 +49,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function create_div_from_array_to_db_gr(pre_fix,name,arr,div){
+	/*function create_div_from_array_to_db_gr(pre_fix,name,arr,div){
 		var i=0;
 		
 		for(var key in arr) {
@@ -63,11 +63,39 @@
 			}
 		}
 		i++;
+	}*/
+	function create_div_from_array_to_db_gr(name,arr,inner){
+		var i=0;
+		var ul=document.createElement("ul");
+		inner.appendChild(ul);
+		
+		for(var key in arr) {
+			var li = document.createElement("li");
+			ul.appendChild(li);
+				var div_c = document.createElement("div");
+				li.appendChild(div_c);
+					var input_n=document.createElement("input");
+					div_c.appendChild(input_n);
+						input_n.name='name';
+						input_n.value=key;
+					var input_v=document.createElement("input");
+					div_c.appendChild(input_v);
+						input_v.name='value';
+						input_v.value=arr[key];
+				var div_r = document.createElement("div");
+				li.appendChild(div_r);
+					div_r.innerHTML+="ADE";
+
+			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){				
+				div_c.removeChild(input_v);
+				create_div_from_array_to_db_gr(key,arr[key],li);
+			}
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function create_array_from_div_to_db_gr(div){
+	/*function create_array_from_div_to_db_gr(div){
 		//document.getElementById("tbl_db").children[0]
 		//childElementCount: 4
 		//id: ""
@@ -104,6 +132,31 @@
 		if(a_cnt!=div.childElementCount){
 			arr=Object.assign({},arr);
 		}
+		return arr;
+	}*/
+	function create_array_from_div_to_db_gr(inner){
+		//document.getElementById("tbl_db").children[0]
+		//childElementCount: 4
+		//id: ""
+		//localName: "div"
+		//console.log(div.children[0].children);
+
+		for(i=0;i<inner.childElementCount;i++){
+			if(inner.children[i].childElementCount>0){
+				arr[inner.children[i].id]=(create_array_from_div_to_db_gr(inner.children[i]));
+			}else{
+				if((is_num)){
+					arr.push(inner.children[i].innerText);
+				}else{
+					if(isFinite(inner.children[i].innerText)){
+						arr[inner.children[i].id]=Number(inner.children[i].innerText);
+					}else{
+						arr[inner.children[i].id]=inner.children[i].innerText;
+					}
+				}
+			}
+		}
+
 		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
