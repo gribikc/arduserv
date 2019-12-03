@@ -439,12 +439,12 @@
 				this.xmlhttprq = new XMLHttpRequest();
 			
 				//this.xmlhttprq.open('GET', parameter.url, true);//!!!
-				this.is_post=('post_data' in parameter) ? 1 : 0;
+					this.is_post=('post_data' in parameter) ? 1 : 0;
 
-				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
-				this.xmlhttprq.overrideMimeType(parameter.mime_type);				
-				//this.xmlhttprq.timeout = 30000;
-				this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
+					this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
+					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
+					//this.xmlhttprq.timeout = 30000;
+					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
 				
 				this.stat_bps=0;
 				this.stat_rp=0;
@@ -492,10 +492,14 @@
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
 						if(this_parameter.reload_en==true){
-							//console.log("ar...");
-							this.open('GET', this_parameter.url, true);
-							this.overrideMimeType(this_parameter.mime_type);					
-							setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()
+							console.log(this_of_class);
+							//!!!this.open('GET', this_parameter.url, true);
+							//!!!this.overrideMimeType(this_parameter.mime_type);					
+							//!!!setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()
+							this.open( ((this_of_class.is_post) ? 'POST' : 'GET') , this_parameter.url, true);
+							this.overrideMimeType(this_parameter.mime_type);	
+							setTimeout(function(e) {e.send( ((this_of_class.is_post) ? this_parameter.post_data : null) );},this_parameter.reload_time,this);
+							//this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
 						}
 					}
 				}
