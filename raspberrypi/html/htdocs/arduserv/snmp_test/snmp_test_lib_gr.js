@@ -45,10 +45,10 @@
 			this.div=div;
 		}
 		//////////
-		parser_data(type,stream){
+		parser_data(stream){
 			console.log(stream);
-			key_array_to_inner(stream[0][2][3][0][1],this.div);
-			console.log(stream[0][2][3][0][1]);
+			key_array_to_inner(stream,this.div);
+			//console.log(stream);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

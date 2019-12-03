@@ -74,7 +74,7 @@
 	/*
 	
 	*/
-	class snmp_parser_gr {
+	class snmp_parser_gr {//!!!CONTAINER!!!
 		//Инициализация
 			constructor(hub) {
 				this.parser_data_array=new Array();
@@ -89,8 +89,8 @@
 					}
 					console.log(arr);
 					document.getElementById('test_data_0').innerHTML=stream;*/
-
-					this.hub_handler.parser_data('snmp',this.snmp_tree(stream,0));
+					var arr=this.snmp_tree(stream,0);
+					this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
