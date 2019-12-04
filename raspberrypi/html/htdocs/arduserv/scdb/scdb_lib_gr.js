@@ -10,20 +10,24 @@
 		}
 		//////////
 		parser_data(type,stream){
-			//console.log(stream);
+			console.log(stream);
+			//console.log(JSON.stringify(stream),null, '\t');
 			
-			var div_p = document.createElement("div");
-			document.getElementById(this.div).appendChild(div_p);
+			//var div_p = document.createElement("div");
+			//document.getElementById(this.div).appendChild(div_p);
+			var div_p = document.getElementById(this.div);
 			create_div_from_array_to_db_gr("conf",stream,div_p);
 			
 			var arr=new Object();//Object//Array//
 			
+			var div_p = document.getElementById(this.div);
 			arr=create_array_from_div_to_db_gr(div_p);
-			
-			console.log(stream);
-			//console.log(JSON.stringify(stream),null, '\t');
-			
 			console.log(arr);
+			var div_p = document.getElementById('tbl_db2');
+			create_div_from_array_to_db_gr("conf",arr,div_p);
+			
+			
+			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
 			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
 			
 			if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
@@ -83,8 +87,8 @@
 						input_v.name='value';
 						input_v.value=arr[key];
 				var div_r = document.createElement("div");
-				li.appendChild(div_r);
-					div_r.innerHTML+="ADE";
+				//li.appendChild(div_r);
+				//	div_r.innerHTML+="ADE";
 
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){				
 				div_c.removeChild(input_v);
@@ -135,25 +139,20 @@
 		return arr;
 	}*/
 	function create_array_from_div_to_db_gr(inner){
-		//document.getElementById("tbl_db").children[0]
-		//childElementCount: 4
-		//id: ""
-		//localName: "div"
-		//console.log(div.children[0].children);
+		var arr=new Array();
 
-		for(i=0;i<inner.childElementCount;i++){
-			if(inner.children[i].childElementCount>0){
-				arr[inner.children[i].id]=(create_array_from_div_to_db_gr(inner.children[i]));
+		for(var i=0;i<inner.childElementCount;i++){
+			if(inner.children[i].tagName=='LI'){
+				arr[i]=new Object();
+				//arr[i]['name']=inner.children[i].tagName;
+				arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
+			}else if(inner.children[i].tagName=='INPUT'){
+				arr[i]=new Array();
+				//arr=new Object();
+				arr[i][inner.children[i].name]=inner.children[i].value;
+				//arr[i]['parent']=create_array_from_div_to_db_gr(inner.children[i]);
 			}else{
-				if((is_num)){
-					arr.push(inner.children[i].innerText);
-				}else{
-					if(isFinite(inner.children[i].innerText)){
-						arr[inner.children[i].id]=Number(inner.children[i].innerText);
-					}else{
-						arr[inner.children[i].id]=inner.children[i].innerText;
-					}
-				}
+				arr.push( create_array_from_div_to_db_gr(inner.children[i]) );
 			}
 		}
 
