@@ -50,7 +50,7 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 
     GR_http_client *abv=new GR_http_client(sdscrp);
     //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
-    connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
+      connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
 
     //socket->peerAddress();
     //QString a=QString(socket->peerName());

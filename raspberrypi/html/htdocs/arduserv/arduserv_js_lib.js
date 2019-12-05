@@ -90,7 +90,8 @@
 					console.log(arr);
 					document.getElementById('test_data_0').innerHTML=stream;*/
 					var arr=this.snmp_tree(stream,0);
-					this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
+					//console.log(arr);
+					(arr.length>0) ? this.hub_handler.parser_data(arr[0][2][3][0][1]['data']) : null;
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
@@ -443,7 +444,11 @@
 
 					this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
 					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
-					//this.xmlhttprq.timeout = 30000;
+					if('timeout_en'	in parameter){
+						if(parameter.timeout_en){
+							this.xmlhttprq.timeout = parameter.timeout_time;;
+						}
+					}
 					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
 				
 				this.stat_bps=0;
@@ -492,7 +497,7 @@
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
 						if(this_parameter.reload_en==true){
-							console.log(this_of_class);
+							console.log("reload");
 							//!!!this.open('GET', this_parameter.url, true);
 							//!!!this.overrideMimeType(this_parameter.mime_type);					
 							//!!!setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()

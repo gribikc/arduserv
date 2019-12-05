@@ -16,16 +16,16 @@ void GR_http_client::readyRead(){
     if(hrp_headers_valid==0){
         http_request_parsing();
         if(hrp_headers_valid==1){
-            emit requestComplete(this);
             GR_logger::log(this,"Http Request Complite");
+            emit requestComplete(this);
         }
     }
     if(hrp_headers_valid==1){
         if(indata.size()>=contentlength){
             indata.remove(0,hrp_del);
             list_param=get_list_param();
-            emit dataComplete(this);
             GR_logger::log(this,"Http Data Complete");
+            emit dataComplete(this);
         }
     }
 }

@@ -27,6 +27,7 @@ gr_udp_client::gr_udp_client(QTcpSocket *partner) : QObject(partner){
     QString port_dst=(list_param.size() >= 4) ? list_param[4] : "161";
 
     udpSocket->writeDatagram(http_client->indata,QHostAddress(ip_dst), port_dst.toInt());
+    qDebug()<<"UDP Send DATA";
 }
 
 void gr_udp_client::udp_readyRead(){
@@ -44,7 +45,7 @@ void gr_udp_client::udp_readyRead(){
                   partner->write(datagram);
 
 
-
+        qDebug()<<"UDP Recieved DATA&Close";
         partner->flush();
         partner->close();
         partner->deleteLater();

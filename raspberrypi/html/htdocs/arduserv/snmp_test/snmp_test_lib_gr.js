@@ -45,7 +45,7 @@
 			this.div=div;
 		}
 		//////////
-		parser_data(stream){
+		parser_data(type,stream){
 			console.log(stream);
 			key_array_to_inner(stream,this.div);
 			//console.log(stream);
