@@ -89,9 +89,10 @@
 					}
 					console.log(arr);
 					document.getElementById('test_data_0').innerHTML=stream;*/
+					
 					var arr=this.snmp_tree(stream,0);
-					//console.log(arr);
-					(arr.length>0) ? this.hub_handler.parser_data(arr[0][2][3][0][1]['data']) : null;
+					(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined) ? this.hub_handler.parser_data(arr[0][2][3][0][1]['data']) : 
+						console.log("SNMP REQUEST EMPTY OR NOT VALID");
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
@@ -441,22 +442,33 @@
 			
 				//this.xmlhttprq.open('GET', parameter.url, true);//!!!
 					this.is_post=('post_data' in parameter) ? 1 : 0;
+					
+					
+					('mime_type' 	in this.parameter) ? null : (this.parameter.mime_type='text/plain; charset=x-user-defined');
+					('url_w' 		in this.parameter) ? null : (this.parameter.url_w='');
+					this.is_flush_en=('flush_en' in this.parameter) ? (this.parameter.flush_en ? 1:0) : 0;
+					this.is_auto_start=('auto_start' in this.parameter) ? (this.parameter.auto_start ? 1:0) : 1;	
+					this.is_status_en=('status_en' in this.parameter) ? (this.parameter.status_en ? 1:0) : 0;
+					this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
+					this.is_timeout_en=('timeout_en' in this.parameter) ? (this.parameter.timeout_en ? 1:0) : 0;
+					
+					this.open_c();
 
-					this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
+					/*this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
 					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
 					if('timeout_en'	in parameter){
 						if(parameter.timeout_en){
 							this.xmlhttprq.timeout = parameter.timeout_time;;
 						}
 					}
-					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
+					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!*/
 				
 				this.stat_bps=0;
 				this.stat_rp=0;
 				this.last_statusText="";
 				this.last_readyState=0;
 				
-				if(parameter.status_en==true){
+				if(this.is_status_en){
 					this.status_div = document.createElement('div');
 					this.stat_div = document.createElement('div');
 					this.status_div.className = parameter.status_div_status_css;
@@ -466,45 +478,25 @@
 					main_status_div.appendChild(this.stat_div);
 					document.getElementById(parameter.status_div).appendChild(main_status_div);
 				
-					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
+					setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
 					
 					//console.log(this.status_div);
 				}
 				
 				this.xmlhttprq.onprogress=function(e){
-					//console.log(this.responseText);
-					//console.log(this_of_class.xmlhttprq.readyState);
-					if(this_parameter.flush_en==true || this_of_class.xmlhttprq.readyState==4){
+					if(this_of_class.is_flush_en && this_of_class.xmlhttprq.readyState!=4){
 						parameter.parser.parser_data(this.responseText);//!!!
 					}
 				}				
 				
 				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();    
-					//console.log(this_of_class);
-					//console.log(this.status_div);//.innerHTML=this.readyState;
-					//console.log(e);//event
-					//console.log(this);//XMLHttpRequest
-					/*if(parameter.status_en==true){
-						this_of_class.status_div.innerHTML=parameter.status_div_name;
-						this_of_class.status_div.innerHTML+=""+this.statusText;
-						this_of_class.status_div.innerHTML+="("+this.readyState+")";
-					}*/
-					//this_of_class.last_statusText=this.statusText;
-					//this_of_class.last_readyState=this.readyState;
-					//readyState;
 					if(this.readyState==4){//DONE
 						parameter.parser.parser_data(this.responseText);//!!!
+						
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
-						if(this_parameter.reload_en==true){
-							console.log("reload");
-							//!!!this.open('GET', this_parameter.url, true);
-							//!!!this.overrideMimeType(this_parameter.mime_type);					
-							//!!!setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()
-							this.open( ((this_of_class.is_post) ? 'POST' : 'GET') , this_parameter.url, true);
-							this.overrideMimeType(this_parameter.mime_type);	
-							setTimeout(function(e) {e.send( ((this_of_class.is_post) ? this_parameter.post_data : null) );},this_parameter.reload_time,this);
-							//this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!
+						if(this_of_class.is_reload_en){
+							setTimeout(function(e) {this_of_class.open_c();},this_parameter.reload_time);
 						}
 					}
 				}
@@ -544,11 +536,14 @@
 				this.xmlhttprq.abort();
 			}
 			open_c(){
-				//this.parameter.reload_en=true;
-				this.xmlhttprq.open('GET', this.parameter.url, true);
+				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , this.parameter.url, true);
 				this.xmlhttprq.overrideMimeType(this.parameter.mime_type);				
-				//this.xmlhttprq.timeout = 30000;
-				this.xmlhttprq.send();
+				//if('timeout_en'	in this.parameter){
+					//if(this.parameter.timeout_en){
+					this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
+					//}
+				//}
+				this.xmlhttprq.send( ((this.is_post) ? this.parameter.post_data : null) );//!!!
 			}
 			freeze_c(){
 				this.close_c();
