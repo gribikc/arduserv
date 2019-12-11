@@ -95,6 +95,7 @@
 						this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
 					}else{	
 						console.log("SNMP REQUEST EMPTY OR NOT VALID");
+						//console.log(stream);
 					}
 			}
 			///////////////////////////////////////////////////////////////
