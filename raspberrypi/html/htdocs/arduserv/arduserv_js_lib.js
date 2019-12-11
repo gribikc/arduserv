@@ -91,8 +91,11 @@
 					document.getElementById('test_data_0').innerHTML=stream;*/
 					
 					var arr=this.snmp_tree(stream,0);
-					(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined) ? this.hub_handler.parser_data(arr[0][2][3][0][1]['data']) : 
+					if(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined && arr[0][2][3][0][1]['data'].length>0){
+						this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
+					}else{	
 						console.log("SNMP REQUEST EMPTY OR NOT VALID");
+					}
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
@@ -159,6 +162,29 @@
 			/////////////////////
 			//////////////////////////////////////////
 			///////////////////////////////////////////////////////////////
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	class array_data_to_log_gr {
+		//Инициализация
+			constructor() {
+
+			}
+		//Парсинг
+			parser_data(type,stream){
+				console.log(type,stream);
+			}
+	}
+	class array_to_to_to_gr {
+		//Инициализация
+			constructor() {
+
+			}
+		//Парсинг
+			parser_data(type,stream){
+				
+			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -770,13 +796,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-	function snmp_query(oid,type){//1-input(get);0-output(set)
+	function snmp_query(oid,type,send_string){//1-input(get);0-output(set)
 		//Therefore, the first two numbers of an SNMP OID are encoded as 43 or 0x2B, because (40*1)+3 = 43.
 		//
 		//Integer 			0x02 Sequence 			0x30
 		//Octet String 		0x04 GetRequest PDU 	0xA0
 		//Null 				0x05 GetResponse PDU 	0xA2
 		//Object Identifier 0x06 SetRequest PDU 	0xA3
+		
 		var arr=[];
 		arr[0]=0x30;//ASN.1 header
 			arr[1]=0x00;//!!!XX;//L
@@ -791,7 +818,7 @@
 					arr[10]=0x6C;//l
 					arr[11]=0x69;//i
 					arr[12]=0x63;//c
-				arr[13]=0xA0;//SNMP GET/SET request
+				arr[13]=(type)?0xA0:0xA3;//SNMP GET/SET request//0xA0-GET//0xA3-SET//
 					arr[14]=0x00;//!!!00;L
 						arr[15]=0x02;//SNMP request ID
 							arr[16]=0x01;//L
@@ -806,33 +833,39 @@
 							arr[25]=0x00;//!!!XX;//L
 							arr[26]=0x30;//varBind
 								arr[27]=0x00;//!!!XX;//L
-								arr[28]=0x06;//Object ID
-									arr[29]=0x00;//!!!XX;//L
-									arr[30]=0x2b;//
-									var oid_arr=oid.split(".");
-									var size_of_oid=1;
-									for(var i=2;i<oid_arr.length;i++){
-										var oid_decode=oid_arr[i];
-										for(var j=4;j>=0;j--){
-											var a=(oid_decode>>(7*j));
-											oid_decode=oid_decode-a*(128<<(j-1)*7);
-											if(a>0 && j>0){
-												a^=0x80;
+									arr[28]=0x06;//Object ID
+										arr[29]=0x00;//!!!XX;//L
+										arr[30]=0x2b;//
+											var oid_arr=oid.split(".");
+											var size_of_oid=1;
+											for(var i=2;i<oid_arr.length;i++){
+												var oid_decode=oid_arr[i];
+												for(var j=4;j>=0;j--){
+													var a=(oid_decode>>(7*j));
+													oid_decode=oid_decode-a*(128<<(j-1)*7);
+													if(a>0 && j>0){
+														a^=0x80;
+													}
+													if(a>0 || j==0){
+														arr.push(a);
+														size_of_oid++;
+													}
+												}
 											}
-											if(a>0 || j==0){
-												arr.push(a);
-												size_of_oid++;
+
+									arr.push(((type)?0x05:0x04));//varBind//(type)?0x05:0x04
+									arr.push(((type)?0x00:send_string.length));//L
+										if(type==0){
+											for(var i=0;i<send_string.length;i++){
+												arr.push(send_string.charCodeAt(i));
 											}
 										}
-									}
+
 									arr[29]=size_of_oid;
-									arr[27]=arr[29]+4;
+									arr[27]=arr[29]+4+((type)?0x00:send_string.length);
 									arr[25]=arr[27]+2;
 									arr[14]=arr[27]+13;
 									arr[1] =arr[14]+13;
-								arr.push(0x05);//varBind
-									arr.push(0x00);//L
-								
 		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
