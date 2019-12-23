@@ -9,7 +9,7 @@
 				
 			}
 		//Парсинг
-			parser_data(type,arr){
+			parser_data(arr){
 				
 				document.getElementById("gr_db_log_txa").innerHTML="Size:";
 				document.getElementById("gr_db_log_txa").innerHTML+=arr.length;
@@ -47,7 +47,9 @@
 				this.db_array=db;
 			}
 		//Парсинг
-			parser_data(type,arr){
+			parser_data(arr){
+				type=0;///!!!
+				console.log("error");
 				for(var j=0;j<arr.length;j++){//обход входного массива сообщений
 					for(var i=0;i<this.db_array.length;i++){//обход базданного массива
 						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){//проверяем тип сообщения и индентификатор
@@ -173,8 +175,8 @@
 
 			}
 		//Парсинг
-			parser_data(type,stream){
-				console.log(type,stream);
+			parser_data(stream){
+				console.log(stream);
 			}
 	}
 	class array_to_to_to_gr {
@@ -183,7 +185,7 @@
 
 			}
 		//Парсинг
-			parser_data(type,stream){
+			parser_data(stream){
 				
 			}
 	}
@@ -205,7 +207,7 @@
 				this.parser_data_array=JSON.parse(stream);
 				
 				if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-					this.hub_handler.parser_data('json',this.parser_data_array);					
+					this.hub_handler.parser_data(this.parser_data_array);					
 					this.parser_data_array=new Array();
 				}
 			}
@@ -264,7 +266,7 @@
 										this.parser_data_array=JSON.parse( stream.slice(this.json_begin_point, i-10) );
 				
 										if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-											this.hub_handler.parser_data('json',this.parser_data_array);					
+											this.hub_handler.parser_data(this.parser_data_array);					
 											this.parser_data_array=new Array();
 										}
 										//console.log(this.parser_data_array);
@@ -367,7 +369,7 @@
 				}
 				this.start_point=this.end_point;
 				if(this.parser_nmea_array.length>0 && 1){
-					this.hub_handler.parser_data('nmea',this.parser_nmea_array);
+					this.hub_handler.parser_data(this.parser_nmea_array);
 					this.parser_nmea_array=new Array();
 				}
 			}
