@@ -96,14 +96,17 @@
 					if(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined && arr[0][2][3][0][1]['data'].length>0){
 						this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
 					}else{	
-						console.log("SNMP REQUEST EMPTY OR NOT VALID");
+						//console.log("SNMP REQUEST EMPTY OR NOT VALID");
 						//console.log(stream);
+						this.hub_handler.error_event("SNMP REQUEST EMPTY OR NOT VALID");
 					}
 			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
 			/////////////////////
-				
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
 			///////////////////////////////////////////////////////////////
 			//////////////////////////////////////////
 			/////////////////////
@@ -178,6 +181,9 @@
 			parser_data(stream){
 				console.log(stream);
 			}
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
 	}
 	class array_to_to_to_gr {
 		//Инициализация
@@ -187,6 +193,9 @@
 		//Парсинг
 			parser_data(stream){
 				
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,6 +219,9 @@
 					this.hub_handler.parser_data(this.parser_data_array);					
 					this.parser_data_array=new Array();
 				}
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -277,6 +289,9 @@
 					}
 				this.start_point=this.end_point;
 			}
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -312,6 +327,9 @@
 					}
 				}
 				this.start_point=this.end_point;
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 		//Сброс данных
 
@@ -372,6 +390,9 @@
 					this.hub_handler.parser_data(this.parser_nmea_array);
 					this.parser_nmea_array=new Array();
 				}
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 		//Сброс данных
 			clear_nmea_array(){
@@ -481,7 +502,9 @@
 					this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
 					this.is_timeout_en=('timeout_en' in this.parameter) ? (this.parameter.timeout_en ? 1:0) : 0;
 					
-					this.open_c();
+					if(this.is_auto_start){
+						this.open_c();
+					}
 
 					/*this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
 					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
