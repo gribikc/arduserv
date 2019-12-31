@@ -106,6 +106,29 @@ var auto_boat_routing_sets=new Array();
 function main_init(){
 
 	//HUB
+			var message=new Array();
+			message={
+				hour:["Час",0,6,0],									//-57                       ///////////hour:["Час",0,57,0],				//-57
+				min:["Мин",0,7,0],									//-56                       ///////////min:["Мин",0,56,0],					//-56
+				sec:["Сек",0,8,0],									//-55                       ///////////sec:["Сек",0,55,0],					//-55
+				NOS:["NOS",0,9,0],									//к-во используемых спутников//-54                       ///////////NOS:["NOS",0,54,0],					//-54
+				SIV:["SIV",0,10,0],									//к-во видимых спутников//-53                       ///////////SIV:["SIV",0,53,0],					//-53
+				SSNR:["SSNR",0,11,0],								//сумма сигналов спутников//-52                       ///////////SSNR:["SSNR",0,52,0],				//-52
+				HDOP:["HDOP",1,15,0],								//-51...-48(float)          ///////////HDOP:["HDOP",1,51,0],				//-51...-48(float)
+				altitude:["Высота",1,19,0],							//-47...-44(float)          ///////////altitude:["Высота",1,47,0],			//-47...-44(float)
+				height:["Высота",1,23,0],							//-43...-40(float)          ///////////height:["Высота",1,43,0],			//-43...-40(float)
+				latitude:["Широта",2,29,0],							//-37(byte)-37...-34(float) ///////////latitude:["Широта",2,37,0],			//-37(byte)-37...-34(float)
+				longitude:["Долгота",2,34,0],						//-33(byte)-32...-29(float) ///////////longitude:["Долгота",2,33,0],		//-33(byte)-32...-29(float)
+				direction:["Направление",1,38,0],					//истенный курс//-28...-25(float)      ///////////direction:["Направление",1,28,0],		//-28...-25(float)
+				compass:["Компас",1,42,0],							//компас//-24...-21(float)          ///////////compass:["Компас",1,24,0],			//-24...-21(float)
+				speed:["Скорость",1,46,0],							//-20...-17(float)          ///////////speed:["Скорость",1,20,0],			//-20...-17(float)
+				pilot_error:["ERR",1,50,0],							//ошибка навигации//-16...-13(float)              ///////////pilot_error:["ERR",1,16,0],		//-16...-13(float)
+				pid:["PID",1,54,0],									//Выход регулятора
+				tiller_position_cp:["Положение текущие",3,58,0],	//int//положение румпеля//-12...-9(float)       ///////////tiller_position:["Положение",1,12,0]	//-12...-9(float)
+				tiller_position:["Положение требуемое",3,62,0],		//int//положение румпеля
+				point_distance:["Расстояние до точки",1,66,0],
+				current_point:["Текущая точка маршрута",1,70,0]
+			}
 
 		//autoboat
 		autoboat=new autoboat_gr();
@@ -113,11 +136,12 @@ function main_init(){
 	//STREAM
 		//arduino_uart
 			bap_uart_stream_param={
-				url   : (document.location.protocol=="file:" ? "http://192.168.0.112:3128" : "" ) +"/DEV/BT/R/BT/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
-				url_w   : (document.location.protocol=="file:" ? "http://192.168.0.112:3128" : "" ) +"/W/BT/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
+				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) +"/dev/bt/r/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url_w   : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) +"/W/BT/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"BAP:",
-				parser: autoboat,//new raw_parser_gr(message_hub),
+				//parser: autoboat,//new raw_parser_gr(message_hub),
+				parser: new raw_parser_gr(autoboat,message),
 				
 				flush_en:true,
 				auto_start:true,
@@ -135,7 +159,7 @@ function main_init(){
 		//_arduino_uart
 		//CONFIG READ
 			config_request_param={
-				url   : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/htdocs/db/autoboat/config.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) + '/htdocs/db/autoboat/config.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				url_w : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/w/db/autoboat/config.json',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"CRP:",

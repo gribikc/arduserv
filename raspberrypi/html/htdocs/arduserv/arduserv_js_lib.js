@@ -303,15 +303,18 @@
 	*/
 	class raw_parser_gr {
 		//Инициализация
-			constructor(hub) {//hub
+			constructor(hub,db_matrix) {//hub
 				this.parser_data_array=new Array();
 				this.hub_handler=hub;
 				this.start_point=0;
 				this.end_point=0;
+				this.db_matrix=db_matrix;
+				
+				this.MESSAGE_LEN=95;
+				this.HEADER=[0xAA,0xBB];
+				this.FOOTER=[0xCC,0xDD];
 			}
 		//Парсинг
-			// AA  BB  id  cnt  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  CC  DD
-			//-31 -30 -29  -28 -27 -26 -25 -24 -23 -22 -21 -20 -19 -18 -17 -16 -15 -14 -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1  00 
 			parser_data(stream){
 				this.end_point=stream.length;
 				if(this.start_point>=this.end_point){
@@ -319,14 +322,75 @@
 				}
 				for(var i=this.start_point;i<this.end_point;i++){
 					//console.log(stream.charCodeAt(i)&0xFF);
-					if(this.start_point>=31){
-						if(	(stream.charCodeAt(i)&0xFF)   ==0xDD && (stream.charCodeAt(i-1)&0xFF) ==0xCC && 
-							(stream.charCodeAt(i-62)&0xFF)==0xBB && (stream.charCodeAt(i-63)&0xFF)==0xAA){							//console.log(stream.charCodeAt(i-28)&0xFF);
-							console.log(stream.charCodeAt(i-60)&0xFF);
+					if(this.start_point>=(this.MESSAGE_LEN+1)){
+						if(	(stream.charCodeAt(i   )&0xFF)==this.FOOTER[1] && 
+							(stream.charCodeAt(i-1 )&0xFF)==this.FOOTER[0] && 
+							(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==this.HEADER[1] && 
+							(stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==this.HEADER[0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
+							if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
+								this.message_parser(stream,i);
+							}
 						}
 					}
 				}
 				this.start_point=this.end_point;
+			}
+			message_parser(stream,end_byte){
+				var tmp_float_from_byte=0;
+				for(var i in this.db_matrix){
+					this.db_matrix[i][3]=0;//обнуляем матрицу
+					if(this.db_matrix[i][1]==0){//char
+						this.db_matrix[i][3]=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN)&0xFF;
+					}else if(this.db_matrix[i][1]==1){//float
+						//float_from_byte_arr_gr(buf)
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
+					}else if(this.db_matrix[i][1]==2){//byte.float
+						//float_from_byte_arr_gr(buf)
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
+					}else if(this.db_matrix[i][1]==3){//int
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[i][3]=tmp_float_from_byte;
+					}else{
+						this.db_matrix[i][3]="undf...";
+					}
+					//document.getElementById("autobot_state").innerHTML+=this.db_matrix[i][0]+": "+this.db_matrix[i][3]+"<br>";
+					//console.log(this.db_matrix[i][0]+": "+this.db_matrix[i][3]);
+					this.hub_handler.parser_data(this.db_matrix);
+					//!!!yandex_map_add_point_gr(this.db_matrix['longitude'][3],this.db_matrix['latitude'][3],10.3);
+					/*if(i=='longitude' && this.db_matrix['NOS'][3]>4){
+						yandex_map_add_point_gr(this.db_matrix['latitude'][3],this.db_matrix['longitude'][3],10.3);
+						//console.log(this.db_matrix['longitude'][3]);
+						if(auto_boat_config['auto_move_map_to_boat']){
+							yandex_map_center_map_to(this.db_matrix['latitude'][3],this.db_matrix['longitude'][3],0);
+						}
+					}*/
+				}				
 			}
 			error_event(message){
 				this.hub_handler.error_event(message);

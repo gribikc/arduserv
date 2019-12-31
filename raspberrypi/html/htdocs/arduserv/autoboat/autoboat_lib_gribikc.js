@@ -77,22 +77,22 @@
 			this.FOOTER=[0xCC,0xDD];
 			
 			this.telemetry_message={
-				hour:["Час",0,6,0],						//-57                       ///////////hour:["Час",0,57,0],				//-57
-				min:["Мин",0,7,0],						//-56                       ///////////min:["Мин",0,56,0],					//-56
-				sec:["Сек",0,8,0],						//-55                       ///////////sec:["Сек",0,55,0],					//-55
-				NOS:["NOS",0,9,0],						//к-во используемых спутников//-54                       ///////////NOS:["NOS",0,54,0],					//-54
-				SIV:["SIV",0,10,0],						//к-во видимых спутников//-53                       ///////////SIV:["SIV",0,53,0],					//-53
-				SSNR:["SSNR",0,11,0],					//сумма сигналов спутников//-52                       ///////////SSNR:["SSNR",0,52,0],				//-52
-				HDOP:["HDOP",1,15,0],					//-51...-48(float)          ///////////HDOP:["HDOP",1,51,0],				//-51...-48(float)
-				altitude:["Высота",1,19,0],				//-47...-44(float)          ///////////altitude:["Высота",1,47,0],			//-47...-44(float)
-				height:["Высота",1,23,0],				//-43...-40(float)          ///////////height:["Высота",1,43,0],			//-43...-40(float)
-				latitude:["Широта",2,29,0],				//-37(byte)-37...-34(float) ///////////latitude:["Широта",2,37,0],			//-37(byte)-37...-34(float)
-				longitude:["Долгота",2,34,0],			//-33(byte)-32...-29(float) ///////////longitude:["Долгота",2,33,0],		//-33(byte)-32...-29(float)
-				direction:["Направление",1,38,0],		//истенный курс//-28...-25(float)      ///////////direction:["Направление",1,28,0],		//-28...-25(float)
-				compass:["Компас",1,42,0],				//компас//-24...-21(float)          ///////////compass:["Компас",1,24,0],			//-24...-21(float)
-				speed:["Скорость",1,46,0],				//-20...-17(float)          ///////////speed:["Скорость",1,20,0],			//-20...-17(float)
-				pilot_error:["ERR",1,50,0],				//ошибка навигации//-16...-13(float)              ///////////pilot_error:["ERR",1,16,0],		//-16...-13(float)
-				pid:["PID",1,54,0],						//Выход регулятора
+				hour:["Час",0,6,0],									//-57                       ///////////hour:["Час",0,57,0],				//-57
+				min:["Мин",0,7,0],									//-56                       ///////////min:["Мин",0,56,0],					//-56
+				sec:["Сек",0,8,0],									//-55                       ///////////sec:["Сек",0,55,0],					//-55
+				NOS:["NOS",0,9,0],									//к-во используемых спутников//-54                       ///////////NOS:["NOS",0,54,0],					//-54
+				SIV:["SIV",0,10,0],									//к-во видимых спутников//-53                       ///////////SIV:["SIV",0,53,0],					//-53
+				SSNR:["SSNR",0,11,0],								//сумма сигналов спутников//-52                       ///////////SSNR:["SSNR",0,52,0],				//-52
+				HDOP:["HDOP",1,15,0],								//-51...-48(float)          ///////////HDOP:["HDOP",1,51,0],				//-51...-48(float)
+				altitude:["Высота",1,19,0],							//-47...-44(float)          ///////////altitude:["Высота",1,47,0],			//-47...-44(float)
+				height:["Высота",1,23,0],							//-43...-40(float)          ///////////height:["Высота",1,43,0],			//-43...-40(float)
+				latitude:["Широта",2,29,0],							//-37(byte)-37...-34(float) ///////////latitude:["Широта",2,37,0],			//-37(byte)-37...-34(float)
+				longitude:["Долгота",2,34,0],						//-33(byte)-32...-29(float) ///////////longitude:["Долгота",2,33,0],		//-33(byte)-32...-29(float)
+				direction:["Направление",1,38,0],					//истенный курс//-28...-25(float)      ///////////direction:["Направление",1,28,0],		//-28...-25(float)
+				compass:["Компас",1,42,0],							//компас//-24...-21(float)          ///////////compass:["Компас",1,24,0],			//-24...-21(float)
+				speed:["Скорость",1,46,0],							//-20...-17(float)          ///////////speed:["Скорость",1,20,0],			//-20...-17(float)
+				pilot_error:["ERR",1,50,0],							//ошибка навигации//-16...-13(float)              ///////////pilot_error:["ERR",1,16,0],		//-16...-13(float)
+				pid:["PID",1,54,0],									//Выход регулятора
 				tiller_position_cp:["Положение текущие",3,58,0],	//int//положение румпеля//-12...-9(float)       ///////////tiller_position:["Положение",1,12,0]	//-12...-9(float)
 				tiller_position:["Положение требуемое",3,62,0],		//int//положение румпеля
 				point_distance:["Расстояние до точки",1,66,0],
@@ -101,23 +101,40 @@
 		}
 		//////////
 		parser_data(stream){
-			this.end_point=stream.length;
+			console.log(stream);
+			document.getElementById("autobot_state").innerHTML="";
+			for(var i in stream){
+				document.getElementById("autobot_state").innerHTML+=stream[i][0]+": "+stream[i][3]+"<br>";
+				if(i=='longitude' && stream['NOS'][3]>4){
+					yandex_map_add_point_gr(stream['latitude'][3],stream['longitude'][3],10.3);
+					//console.log(stream['longitude'][3]);
+					if(auto_boat_config['auto_move_map_to_boat']){
+						yandex_map_center_map_to(stream['latitude'][3],stream['longitude'][3],0);
+					}
+				}
+			}
+			/*this.end_point=stream.length;
 			if(this.start_point>=this.end_point){
 				this.start_point=0;
 			}
 			for(var i=this.start_point;i<this.end_point;i++){
 				//console.log(stream.charCodeAt(i)&0xFF);
-				if(this.start_point>=96){
-					if(	(stream.charCodeAt(i   )&0xFF)==0xDD && (stream.charCodeAt(i-1 )&0xFF)==0xCC && 
-						(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==0xBB && (stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==0xAA ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
+				if(this.start_point>=(this.MESSAGE_LEN+1)){
+					if(	(stream.charCodeAt(i   )&0xFF)==this.FOOTER[1] && 
+						(stream.charCodeAt(i-1 )&0xFF)==this.FOOTER[0] && 
+						(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==this.HEADER[1] && 
+						(stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==this.HEADER[0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 						if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
 							this.telemetry_parser(stream,i);
 						}
 					}
 				}
 			}
-			this.start_point=this.end_point;
+			this.start_point=this.end_point;*/
 		}
+		error_event(message){
+				console.log(message+'autoboat_gr');
+			}
 		//////////
 		telemetry_parser(stream,end_byte){
 			//console.log(stream.charCodeAt(end_byte-60)&0xFF);
