@@ -17,11 +17,70 @@ var test_cnt_stream_param;
 
 var autoboat;
 
+/*var auto_boat_config={//toCoockies
+	//map
+	auto_move_map_to_boat:false,
+	def_x_point:59.77883,
+	def_y_point:30.77069,
+	
+	service_addr_prefix:"http://localhost:3128",
+	
+	bap_stream_addr:[
+		['http://localhost:3128/R/COM/28/57600/'],
+		['http://192.168.0.122:3128/R/BT/HC-06/'],
+		['http://172.20.10.4:3128/R/BT/HC-06'],
+		['http://localhost:3128/R/COM/9/115200/'],
+		['http://localhost:3128/R/COM/28/57600/']
+	],
+	
+	ssf:false
+};*/
+
+///////////////////////////////////////////////////////////
+var config=new Object();
+	config['dev_name']='HC-08';
+	config['remoute_serv_ip']='192.168.1.44';
+	config['db_config_name']='config.json';
+	config['db_routing_sets']='routing_sets.json';
+	//////////////////////////////////////////////
+	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/r/"+config['dev_name']+"/"),
+	config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/w/"+config['dev_name']+"/"),
+	//////////////////////////////////////////////
+	config['auto_move_map_to_boat']=true;
+	config['ssf']=false;
+///////////////////////////////////////////////////////////
+	
+
 
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////
+	function generate_show_hide_menu_from_div(main_div_name,control_div_name){
+		var main_div = document.getElementById(main_div_name);
+		var control_div = document.getElementById(control_div_name);
+		var elementChildrens = main_div.children;
+		for (var i=0, child; child=elementChildrens[i]; i++) {
+			console.log(child.id);
+			//this.status_div = document.createElement('div');
+			//main_status_div.appendChild(this.stat_div);
+			//<a class="menu_up_a_gr" onclick="hide_view_inner_gr('upr');">Основное управление</a>		<br>
+			
+			var new_div = document.createElement('a');
+			//!!!new_div.mousedown=alert('Клик-клик!');//hide_view_inner_gr(child.id);
+			control_div.appendChild(new_div);
+			new_div.classList.add('menu_up_a_gr');
+			new_div.innerHTML=child.id;
+			
+			var new_div = document.createElement('br');
+			control_div.appendChild(new_div);
+		}
+		//console.log(main_div_name,main_div.children);
+	}
 	function next_prev_main_wiev_div_in(rf){
+		/*
+			При переключении скрывать все и открывать только один или 
+			если открыто несколько то закрывать первый открывать следующий...
+		*/
 		var i;
 		var inner;
 		var inner_count=document.getElementById("main_wiev_div").childElementCount;
@@ -65,24 +124,6 @@ var autoboat;
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-var auto_boat_config={//toCoockies
-	//map
-	auto_move_map_to_boat:false,
-	def_x_point:59.77883,
-	def_y_point:30.77069,
-	
-	service_addr_prefix:"http://localhost:3128",
-	
-	bap_stream_addr:[
-		['http://localhost:3128/R/COM/28/57600/'],
-		['http://192.168.0.122:3128/R/BT/HC-06/'],
-		['http://172.20.10.4:3128/R/BT/HC-06'],
-		['http://localhost:3128/R/COM/9/115200/'],
-		['http://localhost:3128/R/COM/28/57600/']
-	],
-	
-	ssf:false
-};
 var auto_boat_routing_sets=new Array();
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -107,7 +148,11 @@ function main_init(){
 
 	//HUB
 			var message=new Array();
-			message={
+			message[0]=new Object();
+			message[0]['header']=[0xAA,0xBB];
+			message[0]['footer']=[0xCC,0xDD];
+			message[0]['message_len']=95;
+			message[0]['message']={
 				hour:["Час",0,6,0],									//-57                       ///////////hour:["Час",0,57,0],				//-57
 				min:["Мин",0,7,0],									//-56                       ///////////min:["Мин",0,56,0],					//-56
 				sec:["Сек",0,8,0],									//-55                       ///////////sec:["Сек",0,55,0],					//-55
@@ -136,8 +181,8 @@ function main_init(){
 	//STREAM
 		//arduino_uart
 			bap_uart_stream_param={
-				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) +"/dev/bt/r/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
-				url_w   : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) +"/W/BT/HC-08/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
+				url   : config['dev_url'],
+				url_w : config['dev_url_w'],
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"BAP:",
 				//parser: autoboat,//new raw_parser_gr(message_hub),
@@ -205,4 +250,7 @@ function main_init(){
 	//PAPER JS
 		//test_paper_cnt=new paper_js_gr('canvas2');//!!!
 		//test_paper=new paper_js_gr('canvas3');
+		
+		
+	generate_show_hide_menu_from_div('main_wiev_div','sub_menu_left');
 }

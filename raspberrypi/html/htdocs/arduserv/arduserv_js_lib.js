@@ -310,9 +310,9 @@
 				this.end_point=0;
 				this.db_matrix=db_matrix;
 				
-				this.MESSAGE_LEN=95;
-				this.HEADER=[0xAA,0xBB];
-				this.FOOTER=[0xCC,0xDD];
+				//this.MESSAGE_LEN=95;
+				//this.HEADER=[0xAA,0xBB];
+				//this.FOOTER=[0xCC,0xDD];
 			}
 		//Парсинг
 			parser_data(stream){
@@ -322,74 +322,65 @@
 				}
 				for(var i=this.start_point;i<this.end_point;i++){
 					//console.log(stream.charCodeAt(i)&0xFF);
-					if(this.start_point>=(this.MESSAGE_LEN+1)){
-						if(	(stream.charCodeAt(i   )&0xFF)==this.FOOTER[1] && 
-							(stream.charCodeAt(i-1 )&0xFF)==this.FOOTER[0] && 
-							(stream.charCodeAt(i-this.MESSAGE_LEN+1)&0xFF)==this.HEADER[1] && 
-							(stream.charCodeAt(i-this.MESSAGE_LEN)&0xFF)==this.HEADER[0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
+					if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
+						if(	(stream.charCodeAt(i   )&0xFF)==this.db_matrix[0]['footer'][1] && 
+							(stream.charCodeAt(i-1 )&0xFF)==this.db_matrix[0]['footer'][0] && 
+							(stream.charCodeAt(i-this.db_matrix[0]['message_len']+1)&0xFF)==this.db_matrix[0]['header'][1] && 
+							(stream.charCodeAt(i-this.db_matrix[0]['message_len'])&0xFF)==this.db_matrix[0]['header'][0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 							if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
-								this.message_parser(stream,i);
+								this.message_parser(stream,i,0);
 							}
 						}
 					}
 				}
 				this.start_point=this.end_point;
 			}
-			message_parser(stream,end_byte){
+			message_parser(stream,end_byte,m_id){
 				var tmp_float_from_byte=0;
-				for(var i in this.db_matrix){
-					this.db_matrix[i][3]=0;//обнуляем матрицу
-					if(this.db_matrix[i][1]==0){//char
-						this.db_matrix[i][3]=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN)&0xFF;
-					}else if(this.db_matrix[i][1]==1){//float
+				for(var i in this.db_matrix[m_id]['message']){
+					this.db_matrix[m_id]['message'][i][3]=0;//обнуляем матрицу
+					if(this.db_matrix[m_id]['message'][i][1]==0){//char
+						this.db_matrix[m_id]['message'][i][3]=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len'])&0xFF;
+					}else if(this.db_matrix[m_id]['message'][i][1]==1){//float
 						//float_from_byte_arr_gr(buf)
-						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
 						
-						this.db_matrix[i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
-					}else if(this.db_matrix[i][1]==2){//byte.float
+						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
+					}else if(this.db_matrix[m_id]['message'][i][1]==2){//byte.float
 						//float_from_byte_arr_gr(buf)
-						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
 						
-						this.db_matrix[i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
-					}else if(this.db_matrix[i][1]==3){//int
-						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-0)&0xFF;
+						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
+					}else if(this.db_matrix[m_id]['message'][i][1]==3){//int
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-1)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-2)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
 						tmp_float_from_byte=tmp_float_from_byte<<8;
-						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-3)&0xFF;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
 						
-						this.db_matrix[i][3]=tmp_float_from_byte;
+						this.db_matrix[m_id]['message'][i][3]=tmp_float_from_byte;
 					}else{
-						this.db_matrix[i][3]="undf...";
+						this.db_matrix[m_id]['message'][i][3]="undf...";
 					}
-					//document.getElementById("autobot_state").innerHTML+=this.db_matrix[i][0]+": "+this.db_matrix[i][3]+"<br>";
-					//console.log(this.db_matrix[i][0]+": "+this.db_matrix[i][3]);
-					this.hub_handler.parser_data(this.db_matrix);
-					//!!!yandex_map_add_point_gr(this.db_matrix['longitude'][3],this.db_matrix['latitude'][3],10.3);
-					/*if(i=='longitude' && this.db_matrix['NOS'][3]>4){
-						yandex_map_add_point_gr(this.db_matrix['latitude'][3],this.db_matrix['longitude'][3],10.3);
-						//console.log(this.db_matrix['longitude'][3]);
-						if(auto_boat_config['auto_move_map_to_boat']){
-							yandex_map_center_map_to(this.db_matrix['latitude'][3],this.db_matrix['longitude'][3],0);
-						}
-					}*/
+
+					this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
 				}				
 			}
 			error_event(message){

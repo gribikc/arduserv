@@ -1,22 +1,17 @@
 html{
-	padding: 0;
-	margin: 0;
 	width: 100%;
 	height: 100%;
-	//margin-bottom: -60px;
-	//padding-bottom: -60px;
-	//background:#FFFFFF;
 }
 body{
 	/*BODY { margin-top: 50px; }*/
 	margin : 0 0 0 0;
-	margin-top: 60px;
+	margin-top: 0px;
 	padding: 0 0 0 0;
+	padding-top:0px;
 	background:#DCDCDC;
 	width: 100%;
 	height: 100%;
-	//margin-bottom: -60px;
-	padding-bottom: -60px;
+	color:#000000;
 }
 
 .menu_top_gr {
@@ -28,12 +23,24 @@ body{
 	color: #fff; /* Цвет текста */
 	width : 100%;/* Ширина слоя */
 }
+
+.main_div {
+    color: #000000; /* Цвет текста */
+    width: 100%; /* Ширина слоя */
+	//height:100%;
+	padding-top:60px;
+	height:calc(100% - 60px);
+
+	//padding: 0px; /* Поля вокруг текста */
+}
+
+
+
 .img_menu_up_a_gr {
   display: inline-block;
   display: inline-block;
   margin: 5px 15px 5px 15px;
-} 
-
+}
 .menu_sub_left_gr {
 	margin-top: 60px;
 	margin-left: 20px;
@@ -101,4 +108,6 @@ a {
 #map {
 	width: 100%;
 	height: 100%;
+	min-height:100px;
 }
+
