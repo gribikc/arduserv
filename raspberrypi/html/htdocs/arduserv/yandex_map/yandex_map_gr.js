@@ -14,7 +14,8 @@ function init_map() {
     // Создаем карту.
     myMap = new ymaps.Map("map", {
             center: [59.77883, 30.77069],//center: [56.155172, 30.585121],//DACHA:59.778838379999996 30.77069652//
-            zoom: 15
+            zoom: 15,
+			controls: ['typeSelector','fullscreenControl','zoomControl','rulerControl']
         }, {
             searchControlProvider: 'yandex#search'
         });	
@@ -104,7 +105,7 @@ function yandex_map_add_point_gr(x,y,deep){
 	}
 	//console.log('Длинна массива: '+deep_points_arr.length);
 	for(var i=0;i<just_point_arr.length;i++){
-		if(just_point_arr.length>=50){
+		if(just_point_arr.length>=config['map']['point_of_position']){//50//config['map']['point_of_position']
 			//console.log(just_point_arr[i]);
 			myMap.geoObjects.remove(just_point_arr[i]['point']);
 			just_point_arr.shift();

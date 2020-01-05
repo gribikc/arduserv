@@ -44,7 +44,7 @@
 				if(key=='longitude' && stream['NOS'][3]>4){
 					yandex_map_add_point_gr(stream['latitude'][3],stream['longitude'][3],10.3);
 					//console.log(stream['longitude'][3]);
-					if(config['auto_move_map_to_boat']){
+					if(config['map']['auto_move_map_to_boat']){
 						yandex_map_center_map_to(stream['latitude'][3],stream['longitude'][3],0);
 					}
 				}

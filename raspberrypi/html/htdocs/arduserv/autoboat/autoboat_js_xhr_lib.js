@@ -1,40 +1,5 @@
-let nmea;// = new nmea_gr();
-let datafall;// = new datafall_gr();
-let sys_data;//=new xmlhttprq_stream_gr();
-let message_db;
-
-let test_paper;
-
-//var xhr;// = new XMLHttpRequest();
-//var xhr_read_point=0;
-//var xhr_date = new Date;
-//var xhr_fps=0;
-//var xhr_bps=0;
-//var xhr_temp;
-
-var sys_data_param;
-var test_cnt_stream_param;
 
 var autoboat;
-
-/*var auto_boat_config={//toCoockies
-	//map
-	auto_move_map_to_boat:false,
-	def_x_point:59.77883,
-	def_y_point:30.77069,
-	
-	service_addr_prefix:"http://localhost:3128",
-	
-	bap_stream_addr:[
-		['http://localhost:3128/R/COM/28/57600/'],
-		['http://192.168.0.122:3128/R/BT/HC-06/'],
-		['http://172.20.10.4:3128/R/BT/HC-06'],
-		['http://localhost:3128/R/COM/9/115200/'],
-		['http://localhost:3128/R/COM/28/57600/']
-	],
-	
-	ssf:false
-};*/
 
 ///////////////////////////////////////////////////////////
 var config=new Object();
@@ -46,12 +11,12 @@ var config=new Object();
 	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/r/"+config['dev_name']+"/"),
 	config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/w/"+config['dev_name']+"/"),
 	//////////////////////////////////////////////
-	config['auto_move_map_to_boat']=true;
-	config['ssf']=false;
-///////////////////////////////////////////////////////////
+	//config['auto_move_map_to_boat']=true;
+	config['map']=new Object();
+	config['map']['auto_move_map_to_boat']=true;
+	config['map']['point_of_position']=300;
 	
-
-
+	config['ssf']=false;
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -60,22 +25,52 @@ var config=new Object();
 		var control_div = document.getElementById(control_div_name);
 		var elementChildrens = main_div.children;
 		for (var i=0, child; child=elementChildrens[i]; i++) {
-			console.log(child.id);
-			//this.status_div = document.createElement('div');
-			//main_status_div.appendChild(this.stat_div);
-			//<a class="menu_up_a_gr" onclick="hide_view_inner_gr('upr');">Основное управление</a>		<br>
-			
 			var new_div = document.createElement('a');
-			//!!!new_div.mousedown=alert('Клик-клик!');//hide_view_inner_gr(child.id);
-			control_div.appendChild(new_div);
-			new_div.classList.add('menu_up_a_gr');
-			new_div.innerHTML=child.id;
+			new_div.onclick=function changeContent() {
+				//console.log(this.name);
+				view_main_menu_hide_all('main_list_of_all','main_wiev_div',1)
+				hide_view_inner_gr(this.name);
+			}		
 			
-			var new_div = document.createElement('br');
 			control_div.appendChild(new_div);
+			new_div.classList.add('mini_icon_mm_gr');//mini_icon_mm_gr//menu_up_a_gr
+			new_div.innerHTML=child.dataset['name'];
+			new_div.name=child.id;
 		}
-		//console.log(main_div_name,main_div.children);
 	}
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+	function view_main_menu_hide_all(div_menu,div_main,sw){
+		var inner_count=document.getElementById("main_wiev_div").childElementCount;
+		var vis_ch_tg=0;
+		if(sw==0){
+			document.getElementById(div_main).style.position='absolute';
+			document.getElementById(div_main).style.visibility='hidden';
+			document.getElementById(div_main).style.display='none'
+			
+			document.getElementById(div_menu).style.position='unset';
+			document.getElementById(div_menu).style.visibility='';
+			document.getElementById(div_menu).style.display=''
+			for(i=0;i<inner_count;i++){
+				inner=document.getElementById("main_wiev_div").children[i];
+				inner.style.position="absolute";
+				inner.style.visibility="hidden";
+				inner.style.zIndex=-1;
+			}
+		}else{
+			document.getElementById(div_menu).style.position='absolute';
+			document.getElementById(div_menu).style.visibility='hidden';
+			document.getElementById(div_menu).style.display='none'
+			
+			document.getElementById(div_main).style.position='unset';
+			document.getElementById(div_main).style.visibility='';
+			document.getElementById(div_main).style.display=''
+		}
+	}
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 	function next_prev_main_wiev_div_in(rf){
 		/*
 			При переключении скрывать все и открывать только один или 
@@ -89,15 +84,17 @@ var config=new Object();
 			//document.getElementById("main_wiev_div").children[i].
 			inner=document.getElementById("main_wiev_div").children[i];
 			if(vis_ch_tg==1){
-				inner.style.position="absolute";
 				inner.style.visibility="hidden";
 				inner.style.zIndex=-1;
-			}else if(inner.style.visibility=="visible" || inner.style.position=="unset" ||
-					 inner.style.zIndex=="unset"       || inner.style.visibility=="" ||
-					 inner.style.position==""          || inner.style.zIndex==""){
 				inner.style.position="absolute";
+				//inner.style.display="none";
+			}else if(inner.style.visibility=="visible"	|| inner.style.position=="unset" 	||
+					 inner.style.zIndex=="unset"       	|| inner.style.visibility=="" 		||
+					 inner.style.position==""          	|| inner.style.zIndex==""){
 				inner.style.visibility="hidden";
 				inner.style.zIndex=-1;
+				inner.style.position="absolute";
+				//inner.style.display="none";
 				
 				//console.log(i);
 				
@@ -116,8 +113,9 @@ var config=new Object();
 				
 				vis_ch_tg=1;
 				inner.style.visibility="visible";
-				inner.style.position="unset";
 				inner.style.zIndex="unset";
+				inner.style.position="unset";
+				//inner.style.display="";
 			}
 		}
 	}
@@ -252,5 +250,5 @@ function main_init(){
 		//test_paper=new paper_js_gr('canvas3');
 		
 		
-	generate_show_hide_menu_from_div('main_wiev_div','sub_menu_left');
+	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');
 }
