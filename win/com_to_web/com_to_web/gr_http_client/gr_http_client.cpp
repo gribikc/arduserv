@@ -114,7 +114,7 @@ QStringList GR_http_client::get_list_param(){
     }
     void GR_http_client::send_html_header(){
         write("HTTP/1.1 200 OK\n");
-        write("Content-type: text/html\n");
+        write("Content-type: text/html; charset=utf-8\n");
         write("Connection: keep-alive\n");
         write("Access-Control-Allow-Origin: *\n");
         write("\n");

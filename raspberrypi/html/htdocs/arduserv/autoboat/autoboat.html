@@ -98,17 +98,27 @@
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
 				<div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">main_settings_edit</div>
 			<!--routing_sets------------------------------------------------------------------------------------------------->
-				<div data-name="Маршруты/Точки" id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">routing_sets</div>
+				<div data-name="Маршруты/Точки" id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">
+					Маршруты
+				</div>
 			<!--routing_safe------------------------------------------------------------------------------------------------->
 				<div data-name="Редактирование маршрута" id="routing_safe" style="background: #FFFFFF;border: 3px solid #000000;">
 					<table>
 						<tr>
 							<td>Точек</td>
-							<td></td>
+							<td><input type="text" disabled id="routing_safe_pc"></td>
 						</tr>
 						<tr>
 							<td>Название</td>
 							<td><input type="text" id="routing_safe_name"></td>
+						</tr>
+						<tr>
+							<td>ТЭГ</td>
+							<td><input type="text" id="routing_safe_teg"></td>
+						</tr>
+						<tr>
+							<td>Каталог</td>
+							<td><input type="text" id="routing_safe_catalog"></td>
 						</tr>
 						<tr>
 							<td>Стартовая точка</td>

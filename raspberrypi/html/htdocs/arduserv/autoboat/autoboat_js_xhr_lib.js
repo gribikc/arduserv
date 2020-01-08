@@ -1,6 +1,7 @@
 
 var autoboat;
-
+var autoboat_routing_sets;
+var auto_boat_routing_sets=new Array();
 ///////////////////////////////////////////////////////////
 var config=new Object();
 	config['dev_name']='HC-08';
@@ -122,7 +123,7 @@ var config=new Object();
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-var auto_boat_routing_sets=new Array();
+
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -143,6 +144,8 @@ var auto_boat_routing_sets=new Array();
 ///////////////////////////////////////////////////////////
 //$(document).ready(function(){
 function main_init(){
+	autoboat=new autoboat_gr();
+	autoboat_routing_sets=new json_routing_sets_read_gr();
 
 	//HUB
 			var message=new Array();
@@ -174,7 +177,6 @@ function main_init(){
 			}
 
 		//autoboat
-		autoboat=new autoboat_gr();
 	//_HUB
 	//STREAM
 		//arduino_uart
@@ -224,11 +226,11 @@ function main_init(){
 		//_CONFIG READ
 		//routing_sets
 			routing_sets_param={
-				url   : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/htdocs/db/autoboat/routing_sets.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
+				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) + '/htdocs/db/autoboat/routing_sets.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				url_w : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/w/db/autoboat/routing_sets.json',//http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"RPR:",
-				parser:  new json_parser_gr(new json_routing_sets_read_gr()),//new raw_parser_gr(message_hub),
+				parser: new json_parser_gr(autoboat_routing_sets),//new raw_parser_gr(message_hub),
 				
 				flush_en:false,
 				auto_start:true,
@@ -242,7 +244,7 @@ function main_init(){
 				reload_en:false,
 				reload_time:1000
 			};
-			//new xmlhttprq_stream_gr(routing_sets_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			new xmlhttprq_stream_gr(routing_sets_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_routing_sets
 	//_STREAM
 	//PAPER JS

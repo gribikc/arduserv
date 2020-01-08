@@ -179,7 +179,7 @@
 			}
 		//Парсинг
 			parser_data(stream){
-				console.log(stream);
+				console.log(stream.toString());
 			}
 			error_event(message){
 				this.hub_handler.error_event(message);
@@ -588,6 +588,13 @@
 					setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
 					
 					//console.log(this.status_div);
+				}
+				
+				this.xmlhttprq.abort=function(e){
+					console.log("xmlhttprq_stream_gr:abort",this.parameter.name,e);
+				}
+				this.xmlhttprq.error=function(e){
+					console.log("xmlhttprq_stream_gr:error",this.parameter.name,e);
 				}
 				
 				this.xmlhttprq.onprogress=function(e){
