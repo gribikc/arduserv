@@ -126,19 +126,25 @@ void com_to_web::htdocs_db_write_do(QTcpSocket *socket){
     for(int i=3;i<fpa.size();i++){
         file_str=file_str+"/"+fpa[i].toLocal8Bit();
     }
-    QFile file_req(file_str);
-    //file_req.open(QIODevice::ReadOnly);
-    //socket->write(file_req.readAll());
 
+    QFile(file_str).setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOther);
+    QFile file_req(file_str);
+    file_req.setPermissions(file_str,QFileDevice::WriteOther);
     //Если такойфайлужеесть сохраняем копию
         file_req.setFileName(file_str);
         QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
         file_req.rename(nfn);
-        file_req.setFileName(file_str);
-
     //Сохраняем данные в фал
-        file_req.open(QIODevice::WriteOnly);
-        if(file_req.isWritable()){qDebug() << "незаписываемый";}
+        //file_req.open(QIODevice::ReadOnly);
+        //socket->write(file_req.readAll());
+        //QFileDevice::WriteOther
+
+        file_req.setFileName(file_str);
+        file_req.open(QIODevice::ReadWrite);
+        file_req.setPermissions(file_str,QFileDevice::WriteOther);
+        if(file_req.exists()){qDebug() << "существует_1";}else{qDebug() << "нет файла_0";}
+        if(file_req.isWritable()){qDebug() << "записываемый_1";}else{qDebug() << "не открыть для записи_0";}
+        qDebug() << file_req.permissions(file_str);
         qDebug() << file_req.errorString();
 
         QByteArray  data_to_send=static_cast<GR_http_client*>(socket)->indata;

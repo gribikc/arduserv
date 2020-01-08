@@ -52,7 +52,8 @@ public:
     void htdocs_db_write_do(QTcpSocket *socket);
 
 
-    QString android_htdocs_patch="/storage/3262-3934/com_to_web";
+    //QString android_htdocs_patch="/storage/3262-3934/com_to_web";
+    QString android_htdocs_patch="/storage/emulated/0/com_to_web";
 
     QTcpServer *server; // указатель на сервер
     //QList<gr_httprqs_parser> httprqs_parser; // получатели данных
