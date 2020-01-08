@@ -227,7 +227,34 @@
 			update_map_data(){
 				document.getElementById('routing_safe_pc').value=trip_point_arr.length;
 			}
-		//Сохранить/Перезагрузить		
+		//Сохранить/Перезагрузить
+			routing_add_to_array(){
+				//console.log(trip_point_arr);
+				var arr_push={};
+				arr_push['name']=document.getElementById('routing_safe_name').value;
+				arr_push['tag']=document.getElementById('routing_safe_teg').value;
+				arr_push['catalog']=document.getElementById('routing_safe_catalog').value;
+				arr_push['description']=document.getElementById('routing_safe_description').value;
+				arr_push['start_point']=document.getElementById('routing_safe_start_point').value;
+				arr_push['loop_point']=document.getElementById('routing_safe_loop_point').value;
+				arr_push['points']=new Array();
+				
+				var cord=new Float32Array(2);
+				for(var i=0;i<trip_point_arr.length;i++){
+					cord=trip_point_arr[i]['point'].geometry.getCoordinates();
+					arr_push['points'].push(cord);
+				}
+
+				autoboat_routing_sets.routing_sets.push(arr_push);
+				this.routing_save_to_db();
+			}
+			routing_save_to_db(){
+				var xmlhttprq_test = new XMLHttpRequest();
+				xmlhttprq_test.open('POST', 'http://192.168.1.44:3128/db/w/autoboat/routing_sets.json', true);//, true
+				xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+				xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlhttprq_test.send(JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t'));
+			}
 	}
 	
 	function autoboat_save_routing_sets_send_db(){
@@ -244,6 +271,8 @@
 		//console.log(trip_point_arr);
 		var arr_push={};
 		arr_push['name']="test name";
+		arr_push['tag']="test name";
+		arr_push['catalog']="test name";
 		arr_push['description']="test description";
 		arr_push['start_point']=0;
 		arr_push['loop_point']=3;
@@ -254,8 +283,7 @@
 			cord=trip_point_arr[i]['point'].geometry.getCoordinates();
 			arr_push['points'].push(cord);
 		}
-		
-		
+
 		autoboat_routing_sets.routing_sets.push(arr_push);
 		//console.log(auto_boat_routing_sets);
 		autoboat_save_routing_sets_send_db();

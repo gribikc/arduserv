@@ -127,6 +127,8 @@ void com_to_web::htdocs_db_write_do(QTcpSocket *socket){
         file_str=file_str+"/"+fpa[i].toLocal8Bit();
     }
     QFile file_req(file_str);
+    //file_req.open(QIODevice::ReadOnly);
+    //socket->write(file_req.readAll());
 
     //Если такойфайлужеесть сохраняем копию
         file_req.setFileName(file_str);
@@ -136,6 +138,9 @@ void com_to_web::htdocs_db_write_do(QTcpSocket *socket){
 
     //Сохраняем данные в фал
         file_req.open(QIODevice::WriteOnly);
+        if(file_req.isWritable()){qDebug() << "незаписываемый";}
+        qDebug() << file_req.errorString();
+
         QByteArray  data_to_send=static_cast<GR_http_client*>(socket)->indata;
         file_req.write(data_to_send);
         file_req.close();

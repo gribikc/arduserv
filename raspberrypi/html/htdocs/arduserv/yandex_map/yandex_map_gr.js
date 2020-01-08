@@ -132,9 +132,9 @@ function yandex_map_add_point_gr(x,y,deep){
     ], {
         // Описываем свойства круга.
         // Содержимое балуна.
-        balloonContent: deep+" м.",
+        //balloonContent: deep+" м.",
         // Содержимое хинта.
-        hintContent: ""
+        //hintContent: ""
     }, {
         // Задаем опции круга.
         // Включаем возможность перетаскивания круга.
@@ -143,7 +143,7 @@ function yandex_map_add_point_gr(x,y,deep){
         // Последний байт (77) определяет прозрачность.
         // Прозрачность заливки также можно задать используя опцию "fillOpacity".
         fillColor: "rgb("+255+","+0+","+0+")",//#DB7093"//fillColor: "rgb("+deep*30+","+deep*30+","+deep*0+")",//#DB7093"
-		fillOpacity: "50",
+		fillOpacity: "80",
         // Цвет обводки.
         strokeColor: "#FFFFFF",
         // Прозрачность обводки.
