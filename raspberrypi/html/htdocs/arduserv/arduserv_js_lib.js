@@ -772,12 +772,31 @@
 			document.getElementById(inner_html).style.visibility="hidden";
 			document.getElementById(inner_html).style.position="absolute";
 			document.getElementById(inner_html).style.zIndex=-1;
+			//document.getElementById(inner_html).display='none';
 		}else{
 			document.getElementById(inner_html).style.visibility="visible";
 			document.getElementById(inner_html).style.position="unset";
 			document.getElementById(inner_html).style.zIndex="unset";
+			//document.getElementById(inner_html).display='block';
 		}
-	}//////////////////////////////////////////
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_hide_inner(inner_html){
+		inner_html.style.visibility="hidden";
+		inner_html.style.position="absolute";
+		inner_html.style.zIndex=-1;
+		inner_html.style.display='none';
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_view_inner(inner_html,display){
+		inner_html.style.visibility="unset";
+		inner_html.style.position="unset";
+		inner_html.style.zIndex="unset";
+		inner_html.style.display='block';
+	}
+	//////////////////////////////////////////
 	///////////////////////////////////////////
 	function hiden_change_inner_gr(inner_html){
 		if(document.getElementById(inner_html).style.visibility=="visible"){

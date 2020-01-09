@@ -29,8 +29,9 @@ var config=new Object();
 			var new_div = document.createElement('a');
 			new_div.onclick=function changeContent() {
 				//console.log(this.name);
-				view_main_menu_hide_all('main_list_of_all','main_wiev_div',1)
-				hide_view_inner_gr(this.name);
+				view_main_menu_hide_all('main_list_of_all','main_wiev_div',1);
+				//hide_view_inner_gr(this.name);
+				full_view_inner(document.getElementById(this.name));
 			}		
 			
 			control_div.appendChild(new_div);
@@ -42,31 +43,33 @@ var config=new Object();
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
+	function full_hide_inner(inner_html){
+		inner_html.style.visibility="hidden";
+		inner_html.style.position="absolute";
+		inner_html.style.zIndex=-1;
+		inner_html.style.display='none';
+	}
+	function full_view_inner(inner_html,display){
+		inner_html.style.visibility="unset";
+		inner_html.style.position="unset";
+		inner_html.style.zIndex="unset";
+		inner_html.style.display='block';
+	}
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 	function view_main_menu_hide_all(div_menu,div_main,sw){
 		var inner_count=document.getElementById("main_wiev_div").childElementCount;
 		var vis_ch_tg=0;
 		if(sw==0){
-			document.getElementById(div_main).style.position='absolute';
-			document.getElementById(div_main).style.visibility='hidden';
-			document.getElementById(div_main).style.display='none'
-			
-			document.getElementById(div_menu).style.position='unset';
-			document.getElementById(div_menu).style.visibility='';
-			document.getElementById(div_menu).style.display=''
+			full_hide_inner(document.getElementById(div_main));
+			full_view_inner(document.getElementById(div_menu));
 			for(i=0;i<inner_count;i++){
-				inner=document.getElementById("main_wiev_div").children[i];
-				inner.style.position="absolute";
-				inner.style.visibility="hidden";
-				inner.style.zIndex=-1;
+				full_hide_inner(document.getElementById("main_wiev_div").children[i]);
 			}
 		}else{
-			document.getElementById(div_menu).style.position='absolute';
-			document.getElementById(div_menu).style.visibility='hidden';
-			document.getElementById(div_menu).style.display='none'
-			
-			document.getElementById(div_main).style.position='unset';
-			document.getElementById(div_main).style.visibility='';
-			document.getElementById(div_main).style.display=''
+			full_hide_inner(document.getElementById(div_menu));
+			full_view_inner(document.getElementById(div_main));
 		}
 	}
 ///////////////////////////////////////////////////////////
@@ -88,14 +91,14 @@ var config=new Object();
 				inner.style.visibility="hidden";
 				inner.style.zIndex=-1;
 				inner.style.position="absolute";
-				//inner.style.display="none";
+				inner.style.display="none";
 			}else if(inner.style.visibility=="visible"	|| inner.style.position=="unset" 	||
 					 inner.style.zIndex=="unset"       	|| inner.style.visibility=="" 		||
 					 inner.style.position==""          	|| inner.style.zIndex==""){
 				inner.style.visibility="hidden";
 				inner.style.zIndex=-1;
 				inner.style.position="absolute";
-				//inner.style.display="none";
+				inner.style.display="none";
 				
 				//console.log(i);
 				
@@ -116,7 +119,7 @@ var config=new Object();
 				inner.style.visibility="visible";
 				inner.style.zIndex="unset";
 				inner.style.position="unset";
-				//inner.style.display="";
+				inner.style.display="block";
 			}
 		}
 	}
