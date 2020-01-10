@@ -40,6 +40,8 @@ public:
         void send_html_header();
         void send_data_header();
         void send_neutral_header();
+        void send_css_header();
+        void send_js_header();
 public slots:
     void readyRead(); // обработчик входящих данных
     void disconnected(); // обработчик изменения состояния вещающего

@@ -49,6 +49,11 @@
 					}
 				}
 			}
+			//over_map
+			document.getElementById("over_map").innerHTML="";
+			document.getElementById("over_map").innerHTML+="Скорость:"+stream['speed'][3].toFixed(1)+" км/ч.<br>";
+			document.getElementById("over_map").innerHTML+="Курс:"+stream['direction'][3]+"<br>";
+			document.getElementById("over_map").innerHTML+=stream['hour'][3]+":"+stream['min'][3]+":"+stream['sec'][3];
 		}
 		error_event(message){
 			console.log(message+'autoboat_gr');
@@ -182,7 +187,7 @@
 				this.div.innerHTML+='<br>';
 				for(var i=0;i<arr.length;i++){
 					this.div.innerHTML+=arr[i]['name'];
-					this.div.innerHTML+=' ('+arr[i]['description'].substr(0,50)+') ';
+					this.div.innerHTML+=' ('+arr[i]['description'].substr(0,10)+'...) ';
 					this.div.innerHTML+=' Зап...';
 					this.div.innerHTML+=' <a href=\"javascript:autoboat_routing_sets.view_route('+i+');\">Пос...</a>';
 					this.div.innerHTML+=' <a href=\"javascript:autoboat_routing_sets.edit_route('+i+');\">Ред...</a>';
@@ -256,38 +261,98 @@
 				xmlhttprq_test.send(JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t'));
 			}
 	}
-	
-	function autoboat_save_routing_sets_send_db(){
-		var xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', 'http://localhost:3128/w/db/autoboat/routing_sets.json', true);//, true
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function generate_show_hide_menu_from_div(main_div_name,control_div_name){
+		var main_div = document.getElementById(main_div_name);
+		var control_div = document.getElementById(control_div_name);
+		var elementChildrens = main_div.children;
+		for (var i=0, child; child=elementChildrens[i]; i++) {
+			var new_div = document.createElement('a');
+			new_div.onclick=function changeContent() {
+				view_main_menu_hide_all('main_list_of_all','main_wiev_div',1);
+				full_view_inner_gr(document.getElementById(this.name));
+			}		
+			
+			control_div.appendChild(new_div);
+			new_div.classList.add('mini_icon_mm_gr');//mini_icon_mm_gr//menu_up_a_gr
+			new_div.innerHTML=child.dataset['name'];
+			new_div.name=child.id;
+		}
+	}
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+	function view_main_menu_hide_all(div_menu,div_main,sw){
+		var inner_count=document.getElementById("main_wiev_div").childElementCount;
+		var vis_ch_tg=0;
+		if(sw==0){
+			full_hide_inner_gr(document.getElementById(div_main));
+			full_view_inner_gr(document.getElementById(div_menu));
+			for(var i=0;i<inner_count;i++){
+				full_hide_inner_gr(document.getElementById("main_wiev_div").children[i]);
+			}
+		}else{
+			full_hide_inner_gr(document.getElementById(div_menu));
+			full_view_inner_gr(document.getElementById(div_main));
+		}
+	}
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+	function next_prev_main_wiev_div_in(rf){
+		/*
+			При переключении скрывать все и открывать только один или 
+			если открыто несколько то закрывать первый открывать следующий...
+		*/
+		var i;
+		var inner;
+		var inner_count=document.getElementById("main_wiev_div").childElementCount;
+		var vis_ch_tg=0;
+		for(i=0;i<inner_count;i++){
+			inner=document.getElementById("main_wiev_div").children[i];
+			if(vis_ch_tg==1){
+				full_hide_inner_gr(inner);
+			}else if(inner.style.visibility=="visible"	|| inner.style.position=="unset" 	||
+					 inner.style.zIndex=="unset"       	|| inner.style.visibility=="" 		||
+					 inner.style.position==""          	|| inner.style.zIndex==""){
+				full_hide_inner_gr(inner);
+				vis_ch_tg=1;
+				if(rf=='f'){
+					if( !(inner=document.getElementById("main_wiev_div").children[i+1]) ){
+						inner=document.getElementById("main_wiev_div").children[0];
+					}
+					i++;
+				}else{
+					if( !(inner=document.getElementById("main_wiev_div").children[i-1]) ){
+						inner=document.getElementById("main_wiev_div").children[inner_count-1];
+						inner_count--;
+					}
+				}
+				vis_ch_tg=1;
+				full_view_inner_gr(inner);
+			}
+		}
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function test_send_data1(){
+		xmlhttprq_test = new XMLHttpRequest();
+		xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/28/57600/', true);//, true
 		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xmlhttprq_test.send(JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t'));
-		//console.log(auto_boat_routing_sets);
-		//console.log(JSON.stringify(auto_boat_routing_sets,null, ' '));
-	}
-
-	function autoboat_routing_sets_test(){
-		//console.log(trip_point_arr);
-		var arr_push={};
-		arr_push['name']="test name";
-		arr_push['tag']="test name";
-		arr_push['catalog']="test name";
-		arr_push['description']="test description";
-		arr_push['start_point']=0;
-		arr_push['loop_point']=3;
-		arr_push['points']=new Array();
-		
-		var cord=new Float32Array(2);
-		for(var i=0;i<trip_point_arr.length;i++){
-			cord=trip_point_arr[i]['point'].geometry.getCoordinates();
-			arr_push['points'].push(cord);
-		}
-
-		autoboat_routing_sets.routing_sets.push(arr_push);
-		//console.log(auto_boat_routing_sets);
-		autoboat_save_routing_sets_send_db();
-	}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		var uint8 = new Uint8Array(2);
+		uint8[0] = 1;
+		uint8[1] = 2;
+		xmlhttprq_test.send(uint8);
+		//!!!xmlhttprq_test.abort();
+		//xmlhttprq_test.send();
+	}	

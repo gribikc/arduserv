@@ -1,9 +1,9 @@
 
 var autoboat;
 var autoboat_routing_sets;
-var auto_boat_routing_sets=new Array();
 ///////////////////////////////////////////////////////////
 var config=new Object();
+	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
 	config['remoute_serv_ip']='192.168.1.44';
 	config['db_config_name']='config.json';
@@ -16,132 +16,9 @@ var config=new Object();
 	config['map']=new Object();
 	config['map']['auto_move_map_to_boat']=true;
 	config['map']['point_of_position']=300;
-	
+	//////////////////////////////////////////////
 	config['ssf']=false;
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-	function generate_show_hide_menu_from_div(main_div_name,control_div_name){
-		var main_div = document.getElementById(main_div_name);
-		var control_div = document.getElementById(control_div_name);
-		var elementChildrens = main_div.children;
-		for (var i=0, child; child=elementChildrens[i]; i++) {
-			var new_div = document.createElement('a');
-			new_div.onclick=function changeContent() {
-				//console.log(this.name);
-				view_main_menu_hide_all('main_list_of_all','main_wiev_div',1);
-				//hide_view_inner_gr(this.name);
-				full_view_inner(document.getElementById(this.name));
-			}		
-			
-			control_div.appendChild(new_div);
-			new_div.classList.add('mini_icon_mm_gr');//mini_icon_mm_gr//menu_up_a_gr
-			new_div.innerHTML=child.dataset['name'];
-			new_div.name=child.id;
-		}
-	}
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-	function full_hide_inner(inner_html){
-		inner_html.style.visibility="hidden";
-		inner_html.style.position="absolute";
-		inner_html.style.zIndex=-1;
-		inner_html.style.display='none';
-	}
-	function full_view_inner(inner_html,display){
-		inner_html.style.visibility="unset";
-		inner_html.style.position="unset";
-		inner_html.style.zIndex="unset";
-		inner_html.style.display='block';
-	}
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-	function view_main_menu_hide_all(div_menu,div_main,sw){
-		var inner_count=document.getElementById("main_wiev_div").childElementCount;
-		var vis_ch_tg=0;
-		if(sw==0){
-			full_hide_inner(document.getElementById(div_main));
-			full_view_inner(document.getElementById(div_menu));
-			for(i=0;i<inner_count;i++){
-				full_hide_inner(document.getElementById("main_wiev_div").children[i]);
-			}
-		}else{
-			full_hide_inner(document.getElementById(div_menu));
-			full_view_inner(document.getElementById(div_main));
-		}
-	}
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-	function next_prev_main_wiev_div_in(rf){
-		/*
-			При переключении скрывать все и открывать только один или 
-			если открыто несколько то закрывать первый открывать следующий...
-		*/
-		var i;
-		var inner;
-		var inner_count=document.getElementById("main_wiev_div").childElementCount;
-		var vis_ch_tg=0;
-		for(i=0;i<inner_count;i++){
-			//document.getElementById("main_wiev_div").children[i].
-			inner=document.getElementById("main_wiev_div").children[i];
-			if(vis_ch_tg==1){
-				inner.style.visibility="hidden";
-				inner.style.zIndex=-1;
-				inner.style.position="absolute";
-				inner.style.display="none";
-			}else if(inner.style.visibility=="visible"	|| inner.style.position=="unset" 	||
-					 inner.style.zIndex=="unset"       	|| inner.style.visibility=="" 		||
-					 inner.style.position==""          	|| inner.style.zIndex==""){
-				inner.style.visibility="hidden";
-				inner.style.zIndex=-1;
-				inner.style.position="absolute";
-				inner.style.display="none";
-				
-				//console.log(i);
-				
-				vis_ch_tg=1;
-				if(rf=='f'){
-					if( !(inner=document.getElementById("main_wiev_div").children[i+1]) ){
-						inner=document.getElementById("main_wiev_div").children[0];
-					}
-					i++;
-				}else{
-					if( !(inner=document.getElementById("main_wiev_div").children[i-1]) ){
-						inner=document.getElementById("main_wiev_div").children[inner_count-1];
-						inner_count--;
-					}
-				}
-				
-				vis_ch_tg=1;
-				inner.style.visibility="visible";
-				inner.style.zIndex="unset";
-				inner.style.position="unset";
-				inner.style.display="block";
-			}
-		}
-	}
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-	function test_send_data1(){
-		xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', 'http://localhost:3128/W/COM/28/57600/', true);//, true
-		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
-		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		var uint8 = new Uint8Array(2);
-		uint8[0] = 1;
-		uint8[1] = 2;
-		xmlhttprq_test.send(uint8);
-		//!!!xmlhttprq_test.abort();
-		//xmlhttprq_test.send();
-	}	
+	//////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -256,4 +133,5 @@ function main_init(){
 		
 		
 	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');
+	create_table_from_array_gr(config,'main_div_setings');
 }

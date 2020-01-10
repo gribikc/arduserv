@@ -32,11 +32,18 @@ body{
 .main_div {
     color: #000000; /* Цвет текста */
     width: 100%; /* Ширина слоя */
+	max-width:100%;
+	word-break: break-all;
 	//height:100%;
 	padding-top:var(--head-height);
 	height:calc(100% - var(--head-height));
 
 	//padding: 0px; /* Поля вокруг текста */
+}
+
+.wh_100{
+	width: 100%; /* Ширина слоя */
+	height:100%;
 }
 
 .main_menu_icon {

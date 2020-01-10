@@ -35,6 +35,10 @@
 		<!---------------------------------------------------------------------------------------------------------->
 		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
 			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id='main_div_setings' class="div_in_main_div">
+					
+				</div>
+			<!--STATUS------------------------------------------------------------------------------------------------------->
 				<div data-name="Статус" id='main_div_state' class="div_in_main_div">
 					<div class="up_state_div_gr">XNR GPS AP</div>
 					<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;">
@@ -139,7 +143,12 @@
 					</table>
 				</div>
 			<!--MAP---------------------------------------------------------------------------------------------------------->
-				<div data-name="Карта" id="map"></div>
+				<div data-name="Карта" id="map_div" class="wh_100">
+					<div id="over_map" style="position: absolute;z-index: 400;background-color: rgba(169, 175, 118, 0.5);color: #000000;">
+						---
+					</div>
+					<div id="map"></div>
+				</div>
 		</div>
 	<!---------------------------------------------------------------------------------------------------------->
 </body>

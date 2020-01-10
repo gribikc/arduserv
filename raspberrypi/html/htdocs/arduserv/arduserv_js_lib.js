@@ -782,7 +782,7 @@
 	}
 	//////////////////////////////////////////
 	///////////////////////////////////////////
-	function full_hide_inner(inner_html){
+	function full_hide_inner_gr(inner_html){
 		inner_html.style.visibility="hidden";
 		inner_html.style.position="absolute";
 		inner_html.style.zIndex=-1;
@@ -790,7 +790,7 @@
 	}
 	//////////////////////////////////////////
 	///////////////////////////////////////////
-	function full_view_inner(inner_html,display){
+	function full_view_inner_gr(inner_html,display){
 		inner_html.style.visibility="unset";
 		inner_html.style.position="unset";
 		inner_html.style.zIndex="unset";

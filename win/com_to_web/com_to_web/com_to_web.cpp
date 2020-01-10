@@ -98,8 +98,13 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->close();
     ////////////////////////////////     ////////
     }else if(http_client->is_rsw("/htdocs")>0){
-        //http_client->send_neutral_header();
-        http_client->send_html_header();
+        http_client->send_neutral_header();
+        //http_client->send_html_header();
+        /*if(http_client->hrp_headers[]){
+
+        }else{
+            http_client->send_neutral_header();
+        }*/
         htdocs_page_request_do(list_param,http_client);
         GR_logger::log(this,"CtW Page Send");
         http_client->close();

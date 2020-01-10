@@ -120,6 +120,23 @@ QStringList GR_http_client::get_list_param(){
         write("\n");
         GR_logger::log(this,"Http Send HTML header");
     }
+    void GR_http_client::send_css_header(){
+        write("HTTP/1.1 200 OK\n");
+        write("Content-type: text/css; charset=utf-8\n");
+        write("Connection: keep-alive\n");
+        write("Access-Control-Allow-Origin: *\n");
+        write("\n");
+        GR_logger::log(this,"Http Send CSS header");
+    }
+    void GR_http_client::send_js_header(){
+        write("HTTP/1.1 200 OK\n");
+        write("Content-type: text/javascript; charset=utf-8\n");
+        write("Connection: keep-alive\n");
+        write("Access-Control-Allow-Origin: *\n");
+        write("\n");
+        GR_logger::log(this,"Http Send HTML header");
+    }
+
     void GR_http_client::send_neutral_header(){
         write("HTTP/1.1 200 OK\n");
         write("Connection: keep-alive\n");
