@@ -145,5 +145,3 @@ QStringList GR_http_client::get_list_param(){
         GR_logger::log(this,"Http Send Neutral header");
     }
 
-
-
