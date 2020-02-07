@@ -9,7 +9,7 @@
 			this.div=div;
 		}
 		//////////
-		parser_data(type,stream){
+		parser_data(stream){
 			console.log(stream);
 			//console.log(JSON.stringify(stream),null, '\t');
 			
@@ -26,15 +26,14 @@
 			var div_p = document.getElementById('tbl_db2');
 			create_div_from_array_to_db_gr("conf",arr,div_p);
 			
-			
 			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
 			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
 			
-			if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
-				console.log("equal!!!");
-			}else{
-				console.log("NOT equal!!!");
-			}
+			//if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
+			//	console.log("equal!!!");
+			//}else{
+			//	console.log("NOT equal!!!");
+			//}
 			
 			//save_db(arr);
 		}
@@ -138,7 +137,7 @@
 		}
 		return arr;
 	}*/
-	function create_array_from_div_to_db_gr(inner){
+	/*function create_array_from_div_to_db_gr(inner){
 		var arr=new Array();
 
 		for(var i=0;i<inner.childElementCount;i++){
@@ -156,6 +155,56 @@
 			}
 		}
 
+		return arr;
+	}*/
+	function create_array_from_div_to_db_gr(inner){
+		var arr=new Object();
+		var k=0;
+
+		for(var i=0;i<inner.childElementCount;i++){
+			if(inner.children[i].tagName=='UL'){
+				//arr=new Object();
+				//arr[i]['name']=inner.children[i].tagName;
+				//arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
+				//arr.push(create_array_from_div_to_db_gr(inner.children[i]));
+				//if(i!=0){
+				//	arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
+				//}else{
+				//	arr=create_array_from_div_to_db_gr(inner.children[i]);
+				//}
+				
+				arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
+				//var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
+				//for (let key in arr_new) {
+				//	arr[key]=arr_new[key];
+				//}
+			}else if(inner.children[i].tagName=='LI'){
+				//arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
+				var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
+				for (let key in arr_new) {
+					arr[key]=arr_new[key];
+				}
+			}else if(inner.children[i].tagName=='DIV'){
+				arr=create_array_from_div_to_db_gr(inner.children[i]);
+				//var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
+				//for (let key in arr_new) {
+				//	arr[key]=arr_new[key];
+				//}
+			}else if(inner.children[i].tagName=='INPUT'){
+				k++;
+				//arr[i]=new Array();
+				if(inner.children[i].name=='name' && i==(inner.childElementCount-1)){
+					arr[inner.children[i].value]=inner.children[i].name;
+				}else{
+					arr[inner.children[i].value]=inner.children[i+1].value;
+					i++;
+				}
+				//arr[i]=new Array();
+				//arr[i][inner.children[i].name]=inner.children[i].value;
+			}else{
+				console.log('Error:',inner.children[i].tagName);
+			}
+		}
 		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
