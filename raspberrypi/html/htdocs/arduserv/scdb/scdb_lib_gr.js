@@ -10,7 +10,7 @@
 		}
 		//////////
 		parser_data(stream){
-			console.log(stream);
+			console.log('Исходный поток:',stream);
 			//console.log(JSON.stringify(stream),null, '\t');
 			
 			//var div_p = document.createElement("div");
@@ -22,20 +22,22 @@
 			
 			var div_p = document.getElementById(this.div);
 			arr=create_array_from_div_to_db_gr(div_p);
-			console.log(arr);
+			console.log('Востановленный массив:',arr);
+			
 			var div_p = document.getElementById('tbl_db2');
 			create_div_from_array_to_db_gr("conf",arr,div_p);
 			
-			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
-			//console.log(JSON.stringify(Object.assign({},arr),null, '\t'));
+			//console.log('Исходный в текст:',JSON.stringify(Object.assign({},stream),null, '\t'));
+			//console.log('Востановленный в текст:',JSON.stringify(Object.assign({},arr),null, '\t'));
 			
-			//if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
-			//	console.log("equal!!!");
-			//}else{
-			//	console.log("NOT equal!!!");
-			//}
+			if(JSON.stringify(Object.assign({},stream))==JSON.stringify(Object.assign({},arr))){
+			//if(stream==arr){
+				console.log("equal!!!");
+			}else{
+				console.log("NOT equal!!!");
+			}
 			
-			//save_db(arr);
+			save_db(arr);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,11 +45,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function save_db(arr){
 		var xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', 'http://127.0.0.1:3128/db/w/test/fname.json', true);//, true
+		xmlhttprq_test.open('POST', 'http://127.0.0.1:3128/db/w/test/fname_2.json', true);//, true
 		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xmlhttprq_test.send(JSON.stringify(arr,null, '\t'));
-		console.log(JSON.stringify(arr,null, '\t'));
+		//console.log(JSON.stringify(arr,null, '\t'));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,53 +160,51 @@
 		return arr;
 	}*/
 	function create_array_from_div_to_db_gr(inner){
-		var arr=new Object();
-		var k=0;
+		var arr=new Array();
 
 		for(var i=0;i<inner.childElementCount;i++){
 			if(inner.children[i].tagName=='UL'){
-				//arr=new Object();
-				//arr[i]['name']=inner.children[i].tagName;
-				//arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
-				//arr.push(create_array_from_div_to_db_gr(inner.children[i]));
-				//if(i!=0){
-				//	arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
-				//}else{
-				//	arr=create_array_from_div_to_db_gr(inner.children[i]);
-				//}
+				var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
 				
-				arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
-				//var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
-				//for (let key in arr_new) {
-				//	arr[key]=arr_new[key];
-				//}
+				if (Object.keys(arr).length == 0) {
+					for (let key in arr_new) {
+						arr[key]=arr_new[key];
+					}
+				}else{
+					for (let key in arr) {
+						arr[key]=arr_new;
+					}
+				}
 			}else if(inner.children[i].tagName=='LI'){
-				//arr[i]=create_array_from_div_to_db_gr(inner.children[i]);
 				var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
 				for (let key in arr_new) {
 					arr[key]=arr_new[key];
 				}
 			}else if(inner.children[i].tagName=='DIV'){
 				arr=create_array_from_div_to_db_gr(inner.children[i]);
-				//var arr_new=create_array_from_div_to_db_gr(inner.children[i]);
-				//for (let key in arr_new) {
-				//	arr[key]=arr_new[key];
-				//}
 			}else if(inner.children[i].tagName=='INPUT'){
-				k++;
-				//arr[i]=new Array();
 				if(inner.children[i].name=='name' && i==(inner.childElementCount-1)){
 					arr[inner.children[i].value]=inner.children[i].name;
 				}else{
-					arr[inner.children[i].value]=inner.children[i+1].value;
+					var value=inner.children[i+1].value;
+					if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)){
+						arr[inner.children[i].value]=Number(value);
+					}else if(value=='true'){
+						arr[inner.children[i].value]=true;
+					}else if(value=='false'){
+						arr[inner.children[i].value]=false;
+					}else{
+						arr[inner.children[i].value]=value;
+					}
 					i++;
 				}
-				//arr[i]=new Array();
-				//arr[i][inner.children[i].name]=inner.children[i].value;
 			}else{
 				console.log('Error:',inner.children[i].tagName);
 			}
 		}
+		if(arr.length==0){
+			arr=Object.assign({},arr);
+		}		
 		return arr;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
