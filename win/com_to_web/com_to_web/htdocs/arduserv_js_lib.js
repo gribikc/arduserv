@@ -9,7 +9,7 @@
 				
 			}
 		//Парсинг
-			parser_data(type,arr){
+			parser_data(arr){
 				
 				document.getElementById("gr_db_log_txa").innerHTML="Size:";
 				document.getElementById("gr_db_log_txa").innerHTML+=arr.length;
@@ -47,7 +47,9 @@
 				this.db_array=db;
 			}
 		//Парсинг
-			parser_data(type,arr){
+			parser_data(arr){
+				type=0;///!!!
+				console.log("error");
 				for(var j=0;j<arr.length;j++){//обход входного массива сообщений
 					for(var i=0;i<this.db_array.length;i++){//обход базданного массива
 						if(type==this.db_array[i].type && arr[j][0]==this.db_array[i].mark){//проверяем тип сообщения и индентификатор
@@ -70,6 +72,135 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//SNMP
+	/*
+	
+	*/
+	class snmp_parser_gr {//!!!CONTAINER!!!
+		//Инициализация
+			constructor(hub) {
+				this.parser_data_array=new Array();
+				this.hub_handler=hub;
+			}
+		//Парсинг
+			parser_data(stream){
+					//console.log(stream);
+					/*var arr=new Uint8Array(stream.length);
+					for(var i=0;i<stream.length;i++){
+						arr[i]=stream.charCodeAt(i);
+					}
+					console.log(arr);
+					document.getElementById('test_data_0').innerHTML=stream;*/
+					
+					var arr=this.snmp_tree(stream,0);
+					if(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined && arr[0][2][3][0][1]['data'].length>0){
+						this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
+					}else{	
+						//console.log("SNMP REQUEST EMPTY OR NOT VALID");
+						//console.log(stream);
+						this.hub_handler.error_event("SNMP REQUEST EMPTY OR NOT VALID");
+					}
+			}
+			///////////////////////////////////////////////////////////////
+			//////////////////////////////////////////
+			/////////////////////
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
+			///////////////////////////////////////////////////////////////
+			//////////////////////////////////////////
+			/////////////////////
+				snmp_tree(arr,index){
+					var k = {start: index,l_size:0};
+					var array;
+					var array_ret=[];
+					for(var i=0;i<arr.length;i++){
+						array=this.get_data(arr,k);//0//5
+						if(array['type']>0x10){
+							array=this.snmp_tree(array['data'],0);
+						}
+						array_ret.push(array);
+						i=k.start;
+					}
+					return array_ret;
+				}			
+				/////////////////////
+				get_data(arr,index){
+					var k=index.start;
+					var data=new Array();
+					//Integer(0x02),String(0x04),Object ID(0x06),varBind(0x30),SNMP RESPONSE(0xA2)
+						data['type']=arr.charCodeAt(k)&255;
+						k++;
+					//LENGTH
+						data['len']=0;
+						if((arr.charCodeAt(k)&255)>127){
+							var l_of_len=arr.charCodeAt(k)&(127);
+							var len=0;
+							index.l_size=l_of_len+1;
+							k++;
+							for(var i=0;i<l_of_len;i++){
+								len*=256;
+								len+=arr.charCodeAt(k)&255;
+								k++;
+							}
+							data['len']=len;
+						}else{
+							data['len']=arr.charCodeAt(k)&255;
+							k++;
+						}
+					//DATA
+						data['data']=new Array();;
+						for(var i=0;i<data['len'];i++){
+							if(data['type']==0x04){
+								data['data']+=arr.charAt(k);
+							}else{
+								//data['data']+=arr[k];
+								//data['data']+=arr.charCodeAt(k);
+								//data['data'][i]=arr.charCodeAt(k)&255;
+								data['data']+=arr.charAt(k);
+							}
+							k++;
+						}
+					/////
+					index.start=k;
+					return data;
+				}
+			/////////////////////
+			//////////////////////////////////////////
+			///////////////////////////////////////////////////////////////
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	class array_data_to_log_gr {
+		//Инициализация
+			constructor() {
+
+			}
+		//Парсинг
+			parser_data(stream){
+				console.log(stream.toString());
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
+	}
+	class array_to_to_to_gr {
+		//Инициализация
+			constructor() {
+
+			}
+		//Парсинг
+			parser_data(stream){
+				
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //JSON
 	/*
 	Принимает поток данных конечной длинны генерируемый сервером(php&mysql) заранее структурированный
@@ -85,14 +216,17 @@
 				this.parser_data_array=JSON.parse(stream);
 				
 				if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-					this.hub_handler.parser_data('json',this.parser_data_array);					
+					this.hub_handler.parser_data(this.parser_data_array);					
 					this.parser_data_array=new Array();
 				}
 			}
+			error_event(message){
+				this.hub_handler.error_event(message);
+			}
 	}
-//
-//
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //JSON_STREAM
 	class json_stream_parser_gr{
 		//Инициализация
@@ -144,7 +278,7 @@
 										this.parser_data_array=JSON.parse( stream.slice(this.json_begin_point, i-10) );
 				
 										if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-											this.hub_handler.parser_data('json',this.parser_data_array);					
+											this.hub_handler.parser_data(this.parser_data_array);					
 											this.parser_data_array=new Array();
 										}
 										//console.log(this.parser_data_array);
@@ -154,6 +288,9 @@
 						}
 					}
 				this.start_point=this.end_point;
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,15 +303,18 @@
 	*/
 	class raw_parser_gr {
 		//Инициализация
-			constructor(hub) {//hub
+			constructor(hub,db_matrix) {//hub
 				this.parser_data_array=new Array();
 				this.hub_handler=hub;
 				this.start_point=0;
 				this.end_point=0;
+				this.db_matrix=db_matrix;
+				
+				//this.MESSAGE_LEN=95;
+				//this.HEADER=[0xAA,0xBB];
+				//this.FOOTER=[0xCC,0xDD];
 			}
 		//Парсинг
-			// AA  BB  id  cnt  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  CC  DD
-			//-31 -30 -29  -28 -27 -26 -25 -24 -23 -22 -21 -20 -19 -18 -17 -16 -15 -14 -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1  00 
 			parser_data(stream){
 				this.end_point=stream.length;
 				if(this.start_point>=this.end_point){
@@ -182,14 +322,69 @@
 				}
 				for(var i=this.start_point;i<this.end_point;i++){
 					//console.log(stream.charCodeAt(i)&0xFF);
-					if(this.start_point>=31){
-						if(	(stream.charCodeAt(i)&0xFF)   ==0xDD && (stream.charCodeAt(i-1)&0xFF) ==0xCC && 
-							(stream.charCodeAt(i-62)&0xFF)==0xBB && (stream.charCodeAt(i-63)&0xFF)==0xAA){							//console.log(stream.charCodeAt(i-28)&0xFF);
-							console.log(stream.charCodeAt(i-60)&0xFF);
+					if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
+						if(	(stream.charCodeAt(i   )&0xFF)==this.db_matrix[0]['footer'][1] && 
+							(stream.charCodeAt(i-1 )&0xFF)==this.db_matrix[0]['footer'][0] && 
+							(stream.charCodeAt(i-this.db_matrix[0]['message_len']+1)&0xFF)==this.db_matrix[0]['header'][1] && 
+							(stream.charCodeAt(i-this.db_matrix[0]['message_len'])&0xFF)==this.db_matrix[0]['header'][0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
+							if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
+								this.message_parser(stream,i,0);
+							}
 						}
 					}
 				}
 				this.start_point=this.end_point;
+			}
+			message_parser(stream,end_byte,m_id){
+				var tmp_float_from_byte=0;
+				for(var i in this.db_matrix[m_id]['message']){
+					this.db_matrix[m_id]['message'][i][3]=0;//обнуляем матрицу
+					if(this.db_matrix[m_id]['message'][i][1]==0){//char
+						this.db_matrix[m_id]['message'][i][3]=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len'])&0xFF;
+					}else if(this.db_matrix[m_id]['message'][i][1]==1){//float
+						//float_from_byte_arr_gr(buf)
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
+					}else if(this.db_matrix[m_id]['message'][i][1]==2){//byte.float
+						//float_from_byte_arr_gr(buf)
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
+					}else if(this.db_matrix[m_id]['message'][i][1]==3){//int
+						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-1)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-2)&0xFF;
+						tmp_float_from_byte=tmp_float_from_byte<<8;
+						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
+						//tmp_float_from_byte=tmp_float_from_byte<<8;
+						
+						this.db_matrix[m_id]['message'][i][3]=tmp_float_from_byte;
+					}else{
+						this.db_matrix[m_id]['message'][i][3]="undf...";
+					}
+
+					this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
+				}				
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 		//Сброс данных
 
@@ -247,9 +442,12 @@
 				}
 				this.start_point=this.end_point;
 				if(this.parser_nmea_array.length>0 && 1){
-					this.hub_handler.parser_data('nmea',this.parser_nmea_array);
+					this.hub_handler.parser_data(this.parser_nmea_array);
 					this.parser_nmea_array=new Array();
 				}
+			}
+			error_event(message){
+				this.hub_handler.error_event(message);
 			}
 		//Сброс данных
 			clear_nmea_array(){
@@ -260,6 +458,12 @@
 		//чуть
 		
 	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,58 +542,75 @@
 				//this.parser=parser;
 				var this_of_class=this;
 				var this_parameter=parameter;
+				this.parameter=parameter;
 				this.xmlhttprq = new XMLHttpRequest();
 			
-				this.xmlhttprq.open('GET', parameter.url, true);
-				this.xmlhttprq.overrideMimeType(parameter.mime_type);				
-				//this.xmlhttprq.timeout = 30000;
-				this.xmlhttprq.send();
+				//this.xmlhttprq.open('GET', parameter.url, true);//!!!
+					this.is_post=('post_data' in parameter) ? 1 : 0;
+					
+					
+					('mime_type' 	in this.parameter) ? null : (this.parameter.mime_type='text/plain; charset=x-user-defined');
+					('url_w' 		in this.parameter) ? null : (this.parameter.url_w='');
+					this.is_flush_en=('flush_en' in this.parameter) ? (this.parameter.flush_en ? 1:0) : 0;
+					this.is_auto_start=('auto_start' in this.parameter) ? (this.parameter.auto_start ? 1:0) : 1;	
+					this.is_status_en=('status_en' in this.parameter) ? (this.parameter.status_en ? 1:0) : 0;
+					this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
+					this.is_timeout_en=('timeout_en' in this.parameter) ? (this.parameter.timeout_en ? 1:0) : 0;
+					
+					if(this.is_auto_start){
+						this.open_c();
+					}
+
+					/*this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
+					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
+					if('timeout_en'	in parameter){
+						if(parameter.timeout_en){
+							this.xmlhttprq.timeout = parameter.timeout_time;;
+						}
+					}
+					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!*/
 				
 				this.stat_bps=0;
 				this.stat_rp=0;
+				this.last_statusText="";
+				this.last_readyState=0;
 				
-				if(parameter.status_en==true){
-					this.tii=setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
-
+				if(this.is_status_en){
 					this.status_div = document.createElement('div');
 					this.stat_div = document.createElement('div');
-					document.getElementById(parameter.status_div).appendChild(this.status_div);
-					document.getElementById(parameter.status_div).appendChild(this.stat_div);
-					
 					this.status_div.className = parameter.status_div_status_css;
 					this.stat_div.className = parameter.status_div_stat_css;
+					var main_status_div=document.createElement('div');
+					main_status_div.appendChild(this.status_div);
+					main_status_div.appendChild(this.stat_div);
+					document.getElementById(parameter.status_div).appendChild(main_status_div);
+				
+					setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
 					
 					//console.log(this.status_div);
 				}
 				
+				this.xmlhttprq.abort=function(e){
+					console.log("xmlhttprq_stream_gr:abort",this.parameter.name,e);
+				}
+				this.xmlhttprq.error=function(e){
+					console.log("xmlhttprq_stream_gr:error",this.parameter.name,e);
+				}
+				
 				this.xmlhttprq.onprogress=function(e){
-					//console.log(this.responseText);
-					//console.log(this_of_class.xmlhttprq.readyState);
-					if(this_parameter.flush_en==true || this_of_class.xmlhttprq.readyState==4){
+					if(this_of_class.is_flush_en && this_of_class.xmlhttprq.readyState!=4){
 						parameter.parser.parser_data(this.responseText);//!!!
 					}
 				}				
 				
-				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
-					//console.log(this_of_class);
-					//console.log(this.status_div);//.innerHTML=this.readyState;
-					//console.log(e);//event
-					//console.log(this);//XMLHttpRequest
-					if(parameter.status_en==true){
-						this_of_class.status_div.innerHTML=parameter.status_div_name;
-						this_of_class.status_div.innerHTML+=""+this.statusText;
-						this_of_class.status_div.innerHTML+="("+this.readyState+")";
-					}
-					//readyState;
+				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();    
 					if(this.readyState==4){//DONE
 						parameter.parser.parser_data(this.responseText);//!!!
+						
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
-						if(this_parameter.reload_en==true){
-							//console.log("ar...");
-							this.open('GET', this_parameter.url, true);
-							this.overrideMimeType(this_parameter.mime_type);					
-							setTimeout(function(e) {e.send();},this_parameter.reload_time,this);//this.send()
+						if(this_of_class.is_reload_en){
+							setTimeout(function(e) {this_of_class.open_c();},this_parameter.reload_time);
 						}
 					}
 				}
@@ -399,6 +620,15 @@
 			}
 		//чуть
 			view_stat(){
+				this.status_div.innerHTML=this.parameter.name+":";
+				this.status_div.innerHTML+=""+this.xmlhttprq.statusText;
+				this.status_div.innerHTML+="("+this.xmlhttprq.readyState+")";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").test();'>test</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").close_c();'>Close</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").open_c();'>Open</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").freeze_c();'>Freeze</a>";
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").reload_en_inv_c();'>Reload_inv</a>";				
+				
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
 				if(this.stat_bps<1000){
@@ -406,9 +636,43 @@
 				}else{
 					this.stat_div.innerHTML='Скорость: '+((this.stat_bps/1000).toFixed(2))+' Kбит/с.';//bit per second
 				}
-				//console.log(this);
+				//console.log(this.name);
+				//console.log(this_of_class);
+				//console.log(this.parameter);
 			}
 		//чуть
+			test(){
+				console.log("Test;");
+				return 1;
+			}
+			close_c(){
+				this.parameter.reload_en=false;
+				this.xmlhttprq.abort();
+			}
+			open_c(){
+				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , this.parameter.url, true);
+				this.xmlhttprq.overrideMimeType(this.parameter.mime_type);				
+				//if('timeout_en'	in this.parameter){
+					//if(this.parameter.timeout_en){
+					this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
+					//}
+				//}
+				this.xmlhttprq.send( ((this.is_post) ? this.parameter.post_data : null) );//!!!
+			}
+			freeze_c(){
+				this.close_c();
+				setTimeout(function(e) {e.open_c();},5000,this);
+			}
+			reload_en_inv_c(){
+				if(this.parameter.reload_en==false){
+					this.parameter.reload_en==true;
+				}else{
+					this.parameter.reload_en==false;
+				}
+			}
+			//close()//stop()
+			//open()//start()
+			//freeze()
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -508,12 +772,31 @@
 			document.getElementById(inner_html).style.visibility="hidden";
 			document.getElementById(inner_html).style.position="absolute";
 			document.getElementById(inner_html).style.zIndex=-1;
+			//document.getElementById(inner_html).display='none';
 		}else{
 			document.getElementById(inner_html).style.visibility="visible";
 			document.getElementById(inner_html).style.position="unset";
 			document.getElementById(inner_html).style.zIndex="unset";
+			//document.getElementById(inner_html).display='block';
 		}
-	}//////////////////////////////////////////
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_hide_inner_gr(inner_html){
+		inner_html.style.visibility="hidden";
+		inner_html.style.position="absolute";
+		inner_html.style.zIndex=-1;
+		inner_html.style.display='none';
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_view_inner_gr(inner_html,display){
+		inner_html.style.visibility="unset";
+		inner_html.style.position="unset";
+		inner_html.style.zIndex="unset";
+		inner_html.style.display='block';
+	}
+	//////////////////////////////////////////
 	///////////////////////////////////////////
 	function hiden_change_inner_gr(inner_html){
 		if(document.getElementById(inner_html).style.visibility=="visible"){
@@ -617,6 +900,81 @@
 
 		document.getElementById(div).appendChild(table);
 	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+	function snmp_query(oid,type,send_string){//1-input(get);0-output(set)
+		//Therefore, the first two numbers of an SNMP OID are encoded as 43 or 0x2B, because (40*1)+3 = 43.
+		//
+		//Integer 			0x02 Sequence 			0x30
+		//Octet String 		0x04 GetRequest PDU 	0xA0
+		//Null 				0x05 GetResponse PDU 	0xA2
+		//Object Identifier 0x06 SetRequest PDU 	0xA3
+		
+		var arr=[];
+		arr[0]=0x30;//ASN.1 header
+			arr[1]=0x00;//!!!XX;//L
+				arr[2]=0x02;//T
+					arr[3]=0x01;//L
+					arr[4]=0x01;//Version
+				arr[5]=0x04;//T
+					arr[6]=0x06;//L
+					arr[8]=0x75;//u
+					arr[9]=0x62;//b
+					arr[7]=0x70;//P
+					arr[10]=0x6C;//l
+					arr[11]=0x69;//i
+					arr[12]=0x63;//c
+				arr[13]=(type)?0xA0:0xA3;//SNMP GET/SET request//0xA0-GET//0xA3-SET//
+					arr[14]=0x00;//!!!00;L
+						arr[15]=0x02;//SNMP request ID
+							arr[16]=0x01;//L
+							arr[17]=0x01;//Version
+						arr[18]=0x02;//SNMP error status
+							arr[19]=0x01;//L
+							arr[20]=0x00;//Version
+						arr[21]=0x02;//SNMP index:
+							arr[22]=0x01;//L
+							arr[23]=0x00;//Version
+						arr[24]=0x30;//varBind list
+							arr[25]=0x00;//!!!XX;//L
+							arr[26]=0x30;//varBind
+								arr[27]=0x00;//!!!XX;//L
+									arr[28]=0x06;//Object ID
+										arr[29]=0x00;//!!!XX;//L
+										arr[30]=0x2b;//
+											var oid_arr=oid.split(".");
+											var size_of_oid=1;
+											for(var i=2;i<oid_arr.length;i++){
+												var oid_decode=oid_arr[i];
+												for(var j=4;j>=0;j--){
+													var a=(oid_decode>>(7*j));
+													oid_decode=oid_decode-a*(128<<(j-1)*7);
+													if(a>0 && j>0){
+														a^=0x80;
+													}
+													if(a>0 || j==0){
+														arr.push(a);
+														size_of_oid++;
+													}
+												}
+											}
+
+									arr.push(((type)?0x05:0x04));//varBind//(type)?0x05:0x04
+									arr.push(((type)?0x00:send_string.length));//L
+										if(type==0){
+											for(var i=0;i<send_string.length;i++){
+												arr.push(send_string.charCodeAt(i));
+											}
+										}
+
+									arr[29]=size_of_oid;
+									arr[27]=arr[29]+4+((type)?0x00:send_string.length);
+									arr[25]=arr[27]+2;
+									arr[14]=arr[27]+13;
+									arr[1] =arr[14]+13;
+		return arr;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -630,4 +988,44 @@ function key_array_to_inner(array,inner){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function create_tree_ul_li_from_array_gr(arr,inner){
+		var i=0;
+		var ul=document.createElement("ul");
+		inner.appendChild(ul);
+		
+		for(var key in arr) {
+			var li = document.createElement("li");
+			ul.appendChild(li);
+				var div_c = document.createElement("div");
+				li.appendChild(div_c);
+					var key_n=document.createElement("div");
+					div_c.appendChild(key_n);
+					key_n.setAttribute('style','display: inline-block;');
+						key_n.innerHTML=key;
+					var value_v=document.createElement("div");
+					div_c.appendChild(value_v);
+					value_v.setAttribute('style','display: inline-block;');
+						value_v.innerHTML='&nbsp;<=&nbsp;'+arr[key];
+			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){				
+				div_c.removeChild(value_v);
+				create_tree_ul_li_from_array_gr(arr[key],li);
+			}
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if (!Array.isAssociativeArray) {
+  Array.isAssociativeArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Object]';
+  };
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*window.onerror = function (msg, url, line) {
+	//alert(msg + "\n" + url + "\n" + "\n" + line);
+	//document.getElementById("error_log").innerHTML+=msg + "\n" + url + "\n" + "\n" + line;
+	return true;
+};*/
 //...

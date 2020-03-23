@@ -14,7 +14,8 @@ function init_map() {
     // Создаем карту.
     myMap = new ymaps.Map("map", {
             center: [59.77883, 30.77069],//center: [56.155172, 30.585121],//DACHA:59.778838379999996 30.77069652//
-            zoom: 15
+            zoom: 15,
+			controls: ['typeSelector','fullscreenControl','zoomControl','rulerControl']
         }, {
             searchControlProvider: 'yandex#search'
         });	
@@ -93,7 +94,7 @@ function yandex_map_center_map_to(x,y,mode){
 		y=just_point_arr[just_point_arr.length-1]['y'];
 	}
 	//myMap.setCenter([x, y]);
-	myMap.panTo([x, y],{duration:2000,flying:false,safe:true});
+	myMap.panTo([x, y],{duration:999,flying:false,safe:true});
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +105,7 @@ function yandex_map_add_point_gr(x,y,deep){
 	}
 	//console.log('Длинна массива: '+deep_points_arr.length);
 	for(var i=0;i<just_point_arr.length;i++){
-		if(just_point_arr.length>=50){
+		if(just_point_arr.length>=config['map']['point_of_position']){//50//config['map']['point_of_position']
 			//console.log(just_point_arr[i]);
 			myMap.geoObjects.remove(just_point_arr[i]['point']);
 			just_point_arr.shift();
@@ -131,9 +132,9 @@ function yandex_map_add_point_gr(x,y,deep){
     ], {
         // Описываем свойства круга.
         // Содержимое балуна.
-        balloonContent: deep+" м.",
+        //balloonContent: deep+" м.",
         // Содержимое хинта.
-        hintContent: ""
+        //hintContent: ""
     }, {
         // Задаем опции круга.
         // Включаем возможность перетаскивания круга.
@@ -142,7 +143,7 @@ function yandex_map_add_point_gr(x,y,deep){
         // Последний байт (77) определяет прозрачность.
         // Прозрачность заливки также можно задать используя опцию "fillOpacity".
         fillColor: "rgb("+255+","+0+","+0+")",//#DB7093"//fillColor: "rgb("+deep*30+","+deep*30+","+deep*0+")",//#DB7093"
-		fillOpacity: "50",
+		fillOpacity: "80",
         // Цвет обводки.
         strokeColor: "#FFFFFF",
         // Прозрачность обводки.
@@ -178,7 +179,7 @@ function on_yandex_map_click_gr(x,y){
 	//alert(coords[0].toPrecision(10)+';'+coords[1].toPrecision(10));
 	/*
 		1) Начало ввода маршрута
-			0. Очистка переменных и точек карты		F(x)
+			0. Очистка переменных и точек карты		F(x)+//fx_yandex_map_delete_all_trip_point_gr
 			1. добавление точки маршрута 			F(x)+//fx_yandex_map_addnew_trip_point_gr
 			2. удаление точки маршрута				F(x)+//fx_yandex_map_delete_trip_point_gr
 			3. вставка точки между					F(x)+//fx_yandex_map_middle_trip_point_gr
@@ -196,6 +197,25 @@ function on_yandex_map_click_gr(x,y){
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+function fx_yandex_map_addnew_trip_polint_gr(coords){
+	var arr_push={x:0,y:0,deep:0,point:0};
+	
+	var myPolyline = new ymaps.Polyline(
+		coords
+	, {},
+	{
+		strokeWidth: 2,
+		strokeColor: '#000000',
+		draggable: false
+	});
+
+	// Добавляем круг на карту.
+    myMap.geoObjects.add(myPolyline );
+	arr_push['point']=myPolyline;
+	trip_point_arr.push(arr_push);
+
+	//myPolyline.editor.startEditing();
+}
 function fx_yandex_map_addnew_trip_point_gr(x,y){
 	var arr_push={x:0,y:0,deep:0,point:0};
 	var myPlacemark = new ymaps.Placemark(
@@ -234,6 +254,14 @@ function fx_yandex_map_delete_trip_point_gr(id){
 	trip_point_arr.splice(id,1);
 	fx_yandex_map_repair_trip_point_gr();	
 }
+function fx_yandex_map_delete_all_trip_point_gr(){
+	myMap.balloon.close();
+	
+	for(var i=0;i<trip_point_arr.length;i++){
+		myMap.geoObjects.remove(trip_point_arr[i]['point']);
+	}
+	trip_point_arr=new Array();
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,7 +276,6 @@ function fx_yandex_map_repair_trip_point_gr(){
 		trip_point_arr[i]['point'].properties.set('iconContent', i);
 		trip_point_arr[i]['point'].properties.set('balloonContent', "	<a onclick='fx_yandex_map_middle_trip_point_gr("+i+");'>Вставить точку перед:"+i+"</a><br><br> \
 																		<a onclick='fx_yandex_map_delete_trip_point_gr("+i+");'>Удалить точку:"+i+"</a>");
-
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,7 +284,6 @@ function fx_yandex_map_repair_trip_point_gr(){
 function fx_yandex_map_middle_trip_point_gr(id){
 	if(id==0){return;}
 	
-
 	var x,y;
 	var st=new Float32Array(2);
 	var rd=new Float32Array(2);
@@ -271,9 +297,9 @@ function fx_yandex_map_middle_trip_point_gr(id){
 
 	fx_yandex_map_addnew_trip_point_gr(x,y);
 	
+	//Вставка точки между
 	trip_point_arr.splice( id, 0,trip_point_arr[trip_point_arr.length-1] );//trip_point_arr.splice( (trip_point_arr.length-1),1 )
 	trip_point_arr.splice((trip_point_arr.length-1),1);
 	
 	fx_yandex_map_repair_trip_point_gr();
-	
 }

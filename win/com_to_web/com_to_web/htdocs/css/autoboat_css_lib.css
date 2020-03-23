@@ -1,41 +1,72 @@
+:root {
+  --head-height: 120px;/* var(--head-height) */
+}
+
 html{
-	padding: 0;
-	margin: 0;
 	width: 100%;
 	height: 100%;
-	//margin-bottom: -60px;
-	//padding-bottom: -60px;
-	//background:#FFFFFF;
 }
 body{
 	/*BODY { margin-top: 50px; }*/
 	margin : 0 0 0 0;
-	margin-top: 60px;
+	margin-top: 0px;
 	padding: 0 0 0 0;
+	padding-top:0px;
 	background:#DCDCDC;
 	width: 100%;
 	height: 100%;
-	//margin-bottom: -60px;
-	padding-bottom: -60px;
+	color:#000000;
+	font-size:150%;
 }
 
 .menu_top_gr {
 	z-index: 9999;
-	height:  60px;
+	height:  var(--head-height);
 	position: fixed; /* Фиксированное положение */
 	left: 0; top: 0; /* Левый нижний угол */
-	background:#454545;
+	background:#7b7b7b;
 	color: #fff; /* Цвет текста */
 	width : 100%;/* Ширина слоя */
 }
+
+.main_div {
+    color: #000000; /* Цвет текста */
+    width: 100%; /* Ширина слоя */
+	max-width:100%;
+	word-break: break-all;
+	//height:100%;
+	padding-top:var(--head-height);
+	height:calc(100% - var(--head-height));
+
+	//padding: 0px; /* Поля вокруг текста */
+}
+
+.wh_100{
+	width: 100%; /* Ширина слоя */
+	height:100%;
+}
+
+.main_menu_icon {
+    color: #000000; /* Цвет текста */
+    width: 100%; /* Ширина слоя */
+	padding-top:var(--head-height);
+	height:calc(100% - var(--head-height));
+}
+
+
+
 .img_menu_up_a_gr {
   display: inline-block;
   display: inline-block;
   margin: 5px 15px 5px 15px;
-} 
+}
+.img_menu_up_img_gr {
+  /*min-block-size: -webkit-fill-available;*/
+  width: calc(var(--head-height) - 10px);/*var(--head-height);*/
+}
 
 .menu_sub_left_gr {
-	margin-top: 60px;
+	margin-top: var(--head-height);
 	margin-left: 20px;
 	visibility:hidden;
 	z-index: 9999;
@@ -47,7 +78,7 @@ body{
 	//box-shadow: -20px -20px 20px 13px black;
 }
 .menu_sub_right_gr {
-	margin-top: 60px;
+	margin-top: var(--head-height);
 	margin-right: 20px;
 	visibility:hidden;
 	z-index: 9999;
@@ -64,6 +95,19 @@ body{
 	color: #0F0F0F; /* Цвет текста */
 }
 
+.mini_icon_mm_gr {
+  display: inline-block;
+  color: black;
+  font-weight: 700;
+  text-decoration: none;
+  user-select: none;
+  padding: .3em 1em;
+  outline: none;
+  border: 2px solid;
+  border-radius: 1px;
+  transition: 0.2s;
+  margin: 5px 5px 5px 5px;
+}
 
 
 
@@ -101,4 +145,6 @@ a {
 #map {
 	width: 100%;
 	height: 100%;
+	min-height:100px;
 }
+
