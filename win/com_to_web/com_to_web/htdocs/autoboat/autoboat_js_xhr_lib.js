@@ -9,9 +9,9 @@ var config=new Object();
 	config['db_config_name']='config.json';
 	config['db_routing_sets']='routing_sets.json';
 	//////////////////////////////////////////////
-	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/sys/tcp/192.168.0.131/483/"),
+	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/sys/tcp/r/192.168.0.131/483/"),
 	//config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/com/w/6/115200/"),
-	config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/sys/tcp/192.168.0.131/483/"),
+	config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/sys/tcp/w/192.168.0.131/483/"),
 	//config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/r/"+config['dev_name']+"/"),
 	//config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/w/"+config['dev_name']+"/"),
 	//////////////////////////////////////////////

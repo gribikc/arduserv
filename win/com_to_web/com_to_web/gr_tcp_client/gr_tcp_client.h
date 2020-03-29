@@ -19,6 +19,7 @@ public:
     void tcp_connected();
     void tcp_readyRead();
     void tcp_disconnected();
+    void tcp_bytesWritten();
 signals:
 
 public slots:
