@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="../css/autoboat_css_lib.css">
+
+	<script language="javascript" type="text/javascript"  src="../paper-full.js"></script>
+	<script language="javascript" type="text/javascript"  src="../arduserv_js_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="autoboat_js_xhr_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="autoboat_lib_gribikc.js"></script>
+
+	<script src="../yandex_map/yandex_map_gr.js" type="text/javascript"></script>
+	<script async src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&onload=init_map" type="text/javascript"></script>
+
+</head>
+<body onload="main_init()">
+	<!---------------------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_top_gr">
+			<a class="img_menu_up_a_gr" onclick="view_main_menu_hide_all('main_list_of_all','main_wiev_div',0);"><img class="img_menu_up_img_gr" src="../css/icons8-menu-50.png"></a>
+				<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img class="img_menu_up_img_gr" src="../css/icons8-double-left-50.png"></a>
+			<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img class="img_menu_up_img_gr" src="../css/icons8-settings-50.png"></a>
+				<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img class="img_menu_up_img_gr" src="../css/icons8-double-right-50.png"></a>
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
+			<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">Карта->Текущие положение</a><br>
+			<a class="menu_up_a_gr" onclick="config['map']['auto_move_map_to_boat'] ? config['map']['auto_move_map_to_boat']=0 : config['map']['auto_move_map_to_boat']=1;">Карта->Следовать</a><br>
+			<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
+			<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>		
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_menu_icon" id='main_list_of_all' style="position:absolute;visibility:hidden;display:none;"></div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id='main_div_setings' class="div_in_main_div">
+					
+				</div>
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Статус" id='main_div_state' class="div_in_main_div">
+					<div class="up_state_div_gr">XNR GPS AP</div>
+					<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;">
+						<div id="xhr_status_div"></div>
+						<div id="xhr_config_div"></div>
+						<div id="xhr_routing_sets_div"></div>
+					</div>
+					<a onclick="autoboat_routing_sets_test();">TEST</a>
+					<div id="autobot_state" style="border: 3px solid #000000;">autobot_state</div>
+				</div>
+				
+				<div>
+					
+				<div>
+			<!--UPRAVLENIE--------------------------------------------------------------------------------------------------->
+				<div data-name="Управление" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
+					<table border="1">
+						<tr>
+							<td colspan="3" align="center">АП</td>
+						</tr>
+						<tr>
+							<td><a onclick="autoboat.send_cmd('nav_ap_start',bap_uart_stream_param.url_w,'');">Старт</a></td>
+							<td><a onclick="autoboat.send_cmd('nav_ap_reset',bap_uart_stream_param.url_w,'');">Сброс</a></td>
+							<td><a onclick="autoboat.send_cmd('nav_ap_stop' ,bap_uart_stream_param.url_w,'');">Стоп</a></td>
+						</tr>
+						<tr>
+							<td colspan="3" align="center">Румпель</td>
+						</tr>
+						<tr>
+							<td><a onclick="autoboat.send_cmd('nav_set_rumpel',bap_uart_stream_param.url_w,'left');">Левей</a></td>
+							<td><input value="1" size="5"  id="nav_set_rumpel_value_gr"></td>
+							<td><a onclick="autoboat.send_cmd('nav_set_rumpel',bap_uart_stream_param.url_w,'right');">Правей</a></td>
+						</tr>
+						<tr>
+							<td colspan="3" align="center">Курс</td>
+						</tr>
+						<tr>
+							<td><a onclick="autoboat.send_cmd('nav_set_track',bap_uart_stream_param.url_w,'left');">Левей</a></td>
+							<td><input value="1" size="5"  id="nav_set_track_value_gr"></td>
+							<td><a onclick="autoboat.send_cmd('nav_set_track',bap_uart_stream_param.url_w,'right');">Правей</a></td>
+						</tr>
+						<tr>
+							<td colspan="3" align="center">Регулятор</td>
+						</tr>
+						<tr>
+							<td>Ke</td>
+							<td><input value="-1" size="5" id="nav_set_pidparam_ke_value_gr"></td>
+							<td rowspan="3"><a onclick="autoboat.send_cmd('nav_set_pidparam',bap_uart_stream_param.url_w,'');">Установить</a></td>
+						</tr>
+						<tr>
+							<td>Kp</td>
+							<td><input value="1" size="5" id="nav_set_pidparam_kp_value_gr"></td>
+						</tr>
+						<tr>
+							<td>Ki</td>
+							<td><input value="0.99" size="5" id="nav_set_pidparam_ki_value_gr"></td>
+						</tr>
+						<!--tr>
+							<td>Левый разворот</td>
+							<td>2</td>
+							<td>Правый разворот</td>
+						</tr-->
+					</table>
+				</div>
+			<!--SETTINGS----------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">main_settings_edit</div>
+			<!--routing_sets------------------------------------------------------------------------------------------------->
+				<div data-name="Маршруты/Точки" id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">
+					Маршруты
+				</div>
+			<!--routing_safe------------------------------------------------------------------------------------------------->
+				<div data-name="Редактирование маршрута" id="routing_safe" style="background: #FFFFFF;border: 3px solid #000000;">
+					<table>
+						<tr>
+							<td>Точек</td>
+							<td><input type="text" disabled id="routing_safe_pc"></td>
+						</tr>
+						<tr>
+							<td>Название</td>
+							<td><input type="text" id="routing_safe_name"></td>
+						</tr>
+						<tr>
+							<td>ТЭГ</td>
+							<td><input type="text" id="routing_safe_teg"></td>
+						</tr>
+						<tr>
+							<td>Каталог</td>
+							<td><input type="text" id="routing_safe_catalog"></td>
+						</tr>
+						<tr>
+							<td>Стартовая точка</td>
+							<td><input type="text" id="routing_safe_start_point" value="0"></td>
+						</tr>
+						<tr>
+							<td>Петлевая точка</td>
+							<td><input type="text" id="routing_safe_loop_point" value="0"></td>
+						</tr>
+						<tr>
+							<td>Описание</td>
+							<td><textarea id="routing_safe_description"></textarea></td>
+						</tr>
+						<tr>
+							<td>Сохранить</td>
+							<td><input type="button" value="Сохранить маршрут" onclick="autoboat_routing_sets.routing_add_to_array()"></td>
+						</tr>
+					</table>
+				</div>
+			<!--MAP---------------------------------------------------------------------------------------------------------->
+				<div data-name="Карта" id="map_div" class="wh_100">
+					<div id="over_map" style="position: absolute;z-index: 400;background-color: rgba(169, 175, 118, 0.5);color: #000000;">
+						---
+					</div>
+					<div id="map"></div>
+				</div>
+		</div>
+	<!---------------------------------------------------------------------------------------------------------->
+</body>
+</html>
+
+
