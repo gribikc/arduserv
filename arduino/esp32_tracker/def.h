@@ -35,8 +35,8 @@
 	#define RXD0 	3
 	#define TXD0 	1
 	
-	#define RXD1 	33//14
-	#define TXD1 	32//2
+	#define RXD1 	33//33//14
+	#define TXD1 	32//32//2
 	
 	//#define RXD2 	27
 	//#define TXD2 	28
