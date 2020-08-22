@@ -8,6 +8,7 @@ debug/gr_bluetooth.o
 debug/gr_gps.o
 debug/gr_http_client.o
 debug/gr_dev_manager.o
+debug/gr_settings.o
 debug/gr_tcp_client.o
 debug/gr_udp_client.o
 debug/moc_com_to_web.o

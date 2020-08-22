@@ -12,8 +12,74 @@ com_to_web::com_to_web(QWidget *parent) :
     ui->setupUi(this);
 
     ui->textEdit->insertPlainText("Start...\n");
-    gr_sock_srv_start();
 
+    ///////
+        if(settings.load_settings(&conf_var)){
+            ui->textEdit->insertPlainText("Setting is valid...\n");
+        }else {
+            ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
+
+            conf_var["tcp_listen_port"]=3128;
+
+            conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
+            QDir dir;
+            if(QSysInfo::productType()=="android"){
+                QStringList sdcommonPaths = {
+                    "/storage/86BB-1D02",
+                    "/storage/emulated/0",
+                    "/storage/sdcard0/",
+                    "/mnt/sdcard",
+                    "/storage/extSdCard",
+                    "/storage/UsbDriveA",
+                    "/storage/UsbDriveB"
+                };
+
+                for(int i=0;i<sdcommonPaths.count();i++){
+                    dir.setPath(sdcommonPaths.at(i));
+                    if (!dir.exists()){continue;}else{//SD find.
+                        ui->textEdit->insertPlainText("Find SD:");
+                        ui->textEdit->insertPlainText(sdcommonPaths.at(i));
+                        ui->textEdit->insertPlainText("\n");
+                        if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web")){
+                            dir.mkdir("com_to_web");
+                            ui->textEdit->insertPlainText("Create com_to_web/\n");
+                        }else{
+                            ui->textEdit->insertPlainText("Find com_to_web/\n");
+                        }
+                        dir.setPath(sdcommonPaths[i]+"/com_to_web");
+                        if(!dir.exists()){continue;}else{
+                            if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs")){
+                                ui->textEdit->insertPlainText("Create com_to_web/htdocs\n");
+                                dir.mkdir("htdocs");
+                            }else {
+                                ui->textEdit->insertPlainText("Find com_to_web/htdocs\n");
+                            }
+                            dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs");
+                            if(!dir.exists()){continue;}else{
+                                if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs/db")){
+                                    ui->textEdit->insertPlainText("Create com_to_web/htdocs/db\n");
+                                    dir.mkdir("db");
+                                }else{
+                                    ui->textEdit->insertPlainText("Find com_to_web/htdocs/db\n");
+                                }
+                                dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs/db");
+                                if(!dir.exists()){continue;}else{
+                                    ui->textEdit->insertPlainText("Find SD, htdocs and db");
+                                    ui->textEdit->insertPlainText("\n");
+                                    conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                conf_var["htdocs_patch"]=dir.currentPath();
+            }
+        }
+    /////
+
+    gr_sock_srv_start();
 }
 
 com_to_web::~com_to_web()
@@ -27,18 +93,40 @@ com_to_web::~com_to_web()
 ////////////////////////////////////////////////////////////////////////////
 void com_to_web::gr_sock_srv_start(){
     server = new QTcpServer();//this
-    server->listen(QHostAddress::Any, 3128);
+    server->listen(QHostAddress::Any, conf_var["tcp_listen_port"].toInt());//3128
     if(server->isListening()){
-        ui->textEdit->insertPlainText("Socket start PORT:3128\n");
+        ui->textEdit->insertPlainText("Socket start PORT: ");
+        ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
+        ui->textEdit->insertPlainText("\n");
+
+        ui->textEdit->insertPlainText("HTDocsPatch: ");
+        ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());
+        ui->textEdit->insertPlainText("\n |- ");
+        QDir dir(conf_var["htdocs_patch"].toString()+"/htdocs");//!!!&db
+        if (!dir.exists()){
+            QDir dir(conf_var["htdocs_patch"].toString());
+            if (!dir.exists()){
+                ui->textEdit->insertPlainText("Invalid");
+            }else{
+                ui->textEdit->insertPlainText("Need to Create htdocs dir in patch");
+            }
+        }else{
+            ui->textEdit->insertPlainText("Valid");
+        }
+        ui->textEdit->insertPlainText("\n");
 
         ui->textEdit->insertPlainText("IP:\n");
         QList<QHostAddress> addr = QNetworkInterface::allAddresses();
         for(int i=0;i<addr.size();i++){
+            ui->textEdit->insertPlainText(" |- ");
             ui->textEdit->insertPlainText(addr.at(i).toString());
             ui->textEdit->insertPlainText("\n");
         }
+
         server->setMaxPendingConnections(9999);
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
+    }else {
+        ui->textEdit->insertPlainText("Socket not Start :(\n");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,18 +225,34 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         }
         GR_logger::log(this,"CtW GET Log");
         http_client->close();
+    }else if(http_client->is_rsw("/sys/settings")>0){   //    /sys/settings/(r),w/(j),l,p,/
+        http_client->send_html_header();
+
+        if(http_client->is_rsw("/sys/settings/c")>0){
+            settings.clear_settings();
+        }else if(http_client->is_rsw("/sys/settings/w/j")>0){
+            conf_var.clear();
+            conf_var.operator=(settings.create_arr_from_json(http_client->indata));
+            settings.save_settings(&conf_var);
+        }else{
+            http_client->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
+        }
+
+        GR_logger::log(this,"CtW GET Log");
+        http_client->close();
     }else{
         http_client->send_html_header();
         http_client->write("400 Bad Request!<br>\n");
         http_client->write("Try:<br>\n");
         http_client->write("/                                   <br>\n");
         http_client->write("/htdocs/(d/i/r/fi.le)               <br>\n");
-        http_client->write("/sys/tree/(h,j,r,...)               <br>\n");
         http_client->write("/db/(r,w,s)/(name)                  <br>\n");
-        http_client->write("/dev/com/(w,r,s,l)/(num)/(speed)/   <br>\n");
+        http_client->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
+        http_client->write("<a href=\"/sys/settings\">/sys/settings</a>                       <br>\n");
+        http_client->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
         http_client->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
-        http_client->write("/dev/bt/(w,r,s,l)/(name)            <br>\n");
-        http_client->write("/dev/gps/(w,r,s)/                   <br>\n");
+        http_client->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
+        http_client->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
 
         GR_logger::log(this,"CtW Error 400");
         http_client->close();

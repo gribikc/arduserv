@@ -8,6 +8,7 @@ release/gr_bluetooth.o
 release/gr_gps.o
 release/gr_http_client.o
 release/gr_dev_manager.o
+release/gr_settings.o
 release/gr_tcp_client.o
 release/gr_udp_client.o
 release/moc_com_to_web.o

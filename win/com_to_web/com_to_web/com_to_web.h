@@ -19,7 +19,7 @@
     #include "gr_sensor/gr_sensor.h"
     #include "gr_tcp_client/gr_tcp_client.h"
     #include "gr_udp_client/gr_udp_client.h"
-
+    #include "gr_settings.h"
 
 
 
@@ -51,7 +51,8 @@ public:
     void htdocs_page_request_do(QStringList list_param, QTcpSocket *socket);
     void htdocs_db_write_do(QTcpSocket *socket);
 
-
+    // /storage/sdcard0/
+    // /storage/emulated/0/
     //QString android_htdocs_patch="/storage/3262-3934/com_to_web";
     QString android_htdocs_patch="/storage/emulated/0/com_to_web";
 
@@ -61,6 +62,17 @@ public:
     QList<void*> test;
 
     gr_dev_manager dev_manager;
+
+    GR_settings settings;
+
+    /*struct {
+       QString android_htdocs_patch="/storage/emulated/0/com_to_web";
+       QString htdocs_patch="/";
+       qint16 tcp_listen_port=3128;
+    } conf_var;*/
+
+    QMap<QString, QVariant> conf_var;
+
 
     //GPS
     //gr_gps gr_gps_point;
@@ -80,5 +92,40 @@ private slots:
 private:
     Ui::com_to_web *ui;
 };
+/*QString[] sdcommonPaths = {
+            "/mnt/Removable/MicroSD",
+            "/storage/removable/sdcard1", // !< Sony Xperia Z1
+            "/Removable/MicroSD", // Asus ZenPad C
+            "/removable/microsd",
+            "/external_sd", // Samsung
+            "/_ExternalSD", // some LGs
+            "/storage/extSdCard", // later Samsung
+            "/storage/extsdcard", // Main filesystem is case-sensitive; FAT isn't.
+            "/mnt/extsd", // some Chinese tablets, e.g. Zeki
+            "/storage/sdcard1", // If this exists it's more likely than sdcard0 to be removable.
+            "/mnt/extSdCard",
+            "/mnt/sdcard/external_sd",
+            "/mnt/external_sd",
+            "/storage/external_SD",
+            "/storage/ext_sd", // HTC One Max
+            "/mnt/sdcard/_ExternalSD",
+            "/mnt/sdcard-ext",
 
+            "/sdcard2", // HTC One M8s
+            "/sdcard1", // Sony Xperia Z
+            "/mnt/media_rw/sdcard1",   // 4.4.2 on CyanogenMod S3
+            "/mnt/sdcard", // This can be built-in storage (non-removable).
+            "/sdcard",
+            "/storage/sdcard0",
+            "/emmc",
+            "/mnt/emmc",
+            "/sdcard/sd",
+            "/mnt/sdcard/bpemmctest",
+            "/mnt/external1",
+            "/data/sdext4",
+            "/data/sdext3",
+            "/data/sdext2",
+            "/data/sdext",
+            "/storage/microsd" //ASUS ZenFone 2
+    };*/
 #endif // COM_TO_WEB_H

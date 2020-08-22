@@ -322,7 +322,7 @@
 				}
 				for(var i=this.start_point;i<this.end_point;i++){
 					//console.log(stream.charCodeAt(i)&0xFF);
-					if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
+					if(this.end_point>=(this.db_matrix[0]['message_len'])){//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
 						if(	(stream.charCodeAt(i   )&0xFF)==this.db_matrix[0]['footer'][1] && 
 							(stream.charCodeAt(i-1 )&0xFF)==this.db_matrix[0]['footer'][0] && 
 							(stream.charCodeAt(i-this.db_matrix[0]['message_len']+1)&0xFF)==this.db_matrix[0]['header'][1] && 
