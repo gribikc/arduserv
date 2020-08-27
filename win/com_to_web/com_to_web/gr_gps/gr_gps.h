@@ -12,7 +12,7 @@
 
 class gr_gps: public gr_data_source{
     public:
-        gr_gps(QTcpSocket *socket):gr_data_source("GPS","GPS",static_cast<void*>(socket)){
+        gr_gps(void *socket):gr_data_source("GPS","GPS",static_cast<void*>(socket)){
             init_gps();
         }
 

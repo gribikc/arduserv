@@ -8,7 +8,7 @@
 class gr_serial:public gr_data_source{
         Q_OBJECT
     public:
-        gr_serial(int num,int speed,QString mode,QTcpSocket *socket):gr_data_source("COM",QString::number(num),static_cast<void*>(socket)){
+        gr_serial(int num,int speed,QString mode,void *socket):gr_data_source("COM",QString::number(num),static_cast<void*>(socket)){
             if(mode.toLocal8Bit()=="L"){
                 serial_list();
             }else{
