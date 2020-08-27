@@ -12,6 +12,7 @@ QT       += serialport
 QT       += positioning
 QT       += sensors
 QT       += location
+QT       += websockets
 
 
 CONFIG += c++11
@@ -33,6 +34,7 @@ SOURCES +=  main.cpp\
     gr_http_client/gr_http_client.cpp \
     gr_dev_manager/gr_dev_manager.cpp \
     gr_settings.cpp \
+    gr_socket/gr_socket.cpp \
     gr_tcp_client/gr_tcp_client.cpp \
     gr_udp_client/gr_udp_client.cpp
 
@@ -47,6 +49,7 @@ HEADERS  += com_to_web.h\
     gr_http_client/gr_http_client.h \
     gr_dev_manager/gr_dev_manager.h \
     gr_settings.h \
+    gr_socket/gr_socket.h \
     gr_tcp_client/gr_tcp_client.h \
     gr_udp_client/gr_udp_client.h
 

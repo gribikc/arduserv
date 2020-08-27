@@ -94,6 +94,11 @@ com_to_web::~com_to_web()
 void com_to_web::gr_sock_srv_start(){
     server = new QTcpServer();//this
     server->listen(QHostAddress::Any, conf_var["tcp_listen_port"].toInt());//3128
+
+    webs_server=new QWebSocketServer("CTW", QWebSocketServer::NonSecureMode, this);
+    webs_server->listen(QHostAddress::Any, 3129);
+
+
     if(server->isListening()){
         ui->textEdit->insertPlainText("Socket start PORT: ");
         ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());

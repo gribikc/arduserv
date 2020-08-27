@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QNetworkInterface>
+#include <QWebSocketServer>
 
     //EXT
     #include "gr_logger/gr_logger.h"
@@ -57,6 +58,7 @@ public:
     QString android_htdocs_patch="/storage/emulated/0/com_to_web";
 
     QTcpServer *server; // указатель на сервер
+    QWebSocketServer *webs_server;
     //QList<gr_httprqs_parser> httprqs_parser; // получатели данных
 
     QList<void*> test;

@@ -8,6 +8,7 @@ gr_bluetooth.o
 gr_gps.o
 gr_http_client.o
 gr_dev_manager.o
+gr_settings.o
 gr_tcp_client.o
 gr_udp_client.o
 moc_com_to_web.o
