@@ -1,6 +1,6 @@
 #include "gr_udp_client.h"
 
-gr_udp_client::gr_udp_client(QTcpSocket *partner) : QObject(partner){
+gr_udp_client::gr_udp_client(GR_http_client *partner) : QObject(nullptr){
     gr_udp_client::partner=partner;
 
     /////
@@ -42,13 +42,13 @@ void gr_udp_client::udp_readyRead(){
                   udpSocket->readDatagram(datagram.data(), datagram.size(),
                                           &sender, &senderPort);
 
-                  partner->write(datagram);
+                  partner->socket->write(datagram);
 
 
         qDebug()<<"UDP Recieved DATA&Close";
-        partner->flush();
-        partner->close();
-        partner->deleteLater();
+        partner->socket->flush();
+        partner->socket->close();
+        partner->socket->deleteLater();
 
         udpSocket->deleteLater();
         udpSocket->close();

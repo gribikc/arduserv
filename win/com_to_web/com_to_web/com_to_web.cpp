@@ -97,6 +97,8 @@ void com_to_web::gr_sock_srv_start(){
 
     webs_server=new QWebSocketServer("CTW", QWebSocketServer::NonSecureMode, this);
     webs_server->listen(QHostAddress::Any, 3129);
+    connect(webs_server, &QWebSocketServer::newConnection,
+                    this, &com_to_web::onNewWebs_connect);
 
 
     if(server->isListening()){
@@ -132,6 +134,31 @@ void com_to_web::gr_sock_srv_start(){
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }else {
         ui->textEdit->insertPlainText("Socket not Start :(\n");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+void com_to_web::onNewWebs_connect(){
+    QWebSocket *pSocket = webs_server->nextPendingConnection();
+
+    connect(pSocket, &QWebSocket::textMessageReceived, this, &com_to_web::processTextMessage);
+    connect(pSocket, &QWebSocket::binaryMessageReceived, this, &com_to_web::processBinaryMessage);
+}
+void com_to_web::processTextMessage(QString message)
+{
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+        qDebug() << "Message received:" << message;
+    if (pClient) {
+        pClient->sendTextMessage(message);
+    }
+}
+void com_to_web::processBinaryMessage(QByteArray message)
+{
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+        qDebug() << "Binary Message received:" << message;
+    if (pClient) {
+        pClient->sendBinaryMessage(message);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,9 +202,9 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
     //////////////////////////////  ////////
     }else if(http_client->is_rsw("/")==2){
         http_client->send_html_header();
-        http_client->write("Main Page!");
+        http_client->socket->write("Main Page!");
         GR_logger::log(this,"CtW Main Page");
-        http_client->close();
+        http_client->socket->close();
     ////////////////////////////////        ///////
     }else if(http_client->is_rsw("/sys/tree")>0){
         QDir dir;
@@ -188,7 +215,7 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
             get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
         }
         GR_logger::log(this,"CtW Htdocs Tree");
-        http_client->close();
+        http_client->socket->close();
     ////////////////////////////////     ////////
     }else if(http_client->is_rsw("/htdocs")>0){
         //http_client->send_neutral_header();
@@ -208,19 +235,19 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         }
         htdocs_page_request_do(list_param,http_client);
         GR_logger::log(this,"CtW Page Send");
-        http_client->close();
+        http_client->socket->close();
         ////////////////////////////////     ////////
     }else if(http_client->is_rsw("/db/w")>0){
         http_client->send_html_header();
         htdocs_db_write_do(http_client);
         GR_logger::log(this,"CtW DB Write");
-        http_client->close();
+        http_client->socket->close();
     ////////
     }else if(http_client->is_rsw("/favicon.ico")==2){
         http_client->send_html_header();
-        http_client->write("Nice try to get favicon.ico :)))");
+        http_client->socket->write("Nice try to get favicon.ico :)))");
         GR_logger::log(this,"CtW TTG favicon.ico");
-        http_client->close();
+        http_client->socket->close();
     }else if(http_client->is_rsw("/sys/log")>0){
         http_client->send_html_header();
         if(http_client->is_rsw("/sys/log/c")>0){
@@ -229,7 +256,7 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
             GR_logger::send_log_to_socket_json(http_client);
         }
         GR_logger::log(this,"CtW GET Log");
-        http_client->close();
+        http_client->socket->close();
     }else if(http_client->is_rsw("/sys/settings")>0){   //    /sys/settings/(r),w/(j),l,p,/
         http_client->send_html_header();
 
@@ -240,27 +267,27 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
             conf_var.operator=(settings.create_arr_from_json(http_client->indata));
             settings.save_settings(&conf_var);
         }else{
-            http_client->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
+            http_client->socket->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
         }
 
         GR_logger::log(this,"CtW GET Log");
-        http_client->close();
+        http_client->socket->close();
     }else{
         http_client->send_html_header();
-        http_client->write("400 Bad Request!<br>\n");
-        http_client->write("Try:<br>\n");
-        http_client->write("/                                   <br>\n");
-        http_client->write("/htdocs/(d/i/r/fi.le)               <br>\n");
-        http_client->write("/db/(r,w,s)/(name)                  <br>\n");
-        http_client->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
-        http_client->write("<a href=\"/sys/settings\">/sys/settings</a>                       <br>\n");
-        http_client->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
-        http_client->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
-        http_client->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
-        http_client->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
+        http_client->socket->write("400 Bad Request!<br>\n");
+        http_client->socket->write("Try:<br>\n");
+        http_client->socket->write("/                                   <br>\n");
+        http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
+        http_client->socket->write("/db/(r,w,s)/(name)                  <br>\n");
+        http_client->socket->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
+        http_client->socket->write("<a href=\"/sys/settings\">/sys/settings</a>                       <br>\n");
+        http_client->socket->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
+        http_client->socket->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
+        http_client->socket->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
+        http_client->socket->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
 
         GR_logger::log(this,"CtW Error 400");
-        http_client->close();
+        http_client->socket->close();
     }
 
     //http_client->destroyed();

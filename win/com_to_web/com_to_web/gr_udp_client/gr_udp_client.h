@@ -14,10 +14,10 @@ class gr_udp_client : public QObject
 {
     Q_OBJECT
 public:
-    explicit gr_udp_client(QTcpSocket *partner = nullptr);
+    explicit gr_udp_client(GR_http_client *partner = nullptr);
 
     QUdpSocket *udpSocket;
-    QTcpSocket* partner;
+    GR_http_client* partner;
 
         void udp_readyRead();
 

@@ -81,8 +81,8 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
             }else if(dev_type=="SENS"){
                 dev_new=new GR_sensor(dev_name,dev_mode,http_client);
             }else{
-                http_client->write("404 Device Type not found.");
-                http_client->close();
+                http_client->socket->write("404 Device Type not found.");
+                http_client->socket->close();
             }
 
             if(dev_new!=nullptr){

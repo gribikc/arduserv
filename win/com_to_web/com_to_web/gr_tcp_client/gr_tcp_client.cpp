@@ -1,6 +1,6 @@
 #include "gr_tcp_client.h"
 
-gr_tcp_client::gr_tcp_client(QTcpSocket *partner) : QObject(partner){
+gr_tcp_client::gr_tcp_client(GR_http_client *partner) : QObject(nullptr){
 
   gr_tcp_client::partner=partner;
   tcp_s_o=new QTcpSocket(this);
@@ -11,7 +11,7 @@ gr_tcp_client::gr_tcp_client(QTcpSocket *partner) : QObject(partner){
   connect(tcp_s_o,&QTcpSocket::bytesWritten,this,&gr_tcp_client::tcp_bytesWritten);
   connect(tcp_s_o,&QTcpSocket::connected,this,&gr_tcp_client::tcp_connected);
   connect(tcp_s_o,&QTcpSocket::disconnected,this,&gr_tcp_client::tcp_disconnected);
-  connect(partner,&QTcpSocket::disconnected,this,&gr_tcp_client::tcp_disconnected);
+  connect(partner->socket,&gr_socket::disconnected,this,&gr_tcp_client::tcp_disconnected);
 }
 void gr_tcp_client::tcp_connected(){
     //QByteArray data=static_cast<GR_http_client *>(partner)->list_param[6].toLocal8Bit();
@@ -27,10 +27,11 @@ void gr_tcp_client::tcp_bytesWritten(){
 }
 
 void gr_tcp_client::tcp_readyRead(){
-    partner->write(tcp_s_o->readAll());
+    partner->socket->write(tcp_s_o->readAll());
 }
 
 void gr_tcp_client::tcp_disconnected(){
-    partner->deleteLater();
+    partner->socket->deleteLater();
     tcp_s_o->deleteLater();
 }
+

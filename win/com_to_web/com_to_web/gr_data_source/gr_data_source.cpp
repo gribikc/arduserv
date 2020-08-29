@@ -38,8 +38,8 @@
 /// SEND TO ALL
     void gr_data_source::send_data_to_client(QByteArray *data){
         for(int i=0;i<client_list.size();i++){
-            if( client_list.at(i)->state() != QAbstractSocket::UnconnectedState ){
-                client_list.at(i)->write(*data);
+            if( client_list.at(i)->socket->state() != QAbstractSocket::UnconnectedState ){
+                client_list.at(i)->socket->write(*data);
             }else{
                 client_list.removeAt(i);
                 i--;
@@ -75,7 +75,7 @@
     void gr_data_source::close_all_client(){
         GR_logger::log(this,"DS Close All Clients");
         for (int i=0;i<client_list.size();i++) {
-            client_list.at(i)->close();
+            client_list.at(i)->socket->close();
         }
     }
 ////////////////////////////////////
@@ -85,7 +85,7 @@ void gr_data_source::data_was_sended(){
     GR_logger::log(this,"DS Data Was Send");
     for (int i=0;i<client_list.size();i++) {
         if(client_list.at(i)->list_param[3].toUpper()=="W"){
-            client_list.at(i)->close();
+            client_list.at(i)->socket->close();
         }
     }
 }

@@ -2,16 +2,25 @@
 #define GR_SOCKET_H
 
 #include <QObject>
+#include <QtCore>
+#include <QCoreApplication>
+#include <QDebug>
+#include <QAbstractSocket>
 
-class gr_socket : public QObject
-{
+class gr_socket : public QObject{
     Q_OBJECT
 public:
     explicit gr_socket(QObject *parent = nullptr);
-    virtual void dev_send_data(QByteArray *data){data->clear();}
+    virtual void write(QByteArray *data){}
+    virtual void write(const char *data){}
+    virtual QByteArray readAll(){}
+    virtual void setSocketDescriptor(int sdscrp){}
+    virtual QAbstractSocket::SocketState state(){}
+    virtual void close(){}
+    virtual void flush(){}
 signals:
-    virtual void sock_readyRead(QByteArray *data){data->clear();}
-    virtual void sock_disconnected(QByteArray *data){data->clear();}
+    void readyRead();
+    void disconnected();
 };
 
 #endif // GR_SOCKET_H

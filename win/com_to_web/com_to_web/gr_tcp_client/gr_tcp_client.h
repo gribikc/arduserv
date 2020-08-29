@@ -10,11 +10,11 @@ class gr_tcp_client : public QObject
 {
     Q_OBJECT
 public:
-    explicit gr_tcp_client(QTcpSocket *partner = nullptr);
+    explicit gr_tcp_client(GR_http_client *partner = nullptr);
 
 
     QTcpSocket* tcp_s_o;
-    QTcpSocket* partner;
+    GR_http_client* partner;
 
     void tcp_connected();
     void tcp_readyRead();

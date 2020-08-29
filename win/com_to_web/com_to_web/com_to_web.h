@@ -8,6 +8,7 @@
 #include <QDataStream>
 #include <QNetworkInterface>
 #include <QWebSocketServer>
+#include <QWebSocket>
 
     //EXT
     #include "gr_logger/gr_logger.h"
@@ -34,6 +35,9 @@ class com_to_web : public QMainWindow
     Q_OBJECT
 /////////////////////
 public slots:
+    void onNewWebs_connect();
+    void processTextMessage(QString message);
+    void processBinaryMessage(QByteArray message);
     void incommingConnection(); // обработчик входящего подключения
     //void readyRead(); // обработчик входящих данных
     //void stateChanged(); // обработчик изменения состояния вещающего
@@ -47,10 +51,10 @@ public:
     //void postget_request_parsing(gr_httprqs_parser *parser_data);
     //void find_device_and_do(gr_httprqs_parser *parser_data);
 
-    void main_page_request_do(QTcpSocket *socket);
-    void get_tree_file(QString dir_patch, QString prefix_add, QTcpSocket *socket, QString base_dir);
-    void htdocs_page_request_do(QStringList list_param, QTcpSocket *socket);
-    void htdocs_db_write_do(QTcpSocket *socket);
+    void main_page_request_do(GR_http_client *socket);
+    void get_tree_file(QString dir_patch, QString prefix_add, GR_http_client *socket, QString base_dir);
+    void htdocs_page_request_do(QStringList list_param, GR_http_client *socket);
+    void htdocs_db_write_do(GR_http_client *socket);
 
     // /storage/sdcard0/
     // /storage/emulated/0/

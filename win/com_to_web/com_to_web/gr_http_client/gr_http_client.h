@@ -13,17 +13,21 @@
 
 #include <QDebug>
 
+#include "gr_socket/gr_socket.h"
+#include "gr_tcpsocket/gr_tcpsocket.h"
+
 
 //class GR_http_client  : public QObject
 //{
 //    Q_OBJECT
 
-class GR_http_client  : public QTcpSocket{
+//class GR_http_client  : public QTcpSocket{
+class GR_http_client  : public QObject{
     Q_OBJECT
 public:
     explicit GR_http_client(int sdscrp);
     //explicit GR_http_client(QTcpSocket  *socket):QTcpSocket(this);
-
+    gr_socket *socket;
     //QTcpSocket  *socket=nullptr;
     QByteArray  indata="";
     int contentlength=0;

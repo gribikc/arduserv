@@ -36,7 +36,9 @@ SOURCES +=  main.cpp\
     gr_settings.cpp \
     gr_socket/gr_socket.cpp \
     gr_tcp_client/gr_tcp_client.cpp \
-    gr_udp_client/gr_udp_client.cpp
+    gr_tcpsocket/gr_tcpsocket.cpp \
+    gr_udp_client/gr_udp_client.cpp \
+    gr_web_socket/gr_web_socket.cpp
 
 HEADERS  += com_to_web.h\
     file_system.h \
@@ -51,7 +53,9 @@ HEADERS  += com_to_web.h\
     gr_settings.h \
     gr_socket/gr_socket.h \
     gr_tcp_client/gr_tcp_client.h \
-    gr_udp_client/gr_udp_client.h
+    gr_tcpsocket/gr_tcpsocket.h \
+    gr_udp_client/gr_udp_client.h \
+    gr_web_socket/gr_web_socket.h
 
 FORMS    += com_to_web.ui
 

@@ -52,7 +52,7 @@ class GR_logger{
             log_info.append(data);
             qDebug() << text;
         }
-        static void send_log_to_socket_json(QTcpSocket* socket){
+        static void send_log_to_socket_json(GR_http_client* socket){
             QByteArray qba;
             qba+="[\n";
             for(int i=0;i<log_info.size();i++){
@@ -77,7 +77,7 @@ class GR_logger{
                 qba+="\n    }";
             }
             qba+="\n]";
-            socket->write(qba);
+            socket->socket->write(qba);
         }
     private:
         struct data_log{
