@@ -2,7 +2,12 @@
 #include <gr_logger/gr_logger.h>
 
 //GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
-GR_http_client::GR_http_client(int sdscrp){
+//GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
+GR_http_client::GR_http_client(){
+
+}
+
+void GR_http_client::init(int sdscrp){
     //this->socket=this;
     //this->gr_socket::operator=()
     socket=new gr_TcpSocket();
@@ -14,6 +19,12 @@ GR_http_client::GR_http_client(int sdscrp){
     //connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
     connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
     connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
+}
+void GR_http_client::init(QWebSocket *pSocket){
+    socket=new gr_web_socket();
+    connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
+    connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
+    socket->setSocketDescriptor(pSocket);
 }
 ////////////////////////////////
 ////////////////////////////////

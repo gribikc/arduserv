@@ -14,6 +14,7 @@ public:
     QTcpSocket socket;
     void write(QByteArray *data);//данные из устройства отправляем в сокет
     void write(const char *data);
+    void write(QString *data);
     QByteArray readAll();
     void setSocketDescriptor(int sdscrp);
     QAbstractSocket::SocketState state();
@@ -21,9 +22,6 @@ public:
     void flush();
     void readyRead_s();
     void disconnected_s();
-signals:
-
-public slots:
 };
 
 #endif // GR_TCPSOCKET_H

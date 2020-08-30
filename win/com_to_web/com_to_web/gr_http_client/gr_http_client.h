@@ -7,6 +7,7 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QWebSocket>
 
 #include <QByteArray>
 #include <QDataStream>
@@ -15,6 +16,7 @@
 
 #include "gr_socket/gr_socket.h"
 #include "gr_tcpsocket/gr_tcpsocket.h"
+#include "gr_web_socket/gr_web_socket.h"
 
 
 //class GR_http_client  : public QObject
@@ -25,8 +27,12 @@
 class GR_http_client  : public QObject{
     Q_OBJECT
 public:
-    explicit GR_http_client(int sdscrp);
+    //explicit GR_http_client(int sdscrp);
+    //explicit GR_http_client(QWebSocket *pSocket);
     //explicit GR_http_client(QTcpSocket  *socket):QTcpSocket(this);
+    explicit GR_http_client();
+    void init(QWebSocket *pSocket);
+    void init(int sdscrp);
     gr_socket *socket;
     //QTcpSocket  *socket=nullptr;
     QByteArray  indata="";

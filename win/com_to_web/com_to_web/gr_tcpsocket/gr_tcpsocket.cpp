@@ -27,6 +27,12 @@ void gr_TcpSocket::write(QByteArray *data){
     socket.write(*data);
 }
 
+void gr_TcpSocket::write(QString *data){
+    QByteArray a;
+    a.append(*data);
+    socket.write(a);
+}
+
 void gr_TcpSocket::write(const char *data){
     socket.write(data);
 }

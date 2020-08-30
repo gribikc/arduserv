@@ -22,6 +22,9 @@
     #include "gr_tcp_client/gr_tcp_client.h"
     #include "gr_udp_client/gr_udp_client.h"
     #include "gr_settings.h"
+    #include "gr_socket/gr_socket.h"
+    #include "gr_tcpsocket/gr_tcpsocket.h"
+    #include "gr_web_socket/gr_web_socket.h"
 
 
 
@@ -36,8 +39,8 @@ class com_to_web : public QMainWindow
 /////////////////////
 public slots:
     void onNewWebs_connect();
-    void processTextMessage(QString message);
-    void processBinaryMessage(QByteArray message);
+    //void processTextMessage(QString message);
+    //void processBinaryMessage(QByteArray message);
     void incommingConnection(); // обработчик входящего подключения
     //void readyRead(); // обработчик входящих данных
     //void stateChanged(); // обработчик изменения состояния вещающего

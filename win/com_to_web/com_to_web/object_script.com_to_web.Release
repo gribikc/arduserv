@@ -24,3 +24,4 @@ release/moc_gr_socket.o
 release/moc_gr_tcp_client.o
 release/moc_gr_tcpsocket.o
 release/moc_gr_udp_client.o
+release/moc_gr_web_socket.o

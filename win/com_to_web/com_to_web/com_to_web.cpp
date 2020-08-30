@@ -97,8 +97,7 @@ void com_to_web::gr_sock_srv_start(){
 
     webs_server=new QWebSocketServer("CTW", QWebSocketServer::NonSecureMode, this);
     webs_server->listen(QHostAddress::Any, 3129);
-    connect(webs_server, &QWebSocketServer::newConnection,
-                    this, &com_to_web::onNewWebs_connect);
+    connect(webs_server, &QWebSocketServer::newConnection,this, &com_to_web::onNewWebs_connect);
 
 
     if(server->isListening()){
@@ -141,25 +140,12 @@ void com_to_web::gr_sock_srv_start(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::onNewWebs_connect(){
     QWebSocket *pSocket = webs_server->nextPendingConnection();
+    GR_http_client *abv=new GR_http_client();
+    connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
+    abv->init(pSocket);
+    ui->textEdit->insertPlainText("Client WBS connected...\n");
+    GR_logger::log(abv,"CtW Client connected;");
 
-    connect(pSocket, &QWebSocket::textMessageReceived, this, &com_to_web::processTextMessage);
-    connect(pSocket, &QWebSocket::binaryMessageReceived, this, &com_to_web::processBinaryMessage);
-}
-void com_to_web::processTextMessage(QString message)
-{
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-        qDebug() << "Message received:" << message;
-    if (pClient) {
-        pClient->sendTextMessage(message);
-    }
-}
-void com_to_web::processBinaryMessage(QByteArray message)
-{
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-        qDebug() << "Binary Message received:" << message;
-    if (pClient) {
-        pClient->sendBinaryMessage(message);
-    }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,10 +154,10 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
     qintptr sdscrp=socket->socketDescriptor();
 
-    GR_http_client *abv=new GR_http_client(sdscrp);
+    GR_http_client *abv=new GR_http_client();
     //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
       connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
-
+    abv->init(sdscrp);
     //socket->peerAddress();
     //QString a=QString(socket->peerName());
     ui->textEdit->insertPlainText("Client connected...\n");
