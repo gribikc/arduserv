@@ -1,6 +1,7 @@
 #include "gr_web_socket.h"
 
 void gr_web_socket::setSocketDescriptor(QWebSocket *sdscrp){
+     type_of_socket=2;
      socket=sdscrp;
      if(!socket->isValid()){
         connect(socket, &QWebSocket::connected, this, &gr_web_socket::connected_s);

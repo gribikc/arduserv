@@ -21,6 +21,7 @@ public:
     virtual QAbstractSocket::SocketState state(){}
     virtual void close(){}
     virtual void flush(){}
+    int type_of_socket=0;//0-uncnoun//1-tcp//2-web
 signals:
     void readyRead();
     void disconnected();

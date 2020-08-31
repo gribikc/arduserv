@@ -17,7 +17,8 @@ void GR_bluetooth::bt_open(QString dev_name, QString mode){
 
         bt_discoveryAgent->start();
         if(mode=="L"){
-            QByteArray data_to_send="[\n    {}";
+            //QByteArray data_to_send="[\n    {}";
+            QByteArray data_to_send="[\n";
             send_data_to_client(&data_to_send);
         }
 }
@@ -28,8 +29,14 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
     QString temp_qstring;
     QByteArray temp_qbarray;
     QByteArray data_to_send="";
+    static int is_st=1;
     if(mode=="L" && device.isValid()){
-        data_to_send+=",\n    {";
+        if(is_st==1){
+            is_st=0;
+        }else {
+            data_to_send+=",";
+        }
+        data_to_send+="\n    {";
         data_to_send+="\n        \"Device\":\"";
             temp_qstring=device.name();
             temp_qbarray=temp_qstring.toUtf8();
@@ -41,7 +48,13 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
             temp_qstring=device.address().toString();
             temp_qbarray=temp_qstring.toUtf8();
             data_to_send+=temp_qbarray;
-        data_to_send+="\"\n    }";
+        data_to_send+="\",\n        \"BLE\":";
+            if (device.coreConfigurations()& QBluetoothDeviceInfo::LowEnergyCoreConfiguration){
+                 data_to_send+="1";
+            }else {
+                data_to_send+="0";
+            }
+        data_to_send+="\n    }";
         send_data_to_client(&data_to_send);
     }else if(device.name()==dev_name && mode!="L"){//"HC-06"
         dev_found=1;
