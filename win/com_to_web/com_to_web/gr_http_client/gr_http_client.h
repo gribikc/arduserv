@@ -41,6 +41,7 @@ public:
         int hrp_del=0;//\r\n\r\n -position
         QMap<QByteArray, QByteArray> hrp_headers;
         bool hrp_headers_valid=0;
+        bool hrp_headers_removed=0;
         QStringList list_param;
         QString ip_addr=0;
     //http_request_parsing

@@ -26,7 +26,7 @@ void gr_serial::serial_open(int num, int speed){
     }
 
     serial->flush();
-    serial->write("D");
+    //serial->write("D");
     serial->readAll();
     connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_read);
     connect(serial, &QSerialPort::bytesWritten, this, &gr_serial::bytesWritten);
@@ -37,10 +37,15 @@ void gr_serial::serial_list(){
     //qDebug()<<QSerialPortInfo::availablePorts();
     QList<QSerialPortInfo> la=QSerialPortInfo::availablePorts();
     QByteArray data="";
-
-    data="[\n    {}";
+    int is_st=1;
+    data="[";
     for(int i=0;i<la.size();i++){
-        data+=",\n    {";
+        if(is_st==1){
+            is_st=0;
+        }else {
+            data+=",";
+        }
+        data+="\n    {";
             data+="\n        \"port_name\":\"";
                 data+=la.at(i).portName().toLocal8Bit();
             data+="\",\n        \"is_busy\":";

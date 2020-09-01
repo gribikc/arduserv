@@ -11,7 +11,7 @@ gr_tcp_client::gr_tcp_client(GR_http_client *partner) : QObject(nullptr){
   connect(tcp_s_o,&QTcpSocket::bytesWritten,this,&gr_tcp_client::tcp_bytesWritten);
   connect(tcp_s_o,&QTcpSocket::connected,this,&gr_tcp_client::tcp_connected);
   connect(tcp_s_o,&QTcpSocket::disconnected,this,&gr_tcp_client::tcp_disconnected);
-  connect(partner->socket,&gr_socket::disconnected,this,&gr_tcp_client::tcp_disconnected);
+  connect(partner->socket,&gr_socket::disconnected,this,&gr_tcp_client::tcp_disconnected);//исправить и в юдп!!!
 }
 void gr_tcp_client::tcp_connected(){
     //QByteArray data=static_cast<GR_http_client *>(partner)->list_param[6].toLocal8Bit();

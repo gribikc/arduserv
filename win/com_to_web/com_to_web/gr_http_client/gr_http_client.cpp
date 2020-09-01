@@ -39,7 +39,8 @@ void GR_http_client::readyRead(){
         }
     }
     if(hrp_headers_valid==1){
-        if(indata.size()>=contentlength){
+        if(indata.size()>=contentlength && hrp_headers_removed==0){
+            hrp_headers_removed=1;
             indata.remove(0,hrp_del);
             list_param=get_list_param();
             GR_logger::log(this,"Http Data Complete");

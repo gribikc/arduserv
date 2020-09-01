@@ -16,6 +16,7 @@
 
 #include <QDebug>
 #include <gr_http_client/gr_http_client.h>
+#include <gr_socket/gr_socket.h>
 //#include <gr_logger/gr_logger.h>
 
 

@@ -17,8 +17,8 @@ void GR_bluetooth::bt_open(QString dev_name, QString mode){
 
         bt_discoveryAgent->start();
         if(mode=="L"){
-            //QByteArray data_to_send="[\n    {}";
-            QByteArray data_to_send="[\n";
+            QByteArray data_to_send="[\n    {}";
+            //QByteArray data_to_send="[\n";
             send_data_to_client(&data_to_send);
         }
 }
@@ -29,14 +29,14 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
     QString temp_qstring;
     QByteArray temp_qbarray;
     QByteArray data_to_send="";
-    static int is_st=1;
+    //static int is_st=1;
     if(mode=="L" && device.isValid()){
-        if(is_st==1){
-            is_st=0;
-        }else {
-            data_to_send+=",";
-        }
-        data_to_send+="\n    {";
+        //if(is_st==1){
+        //    is_st=0;
+        //}else {
+        //    data_to_send+=",";
+        //}
+        data_to_send+=",\n    {";
         data_to_send+="\n        \"Device\":\"";
             temp_qstring=device.name();
             temp_qbarray=temp_qstring.toUtf8();

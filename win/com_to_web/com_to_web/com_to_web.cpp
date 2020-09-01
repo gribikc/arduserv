@@ -185,12 +185,6 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         new gr_udp_client(http_client);
         //http_client->close();
         GR_logger::log(this,"CtW UDP");
-    //////////////////////////////  ////////
-    }else if(http_client->is_rsw("/")==2){
-        http_client->send_html_header();
-        http_client->socket->write("Main Page!");
-        GR_logger::log(this,"CtW Main Page");
-        http_client->socket->close();
     ////////////////////////////////        ///////
     }else if(http_client->is_rsw("/sys/tree")>0){
         QDir dir;
@@ -203,37 +197,6 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         GR_logger::log(this,"CtW Htdocs Tree");
         http_client->socket->close();
     ////////////////////////////////     ////////
-    }else if(http_client->is_rsw("/htdocs")>0){
-        //http_client->send_neutral_header();
-        //http_client->send_html_header();
-        /*if(http_client->hrp_headers[]){
-
-        }else{
-            http_client->send_neutral_header();
-        }*/
-
-        if(list_param[list_param.size()-1].endsWith("css")){
-            http_client->send_css_header();
-        }else if(list_param[list_param.size()-1].endsWith("js")){
-            http_client->send_js_header();
-        }else{
-            http_client->send_neutral_header();
-        }
-        htdocs_page_request_do(list_param,http_client);
-        GR_logger::log(this,"CtW Page Send");
-        http_client->socket->close();
-        ////////////////////////////////     ////////
-    }else if(http_client->is_rsw("/db/w")>0){
-        http_client->send_html_header();
-        htdocs_db_write_do(http_client);
-        GR_logger::log(this,"CtW DB Write");
-        http_client->socket->close();
-    ////////
-    }else if(http_client->is_rsw("/favicon.ico")==2){
-        http_client->send_html_header();
-        http_client->socket->write("Nice try to get favicon.ico :)))");
-        GR_logger::log(this,"CtW TTG favicon.ico");
-        http_client->socket->close();
     }else if(http_client->is_rsw("/sys/log")>0){
         http_client->send_html_header();
         if(http_client->is_rsw("/sys/log/c")>0){
@@ -258,7 +221,44 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
 
         GR_logger::log(this,"CtW GET Log");
         http_client->socket->close();
-    }else{
+        //////////////////////////////  ////////
+    }else if(http_client->is_rsw("/db/w")>0){
+        http_client->send_html_header();
+        htdocs_db_write_do(http_client);
+        GR_logger::log(this,"CtW DB Write");
+        http_client->socket->close();
+    ////////
+    }else if(http_client->is_rsw("/favicon.ico")==2){
+        http_client->send_html_header();
+        http_client->socket->write("Nice try to get favicon.ico :)))");
+        GR_logger::log(this,"CtW TTG favicon.ico");
+        http_client->socket->close();
+    }else if(http_client->is_rsw("/")==2){
+        http_client->send_html_header();
+        http_client->socket->write("Main Page!");
+        GR_logger::log(this,"CtW Main Page");
+        http_client->socket->close();
+    }else if(http_client->is_rsw("/htdocs")>0){
+        //http_client->send_neutral_header();
+        //http_client->send_html_header();
+        /*if(http_client->hrp_headers[]){
+
+        }else{
+            http_client->send_neutral_header();
+        }*/
+
+        if(list_param[list_param.size()-1].endsWith("css")){
+            http_client->send_css_header();
+        }else if(list_param[list_param.size()-1].endsWith("js")){
+            http_client->send_js_header();
+        }else{
+            http_client->send_neutral_header();
+        }
+        htdocs_page_request_do(list_param,http_client);
+        GR_logger::log(this,"CtW Page Send");
+        http_client->socket->close();
+        ////////////////////////////////     ////////
+    }else{//тут проверять наличие файла в htdocs и редиректить
         http_client->send_html_header();
         http_client->socket->write("400 Bad Request!<br>\n");
         http_client->socket->write("Try:<br>\n");

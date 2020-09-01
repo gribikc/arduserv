@@ -32,7 +32,10 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
     QByteArray data;
     QByteArray send_data="";
 
-    send_data+="xdstartjson:{";//info.coordinate().altitude();
+    send_data+="xdstartjson:";//info.coordinate().altitude();
+    send_data_to_client(&send_data);
+
+    send_data="{";
         send_data+="\n  \"altitude\":";
         data=QString::number(info.coordinate().altitude()).toLocal8Bit();
         data= (data!="nan") ? data : "0";
@@ -88,7 +91,10 @@ void gr_gps::gps_positionnew(const QGeoPositionInfo &info){
         //data= (data!="nan") ? data : "0";
         send_data+="\""+info.timestamp().toString("dd.MM.yyyy;hh:mm:ss.zzz")+"\"";
 
-    send_data+="\n}:xdstopjson\n";
+    send_data+="\n}";
+    send_data_to_client(&send_data);
+
+    send_data=":xdstopjson\n";
     send_data_to_client(&send_data);
 }
 //
