@@ -1,0 +1,104 @@
+html{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	//margin-bottom: -60px;
+	//padding-bottom: -60px;
+	//background:#FFFFFF;
+}
+body{
+	/*BODY { margin-top: 50px; }*/
+	margin : 0 0 0 0;
+	margin-top: 60px;
+	padding: 0 0 0 0;
+	background:#DCDCDC;
+	width: 100%;
+	height: 100%;
+	//margin-bottom: -60px;
+	padding-bottom: -60px;
+}
+
+.menu_top_gr {
+	z-index: 9999;
+	height:  60px;
+	position: fixed; /* Фиксированное положение */
+	left: 0; top: 0; /* Левый нижний угол */
+	background:#454545;
+	color: #fff; /* Цвет текста */
+	width : 100%;/* Ширина слоя */
+}
+.img_menu_up_a_gr {
+  display: inline-block;
+  display: inline-block;
+  margin: 5px 15px 5px 15px;
+} 
+
+.menu_sub_left_gr {
+	margin-top: 60px;
+	margin-left: 20px;
+	visibility:hidden;
+	z-index: 9999;
+	position: fixed; /* Фиксированное положение */
+	left: 0; top: 0; /* Левый нижний угол */
+	padding: 10px; /* Поля вокруг текста */
+	background:#454545;
+	color: #fff; /* Цвет текста */
+	//box-shadow: -20px -20px 20px 13px black;
+}
+.menu_sub_right_gr {
+	margin-top: 60px;
+	margin-right: 20px;
+	visibility:hidden;
+	z-index: 9999;
+	position: fixed; /* Фиксированное положение */
+	right: 0; top: 0; /* Левый нижний угол */
+	padding: 10px; /* Поля вокруг текста */
+	background:#454545;
+	color: #fff; /* Цвет текста */
+	//box-shadow: -20px -20px 20px 13px black;
+}
+
+.up_state_div_gr{
+	background:#F0F0F0;
+	color: #0F0F0F; /* Цвет текста */
+}
+
+
+
+
+.xmlhttprq_stream_gr_status{
+	//clear:both;
+	width:200px;
+	//display:inline;
+}
+.xmlhttprq_stream_gr_stat{
+	//float:left;
+	//width:300px;
+	display:inline;
+}
+
+a.menu_up_a_gr {
+  display: inline-block;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  user-select: none;
+  padding: .3em 1em;
+  outline: none;
+  border: 2px solid;
+  border-radius: 1px;
+  transition: 0.2s;
+  margin: 5px 5px 5px 5px;
+} 
+a.menu_up_a_gr:hover { background: rgba(255,255,255,.2);}
+a.menu_up_a_gr:active { background: white; }
+
+a {
+  text-decoration: none;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
+}

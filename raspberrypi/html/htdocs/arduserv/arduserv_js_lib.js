@@ -78,7 +78,7 @@ class parser_parent_gr{
 		this.parser_data_array=new Array();
 		this.hub_handler=hub;
 		this.parameter=parameter;
-		this.is_collected=('collected' in this.parameter) ? (this.parameter.collected ? 1:0) : 0;
+		//this.is_collected=('collected' in this.parameter) ? (this.parameter.collected ? 1:0) : 0;
 		this.buf_start_point=0;
 		this.buf_end_point=0;
 		this.parser_begin_point=0;
@@ -93,17 +93,25 @@ class parser_parent_gr{
 	parser_data(stream){
 		//!!!this.hub_handler.parser_data(this.parser_data_array);
 		//
+		
 		this.buf+=stream;
-		this.end_point=buf.length;
+		this.buf_end_point=this.buf.length;
 		this.cut_point=0;
-		if(this.start_point>=this.end_point){//!!!>=???//
-			this.start_point=0;
+		if(this.buf_start_point>=this.buf_end_point){//!!!>=???//
+			this.buf_start_point=0;
 		}
 		
-		parser();//!!!for(var i=this.start_point;i<this.end_point;i++){
+		this.parser();//!!!for(var i=this.buf_start_point;i<this.buf_end_point;i++){
 		
-		this.buf=buf.substring(this.cut_point);
-		this.start_point=buf.length;//this.end_point;
+		//console.log(this.buf);
+		//COLLECT
+			//this.buf=
+			this.buf.substring(this.cut_point);
+			this.buf_start_point=this.buf.length;
+		
+		//NO COLLECT
+			//this.buf_start_point=this.buf.length;//this.buf.length;
+			//this.buf="";
 	}
 	
 	collect_buf(){//!!!
@@ -111,7 +119,7 @@ class parser_parent_gr{
 	}
 	
 	cut_buf(point){//!!!
-		this.buf=buf.substring(point);
+		this.buf=this.buf.substring(point);
 	}
 	
 	error_event(message){
@@ -123,8 +131,49 @@ class parser_parent_gr{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 class nt_json extends parser_parent_gr{
 	parser(){
-		for(var i=this.start_point;i<this.end_point;i++){
-		
+		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
+			if(this.buf_start_point>=31 || i>=31){
+				if(	(this.buf.charAt(i-0)) 	==	"{" &&
+					(this.buf.charAt(i-1)) 	==	":" &&
+					(this.buf.charAt(i-2)) 	==	"n" &&
+					(this.buf.charAt(i-3)) 	==	"o" &&
+					(this.buf.charAt(i-4)) 	==	"s" &&
+					(this.buf.charAt(i-5)) 	==	"j" &&
+					(this.buf.charAt(i-6)) 	==	"t" &&
+					(this.buf.charAt(i-7)) 	==	"r" &&
+					(this.buf.charAt(i-8)) 	==	"a" &&
+					(this.buf.charAt(i-9)) 	==	"t" &&
+					(this.buf.charAt(i-10)) 	==	"s" &&
+					(this.buf.charAt(i-11)) 	==	"d" &&
+					(this.buf.charAt(i-12)) 	==	"x"){//xdstartjson:{
+						this.parser_begin_point=i;
+						this.parser_begin_point_valid=1;
+				}
+				if(	(this.buf.charAt(i-0)) 	==	"n" &&
+					(this.buf.charAt(i-1)) 	==	"o" &&
+					(this.buf.charAt(i-2)) 	==	"s" &&
+					(this.buf.charAt(i-3)) 	==	"j" &&
+					(this.buf.charAt(i-4)) 	==	"p" &&
+					(this.buf.charAt(i-5)) 	==	"o" &&
+					(this.buf.charAt(i-6)) 	==	"t" &&
+					(this.buf.charAt(i-7)) 	==	"s" &&
+					(this.buf.charAt(i-8)) 	==	"d" &&
+					(this.buf.charAt(i-9)) 	==	"x" &&
+					(this.buf.charAt(i-10)) 	==	":" &&
+					(this.buf.charAt(i-11)) 	==	"}"){//}:xdstopjson
+						if(this.parser_begin_point_valid==1){
+							this.cut_point=i;
+							this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
+	
+							if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
+								this.hub_handler.parser_data(this.parser_data_array);					
+								this.parser_data_array=new Array();
+							}
+							//console.log(this.parser_data_array);
+						}
+						this.parser_begin_point_valid=0;
+				}
+			}
 		}
 	}	
 }
@@ -734,6 +783,35 @@ class nt_json extends parser_parent_gr{
 			//open()//start()
 			//freeze()
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class web_sock_stream_gr {
+		//Инициализация
+			constructor(parameter) {
+				var this_of_class=this;
+				var this_parameter=parameter;
+				this.parameter=parameter;
+				
+				this.wsUri = this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
+				this.websocket = null;
+				
+				this.websocket = new WebSocket( this.wsUri );
+				this.websocket.onopen = function (evt) {
+					console.log("CONNECTED");
+				};
+				this.websocket.onclose = function (evt) {
+					console.log("DISCONNECTED");
+				};
+				this.websocket.onerror = function (evt) {
+					debug('ERROR: ' + evt.data);
+				};
+				this.websocket.onmessage = function (evt) {
+					//console.log( "Message received :", evt.data );
+					parameter.parser.parser_data(evt.data);
+				};
+			}
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
