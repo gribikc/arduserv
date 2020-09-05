@@ -78,7 +78,11 @@ class parser_parent_gr{
 		this.parser_data_array=new Array();
 		this.hub_handler=hub;
 		this.parameter=parameter;
-		//this.is_collected=('collected' in this.parameter) ? (this.parameter.collected ? 1:0) : 0;
+		if(parameter){	
+			this.is_collected=('collected' in this.parameter) ? (this.parameter.collected ? 1:0) : 0;
+		}else{
+			this.is_collected=0;
+		}
 		this.buf_start_point=0;
 		this.buf_end_point=0;
 		this.parser_begin_point=0;
@@ -103,15 +107,15 @@ class parser_parent_gr{
 		
 		this.parser();//!!!for(var i=this.buf_start_point;i<this.buf_end_point;i++){
 		
-		//console.log(this.buf);
-		//COLLECT
-			//this.buf=
+		if(this.is_collected){
+			//COLLECT
 			this.buf.substring(this.cut_point);
 			this.buf_start_point=this.buf.length;
-		
-		//NO COLLECT
-			//this.buf_start_point=this.buf.length;//this.buf.length;
-			//this.buf="";
+		}else{	
+			//NO COLLECT
+			this.buf_start_point=this.buf.length;//this.buf.length;
+			this.buf="";
+		}
 	}
 	
 	collect_buf(){//!!!
