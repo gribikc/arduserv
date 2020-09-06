@@ -793,26 +793,45 @@ class nt_json extends parser_parent_gr{
 class web_sock_stream_gr {
 		//Инициализация
 			constructor(parameter) {
+				if (typeof MozWebSocket == 'function'){//type def for wat?wtf
+                        WebSocket = MozWebSocket;
+				}
+				
 				var this_of_class=this;
 				var this_parameter=parameter;
 				this.parameter=parameter;
+				this.websocket = null;
 				
 				this.wsUri = this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
 				this.websocket = null;
+				
+				this.open_c();
+			}
+		//123
+			rx_data(evt){
+				console.log(this);
+			}
+			open_c(){
+				if ( this.websocket && this.websocket.readyState == 1 )
+					this.websocket.close();
+				this.websocket = new WebSocket( this.wsUri );
 				
 				this.websocket = new WebSocket( this.wsUri );
 				this.websocket.onopen = function (evt) {
 					console.log("CONNECTED");
 				};
 				this.websocket.onclose = function (evt) {
-					console.log("DISCONNECTED");
+					console.log("DISCONNECTED");	
 				};
 				this.websocket.onerror = function (evt) {
 					debug('ERROR: ' + evt.data);
 				};
-				this.websocket.onmessage = function (evt) {
+				this.websocket.onmessage = function (this_of_class) {
 					//console.log( "Message received :", evt.data );
-					parameter.parser.parser_data(evt.data);
+					console.log(this);
+					//console.log(this_of_class);
+					//console.log(this_parameter);
+					this.parameter.parser.parser_data(evt.data);
 				};
 			}
 }

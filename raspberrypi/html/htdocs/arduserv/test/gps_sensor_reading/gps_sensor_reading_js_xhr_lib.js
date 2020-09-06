@@ -108,7 +108,7 @@ function main_init(){
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"GPS:",
 				//parser: new json_stream_parser_gr(gps),//new raw_parser_gr(message_hub),
-				parser: new nt_json(gps),
+				parser: new nt_json(gps,{collected:0}),
 				
 				flush_en:true,
 				auto_start:true,
@@ -125,7 +125,12 @@ function main_init(){
 			//new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 			gps_stream_param={
 				url		:	"ws://192.168.0.101:3129/dev/gps/r",
-				parser	:	new nt_json(gps,{collected:1})
+				parser	:	new nt_json(gps,{collected:1}),
+				
+				auto_start:true,
+				
+				reload_en:true,
+				reload_time:1000
 			}
 			new web_sock_stream_gr(gps_stream_param);
 		//_arduino_uart
