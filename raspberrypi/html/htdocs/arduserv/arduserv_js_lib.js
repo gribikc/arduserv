@@ -802,19 +802,18 @@ class web_sock_stream_gr {
 				this.parameter=parameter;
 				this.websocket = null;
 				
-				this.wsUri = this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
+				this.wsUri = "ws://127.0.0.1:3129/dev/com/l";//this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
 				this.websocket = null;
 				
-				this.open_c();
+				this.open_c(this);
 			}
 		//123
 			rx_data(evt){
 				console.log(this);
 			}
-			open_c(){
+			open_c(e){
 				if ( this.websocket && this.websocket.readyState == 1 )
 					this.websocket.close();
-				this.websocket = new WebSocket( this.wsUri );
 				
 				this.websocket = new WebSocket( this.wsUri );
 				this.websocket.onopen = function (evt) {
@@ -824,13 +823,14 @@ class web_sock_stream_gr {
 					console.log("DISCONNECTED");	
 				};
 				this.websocket.onerror = function (evt) {
-					debug('ERROR: ' + evt.data);
+					console.log('ERROR: ' + evt.data);
 				};
-				this.websocket.onmessage = function (this_of_class) {
+				this.websocket.onmessage = function (evt) {
 					//console.log( "Message received :", evt.data );
+					console.log(e);
 					console.log(this);
-					//console.log(this_of_class);
-					//console.log(this_parameter);
+					console.log(this_of_class);
+					console.log(this_parameter);
 					this.parameter.parser.parser_data(evt.data);
 				};
 			}
