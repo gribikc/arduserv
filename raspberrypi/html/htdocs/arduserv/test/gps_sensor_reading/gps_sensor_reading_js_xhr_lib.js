@@ -102,13 +102,13 @@ function main_init(){
 	//_HUB
 	//STREAM
 		//arduino_uart
-			gps_stream_param={//location.hostname
+			/*gps_stream_param={//location.hostname
 				url   : (document.location.protocol=="file:" ? "http://192.168.0.101:3128" : "" ) +"/dev/GPS/r/", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 				url_w : "http://192.168.0.44:3128/W/GPS/",//(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/W/COM/28/57600/',//'http://localhost:3128/W/COM/28/57600/',
 				mime_type:'text/plain; charset=x-user-defined',
 				status_div_name:"GPS:",
 				//parser: new json_stream_parser_gr(gps),//new raw_parser_gr(message_hub),
-				parser: new nt_json(gps,{collected:0}),
+				parser: new nt_json_stream_gr(gps,{collected:0}),
 				
 				flush_en:true,
 				auto_start:true,
@@ -121,11 +121,12 @@ function main_init(){
 				
 				reload_en:true,
 				reload_time:1000
-			};
+			};*/
 			//new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 			gps_stream_param={
 				url		:	"ws://192.168.0.101:3129/dev/gps/r",
-				parser	:	new nt_json(gps,{collected:1}),
+				//parser	:	new nt_json_stream_gr(gps,{collected:1}),
+				parser	:	new nt_json_gr(gps,{collected:0}),
 				
 				auto_start:true,
 				
