@@ -820,18 +820,22 @@ class web_sock_stream_gr {
 					console.log("CONNECTED");
 				};
 				this.websocket.onclose = function (evt) {
-					console.log("DISCONNECTED");	
+					console.log("DISCONNECTED");
+					if(e.parameter.reload_en){
+						setTimeout(function() {e.open_c(e);},e.parameter.reload_time);
+					}
 				};
 				this.websocket.onerror = function (evt) {
 					console.log('ERROR: ' + evt.data);
 				};
 				this.websocket.onmessage = function (evt) {
 					//console.log( "Message received :", evt.data );
-					console.log(e);
-					console.log(this);
-					console.log(this_of_class);
-					console.log(this_parameter);
-					this.parameter.parser.parser_data(evt.data);
+					//console.log(e);
+					//console.log(this);
+					//console.log(this_of_class);
+					//console.log(this_parameter);
+					//this.parameter.parser.parser_data(evt.data);
+					e.parameter.parser.parser_data(evt.data);
 				};
 			}
 }
