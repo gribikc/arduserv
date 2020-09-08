@@ -95,9 +95,6 @@ class parser_parent_gr{
 	}
 	
 	parser_data(stream){
-		//!!!this.hub_handler.parser_data(this.parser_data_array);
-		//
-		
 		this.buf+=stream;
 		this.buf_end_point=this.buf.length;
 		this.cut_point=0;
@@ -137,14 +134,10 @@ class nt_json_gr extends parser_parent_gr{
 		//console.log(this.buf);
 		try {
 			this.parser_data_array=JSON.parse( this.buf );
+			this.find();
 		}catch (exception) {
 			//console.log('ERROR: ' + exception);
 		}
-		/*if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-			this.hub_handler.parser_data(this.parser_data_array);					
-			this.parser_data_array=new Array();
-		}*/
-		find();
 	}	
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,15 +179,10 @@ class nt_json_stream_gr extends parser_parent_gr{
 							//this.cut_point=i;
 							try {
 								this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
+								this.find(i);
 							}catch (exception) {
 								//console.log('ERROR: ' + exception);
 							}
-							/*if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-								this.hub_handler.parser_data(this.parser_data_array);					
-								this.parser_data_array=new Array();
-							}*/
-							find(i);
-							//console.log(this.parser_data_array);
 						}
 						this.parser_begin_point_valid=0;
 				}
