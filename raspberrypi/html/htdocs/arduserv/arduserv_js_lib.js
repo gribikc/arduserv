@@ -91,7 +91,7 @@ class parser_parent_gr{
 	}
 	
 	parser(){
-		//
+		//переопределяется в наследнике
 	}
 	
 	parser_data(stream){
@@ -106,6 +106,7 @@ class parser_parent_gr{
 		}
 		
 		this.parser();//!!!for(var i=this.buf_start_point;i<this.buf_end_point;i++){
+		
 		if(this.is_collected){
 			//COLLECT
 			this.buf.substring(this.cut_point);
@@ -115,6 +116,13 @@ class parser_parent_gr{
 			this.buf_start_point=0;//this.buf.length;
 			this.buf="";
 		}
+	}
+	find(i=0){
+		if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
+			this.hub_handler.parser_data(this.parser_data_array);					
+			this.parser_data_array=new Array();
+		}
+		this.cut_point=i;
 	}
 	
 	error_event(message){
@@ -132,10 +140,11 @@ class nt_json_gr extends parser_parent_gr{
 		}catch (exception) {
 			//console.log('ERROR: ' + exception);
 		}
-		if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
+		/*if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
 			this.hub_handler.parser_data(this.parser_data_array);					
 			this.parser_data_array=new Array();
-		}
+		}*/
+		find();
 	}	
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,13 +183,17 @@ class nt_json_stream_gr extends parser_parent_gr{
 					(this.buf.charAt(i-10)) 	==	":" &&
 					(this.buf.charAt(i-11)) 	==	"}"){//}:xdstopjson
 						if(this.parser_begin_point_valid==1){
-							this.cut_point=i;
-							this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
-	
-							if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
+							//this.cut_point=i;
+							try {
+								this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
+							}catch (exception) {
+								//console.log('ERROR: ' + exception);
+							}
+							/*if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
 								this.hub_handler.parser_data(this.parser_data_array);					
 								this.parser_data_array=new Array();
-							}
+							}*/
+							find(i);
 							//console.log(this.parser_data_array);
 						}
 						this.parser_begin_point_valid=0;
@@ -188,6 +201,73 @@ class nt_json_stream_gr extends parser_parent_gr{
 			}
 		}
 	}	
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+class nt_raw_parser_gr extends parser_parent_gr{
+	parser(){
+		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
+			if(this.end_point>=(this.parameter.db_matrix[0]['message_len'])){	//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
+				if(	(this.buf.charCodeAt(i   )&0xFF)==this.parameter.db_matrix[0]['footer'][1] && 
+					(this.buf.charCodeAt(i-1 )&0xFF)==this.parameter.db_matrix[0]['footer'][0] && 
+					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len']+1)&0xFF)==this.parameter.db_matrix[0]['header'][1] && 
+					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len'])&0xFF)==this.parameter.db_matrix[0]['header'][0] ){	//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
+					if((this.buf.charCodeAt(i-93)&0xFF)==0x03){	//61
+						this.message_parser(this.buf,i,0);
+					}
+				}
+			}
+		}
+	}
+	message_parser(stream,end_byte,m_id){
+		var tmp_float_from_byte=0;
+		for(var i in this.parameter.db_matrix[m_id]['message']){
+			this.parameter.db_matrix[m_id]['message'][i][3]=0;//обнуляем матрицу
+			if(this.parameter.db_matrix[m_id]['message'][i][1]==0){//char
+				this.parameter.db_matrix[m_id]['message'][i][3]=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len'])&0xFF;
+			}else if(this.parameter.db_matrix[m_id]['message'][i][1]==1){//float
+				//float_from_byte_arr_gr(buf)
+				tmp_float_from_byte=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-0)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-1)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-2)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
+				//tmp_float_from_byte=tmp_float_from_byte<<8;
+				
+				this.parameter.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
+			}else if(this.parameter.db_matrix[m_id]['message'][i][1]==2){//byte.float
+				//float_from_byte_arr_gr(buf)
+				tmp_float_from_byte=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-0)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-1)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-2)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
+				//tmp_float_from_byte=tmp_float_from_byte<<8;
+				
+				this.parameter.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.parameter.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
+			}else if(this.parameter.db_matrix[m_id]['message'][i][1]==3){//int
+				tmp_float_from_byte=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-0)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-1)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-2)&0xFF;
+				tmp_float_from_byte=tmp_float_from_byte<<8;
+				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
+				//tmp_float_from_byte=tmp_float_from_byte<<8;
+				
+				this.parameter.db_matrix[m_id]['message'][i][3]=tmp_float_from_byte;
+			}else{
+				this.parameter.db_matrix[m_id]['message'][i][3]="undf...";
+			}
+
+			this.hub_handler.parser_data(this.parameter.db_matrix[m_id]['message']);
+		}				
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
