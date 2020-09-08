@@ -1003,153 +1003,6 @@ class web_sock_stream_gr {
 			}
 			
 	}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//...
-	function hide_view_inner_gr(inner_html){
-		//document.getElementById(inner).visibility    hidden   visible
-		//document.getElementById(inner).position      absolute unset
-		//document.getElementById(inner).zIndex			0 		unset
-		//alert(document.getElementById(inner).style.visibility);
-		//alert(document.getElementById(inner).style.position);
-		//alert(document.getElementById(inner).style.zIndex);
-		//console.log(document.getElementById(inner_html).style);
-		
-		if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
-		   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
-		   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
-			document.getElementById(inner_html).style.visibility="hidden";
-			document.getElementById(inner_html).style.position="absolute";
-			document.getElementById(inner_html).style.zIndex=-1;
-			//document.getElementById(inner_html).display='none';
-		}else{
-			document.getElementById(inner_html).style.visibility="visible";
-			document.getElementById(inner_html).style.position="unset";
-			document.getElementById(inner_html).style.zIndex="unset";
-			//document.getElementById(inner_html).display='block';
-		}
-	}
-	//////////////////////////////////////////
-	///////////////////////////////////////////
-	function full_hide_inner_gr(inner_html){
-		inner_html.style.visibility="hidden";
-		inner_html.style.position="absolute";
-		inner_html.style.zIndex=-1;
-		inner_html.style.display='none';
-	}
-	//////////////////////////////////////////
-	///////////////////////////////////////////
-	function full_view_inner_gr(inner_html,display){
-		inner_html.style.visibility="unset";
-		inner_html.style.position="unset";
-		inner_html.style.zIndex="unset";
-		inner_html.style.display='block';
-	}
-	//////////////////////////////////////////
-	///////////////////////////////////////////
-	function hiden_change_inner_gr(inner_html){
-		if(document.getElementById(inner_html).style.visibility=="visible"){
-			document.getElementById(inner_html).style.visibility="hidden";
-		}else{
-			document.getElementById(inner_html).style.visibility="visible";
-		}
-	}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//...
-	function float_from_byte_arr_gr(buf){
-		var sig=0;
-		var por=0;
-		var man=0;
-		
-		if((buf&0x80000000)){//Знак
-			var sig=-1;
-		}else{
-			var sig=1;
-		}
-		
-		por=((buf>>23)&0xFF);//Порядок
-		
-		if(por!=0){//Мантисса
-			man=((buf& 0x7FFFFF)|0x800000);
-		}else{
-			man=((buf&0x7FFFFF)<<1);
-		}
-		
-		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
-		return res;
-	}////////////////////////////////////
-	/////////////////////////////////////
-	function byte_arr_from_float_gr(buf){
-		var float32	= new Float32Array(1);
-		float32[0] 	= buf;
-		var float32_ba = new Uint8Array(float32.buffer);
-		//console.log(float32_ba);
-		return float32_ba;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//create_table
-	function create_table_from_array_gr(arr_in,div){
-		
-		var table = document.createElement("table");
-		var tr,td,text,temp;
-        table.setAttribute("border", "2px");
-		var arr=new Array();
-
-		var i=0;
-		do{
-			if(Array.isArray(arr_in)){
-				arr=arr_in[i];
-				if(i>0){
-					tr = document.createElement("tr");
-					td = document.createElement("td");
-					td.setAttribute("colspan", 2);
-					text = document.createTextNode("---");
-					td.appendChild(text);
-					tr.appendChild(td);
-					table.appendChild(tr);
-				}
-			}else{
-				arr=arr_in;
-			}
-				for(var key in arr) {
-					tr = document.createElement("tr");
-					td = document.createElement("td");
-					text = document.createTextNode(key);
-					td.appendChild(text);
-					tr.appendChild(td);
-				
-					if(arr[key].length>0 && Array.isArray(arr[key])){
-						td.setAttribute("rowspan", arr[key].length);
-						for(var k in arr[key]) {
-							td = document.createElement("td");
-							text = document.createTextNode(arr[key][k]);
-							td.appendChild(text);
-							tr.appendChild(td);
-							table.appendChild(tr);
-							
-							tr = document.createElement("tr");
-							table.appendChild(tr);
-						}
-						table.removeChild(tr);
-					}else{
-						td = document.createElement("td");
-						text = document.createTextNode(arr[key]);
-						td.appendChild(text);
-						tr.appendChild(td);
-						table.appendChild(tr);
-					}
-				}
-			i++;
-		} while(i<arr_in.length)
-		//}
-
-		document.getElementById(div).appendChild(table);
-	}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1228,6 +1081,119 @@ class web_sock_stream_gr {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//...
+	function hide_view_inner_gr(inner_html){
+		//document.getElementById(inner).visibility    hidden   visible
+		//document.getElementById(inner).position      absolute unset
+		//document.getElementById(inner).zIndex			0 		unset
+		//alert(document.getElementById(inner).style.visibility);
+		//alert(document.getElementById(inner).style.position);
+		//alert(document.getElementById(inner).style.zIndex);
+		//console.log(document.getElementById(inner_html).style);
+		
+		if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
+		   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
+		   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
+			document.getElementById(inner_html).style.visibility="hidden";
+			document.getElementById(inner_html).style.position="absolute";
+			document.getElementById(inner_html).style.zIndex=-1;
+			//document.getElementById(inner_html).display='none';
+		}else{
+			document.getElementById(inner_html).style.visibility="visible";
+			document.getElementById(inner_html).style.position="unset";
+			document.getElementById(inner_html).style.zIndex="unset";
+			//document.getElementById(inner_html).display='block';
+		}
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_hide_inner_gr(inner_html){
+		inner_html.style.visibility="hidden";
+		inner_html.style.position="absolute";
+		inner_html.style.zIndex=-1;
+		inner_html.style.display='none';
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function full_view_inner_gr(inner_html,display){
+		inner_html.style.visibility="unset";
+		inner_html.style.position="unset";
+		inner_html.style.zIndex="unset";
+		inner_html.style.display='block';
+	}
+	//////////////////////////////////////////
+	///////////////////////////////////////////
+	function hiden_change_inner_gr(inner_html){
+		if(document.getElementById(inner_html).style.visibility=="visible"){
+			document.getElementById(inner_html).style.visibility="hidden";
+		}else{
+			document.getElementById(inner_html).style.visibility="visible";
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//create_table
+	function create_table_from_array_gr(arr_in,div){
+		
+		var table = document.createElement("table");
+		var tr,td,text,temp;
+        table.setAttribute("border", "2px");
+		var arr=new Array();
+
+		var i=0;
+		do{
+			if(Array.isArray(arr_in)){
+				arr=arr_in[i];
+				if(i>0){
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					td.setAttribute("colspan", 2);
+					text = document.createTextNode("---");
+					td.appendChild(text);
+					tr.appendChild(td);
+					table.appendChild(tr);
+				}
+			}else{
+				arr=arr_in;
+			}
+				for(var key in arr) {
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					text = document.createTextNode(key);
+					td.appendChild(text);
+					tr.appendChild(td);
+				
+					if(arr[key].length>0 && Array.isArray(arr[key])){
+						td.setAttribute("rowspan", arr[key].length);
+						for(var k in arr[key]) {
+							td = document.createElement("td");
+							text = document.createTextNode(arr[key][k]);
+							td.appendChild(text);
+							tr.appendChild(td);
+							table.appendChild(tr);
+							
+							tr = document.createElement("tr");
+							table.appendChild(tr);
+						}
+						table.removeChild(tr);
+					}else{
+						td = document.createElement("td");
+						text = document.createTextNode(arr[key]);
+						td.appendChild(text);
+						tr.appendChild(td);
+						table.appendChild(tr);
+					}
+				}
+			i++;
+		} while(i<arr_in.length)
+		//}
+
+		document.getElementById(div).appendChild(table);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function key_array_to_inner(array,inner){
 	document.getElementById(inner).innerHTML="";
 	var stream=array;
@@ -1261,6 +1227,40 @@ function key_array_to_inner(array,inner){
 				create_tree_ul_li_from_array_gr(arr[key],li);
 			}
 		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//...
+	function float_from_byte_arr_gr(buf){
+		var sig=0;
+		var por=0;
+		var man=0;
+		
+		if((buf&0x80000000)){//Знак
+			var sig=-1;
+		}else{
+			var sig=1;
+		}
+		
+		por=((buf>>23)&0xFF);//Порядок
+		
+		if(por!=0){//Мантисса
+			man=((buf& 0x7FFFFF)|0x800000);
+		}else{
+			man=((buf&0x7FFFFF)<<1);
+		}
+		
+		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
+		return res;
+	}////////////////////////////////////
+	/////////////////////////////////////
+	function byte_arr_from_float_gr(buf){
+		var float32	= new Float32Array(1);
+		float32[0] 	= buf;
+		var float32_ba = new Uint8Array(float32.buffer);
+		//console.log(float32_ba);
+		return float32_ba;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
