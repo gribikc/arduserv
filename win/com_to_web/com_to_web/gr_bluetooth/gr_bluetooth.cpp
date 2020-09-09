@@ -17,8 +17,7 @@ void GR_bluetooth::bt_open(QString dev_name, QString mode){
 
         bt_discoveryAgent->start();
         if(mode=="L"){
-            //QByteArray data_to_send="[\n    {}";
-            QByteArray data_to_send="[";
+            QByteArray data_to_send=static_cast<QString>("[").toUtf8();
             send_data_to_client(&data_to_send);
         }
 }
@@ -101,7 +100,7 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
 void GR_bluetooth::bt_deviceDiscovered_finished(){
     qDebug() << "End BT Scann.";
     if(mode=="L"){
-        QByteArray data_to_send="\n]";
+        QByteArray data_to_send=static_cast<QString>("\n]").toUtf8();
         send_data_to_client(&data_to_send);
     }
     if(mode=="L" || dev_found==0){//!!!

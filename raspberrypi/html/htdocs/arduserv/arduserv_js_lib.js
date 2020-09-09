@@ -179,10 +179,11 @@ class nt_json_stream_gr extends parser_parent_gr{
 							//this.cut_point=i;
 							try {
 								this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
-								this.find(i);
+								//this.find(i);
 							}catch (exception) {
-								//console.log('ERROR: ' + exception);
+								console.log(this.buf.slice(this.parser_begin_point, i-10));
 							}
+							this.find(i);
 						}
 						this.parser_begin_point_valid=0;
 				}

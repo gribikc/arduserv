@@ -26,7 +26,7 @@ void gr_serial::serial_open(int num, int speed){
     }
 
     serial->flush();
-    //serial->write("D");
+    //serial->write("D");//!!!???
     serial->readAll();
     connect(serial, &QSerialPort::readyRead, this, &gr_serial::serial_read);
     connect(serial, &QSerialPort::bytesWritten, this, &gr_serial::bytesWritten);
