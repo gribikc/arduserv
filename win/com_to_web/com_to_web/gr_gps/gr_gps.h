@@ -19,7 +19,8 @@ class gr_gps: public gr_data_source{
         QGeoPositionInfoSource *gps_source;
 
         void virtual no_more_client();
-    private slots:
+        QString gps_adder_par(QString addr, QString name, QString param);
+private slots:
         void init_gps();
         void gps_positionnew(const QGeoPositionInfo &info);
 };

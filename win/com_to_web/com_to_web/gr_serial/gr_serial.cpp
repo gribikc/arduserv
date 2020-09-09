@@ -37,26 +37,28 @@ void gr_serial::serial_list(){
     //qDebug()<<QSerialPortInfo::availablePorts();
     QList<QSerialPortInfo> la=QSerialPortInfo::availablePorts();
     QByteArray data="";
+    QString str_data="";
     int is_st=1;
-    data="[";
+    str_data="[";
     for(int i=0;i<la.size();i++){
         if(is_st==1){
             is_st=0;
         }else {
-            data+=",";
+            str_data+=",";
         }
-        data+="\n    {";
-            data+="\n        \"port_name\":\"";
-                data+=la.at(i).portName().toLocal8Bit();
-            data+="\",\n        \"is_busy\":";
-                data+=la.at(i).isBusy() ? QString("1").toLocal8Bit() : QString("0").toLocal8Bit();
-            data+=",\n        \"description\":\"";
-                data+=la.at(i).description().toLocal8Bit();
-            data+="\",\n        \"manufacturer\":\"";
-                data+=la.at(i).manufacturer().toLocal8Bit();
-        data+="\"\n    }";
+        str_data+="\n    {";
+            str_data+="\n        \"port_name\":\"";
+                str_data+=la.at(i).portName();
+            str_data+="\",\n        \"is_busy\":";
+                str_data+=la.at(i).isBusy() ? QString("1") : QString("0");
+            str_data+=",\n        \"description\":\"";
+                str_data+=la.at(i).description();
+            str_data+="\",\n        \"manufacturer\":\"";
+                str_data+=la.at(i).manufacturer();
+        str_data+="\"\n    }";
     }
-    data+="\n]";
+    str_data+="\n]";
+    data=str_data.toUtf8();
     send_data_to_client(&data);
     close_all_client();
 }

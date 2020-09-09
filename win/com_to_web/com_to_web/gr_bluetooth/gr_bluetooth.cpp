@@ -26,36 +26,38 @@ void GR_bluetooth::bt_open(QString dev_name, QString mode){
 //////////////////////////////////////////////
 void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//const QBluetoothDeviceInfo &device
     qDebug() << device.name();
-    QString temp_qstring;
-    QByteArray temp_qbarray;
+    //QString temp_qstring;
+    QString str_data="";
+    //QByteArray temp_qbarray;
     QByteArray data_to_send="";
     if(mode=="L" && device.isValid()){
         if(scan_list_st==1){
             scan_list_st=0;
         }else {
-            data_to_send+=",";
+            data_to_send=",";//!!!?+
             send_data_to_client(&data_to_send);
             data_to_send="";
         }
-        data_to_send+="\n    {";
-        data_to_send+="\n        \"Device\":\"";
-            temp_qstring=device.name();
-            temp_qbarray=temp_qstring.toUtf8();
-            data_to_send+=temp_qbarray;
-        data_to_send+="\",\n        \"Rssi\":";
-            temp_qbarray=QByteArray::number(device.rssi());
-            data_to_send+=temp_qbarray;
-        data_to_send+=",\n        \"Addr\":\"";
-            temp_qstring=device.address().toString();
-            temp_qbarray=temp_qstring.toUtf8();
-            data_to_send+=temp_qbarray;
-        data_to_send+="\",\n        \"BLE\":";
+        str_data+="\n    {";
+        str_data+="\n        \"Device\":\"";
+            //temp_qstring=device.name();
+            //temp_qbarray=temp_qstring.toUtf8();
+            str_data+=device.name();
+        str_data+="\",\n        \"Rssi\":";
+            //temp_qbarray=QByteArray::number(device.rssi());
+            str_data+=QString::number(device.rssi());
+        str_data+=",\n        \"Addr\":\"";
+            //temp_qstring=device.address().toString();
+            //temp_qbarray=temp_qstring.toUtf8();
+            str_data+=device.address().toString();
+        str_data+="\",\n        \"BLE\":";
             if (device.coreConfigurations()& QBluetoothDeviceInfo::LowEnergyCoreConfiguration){
-                 data_to_send+="1";
+                 str_data+="1";
             }else {
-                data_to_send+="0";
+                str_data+="0";
             }
-        data_to_send+="\n    }";
+        str_data+="\n    }";
+        data_to_send=str_data.toUtf8();
         send_data_to_client(&data_to_send);
     }else if(device.name()==dev_name && mode!="L"){//"HC-06"
         dev_found=1;
