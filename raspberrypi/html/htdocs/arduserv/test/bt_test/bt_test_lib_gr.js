@@ -19,9 +19,9 @@
 		//}:xdstopjson
 		parser_data(stream){
 			//document.getElementById('bt_test').innerHTML='';
-			create_table_from_array_gr(stream,'bt_test');
+			//create_table_from_array_gr(stream,'bt_test');
 			//key_array_to_inner(stream[0],'bt_test');
-			//create_tree_ul_li_from_array_gr(stream,document.getElementById('bt_test'));
+			create_tree_ul_li_from_array_gr(stream,document.getElementById('bt_test'));
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
