@@ -19,7 +19,9 @@
 		//}:xdstopjson
 		parser_data(stream){
 			document.getElementById('serial_list').innerHTML='';
-			create_table_from_array_gr(stream,'serial_list');
+			//create_table_from_array_gr(stream,'serial_list');
+			//key_array_to_inner(stream[0],'serial_list');
+			create_tree_ul_li_from_array_gr(stream,document.getElementById('serial_list'));
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
