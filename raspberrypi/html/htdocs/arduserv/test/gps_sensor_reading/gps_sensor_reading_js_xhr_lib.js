@@ -27,53 +27,6 @@ var autoboat;
 			//////////
 			//////////////////////////////////////
 			var gauge_accelerometr = 0;
-
-
-
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////	
-	function next_prev_main_wiev_div_in(rf){
-		var i;
-		var inner;
-		var inner_count=document.getElementById("main_wiev_div").childElementCount;
-		var vis_ch_tg=0;
-		for(i=0;i<inner_count;i++){
-			//document.getElementById("main_wiev_div").children[i].
-			inner=document.getElementById("main_wiev_div").children[i];
-			if(vis_ch_tg==1){
-				inner.style.position="absolute";
-				inner.style.visibility="hidden";
-				inner.style.zIndex=-1;
-			}else if(inner.style.visibility=="visible" || inner.style.position=="unset" ||
-					 inner.style.zIndex=="unset"       || inner.style.visibility=="" ||
-					 inner.style.position==""          || inner.style.zIndex==""){
-				inner.style.position="absolute";
-				inner.style.visibility="hidden";
-				inner.style.zIndex=-1;
-				
-				//console.log(i);
-				
-				vis_ch_tg=1;
-				if(rf=='f'){
-					if( !(inner=document.getElementById("main_wiev_div").children[i+1]) ){
-						inner=document.getElementById("main_wiev_div").children[0];
-					}
-					i++;
-				}else{
-					if( !(inner=document.getElementById("main_wiev_div").children[i-1]) ){
-						inner=document.getElementById("main_wiev_div").children[inner_count-1];
-						inner_count--;
-					}
-				}
-				
-				vis_ch_tg=1;
-				inner.style.visibility="visible";
-				inner.style.position="unset";
-				inner.style.zIndex="unset";
-			}
-		}
-	}
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////

@@ -126,7 +126,9 @@ QStringList GR_http_client::get_list_param(){
     void GR_http_client::send_data_header(){
         if(socket->type_of_socket!=1){return;}
         socket->write("HTTP/1.1 200 OK\n");
-        socket->write("Content-type: text/plan\n");
+        socket->write("Content-type: text/plain; charset=utf-8\n");
+        //socket->write("Content-type: application/octet-stream; charset=utf-8\n");
+        //socket->write("Content-type:application/json;charset=utf-8\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
         socket->write("\n");

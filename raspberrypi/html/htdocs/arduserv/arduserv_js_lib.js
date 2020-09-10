@@ -134,10 +134,10 @@ class nt_json_gr extends parser_parent_gr{
 		//console.log(this.buf);
 		try {
 			this.parser_data_array=JSON.parse( this.buf );
-			this.find();
 		}catch (exception) {
 			//console.log('ERROR: ' + exception);
 		}
+		this.find();
 	}	
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,101 +449,6 @@ class nt_raw_parser_gr extends parser_parent_gr{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//JSON
-	/*
-	Принимает поток данных конечной длинны генерируемый сервером(php&mysql) заранее структурированный
-	*/
-	class json_parser_gr {
-		//Инициализация
-			constructor(hub) {
-				this.parser_data_array=new Array();
-				this.hub_handler=hub;
-			}
-		//Парсинг
-			parser_data(stream){
-				this.parser_data_array=JSON.parse(stream);
-				
-				if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-					this.hub_handler.parser_data(this.parser_data_array);					
-					this.parser_data_array=new Array();
-				}
-			}
-			error_event(message){
-				this.hub_handler.error_event(message);
-			}
-	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//JSON_STREAM
-	class json_stream_parser_gr{
-		//Инициализация
-			constructor(hub){
-				this.parser_data_array=new Array();
-				this.hub_handler=hub;
-				this.start_point=0;
-				this.end_point=0;
-				this.json_begin_point=0;
-				this.json_begin_point_valid=0;
-			}
-		//Парсинг
-			parser_data(stream){
-				this.end_point=stream.length;
-					if(this.start_point>=this.end_point){
-						this.start_point=0;
-					}
-					for(var i=this.start_point;i<this.end_point;i++){
-						if(this.start_point>=31){
-							if(	(stream.charAt(i-0)) 	==	"{" &&
-								(stream.charAt(i-1)) 	==	":" &&
-								(stream.charAt(i-2)) 	==	"n" &&
-								(stream.charAt(i-3)) 	==	"o" &&
-								(stream.charAt(i-4)) 	==	"s" &&
-								(stream.charAt(i-5)) 	==	"j" &&
-								(stream.charAt(i-6)) 	==	"t" &&
-								(stream.charAt(i-7)) 	==	"r" &&
-								(stream.charAt(i-8)) 	==	"a" &&
-								(stream.charAt(i-9)) 	==	"t" &&
-								(stream.charAt(i-10)) 	==	"s" &&
-								(stream.charAt(i-11)) 	==	"d" &&
-								(stream.charAt(i-12)) 	==	"x"){//xdstartjson:{
-									this.json_begin_point=i;
-									this.json_begin_point_valid=1;
-							}
-							if(	(stream.charAt(i-0)) 	==	"n" &&
-								(stream.charAt(i-1)) 	==	"o" &&
-								(stream.charAt(i-2)) 	==	"s" &&
-								(stream.charAt(i-3)) 	==	"j" &&
-								(stream.charAt(i-4)) 	==	"p" &&
-								(stream.charAt(i-5)) 	==	"o" &&
-								(stream.charAt(i-6)) 	==	"t" &&
-								(stream.charAt(i-7)) 	==	"s" &&
-								(stream.charAt(i-8)) 	==	"d" &&
-								(stream.charAt(i-9)) 	==	"x" &&
-								(stream.charAt(i-10)) 	==	":" &&
-								(stream.charAt(i-11)) 	==	"}"){//}:xdstopjson
-									if(this.json_begin_point_valid==1){
-										this.parser_data_array=JSON.parse( stream.slice(this.json_begin_point, i-10) );
-				
-										if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-											this.hub_handler.parser_data(this.parser_data_array);					
-											this.parser_data_array=new Array();
-										}
-										//console.log(this.parser_data_array);
-									}
-									this.json_begin_point_valid=0;
-							}
-						}
-					}
-				this.start_point=this.end_point;
-			}
-			error_event(message){
-				this.hub_handler.error_event(message);
-			}
-	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RAW
 	/*
 	Принимает бесконечный поток без начала и конца
@@ -794,6 +699,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				}
 				
 				this.xmlhttprq.onprogress=function(e){
+					//console.log(this.responseText);
 					if(this_of_class.is_flush_en && this_of_class.xmlhttprq.readyState!=4){
 						parameter.parser.parser_data(this.responseText);//!!!
 					}
@@ -847,7 +753,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 			}
 			open_c(){
 				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , this.parameter.url, true);
-				this.xmlhttprq.overrideMimeType(this.parameter.mime_type);				
+				//this.xmlhttprq.overrideMimeType(this.parameter.mime_type);	//!!!???			
 				//if('timeout_en'	in this.parameter){
 					//if(this.parameter.timeout_en){
 					this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
@@ -898,11 +804,11 @@ class web_sock_stream_gr {
 				
 				this.websocket = new WebSocket( this.wsUri );
 				this.websocket.onopen = function (evt) {
-					console.log("CONNECTED");
+					//console.log("CONNECTED");
 				};
 				
 				this.websocket.onclose = function (evt) {
-					console.log("DISCONNECTED");
+					//console.log("DISCONNECTED");
 					if(e.parameter.reload_en){
 						setTimeout(function() {e.open_c(e);},e.parameter.reload_time);
 					}

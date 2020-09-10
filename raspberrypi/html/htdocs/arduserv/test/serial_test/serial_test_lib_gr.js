@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //gps
-	class gps_gr{
+	class serial_list{
 		constructor(hub){
 			this.parser_data_array=new Array();
 			this.hub_handler=hub;
@@ -18,22 +18,8 @@
 		//xdstartjson:{
 		//}:xdstopjson
 		parser_data(stream){
-			console.log();
-			document.getElementById("gps_state").innerHTML="";
-			for(var key in stream) {
-				document.getElementById("gps_state").innerHTML+=key+": "+stream[key]+"<br>";
-				if(key=="HorizontalAccuracy"){
-					gauge_accuracy.value = stream[key];
-				}
-				if(key=="GroundSpeed"){
-					gauge_speedometr.value = stream[key]*3.6;
-					gauge_accelerometr.value=(stream[key]-this.speed)*3.6;
-					this.speed=stream[key];
-				}
-				if(key=="Direction"){
-					gauge_compass.value = stream[key];
-				}
-			}
+			document.getElementById('serial_list').innerHTML='';
+			create_table_from_array_gr(stream,'serial_list');
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
