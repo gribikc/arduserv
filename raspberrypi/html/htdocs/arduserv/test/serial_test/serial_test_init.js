@@ -49,7 +49,7 @@ function main_init(){
 			};
 			new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112*/
 			gps_stream_param={
-				url		:	"ws://192.168.0.100:3129/dev/com/l",
+				url		:	"ws://127.0.0.1:3129/dev/com/l",
 				//parser	:	new nt_json_stream_gr(serial_list,{collected:1}),
 				parser	:	new nt_json_gr(serial_list,{collected:0}),
 				

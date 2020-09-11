@@ -786,6 +786,7 @@ class web_sock_stream_gr {
                         WebSocket = MozWebSocket;
 				}
 				
+										
 				var this_of_class=this;
 				var this_parameter=parameter;
 				this.parameter=parameter;
@@ -793,6 +794,11 @@ class web_sock_stream_gr {
 				
 				this.wsUri = this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
 				this.websocket = null;
+				
+				this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
+				if(this.is_reload_en){
+					this.reload_time= ('reload_time' in this.parameter) ? this.parameter.reload_time : 5000;
+				}
 				
 				this.open_c(this);
 			}
@@ -809,15 +815,15 @@ class web_sock_stream_gr {
 				
 				this.websocket.onclose = function (evt) {
 					//console.log("DISCONNECTED");
-					if(e.parameter.reload_en){
-						setTimeout(function() {e.open_c(e);},e.parameter.reload_time);
+					if(e.is_reload_en){
+						setTimeout(function() {e.open_c(e);},e.reload_time);
 					}
 				};
 				
 				this.websocket.onerror = function (evt) {
 					console.log('ERROR: ' + evt.data);
-					if(e.parameter.reload_en){
-						setTimeout(function() {e.open_c(e);},e.parameter.reload_time);
+					if(e.is_reload_en){
+						setTimeout(function() {e.open_c(e);},e.reload_time);
 					}
 				};
 				
