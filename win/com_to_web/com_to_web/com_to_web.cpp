@@ -1,23 +1,23 @@
 #include "com_to_web.h"
 #include "file_system.h"
-#include "ui_com_to_web.h"
+//#include "ui_com_to_web.h"
 
 QList<QString> GR_logger::m_messages = {};
 QList<GR_logger::data_log> GR_logger::log_info = {};
 
 com_to_web::com_to_web(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::com_to_web)
+    QObject(parent)//,
+    //ui(new Ui::com_to_web)
 {
-    ui->setupUi(this);
+    //!!!ui->setupUi(this);
 
-    ui->textEdit->insertPlainText("Start...\n");
+    //!!!ui->textEdit->insertPlainText("Start...\n");
 
     ///////
         if(settings.load_settings(&conf_var)){
-            ui->textEdit->insertPlainText("Setting is valid...\n");
+            //!!!ui->textEdit->insertPlainText("Setting is valid...\n");
         }else {
-            ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
+            //!!!ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
 
             conf_var["tcp_listen_port"]=3128;
 
@@ -37,35 +37,35 @@ com_to_web::com_to_web(QWidget *parent) :
                 for(int i=0;i<sdcommonPaths.count();i++){
                     dir.setPath(sdcommonPaths.at(i));
                     if (!dir.exists()){continue;}else{//SD find.
-                        ui->textEdit->insertPlainText("Find SD:");
-                        ui->textEdit->insertPlainText(sdcommonPaths.at(i));
-                        ui->textEdit->insertPlainText("\n");
+                        //!!!ui->textEdit->insertPlainText("Find SD:");
+                        //!!!ui->textEdit->insertPlainText(sdcommonPaths.at(i));
+                        //!!!ui->textEdit->insertPlainText("\n");
                         if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web")){
                             dir.mkdir("com_to_web");
-                            ui->textEdit->insertPlainText("Create com_to_web/\n");
+                            //!!!ui->textEdit->insertPlainText("Create com_to_web/\n");
                         }else{
-                            ui->textEdit->insertPlainText("Find com_to_web/\n");
+                            //!!!ui->textEdit->insertPlainText("Find com_to_web/\n");
                         }
                         dir.setPath(sdcommonPaths[i]+"/com_to_web");
                         if(!dir.exists()){continue;}else{
                             if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs")){
-                                ui->textEdit->insertPlainText("Create com_to_web/htdocs\n");
+                                //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs\n");
                                 dir.mkdir("htdocs");
                             }else {
-                                ui->textEdit->insertPlainText("Find com_to_web/htdocs\n");
+                                //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs\n");
                             }
                             dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs");
                             if(!dir.exists()){continue;}else{
                                 if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs/db")){
-                                    ui->textEdit->insertPlainText("Create com_to_web/htdocs/db\n");
+                                    //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs/db\n");
                                     dir.mkdir("db");
                                 }else{
-                                    ui->textEdit->insertPlainText("Find com_to_web/htdocs/db\n");
+                                    //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs/db\n");
                                 }
                                 dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs/db");
                                 if(!dir.exists()){continue;}else{
-                                    ui->textEdit->insertPlainText("Find SD, htdocs and db");
-                                    ui->textEdit->insertPlainText("\n");
+                                    //!!!ui->textEdit->insertPlainText("Find SD, htdocs and db");
+                                    //!!!ui->textEdit->insertPlainText("\n");
                                     conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/";
                                     break;
                                 }
@@ -84,7 +84,7 @@ com_to_web::com_to_web(QWidget *parent) :
 
 com_to_web::~com_to_web()
 {
-    delete ui;
+    //!!!delete ui;
 }
 
 
@@ -101,38 +101,38 @@ void com_to_web::gr_sock_srv_start(){
 
 
     if(server->isListening()){
-        ui->textEdit->insertPlainText("Socket start PORT: ");
-        ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
-        ui->textEdit->insertPlainText("\n");
+        //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
+        //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
+        //!!!ui->textEdit->insertPlainText("\n");
 
-        ui->textEdit->insertPlainText("HTDocsPatch: ");
-        ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());
-        ui->textEdit->insertPlainText("\n |- ");
+        //!!!ui->textEdit->insertPlainText("HTDocsPatch: ");
+        //!!!ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());
+        //!!!ui->textEdit->insertPlainText("\n |- ");
         QDir dir(conf_var["htdocs_patch"].toString()+"/htdocs");//!!!&db
         if (!dir.exists()){
             QDir dir(conf_var["htdocs_patch"].toString());
             if (!dir.exists()){
-                ui->textEdit->insertPlainText("Invalid");
+                //!!!ui->textEdit->insertPlainText("Invalid");
             }else{
-                ui->textEdit->insertPlainText("Need to Create htdocs dir in patch");
+                //!!!ui->textEdit->insertPlainText("Need to Create htdocs dir in patch");
             }
         }else{
-            ui->textEdit->insertPlainText("Valid");
+            //!!!ui->textEdit->insertPlainText("Valid");
         }
-        ui->textEdit->insertPlainText("\n");
+        //!!!ui->textEdit->insertPlainText("\n");
 
-        ui->textEdit->insertPlainText("IP:\n");
+        //!!!ui->textEdit->insertPlainText("IP:\n");
         QList<QHostAddress> addr = QNetworkInterface::allAddresses();
         for(int i=0;i<addr.size();i++){
-            ui->textEdit->insertPlainText(" |- ");
-            ui->textEdit->insertPlainText(addr.at(i).toString());
-            ui->textEdit->insertPlainText("\n");
+            //!!!ui->textEdit->insertPlainText(" |- ");
+            //!!!ui->textEdit->insertPlainText(addr.at(i).toString());
+            //!!!ui->textEdit->insertPlainText("\n");
         }
 
         server->setMaxPendingConnections(9999);
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }else {
-        ui->textEdit->insertPlainText("Socket not Start :(\n");
+        //!!!ui->textEdit->insertPlainText("Socket not Start :(\n");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +143,6 @@ void com_to_web::onNewWebs_connect(){
     GR_http_client *abv=new GR_http_client();
     connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
     abv->init(pSocket);
-    ui->textEdit->insertPlainText("Client WBS connected...\n");
     GR_logger::log(abv,"CtW Client connected;");
 
 }
@@ -160,7 +159,6 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     abv->init(sdscrp);
     //socket->peerAddress();
     //QString a=QString(socket->peerName());
-    ui->textEdit->insertPlainText("Client connected...\n");
 
     GR_logger::log(abv,"CtW Client connected;");
 }
@@ -278,12 +276,7 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
 
     //http_client->destroyed();
 }
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-void com_to_web::on_pushButton_clicked(){
-    ui->textEdit->clear();
-}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

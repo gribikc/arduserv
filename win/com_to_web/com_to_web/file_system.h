@@ -1,5 +1,5 @@
 #include "com_to_web.h"
-#include "ui_com_to_web.h"
+//#include "ui_com_to_web.h"
 
 #ifndef FILE_SYSTEM_H
 #define FILE_SYSTEM_H
@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
     void com_to_web::main_page_request_do(GR_http_client *socket){
         QByteArray qbt_temp;
-        ui->textEdit->insertPlainText("        Main Page request\n");
         socket->socket->write("Main Page request...\n");
 
         //qbt_temp=QByteArray::number(httprqs_parser.size());
@@ -86,7 +85,6 @@
 void com_to_web::htdocs_page_request_do(QStringList list_param,GR_http_client *socket){
     QByteArray qbt_temp;
     QString file="";
-    ui->textEdit->insertPlainText("        HtDocs Page request\n");
 
     for(int i=1;i<list_param.size();i++){
         file+="/"+list_param.at(i);
@@ -150,8 +148,6 @@ void com_to_web::htdocs_db_write_do(GR_http_client *socket){
         QByteArray  data_to_send=static_cast<GR_http_client*>(socket)->indata;
         file_req.write(data_to_send);
         file_req.close();
-
-    ui->textEdit->insertPlainText("        DB WR complite\n");
 
     //Отчет
         socket->socket->write("\r\n");

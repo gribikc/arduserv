@@ -27,7 +27,7 @@ function main_init(){
 	//_HUB
 	//STREAM
 		//arduino_uart
-			gps_stream_param={//location.hostname
+			/*gps_stream_param={//location.hostname
 				url   : (document.location.protocol=="file:" ? "http://192.168.0.100:3128" : "" ) +"/dev/bt/l/", 
 				url_w : "http://192.168.0.44:3128/W/GPS/",
 				mime_type:'text/plain; charset=x-user-defined',
@@ -47,8 +47,8 @@ function main_init(){
 				reload_en:true,
 				reload_time:5000
 			};
-			new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-			/*gps_stream_param={
+			new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112*/
+			gps_stream_param={
 				url		:	"ws://192.168.0.100:3129/dev/bt/l",
 				//parser	:	new nt_json_stream_gr(serial_list,{collected:1}),
 				parser	:	new nt_json_gr(bt_test,{collected:0}),
@@ -58,7 +58,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			}
-			new web_sock_stream_gr(gps_stream_param);*/
+			new web_sock_stream_gr(gps_stream_param);
 		//_arduino_uart
 	///////////////////
 }

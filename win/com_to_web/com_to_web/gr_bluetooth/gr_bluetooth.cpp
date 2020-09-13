@@ -67,7 +67,6 @@ void GR_bluetooth::bt_deviceDiscovered(const QBluetoothDeviceInfo &device){//con
         find_dev+="(";
         find_dev+=device.address().toString();
         find_dev+=")\nСоединение...\n";
-        //ui->textEdit_error_log->insertPlainText(find_dev);
          qDebug() << find_dev;
 
         qDebug() << device.rssi();

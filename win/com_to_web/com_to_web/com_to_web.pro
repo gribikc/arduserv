@@ -38,7 +38,8 @@ SOURCES +=  main.cpp\
     gr_tcp_client/gr_tcp_client.cpp \
     gr_tcpsocket/gr_tcpsocket.cpp \
     gr_udp_client/gr_udp_client.cpp \
-    gr_web_socket/gr_web_socket.cpp
+    gr_web_socket/gr_web_socket.cpp \
+    main_windows/mainwindow.cpp
 
 HEADERS  += com_to_web.h\
     file_system.h \
@@ -55,9 +56,10 @@ HEADERS  += com_to_web.h\
     gr_tcp_client/gr_tcp_client.h \
     gr_tcpsocket/gr_tcpsocket.h \
     gr_udp_client/gr_udp_client.h \
-    gr_web_socket/gr_web_socket.h
+    gr_web_socket/gr_web_socket.h \
+    main_windows/mainwindow.h
 
-FORMS    += com_to_web.ui
+FORMS    += main_windows/mainwindow.ui#com_to_web.ui
 
 #DISTFILES += \
 #    android/AndroidManifest.xml \

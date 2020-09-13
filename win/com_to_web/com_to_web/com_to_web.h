@@ -28,12 +28,12 @@
 
 
 
-namespace Ui {
+/*namespace Ui {
 class com_to_web;
-}
+}*/
 
 
-class com_to_web : public QMainWindow
+class com_to_web : public QObject//QMainWindow
 {
     Q_OBJECT
 /////////////////////
@@ -96,10 +96,9 @@ public:
     ~com_to_web();
 
 private slots:
-    void on_pushButton_clicked();
 
-private:
-    Ui::com_to_web *ui;
+/*private:
+    Ui::com_to_web *ui;*/
 };
 /*QString[] sdcommonPaths = {
             "/mnt/Removable/MicroSD",

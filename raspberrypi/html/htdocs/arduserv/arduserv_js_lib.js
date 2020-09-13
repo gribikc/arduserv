@@ -106,13 +106,18 @@ class parser_parent_gr{
 		
 		if(this.is_collected){
 			//COLLECT
-			this.buf.substring(this.cut_point);
+			this.buf=this.buf.substring(this.cut_point);
 			this.buf_start_point=this.buf.length;
+			//console.log(this.cut_point);
 		}else{	
 			//NO COLLECT
 			this.buf_start_point=0;//this.buf.length;
 			this.buf="";
 		}
+		//console.log(this.buf);
+		//console.log(this.cut_point);
+		//console.log(this.buf.length);
+		//console.log(stream);
 	}
 	find(i=0){
 		if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
@@ -122,8 +127,22 @@ class parser_parent_gr{
 		this.cut_point=i;
 	}
 	
-	error_event(message){
-		this.hub_handler.error_event(message);
+	error_event(message="NAN"){
+		if(this.hub_handler.error_event){
+			this.hub_handler.error_event(message);
+		}
+	}
+	
+	close_event(message="NAN"){
+		if(this.hub_handler.close_event){
+			this.hub_handler.close_event(message);
+		}
+	}
+	
+	open_event(message="NAN"){
+		if(this.hub_handler.open_event){
+			this.hub_handler.open_event(message);
+		}
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +165,7 @@ class nt_json_gr extends parser_parent_gr{
 class nt_json_stream_gr extends parser_parent_gr{
 	parser(){
 		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
-			if(this.buf_start_point>=31 || i>=31){
+			if(this.buf_start_point>=12 || i>=12){
 				if(	(this.buf.charAt(i-0)) 	==	"{" &&
 					(this.buf.charAt(i-1)) 	==	":" &&
 					(this.buf.charAt(i-2)) 	==	"n" &&
@@ -808,12 +827,16 @@ class web_sock_stream_gr {
 					this.websocket.close();
 				}
 				
+				delete this.websocket;
 				this.websocket = new WebSocket( this.wsUri );
+				
 				this.websocket.onopen = function (evt) {
+					e.parameter.parser.open_event();
 					//console.log("CONNECTED");
 				};
 				
 				this.websocket.onclose = function (evt) {
+					e.parameter.parser.close_event();
 					//console.log("DISCONNECTED");
 					if(e.is_reload_en){
 						setTimeout(function() {e.open_c(e);},e.reload_time);
@@ -821,10 +844,8 @@ class web_sock_stream_gr {
 				};
 				
 				this.websocket.onerror = function (evt) {
+					e.parameter.parser.error_event();
 					console.log('ERROR: ' + evt.data);
-					if(e.is_reload_en){
-						setTimeout(function() {e.open_c(e);},e.reload_time);
-					}
 				};
 				
 				this.websocket.onmessage = function (evt) {

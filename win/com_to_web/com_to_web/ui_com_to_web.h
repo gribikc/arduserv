@@ -47,8 +47,8 @@ public:
 
     void retranslateUi(QMainWindow *com_to_web)
     {
-        com_to_web->setWindowTitle(QCoreApplication::translate("com_to_web", "com_to_web", nullptr));
-        pushButton->setText(QCoreApplication::translate("com_to_web", "Clear", nullptr));
+        //com_to_web->setWindowTitle(QCoreApplication::translate("com_to_web", "com_to_web", nullptr));
+        //pushButton->setText(QCoreApplication::translate("com_to_web", "Clear", nullptr));
     } // retranslateUi
 
 };

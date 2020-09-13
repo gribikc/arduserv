@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_com_to_web_t {
-    QByteArrayData data[8];
-    char stringdata0[123];
+    QByteArrayData data[7];
+    char stringdata0[101];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,14 +38,12 @@ QT_MOC_LITERAL(2, 29, 0), // ""
 QT_MOC_LITERAL(3, 30, 19), // "incommingConnection"
 QT_MOC_LITERAL(4, 50, 22), // "client_requestComplete"
 QT_MOC_LITERAL(5, 73, 15), // "GR_http_client*"
-QT_MOC_LITERAL(6, 89, 11), // "http_client"
-QT_MOC_LITERAL(7, 101, 21) // "on_pushButton_clicked"
+QT_MOC_LITERAL(6, 89, 11) // "http_client"
 
     },
     "com_to_web\0onNewWebs_connect\0\0"
     "incommingConnection\0client_requestComplete\0"
-    "GR_http_client*\0http_client\0"
-    "on_pushButton_clicked"
+    "GR_http_client*\0http_client"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,7 +53,7 @@ static const uint qt_meta_data_com_to_web[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -63,16 +61,14 @@ static const uint qt_meta_data_com_to_web[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   34,    2, 0x0a /* Public */,
-       3,    0,   35,    2, 0x0a /* Public */,
-       4,    1,   36,    2, 0x0a /* Public */,
-       7,    0,   39,    2, 0x08 /* Private */,
+       1,    0,   29,    2, 0x0a /* Public */,
+       3,    0,   30,    2, 0x0a /* Public */,
+       4,    1,   31,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 5,    6,
-    QMetaType::Void,
 
        0        // eod
 };
@@ -86,7 +82,6 @@ void com_to_web::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->onNewWebs_connect(); break;
         case 1: _t->incommingConnection(); break;
         case 2: _t->client_requestComplete((*reinterpret_cast< GR_http_client*(*)>(_a[1]))); break;
-        case 3: _t->on_pushButton_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -104,7 +99,7 @@ void com_to_web::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
 }
 
 QT_INIT_METAOBJECT const QMetaObject com_to_web::staticMetaObject = { {
-    &QMainWindow::staticMetaObject,
+    &QObject::staticMetaObject,
     qt_meta_stringdata_com_to_web.data,
     qt_meta_data_com_to_web,
     qt_static_metacall,
@@ -123,22 +118,22 @@ void *com_to_web::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_com_to_web.stringdata0))
         return static_cast<void*>(this);
-    return QMainWindow::qt_metacast(_clname);
+    return QObject::qt_metacast(_clname);
 }
 
 int com_to_web::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }
