@@ -13,7 +13,7 @@ QT       += positioning
 QT       += sensors
 QT       += location
 QT       += websockets
-
+QT       += androidextras
 
 CONFIG += c++11
 

@@ -2,6 +2,7 @@
 #include "file_system.h"
 //#include "ui_com_to_web.h"
 
+
 QList<QString> GR_logger::m_messages = {};
 QList<GR_logger::data_log> GR_logger::log_info = {};
 

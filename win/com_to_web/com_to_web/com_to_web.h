@@ -9,6 +9,7 @@
 #include <QNetworkInterface>
 #include <QWebSocketServer>
 #include <QWebSocket>
+#include <QAndroidService>
 
     //EXT
     #include "gr_logger/gr_logger.h"
