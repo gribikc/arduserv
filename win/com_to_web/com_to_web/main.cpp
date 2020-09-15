@@ -15,12 +15,27 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.show();
         qDebug() << "Its main";
+
+        /*QAndroidIntent serviceIntent(QtAndroid::androidActivity().object(),
+                                            "org/qtproject/example/qtandroidservice/QtAndroidService");
+        QAndroidJniObject result = QtAndroid::androidActivity().callObjectMethod(
+                    "startService",
+                    "(Landroid/content/Intent;)Landroid/content/ComponentName;",
+                    serviceIntent.handle().object());*/
+
+        QAndroidJniObject::callStaticMethod<void>(
+            "org/qtproject/example/qtandroidservice/QtAndroidService",
+            "startQtAndroidService",
+            "(Landroid/content/Context;)V",
+            QtAndroid::androidActivity().object());
+
         return a.exec();
     } else if (argc > 1 && strcmp(argv[1], "-service") == 0) {
         QAndroidService app(argc, argv);
         com_to_web ctw;
         qDebug() << "Service starting with from the same .so file";
         return app.exec();
+        return 1;
     } else {
         qDebug() << argc;
         qDebug() << argv;
