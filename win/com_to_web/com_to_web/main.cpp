@@ -17,14 +17,14 @@ int main(int argc, char *argv[])
         qDebug() << "Its main";
 
         /*QAndroidIntent serviceIntent(QtAndroid::androidActivity().object(),
-                                            "org/qtproject/example/qtandroidservice/QtAndroidService");
+                                            "QtAndroidService");
         QAndroidJniObject result = QtAndroid::androidActivity().callObjectMethod(
-                    "startService",
+                    "startQtAndroidService",
                     "(Landroid/content/Intent;)Landroid/content/ComponentName;",
                     serviceIntent.handle().object());*/
 
         QAndroidJniObject::callStaticMethod<void>(
-            "org/qtproject/example/qtandroidservice/QtAndroidService",
+            "QtAndroidService",
             "startQtAndroidService",
             "(Landroid/content/Context;)V",
             QtAndroid::androidActivity().object());

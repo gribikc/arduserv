@@ -82,7 +82,7 @@
     </activity>
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
-        <service android:process=":qt" android:name="org.qtproject.qt5.android.bindings.QtService">
+        <service  android:name=".QtAndroidService">
         <!-- android:process=":qt" is needed to force the service to run on a separate process than the Activity -->
 
             <!-- Application arguments -->
@@ -95,7 +95,7 @@
             -->
 
             <!-- Application to launch -->
-            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
+            <meta-data android:name="android.app.lib_name" android:value="com_to_web"/>
             <!-- Application to launch -->
 
             <!-- Ministro -->
