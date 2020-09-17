@@ -9,13 +9,13 @@
 #include <QNetworkInterface>
 #include <QWebSocketServer>
 #include <QWebSocket>
-#include <QAndroidService>
-#include <QtAndroidExtras>
+//#include <QAndroidService>
+//#include <QtAndroidExtras>
 //#include <QAndroidJniObject>
-#include <QAndroidIntent>
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
-#include <QtAndroid>
+//#include <QAndroidIntent>
+//#include <QAndroidJniObject>
+//#include <QAndroidJniEnvironment>
+//#include <QtAndroid>
 
     //EXT
     #include "gr_logger/gr_logger.h"

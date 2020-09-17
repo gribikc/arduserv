@@ -13,7 +13,7 @@ QT       += positioning
 QT       += sensors
 QT       += location
 QT       += websockets
-QT       += androidextras
+#QT       += androidextras
 
 
 CONFIG += c++11
@@ -26,6 +26,7 @@ TEMPLATE = app
 
 SOURCES +=  main.cpp\
             com_to_web.cpp\
+    gr_ctw_thread/gr_ctw_thread.cpp \
             gr_data_source/gr_data_source.cpp\
     gr_logger/gr_logger.cpp \
     gr_sensor/gr_sensor.cpp \
@@ -44,6 +45,7 @@ SOURCES +=  main.cpp\
 
 HEADERS  += com_to_web.h\
     file_system.h \
+    gr_ctw_thread/gr_ctw_thread.h \
             gr_data_source/gr_data_source.h\
     gr_logger/gr_logger.h \
     gr_sensor/gr_sensor.h \

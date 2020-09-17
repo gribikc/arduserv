@@ -100,8 +100,10 @@ void com_to_web::gr_sock_srv_start(){
     webs_server->listen(QHostAddress::Any, 3129);
     connect(webs_server, &QWebSocketServer::newConnection,this, &com_to_web::onNewWebs_connect);
 
+    qDebug() << "Server start";
 
     if(server->isListening()){
+        qDebug() << "Server is open";
         //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
         //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
         //!!!ui->textEdit->insertPlainText("\n");
@@ -125,7 +127,7 @@ void com_to_web::gr_sock_srv_start(){
         //!!!ui->textEdit->insertPlainText("IP:\n");
         QList<QHostAddress> addr = QNetworkInterface::allAddresses();
         for(int i=0;i<addr.size();i++){
-            //!!!ui->textEdit->insertPlainText(" |- ");
+            //!!!ui->textcEdit->insertPlainText(" |- ");
             //!!!ui->textEdit->insertPlainText(addr.at(i).toString());
             //!!!ui->textEdit->insertPlainText("\n");
         }
@@ -145,7 +147,7 @@ void com_to_web::onNewWebs_connect(){
     connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
     abv->init(pSocket);
     GR_logger::log(abv,"CtW Client connected;");
-
+    qDebug() << "WBS new";
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,6 +164,7 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //QString a=QString(socket->peerName());
 
     GR_logger::log(abv,"CtW Client connected;");
+    qDebug() << "HTTP new";
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -82,7 +82,7 @@
     </activity>
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
-        <service  android:name=".QtAndroidService">
+        <service android:process=":qt" android:name=".QtAndroidService">
         <!-- android:process=":qt" is needed to force the service to run on a separate process than the Activity -->
 
             <!-- Application arguments -->
@@ -95,7 +95,7 @@
             -->
 
             <!-- Application to launch -->
-            <meta-data android:name="android.app.lib_name" android:value="com_to_web"/>
+            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
             <!-- Application to launch -->
 
             <!-- Ministro -->
@@ -135,8 +135,8 @@
     </application>
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="24"/>
 <!--uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/-->
 </manifest>
