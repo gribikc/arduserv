@@ -93,14 +93,13 @@ com_to_web::~com_to_web()
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 void com_to_web::gr_sock_srv_start(){
+    qDebug() << "Server start";
     server = new QTcpServer();//this
     server->listen(QHostAddress::Any, conf_var["tcp_listen_port"].toInt());//3128
 
     webs_server=new QWebSocketServer("CTW", QWebSocketServer::NonSecureMode, this);
     webs_server->listen(QHostAddress::Any, 3129);
     connect(webs_server, &QWebSocketServer::newConnection,this, &com_to_web::onNewWebs_connect);
-
-    qDebug() << "Server start";
 
     if(server->isListening()){
         qDebug() << "Server is open";
@@ -142,19 +141,23 @@ void com_to_web::gr_sock_srv_start(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::onNewWebs_connect(){
+    qDebug() << "WBS new";
     QWebSocket *pSocket = webs_server->nextPendingConnection();
     GR_http_client *abv=new GR_http_client();
     connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
     abv->init(pSocket);
     GR_logger::log(abv,"CtW Client connected;");
-    qDebug() << "WBS new";
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::incommingConnection(){ // обработчик подключений
+    qDebug() << "HTTP new";
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
     qintptr sdscrp=socket->socketDescriptor();
+    //disconnect(socket,nullptr,nullptr,nullptr);
+    disconnect(socket,&QTcpSocket::disconnected,nullptr,nullptr);
+    disconnect(socket,&QTcpSocket::readyRead,nullptr,nullptr);
 
     GR_http_client *abv=new GR_http_client();
     //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
@@ -164,12 +167,12 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //QString a=QString(socket->peerName());
 
     GR_logger::log(abv,"CtW Client connected;");
-    qDebug() << "HTTP new";
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void com_to_web::client_requestComplete(GR_http_client *http_client){
+    qDebug() << "REQ done";
     QStringList list_param=http_client->get_list_param();
     //////////////////////////       ///////
     if(http_client->is_rsw("/dev")>0){

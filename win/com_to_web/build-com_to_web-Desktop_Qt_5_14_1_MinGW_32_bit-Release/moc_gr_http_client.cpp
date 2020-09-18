@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "gr_http_client/gr_http_client.h"
+#include "../com_to_web/gr_http_client/gr_http_client.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)

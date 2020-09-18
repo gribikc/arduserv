@@ -17,6 +17,7 @@ void GR_http_client::init(int sdscrp){
     //ip_addr=this->peerAddress().toString();
     //connect(this, &QTcpSocket::disconnected, this, &GR_http_client::disconnected);
     //connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
+
     connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
     connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
 }

@@ -57,7 +57,10 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    com_to_web ctw;
+    com_to_web *ctw=new com_to_web();
+    QThread *ctw_thread=new QThread();
+    ctw->moveToThread(ctw_thread);
+    ctw_thread->start(QThread::HighestPriority);
 
     //gr_ctw_thread *ctw;
     //gr_ctw_thread ctw;
