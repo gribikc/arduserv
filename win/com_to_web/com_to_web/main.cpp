@@ -7,6 +7,14 @@
 #include <QGuiApplication>
 #include <QDebug>
 
+//#include <QAndroidService>
+//#include <QtAndroidExtras>
+//#include <QAndroidJniObject>
+//#include <QAndroidIntent>
+//#include <QAndroidJniObject>
+//#include <QAndroidJniEnvironment>
+//#include <QtAndroid>
+
 //gr_ctw_thread *ctw;
 
 int main(int argc, char *argv[])
@@ -57,16 +65,22 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    com_to_web *ctw=new com_to_web();
-    QThread *ctw_thread=new QThread();
-    ctw->moveToThread(ctw_thread);
-    ctw_thread->start(QThread::HighestPriority);
+    //com_to_web *ctw=new com_to_web();
+    //QThread *ctw_thread=new QThread();
+    //ctw->moveToThread(ctw_thread);
+    //ctw_thread->start(QThread::HighestPriority);
 
     //gr_ctw_thread *ctw;
-    //gr_ctw_thread ctw;
-    //ctw.start();
+    gr_ctw_thread ctw;
+    ctw.start(QThread::HighestPriority);
     //ctw=new gr_ctw_thread();
     //ctw->start();
+
+
+    /*QProcess *process = new QProcess();
+    QString program = "cmd.exe";
+    QString folder = "C:\\";
+    process->start(program, QStringList() << folder);*/
 
 
 

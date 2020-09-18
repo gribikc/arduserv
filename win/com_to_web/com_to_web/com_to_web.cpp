@@ -85,6 +85,7 @@ com_to_web::com_to_web(QWidget *parent) :
 
 com_to_web::~com_to_web()
 {
+    qDebug() << "CTW off";
     //!!!delete ui;
 }
 
@@ -156,8 +157,8 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
     qintptr sdscrp=socket->socketDescriptor();
     //disconnect(socket,nullptr,nullptr,nullptr);
-    disconnect(socket,&QTcpSocket::disconnected,nullptr,nullptr);
-    disconnect(socket,&QTcpSocket::readyRead,nullptr,nullptr);
+    //disconnect(socket,&QTcpSocket::disconnected,nullptr,nullptr);
+    //disconnect(socket,&QTcpSocket::readyRead,nullptr,nullptr);
 
     GR_http_client *abv=new GR_http_client();
     //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);

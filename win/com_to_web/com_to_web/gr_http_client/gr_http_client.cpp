@@ -11,6 +11,7 @@ void GR_http_client::init(int sdscrp){
     //this->socket=this;
     //this->gr_socket::operator=()
     socket=new gr_TcpSocket();
+    //socket->moveToThread(m_thread);
     socket->setSocketDescriptor(sdscrp);
     //setSocketDescriptor(sdscrp);
     //this->setSocketDescriptor(sdscrp);
@@ -20,6 +21,7 @@ void GR_http_client::init(int sdscrp){
 
     connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
     connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
+    //readyRead();
 }
 void GR_http_client::init(QWebSocket *pSocket){
     socket=new gr_web_socket();

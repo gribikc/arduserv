@@ -15,9 +15,13 @@ protected:
     void run(){
         qDebug() << "THRED2";
         ctw=new com_to_web();
+        exec();
     }
-public:
 
+public:
+    ~gr_ctw_thread(){
+        deleteLater();
+    }
 signals:
 
 public slots:
