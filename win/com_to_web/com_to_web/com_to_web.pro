@@ -3,26 +3,37 @@
 # Project created by QtCreator 2019-02-23T12:42:26
 #
 #-------------------------------------------------
+TARGET = com_to_web
+TEMPLATE = app
+
+
+win32 {
+    DEFINES += win32;
+}
 QT       += core gui
 QT       -= gui
-QT       += serialport
 QT       += network
 QT       += bluetooth
-QT       += serialport
 QT       += positioning
 QT       += sensors
 QT       += location
 QT       += websockets
 #QT       += androidextras
+win32 {
+    QT       += serialport
+}
 
-
+ios {
+    QMAKE_IOS_DEPLOYMENT_TARGET = 14.0
+    VERSION = 0.1.1
+    QMAKE_TARGET_BUNDLE_PREFIX = "nnm"
+    QMAKE_BUNDLE = "test"
+    TARGET = "test"
+    QMAKE_INFO_PLIST = ios/Info.plist
+}
 CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = com_to_web
-TEMPLATE = app
-
 
 SOURCES +=  main.cpp\
             com_to_web.cpp\
@@ -30,7 +41,7 @@ SOURCES +=  main.cpp\
             gr_data_source/gr_data_source.cpp\
     gr_logger/gr_logger.cpp \
     gr_sensor/gr_sensor.cpp \
-            gr_serial/gr_serial.cpp \
+            #gr_serial/gr_serial.cpp \
             gr_bluetooth/gr_bluetooth.cpp \
             gr_gps/gr_gps.cpp \
     gr_http_client/gr_http_client.cpp \
@@ -43,13 +54,17 @@ SOURCES +=  main.cpp\
     gr_web_socket/gr_web_socket.cpp \
     main_windows/mainwindow.cpp
 
+win32 {
+    SOURCES +=gr_serial/gr_serial.cpp
+}
+
 HEADERS  += com_to_web.h\
     file_system.h \
     gr_ctw_thread/gr_ctw_thread.h \
             gr_data_source/gr_data_source.h\
     gr_logger/gr_logger.h \
     gr_sensor/gr_sensor.h \
-            gr_serial/gr_serial.h \
+            #gr_serial/gr_serial.h \
             gr_bluetooth/gr_bluetooth.h\
             gr_gps/gr_gps.h \
     gr_http_client/gr_http_client.h \
@@ -61,6 +76,10 @@ HEADERS  += com_to_web.h\
     gr_udp_client/gr_udp_client.h \
     gr_web_socket/gr_web_socket.h \
     main_windows/mainwindow.h
+
+win32 {
+    HEADERS +=gr_serial/gr_serial.h
+}
 
 FORMS    += main_windows/mainwindow.ui#com_to_web.ui
 

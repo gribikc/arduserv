@@ -2,8 +2,9 @@
 #define GR_DEV_MANAGER_H
 
 #include <QObject>
-
-#include "gr_serial/gr_serial.h"
+#ifdef win32
+    #include "gr_serial/gr_serial.h"
+#endif
 #include "gr_bluetooth/gr_bluetooth.h"
 #include "gr_gps/gr_gps.h"
 #include "gr_http_client/gr_http_client.h"

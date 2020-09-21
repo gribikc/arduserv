@@ -18,7 +18,7 @@ public:
     void write(const char *data);
     void write(QString *data);
     QByteArray readAll();
-    void setSocketDescriptor(int sdscrp){}
+    void setSocketDescriptor(qintptr sdscrp){}
     void setSocketDescriptor(QWebSocket *sdscrp);
     QAbstractSocket::SocketState state();
     void close();

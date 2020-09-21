@@ -15,7 +15,9 @@
     //#include "gr_data_source/gr_data_source.h"
     #include "gr_dev_manager/gr_dev_manager.h"
     #include "gr_http_client/gr_http_client.h"
-    #include "gr_serial/gr_serial.h"
+    #ifdef win32
+        #include "gr_serial/gr_serial.h"
+    #endif
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
     #include "gr_sensor/gr_sensor.h"

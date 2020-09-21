@@ -8,6 +8,7 @@ void gr_gps::init_gps(){
     if (gps_source) {
         gps_source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
         connect( gps_source, &QGeoPositionInfoSource::positionUpdated, this,&gr_gps::gps_positionnew);
+        gps_source->setUpdateInterval(1000);
         gps_source->startUpdates();
         GR_logger::log(this,"GPS Init");
     }

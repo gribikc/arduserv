@@ -5,7 +5,7 @@
 
 }*/
 
-void gr_TcpSocket::setSocketDescriptor(int sdscrp){
+void gr_TcpSocket::setSocketDescriptor(qintptr sdscrp){
      type_of_socket=1;
      socket.setSocketDescriptor(sdscrp);
      connect(&socket, &QTcpSocket::disconnected, this, &gr_TcpSocket::disconnected_s);

@@ -73,7 +73,9 @@ gr_dev_manager::gr_dev_manager(QObject *parent) : QObject(parent)
 
         if(!is_dev_find){//нет такогоже устройства
             if(dev_type=="COM"){
-                dev_new=new gr_serial(dev_name.toInt(),dev_param_z.toInt(),dev_mode,http_client);
+                #ifdef win32
+                    dev_new=new gr_serial(dev_name.toInt(),dev_param_z.toInt(),dev_mode,http_client);
+                #endif
             }else if (dev_type=="BT") {
                 dev_new=new GR_bluetooth(dev_name,dev_mode,http_client);
             }else if(dev_type=="GPS"){

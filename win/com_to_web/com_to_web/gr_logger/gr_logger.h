@@ -54,12 +54,12 @@ class GR_logger{
         }
         static void send_log_to_socket_json(GR_http_client* socket){
             QByteArray qba;
-            qba+="[\n";
+            qba+="[\n";//!!!
             for(int i=0;i<log_info.size();i++){
                 if(i!=0){qba+=",";}else {qba+="    ";}
                 qba+="{\n";
                 qba+="        \"pointer\":\"";
-                qba+=QString::number((int)log_info.at(i).pointer)+"\",\n";
+                //!!!qba+=QString::number(static_cast<int>(log_info.at(i).pointer))+"\",\n";
                 qba+="        \"date\":\"";
                 qba+=log_info.at(i).date.toString("dd.MM.yyyy")+"\",\n";
                 qba+="        \"time\":\"";

@@ -7,7 +7,7 @@ GR_http_client::GR_http_client(){
 
 }
 
-void GR_http_client::init(int sdscrp){
+void GR_http_client::init(qintptr sdscrp){
     //this->socket=this;
     //this->gr_socket::operator=()
     socket=new gr_TcpSocket();

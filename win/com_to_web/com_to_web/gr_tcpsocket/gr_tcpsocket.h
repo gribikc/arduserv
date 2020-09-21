@@ -16,7 +16,7 @@ public:
     void write(const char *data);
     void write(QString *data);
     QByteArray readAll();
-    void setSocketDescriptor(int sdscrp);
+    void setSocketDescriptor(qintptr sdscrp);
     QAbstractSocket::SocketState state();
     void close();
     void flush();
