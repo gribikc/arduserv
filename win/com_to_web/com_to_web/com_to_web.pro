@@ -18,6 +18,7 @@ QT       += positioning
 QT       += sensors
 QT       += location
 QT       += websockets
+QT       += webview
 #QT       += androidextras
 win32 {
     QT       += serialport

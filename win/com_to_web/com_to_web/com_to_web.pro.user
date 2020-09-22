@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.1, 2020-09-21T23:06:21. -->
+<!-- Written by QtCreator 4.13.1, 2020-09-22T21:47:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -8,7 +8,7 @@
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
-  <value type="int">0</value>
+  <value type="int">1</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.EditorSettings</variable>
@@ -336,7 +336,7 @@
      <value type="QString" key="identifier"></value>
      <value type="int" key="type">0</value>
     </valuemap>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Запуск test на Gribikc_iP</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Запуск com_to_web на Gribikc_iP</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.IosRunConfiguration:/Users/gribikc/Documents/projekt/arduserv/win/com_to_web/com_to_web/com_to_web.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/gribikc/Documents/projekt/arduserv/win/com_to_web/com_to_web/com_to_web.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
@@ -606,7 +606,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/gribikc/Documents/projekt/arduserv/win/com_to_web/build-com_to_web-Desktop_Qt_5_15_1_clang_64bit-Debug/com_to_web.app/Contents/MacOS</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

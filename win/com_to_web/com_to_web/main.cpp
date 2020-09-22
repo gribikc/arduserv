@@ -58,34 +58,21 @@ int main(int argc, char *argv[])
     //    qWarning() << "Unrecognized command line argument";
     //    return -1;
     //}
+    /*QProcess *process = new QProcess();
+    QString program = "cmd.exe";
+    QString folder = "C:\\";
+    process->start(program, QStringList() << folder);*/
 
+    QtWebView::initialize();
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     
     //com_to_web ctw;
 
-    //com_to_web *ctw=new com_to_web();
-    //QThread *ctw_thread=new QThread();
-    //ctw->moveToThread(ctw_thread);
-    //ctw_thread->start(QThread::HighestPriority);
-
-
     gr_ctw_thread ctw;
     ctw.start(QThread::HighestPriority);
     
-    //gr_ctw_thread *ctw;
-    //ctw=new gr_ctw_thread();
-    //ctw->start();
-
-
-    /*QProcess *process = new QProcess();
-    QString program = "cmd.exe";
-    QString folder = "C:\\";
-    process->start(program, QStringList() << folder);*/
-
-
-
     return a.exec();
 }
 
