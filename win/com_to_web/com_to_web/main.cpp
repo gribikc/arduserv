@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     QString folder = "C:\\";
     process->start(program, QStringList() << folder);*/
 
-    QtWebView::initialize();
+    //QtWebView::initialize();
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

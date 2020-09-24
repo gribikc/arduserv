@@ -4,7 +4,6 @@ release/gr_ctw_thread.o
 release/gr_data_source.o
 release/gr_logger.o
 release/gr_sensor.o
-release/gr_serial.o
 release/gr_bluetooth.o
 release/gr_gps.o
 release/gr_http_client.o
@@ -16,10 +15,10 @@ release/gr_tcpsocket.o
 release/gr_udp_client.o
 release/gr_web_socket.o
 release/mainwindow.o
+release/gr_serial.o
 release/moc_com_to_web.o
 release/moc_gr_ctw_thread.o
 release/moc_gr_data_source.o
-release/moc_gr_serial.o
 release/moc_gr_bluetooth.o
 release/moc_gr_http_client.o
 release/moc_gr_dev_manager.o
@@ -29,3 +28,4 @@ release/moc_gr_tcpsocket.o
 release/moc_gr_udp_client.o
 release/moc_gr_web_socket.o
 release/moc_mainwindow.o
+release/moc_gr_serial.o
