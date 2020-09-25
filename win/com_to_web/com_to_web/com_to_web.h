@@ -99,6 +99,8 @@ public:
 
 private slots:
 
+signals:
+   void info(int type,QString str);
 /*private:
     Ui::com_to_web *ui;*/
 };

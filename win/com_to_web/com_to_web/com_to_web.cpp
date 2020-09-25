@@ -85,6 +85,7 @@ com_to_web::com_to_web(QWidget *parent) :
 
 com_to_web::~com_to_web()
 {
+    this->deleteLater();
     qDebug() << "CTW off";
     //!!!delete ui;
 }
@@ -107,6 +108,7 @@ void com_to_web::gr_sock_srv_start(){
         //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
         //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
         //!!!ui->textEdit->insertPlainText("\n");
+        emit info(0,conf_var["tcp_listen_port"].toString());
 
         //!!!ui->textEdit->insertPlainText("HTDocsPatch: ");
         //!!!ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());

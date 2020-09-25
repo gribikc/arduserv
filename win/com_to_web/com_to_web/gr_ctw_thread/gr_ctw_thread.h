@@ -10,7 +10,7 @@ class gr_ctw_thread : public QThread
     /*gr_ctw_thread(){
         qDebug() << "THRED1";
     }*/
-    com_to_web *ctw;
+    //com_to_web *ctw;
 protected:
     void run(){
         qDebug() << "THRED2";
@@ -19,8 +19,14 @@ protected:
     }
 
 public:
+    com_to_web *ctw;
     ~gr_ctw_thread(){
+        terminate();
+        ctw->deleteLater();
         deleteLater();
+    }
+    com_to_web * get_ctw_handler(){
+        return ctw;
     }
 signals:
 

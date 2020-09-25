@@ -6,6 +6,7 @@
 
 #include <QGuiApplication>
 #include <QDebug>
+#include <QObject>
 
 //#include <QAndroidService>
 //#include <QtAndroidExtras>
@@ -16,6 +17,7 @@
 //#include <QtAndroid>
 
 //gr_ctw_thread *ctw;
+
 
 int main(int argc, char *argv[])
 {
@@ -72,7 +74,16 @@ int main(int argc, char *argv[])
 
     gr_ctw_thread ctw;
     ctw.start(QThread::HighestPriority);
-    
+
+    com_to_web *ctw_point=ctw.get_ctw_handler();
+    //QObject::disconnect()
+    QObject::connect(ctw_point,&com_to_web::info,[&] (int type,QString str)
+    {
+        qDebug()<<"AAA";
+    }
+    );
+
+
     return a.exec();
 }
 
