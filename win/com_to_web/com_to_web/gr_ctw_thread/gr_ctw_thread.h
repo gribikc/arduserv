@@ -10,16 +10,21 @@ class gr_ctw_thread : public QThread
     /*gr_ctw_thread(){
         qDebug() << "THRED1";
     }*/
-    //com_to_web *ctw;
+    com_to_web *ctw;
 protected:
     void run(){
         qDebug() << "THRED2";
         ctw=new com_to_web();
+        QObject::disconnect(ctw,nullptr,nullptr,nullptr);
+        QObject::connect(ctw,&com_to_web::info,this,[&] (int type,QString str)
+            {
+                qDebug()<<"AAA";
+            });
         exec();
     }
 
 public:
-    com_to_web *ctw;
+    //com_to_web *ctw;
     ~gr_ctw_thread(){
         terminate();
         ctw->deleteLater();

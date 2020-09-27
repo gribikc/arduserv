@@ -73,15 +73,19 @@ int main(int argc, char *argv[])
     //com_to_web ctw;
 
     gr_ctw_thread ctw;
+    //com_to_web *ctw_point=ctw.get_ctw_handler();
+
+    //QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);
+
     ctw.start(QThread::HighestPriority);
 
-    com_to_web *ctw_point=ctw.get_ctw_handler();
-    //QObject::disconnect()
-    QObject::connect(ctw_point,&com_to_web::info,[&] (int type,QString str)
+    //com_to_web *ctw_point=ctw.get_ctw_handler();
+    //QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);
+    /*QObject::connect(ctw_point,&com_to_web::info,nullptr,[] (int type,QString str)
     {
         qDebug()<<"AAA";
     }
-    );
+    );*/
 
 
     return a.exec();

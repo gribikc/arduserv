@@ -38,6 +38,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES +=  main.cpp\
             com_to_web.cpp\
+    data_generator/data_generator.cpp \
     gr_ctw_thread/gr_ctw_thread.cpp \
             gr_data_source/gr_data_source.cpp\
     gr_logger/gr_logger.cpp \
@@ -60,6 +61,7 @@ win32 {
 }
 
 HEADERS  += com_to_web.h\
+    data_generator/data_generator.h \
     file_system.h \
     gr_ctw_thread/gr_ctw_thread.h \
             gr_data_source/gr_data_source.h\

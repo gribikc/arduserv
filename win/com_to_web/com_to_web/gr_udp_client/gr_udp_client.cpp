@@ -23,8 +23,8 @@ gr_udp_client::gr_udp_client(GR_http_client *partner) : QObject(nullptr){
     //static_cast<GR_http_client*>(partner)->list_param.at();
     GR_http_client* http_client=static_cast<GR_http_client*>(partner);
     QStringList list_param=http_client->list_param;
-    QString ip_dst=(list_param.size() >= 3) ? list_param[3] : "127.0.0.1";
-    QString port_dst=(list_param.size() >= 4) ? list_param[4] : "161";
+    QString ip_dst=(list_param.size() > 3) ? list_param[3] : "127.0.0.1";
+    QString port_dst=(list_param.size() > 4) ? list_param[4] : "161";
 
     udpSocket->writeDatagram(http_client->indata,QHostAddress(ip_dst), port_dst.toInt());
     qDebug()<<"UDP Send DATA";

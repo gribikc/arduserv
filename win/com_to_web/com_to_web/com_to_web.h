@@ -18,6 +18,7 @@
     #ifdef win32
         #include "gr_serial/gr_serial.h"
     #endif
+    #include "data_generator/data_generator.h"
     #include "gr_bluetooth/gr_bluetooth.h"
     #include "gr_gps/gr_gps.h"
     #include "gr_sensor/gr_sensor.h"

@@ -230,6 +230,11 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         GR_logger::log(this,"CtW GET Log");
         http_client->socket->close();
         //////////////////////////////  ////////
+    }else if(http_client->is_rsw("/sys/gen/")>0){
+        http_client->send_data_header();
+        new data_generator(http_client);
+        //http_client->close();
+        GR_logger::log(this,"CtW GEN");
     }else if(http_client->is_rsw("/db/w")>0){
         http_client->send_html_header();
         htdocs_db_write_do(http_client);
