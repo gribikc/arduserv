@@ -10,6 +10,11 @@ void gr_TcpSocket::setSocketDescriptor(qintptr sdscrp){
      socket.setSocketDescriptor(sdscrp);
      connect(&socket, &QTcpSocket::disconnected, this, &gr_TcpSocket::disconnected_s);
      connect(&socket, &QTcpSocket::readyRead, this, &gr_TcpSocket::readyRead_s);
+     emit this->readyRead();
+     //Ex
+     //QMetaMethod readyRead = QMetaMethod::fromSignal(&QTcpSocket::readyRead);
+     //connect(this, readyRead,this, [=](){ qDebug()<<"DADADA!!!";}     );
+     //disconnect(this,QMetaMethod::fromSignal(&gr_TcpSocket::readyRead),nullptr,nullptr);
 }
 
 void gr_TcpSocket::readyRead_s(){

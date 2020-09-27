@@ -157,8 +157,8 @@ void com_to_web::onNewWebs_connect(){
 void com_to_web::incommingConnection(){ // обработчик подключений
     qDebug() << "HTTP new";
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
-    qintptr sdscrp=socket->socketDescriptor();
     disconnect(socket,nullptr,nullptr,nullptr);
+    qintptr sdscrp=socket->socketDescriptor();
     //disconnect(socket,&QTcpSocket::disconnected,nullptr,nullptr);
     //disconnect(socket,&QTcpSocket::readyRead,nullptr,nullptr);
 

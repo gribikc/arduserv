@@ -28,6 +28,8 @@ void gr_web_socket::connected_s(){
     emit this->readyRead();
     connect(socket, &QWebSocket::textMessageReceived, this, &gr_web_socket::readyRead_s_txt);
     connect(socket, &QWebSocket::binaryMessageReceived, this, &gr_web_socket::readyRead_s_bin);
+    connect(socket, &QWebSocket::disconnected, this, &gr_web_socket::disconnected_s);
+    emit this->readyRead();
 }
 
 void gr_web_socket::readyRead_s_txt(QString message){

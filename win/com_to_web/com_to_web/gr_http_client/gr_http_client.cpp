@@ -1,5 +1,6 @@
 #include "gr_http_client.h"
 #include <gr_logger/gr_logger.h>
+#include <QTimer>
 
 //GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
 //GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
@@ -8,9 +9,16 @@ GR_http_client::GR_http_client(){
 }
 
 void GR_http_client::init(qintptr sdscrp){
+    socket=new gr_TcpSocket();
+    socket->setSocketDescriptor(sdscrp);
+    connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
+    //QTimer::singleShot(2000, this,[&](){
+        //socket->i
+        connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
+    //});
+
     //this->socket=this;
     //this->gr_socket::operator=()
-    socket=new gr_TcpSocket();
     //socket->moveToThread(m_thread);
     //socket->setSocketDescriptor(sdscrp);
     //setSocketDescriptor(sdscrp);
@@ -19,10 +27,10 @@ void GR_http_client::init(qintptr sdscrp){
     //connect(this, &QTcpSocket::disconnected, this, &GR_http_client::disconnected);
     //connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
 
-    connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
+    /*connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
     connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
     //readyRead();
-    socket->setSocketDescriptor(sdscrp);
+    socket->setSocketDescriptor(sdscrp);*/
 }
 void GR_http_client::init(QWebSocket *pSocket){
     socket=new gr_web_socket();
