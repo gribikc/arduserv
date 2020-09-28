@@ -16,10 +16,10 @@ protected:
         qDebug() << "THRED2";
         ctw=new com_to_web();
         QObject::disconnect(ctw,nullptr,nullptr,nullptr);
-        QObject::connect(ctw,&com_to_web::info,this,[&] (int type,QString str)
+        /*QObject::connect(ctw,&com_to_web::info,this,[&] (int type,QString str)
             {
                 qDebug()<<"AAA";
-            });
+            });*/
         exec();
     }
 

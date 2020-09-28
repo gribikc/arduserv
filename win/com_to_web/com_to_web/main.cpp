@@ -66,17 +66,16 @@ int main(int argc, char *argv[])
     process->start(program, QStringList() << folder);*/
 
     //QtWebView::initialize();
+
+
+
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     
     //com_to_web ctw;
-
     gr_ctw_thread ctw;
-    //com_to_web *ctw_point=ctw.get_ctw_handler();
-
-    //QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);
-
     ctw.start(QThread::HighestPriority);
 
     //com_to_web *ctw_point=ctw.get_ctw_handler();

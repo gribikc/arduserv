@@ -23,6 +23,7 @@ QT       += websockets
 win32 {
     QT       += serialport
 }
+#QT += webkit
 
 ios {
     QMAKE_IOS_DEPLOYMENT_TARGET = 14.0
