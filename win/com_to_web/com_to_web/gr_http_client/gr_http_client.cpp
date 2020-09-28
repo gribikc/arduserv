@@ -8,12 +8,11 @@ GR_http_client::GR_http_client(){
 
 }
 
-void GR_http_client::init(qintptr sdscrp){
+void GR_http_client::init(QTcpSocket *sdscrp){
     socket=new gr_TcpSocket();
     socket->setSocketDescriptor(sdscrp);
     connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
     //QTimer::singleShot(2000, this,[&](){
-        //socket->i
         connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
     //});
 

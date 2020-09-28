@@ -32,7 +32,7 @@ public:
     //explicit GR_http_client(QTcpSocket  *socket):QTcpSocket(this);
     explicit GR_http_client();
     void init(QWebSocket *pSocket);
-    void init(qintptr sdscrp);
+    void init(QTcpSocket *sdscrp);
     gr_socket *socket;
     //QTcpSocket  *socket=nullptr;
     QByteArray  indata="";

@@ -11,17 +11,25 @@ public:
 
     }
 
-    QTcpSocket socket;
+    QTcpSocket *socket;
     void write(QByteArray *data);//данные из устройства отправляем в сокет
     void write(const char *data);
     void write(QString *data);
     QByteArray readAll();
-    void setSocketDescriptor(qintptr sdscrp);
+    void setSocketDescriptor(QTcpSocket *sdscrp);
     QAbstractSocket::SocketState state();
     void close();
     void flush();
     void readyRead_s();
     void disconnected_s();
+    void connectNotify(const QMetaMethod &signal){
+        if (signal == QMetaMethod::fromSignal(&gr_TcpSocket::readyRead)) {
+            if(socket->bytesAvailable()>0){
+                qDebug()<<"Socket Error!!! bytesAvailable";
+                emit readyRead();
+            }
+        }
+    }
 };
 
 #endif // GR_TCPSOCKET_H

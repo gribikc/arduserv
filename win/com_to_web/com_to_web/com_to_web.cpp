@@ -158,14 +158,14 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     qDebug() << "HTTP new";
     QTcpSocket *socket = server->nextPendingConnection();//QTcpSocket
     disconnect(socket,nullptr,nullptr,nullptr);
-    qintptr sdscrp=socket->socketDescriptor();
+    //qintptr sdscrp=socket->socketDescriptor();
     //disconnect(socket,&QTcpSocket::disconnected,nullptr,nullptr);
     //disconnect(socket,&QTcpSocket::readyRead,nullptr,nullptr);
 
     GR_http_client *abv=new GR_http_client();
     //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
       connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
-    abv->init(sdscrp);
+    abv->init(socket);
     //socket->peerAddress();
     //QString a=QString(socket->peerName());
 

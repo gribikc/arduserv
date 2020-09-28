@@ -16,7 +16,7 @@ public:
     virtual void write(const char *data){}
     virtual void write(QString *data){}
     virtual QByteArray readAll(){return 0;}
-    virtual void setSocketDescriptor(qintptr sdscrp){}
+    virtual void setSocketDescriptor(QTcpSocket *sdscrp){}
     virtual void setSocketDescriptor(QWebSocket *sdscrp){};
     virtual QAbstractSocket::SocketState state(){}
     virtual void close(){}
