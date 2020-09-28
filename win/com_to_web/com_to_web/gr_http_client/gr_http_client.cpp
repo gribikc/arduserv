@@ -2,8 +2,6 @@
 #include <gr_logger/gr_logger.h>
 #include <QTimer>
 
-//GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
-//GR_http_client::GR_http_client(int sdscrp) : QTcpSocket(){
 GR_http_client::GR_http_client(){
 
 }
@@ -15,21 +13,6 @@ void GR_http_client::init(QTcpSocket *sdscrp){
     //QTimer::singleShot(2000, this,[&](){
         connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
     //});
-
-    //this->socket=this;
-    //this->gr_socket::operator=()
-    //socket->moveToThread(m_thread);
-    //socket->setSocketDescriptor(sdscrp);
-    //setSocketDescriptor(sdscrp);
-    //this->setSocketDescriptor(sdscrp);
-    //ip_addr=this->peerAddress().toString();
-    //connect(this, &QTcpSocket::disconnected, this, &GR_http_client::disconnected);
-    //connect(this, &QTcpSocket::readyRead, this, &GR_http_client::readyRead);
-
-    /*connect(socket, &gr_socket::disconnected, this, &GR_http_client::disconnected);
-    connect(socket, &gr_socket::readyRead, this, &GR_http_client::readyRead);
-    //readyRead();
-    socket->setSocketDescriptor(sdscrp);*/
 }
 void GR_http_client::init(QWebSocket *pSocket){
     socket=new gr_web_socket();
