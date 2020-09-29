@@ -28,6 +28,7 @@ public:
     void disconnected_s();
 
     void connected_s();
+    bool chek_valid();
 };
 
 #endif // GR_WEB_SOCKET_H

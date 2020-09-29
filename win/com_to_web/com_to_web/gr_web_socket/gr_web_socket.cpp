@@ -30,6 +30,7 @@ void gr_web_socket::connected_s(){
     connect(socket, &QWebSocket::binaryMessageReceived, this, &gr_web_socket::readyRead_s_bin);
     connect(socket, &QWebSocket::disconnected, this, &gr_web_socket::disconnected_s);
     connect(socket, &QWebSocket::aboutToClose, this, &gr_web_socket::disconnected_s);
+    connect(socket, &QWebSocket::destroyed, this, &gr_web_socket::disconnected_s);
     emit this->readyRead();
 }
 
@@ -44,7 +45,9 @@ void gr_web_socket::readyRead_s_bin(QByteArray message){
 
 void gr_web_socket::disconnected_s(){
     emit disconnected();
+    deleteLater();
 }
+
 
 QByteArray gr_web_socket::readAll(){
     QByteArray data=indata_s;
@@ -52,23 +55,40 @@ QByteArray gr_web_socket::readAll(){
     return data;
 }
 
+
 void gr_web_socket::write(QByteArray *data){
     //socket.write(*data);
     //QByteArray data2="";
     //data2.append(*data);
-    socket->sendBinaryMessage(*data);
+    if(chek_valid()){
+        socket->sendBinaryMessage(*data);
+    }
 }
 void gr_web_socket::write(const char *data){
     //socket.write(*data);
     //QByteArray data2="";
     //data2.append(*data);
-    socket->sendTextMessage(data);
+    if(chek_valid()){
+        socket->sendTextMessage(data);
+    }
 }
 
 void gr_web_socket::write(QString *data){
     //socket.write(data);
-    socket->sendTextMessage(*data);
+    if(chek_valid()){
+        socket->sendTextMessage(*data);
+    }
 }
+
+bool gr_web_socket::chek_valid(){
+    if(socket->isValid() && socket->state()==QAbstractSocket::ConnectedState){
+        return 1;
+    }else {
+        qDebug() << "WBS error!!!";
+        return 0;
+    }
+}
+
 
 QAbstractSocket::SocketState gr_web_socket::state(){
     return socket->state();

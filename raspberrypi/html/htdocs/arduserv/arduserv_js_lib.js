@@ -831,25 +831,39 @@ class web_sock_stream_gr {
 				this.websocket = new WebSocket( this.wsUri );
 
 				this.websocket.onopen = function (evt) {
-					e.parameter.parser.open_event();
-					//console.log("CONNECTED");
+					if(e.parameter.parser.open_event){
+						e.parameter.parser.open_event();
+					}else{
+						//console.log("CONNECTED");
+					}
 				};
 
 				this.websocket.onclose = function (evt) {
-					e.parameter.parser.close_event();
-					//console.log("DISCONNECTED");
+					if(e.parameter.parser.close_event){
+						e.parameter.parser.close_event();
+					}else{
+						//console.log("DISCONNECTED");
+					}
 					if(e.is_reload_en){
 						setTimeout(function() {e.open_c(e);},e.reload_time);
 					}
 				};
 
 				this.websocket.onerror = function (evt) {
-					e.parameter.parser.error_event();
-					console.log('ERROR: ' + evt.data);
+					if(e.parameter.parser.error_event){
+						e.parameter.parser.error_event();
+					}else{
+						console.log('ERROR: ' + evt.data);
+					}
 				};
 
 				this.websocket.onmessage = function (evt) {
-					e.parameter.parser.parser_data(evt.data);
+					if(e.parameter.parser.parser_data){
+						e.parameter.parser.parser_data(evt.data);
+					}else{
+						console.error("WTF!!! parser_data is undefined!");
+						console.log(evt.data);
+					}
 				};
 			}
 }

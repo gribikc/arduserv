@@ -13,13 +13,33 @@
 			this.json_begin_point_valid=0;
 
 			this.speed=0;
+			
+			this.message_cnt=0;
 		}
 		//////////
 		//xdstartjson:{
 		//}:xdstopjson
 		parser_data(stream){
+			var inner =document.getElementById('terminal');
 			//console.log(stream);
-			document.getElementById('terminal').innerHTML+=stream;
+			//document.getElementById('terminal').innerHTML+=stream;
+			
+			var div = document.createElement("div");
+				var div_pre = document.createElement("div");
+				div_pre.innerHTML="NUM:"+this.message_cnt+"		|";
+				div_pre.style="float: left;";
+				div.appendChild(div_pre);
+			    
+			    var div_data = document.createElement("div");
+			    div_data.innerHTML=stream;
+			    div.appendChild(div_data);
+			inner.appendChild(div);
+
+			while(inner.childElementCount>10){
+				inner.children[0].remove();
+			}
+			
+			this.message_cnt++;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

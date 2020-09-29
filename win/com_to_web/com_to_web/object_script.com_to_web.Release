@@ -1,5 +1,6 @@
 release/main.o
 release/com_to_web.o
+release/data_generator.o
 release/gr_ctw_thread.o
 release/gr_data_source.o
 release/gr_logger.o
@@ -17,6 +18,7 @@ release/gr_web_socket.o
 release/mainwindow.o
 release/gr_serial.o
 release/moc_com_to_web.o
+release/moc_data_generator.o
 release/moc_gr_ctw_thread.o
 release/moc_gr_data_source.o
 release/moc_gr_bluetooth.o

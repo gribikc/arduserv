@@ -1,5 +1,6 @@
 debug/main.o
 debug/com_to_web.o
+debug/data_generator.o
 debug/gr_ctw_thread.o
 debug/gr_data_source.o
 debug/gr_logger.o
@@ -17,6 +18,7 @@ debug/gr_web_socket.o
 debug/mainwindow.o
 debug/gr_serial.o
 debug/moc_com_to_web.o
+debug/moc_data_generator.o
 debug/moc_gr_ctw_thread.o
 debug/moc_gr_data_source.o
 debug/moc_gr_bluetooth.o

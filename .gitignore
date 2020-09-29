@@ -34,3 +34,4 @@ arduino/esp32_tracker/wifi_key.h
 *.Release
 *.Debug
 win/com_to_web/build-com_to_web-Desktop_Qt_5_15_1_clang_64bit-Debug/
+win/com_to_web/com_to_web/debug/
