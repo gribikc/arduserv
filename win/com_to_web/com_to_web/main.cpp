@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     
-    //com_to_web ctw;
-    gr_ctw_thread ctw;
-    ctw.start(QThread::HighestPriority);
+    com_to_web ctw;
+    //gr_ctw_thread ctw;
+    //ctw.start(QThread::HighestPriority);
 
     //com_to_web *ctw_point=ctw.get_ctw_handler();
     //QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);

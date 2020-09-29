@@ -6,17 +6,17 @@
 	class json_deep_to_map_gr{
 		//Инициализация
 			constructor() {
-				
+
 			}
 		//Парсинг
 			parser_data(arr){
-				
+
 				document.getElementById("gr_db_log_txa").innerHTML="Size:";
 				document.getElementById("gr_db_log_txa").innerHTML+=arr.length;
 				document.getElementById("gr_db_log_txa").innerHTML+='\n';
-				
+
 				//console.log(arr);
-				
+
 				var x=0;
 				var y=0;
 				for(var j=1;j<arr.length;j++){//обход входного массива сообщений
@@ -78,7 +78,7 @@ class parser_parent_gr{
 		this.parser_data_array=new Array();
 		this.hub_handler=hub;
 		this.parameter=parameter;
-		if(parameter){	
+		if(parameter){
 			this.is_collected=('collected' in this.parameter) ? (this.parameter.collected ? 1:0) : 0;
 		}else{
 			this.is_collected=0;
@@ -89,11 +89,11 @@ class parser_parent_gr{
 		this.parser_begin_point_valid=0;
 		this.cut_point=0;
 	}
-	
+
 	parser(){
 		//переопределяется в наследнике
 	}
-	
+
 	parser_data(stream){
 		this.buf+=stream;
 		this.buf_end_point=this.buf.length;
@@ -101,15 +101,15 @@ class parser_parent_gr{
 		if(this.buf_start_point>=this.buf_end_point){//!!!>=???//
 			this.buf_start_point=0;
 		}
-		
+
 		this.parser();//!!!for(var i=this.buf_start_point;i<this.buf_end_point;i++){
-		
+
 		if(this.is_collected){
 			//COLLECT
 			this.buf=this.buf.substring(this.cut_point);
 			this.buf_start_point=this.buf.length;
 			//console.log(this.cut_point);
-		}else{	
+		}else{
 			//NO COLLECT
 			this.buf_start_point=0;//this.buf.length;
 			this.buf="";
@@ -121,24 +121,24 @@ class parser_parent_gr{
 	}
 	find(i=0){
 		if(this.parser_data_array.length>0 || Object.keys(this.parser_data_array).length>0){
-			this.hub_handler.parser_data(this.parser_data_array);					
+			this.hub_handler.parser_data(this.parser_data_array);
 			this.parser_data_array=new Array();
 		}
 		this.cut_point=i;
 	}
-	
+
 	error_event(message="NAN"){
 		if(this.hub_handler.error_event){
 			this.hub_handler.error_event(message);
 		}
 	}
-	
+
 	close_event(message="NAN"){
 		if(this.hub_handler.close_event){
 			this.hub_handler.close_event(message);
 		}
 	}
-	
+
 	open_event(message="NAN"){
 		if(this.hub_handler.open_event){
 			this.hub_handler.open_event(message);
@@ -147,7 +147,7 @@ class parser_parent_gr{
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class nt_json_gr extends parser_parent_gr{
 	parser(){
 		//console.log(this.buf);
@@ -157,11 +157,11 @@ class nt_json_gr extends parser_parent_gr{
 			//console.log('ERROR: ' + exception);
 		}
 		this.find();
-	}	
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class nt_json_stream_gr extends parser_parent_gr{
 	parser(){
 		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
@@ -208,18 +208,18 @@ class nt_json_stream_gr extends parser_parent_gr{
 				}
 			}
 		}
-	}	
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class nt_raw_parser_gr extends parser_parent_gr{
 	parser(){
 		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
 			if(this.end_point>=(this.parameter.db_matrix[0]['message_len'])){	//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
-				if(	(this.buf.charCodeAt(i   )&0xFF)==this.parameter.db_matrix[0]['footer'][1] && 
-					(this.buf.charCodeAt(i-1 )&0xFF)==this.parameter.db_matrix[0]['footer'][0] && 
-					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len']+1)&0xFF)==this.parameter.db_matrix[0]['header'][1] && 
+				if(	(this.buf.charCodeAt(i   )&0xFF)==this.parameter.db_matrix[0]['footer'][1] &&
+					(this.buf.charCodeAt(i-1 )&0xFF)==this.parameter.db_matrix[0]['footer'][0] &&
+					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len']+1)&0xFF)==this.parameter.db_matrix[0]['header'][1] &&
 					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len'])&0xFF)==this.parameter.db_matrix[0]['header'][0] ){	//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 					if((this.buf.charCodeAt(i-93)&0xFF)==0x03){	//61
 						this.message_parser(this.buf,i,0);
@@ -244,7 +244,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				tmp_float_from_byte=tmp_float_from_byte<<8;
 				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
 				//tmp_float_from_byte=tmp_float_from_byte<<8;
-				
+
 				this.parameter.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
 			}else if(this.parameter.db_matrix[m_id]['message'][i][1]==2){//byte.float
 				//float_from_byte_arr_gr(buf)
@@ -256,7 +256,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				tmp_float_from_byte=tmp_float_from_byte<<8;
 				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
 				//tmp_float_from_byte=tmp_float_from_byte<<8;
-				
+
 				this.parameter.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.parameter.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
 			}else if(this.parameter.db_matrix[m_id]['message'][i][1]==3){//int
 				tmp_float_from_byte=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-0)&0xFF;
@@ -267,19 +267,19 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				tmp_float_from_byte=tmp_float_from_byte<<8;
 				tmp_float_from_byte+=stream.charCodeAt(end_byte+this.parameter.db_matrix[m_id]['message'][i][2]-this.parameter.db_matrix[m_id]['message_len']-3)&0xFF;
 				//tmp_float_from_byte=tmp_float_from_byte<<8;
-				
+
 				this.parameter.db_matrix[m_id]['message'][i][3]=tmp_float_from_byte;
 			}else{
 				this.parameter.db_matrix[m_id]['message'][i][3]="undf...";
 			}
 
 			this.hub_handler.parser_data(this.parameter.db_matrix[m_id]['message']);
-		}				
+		}
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class array_data_to_log_gr extends parser_parent_gr{
 		parser(){
 			console.log(buf.toString());
@@ -294,10 +294,10 @@ class nt_raw_parser_gr extends parser_parent_gr{
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //SNMP
 	/*
-	
+
 	*/
 	class snmp_parser_gr {//!!!CONTAINER!!!
 		//Инициализация
@@ -314,11 +314,11 @@ class nt_raw_parser_gr extends parser_parent_gr{
 					}
 					console.log(arr);
 					document.getElementById('test_data_0').innerHTML=stream;*/
-					
+
 					var arr=this.snmp_tree(stream,0);
 					if(arr.length>0 && arr[0][2][3][0][1]['data']!=undefined && arr[0][2][3][0][1]['data'].length>0){
 						this.hub_handler.parser_data(arr[0][2][3][0][1]['data']);
-					}else{	
+					}else{
 						//console.log("SNMP REQUEST EMPTY OR NOT VALID");
 						//console.log(stream);
 						this.hub_handler.error_event("SNMP REQUEST EMPTY OR NOT VALID");
@@ -346,7 +346,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 						i=k.start;
 					}
 					return array_ret;
-				}			
+				}
 				/////////////////////
 				get_data(arr,index){
 					var k=index.start;
@@ -392,7 +392,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 			//////////////////////////////////////////
 			///////////////////////////////////////////////////////////////
 	}
-	
+
 	function snmp_query(oid,type,send_string){//1-input(get);0-output(set)
 		//Therefore, the first two numbers of an SNMP OID are encoded as 43 or 0x2B, because (40*1)+3 = 43.
 		//
@@ -400,7 +400,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 		//Octet String 		0x04 GetRequest PDU 	0xA0
 		//Null 				0x05 GetResponse PDU 	0xA2
 		//Object Identifier 0x06 SetRequest PDU 	0xA3
-		
+
 		var arr=[];
 		arr[0]=0x30;//ASN.1 header
 			arr[1]=0x00;//!!!XX;//L
@@ -481,7 +481,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				this.start_point=0;
 				this.end_point=0;
 				this.db_matrix=db_matrix;
-				
+
 				//this.MESSAGE_LEN=95;
 				//this.HEADER=[0xAA,0xBB];
 				//this.FOOTER=[0xCC,0xDD];
@@ -495,9 +495,9 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				for(var i=this.start_point;i<this.end_point;i++){
 					//console.log(stream.charCodeAt(i)&0xFF);
 					if(this.end_point>=(this.db_matrix[0]['message_len'])){//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
-						if(	(stream.charCodeAt(i   )&0xFF)==this.db_matrix[0]['footer'][1] && 
-							(stream.charCodeAt(i-1 )&0xFF)==this.db_matrix[0]['footer'][0] && 
-							(stream.charCodeAt(i-this.db_matrix[0]['message_len']+1)&0xFF)==this.db_matrix[0]['header'][1] && 
+						if(	(stream.charCodeAt(i   )&0xFF)==this.db_matrix[0]['footer'][1] &&
+							(stream.charCodeAt(i-1 )&0xFF)==this.db_matrix[0]['footer'][0] &&
+							(stream.charCodeAt(i-this.db_matrix[0]['message_len']+1)&0xFF)==this.db_matrix[0]['header'][1] &&
 							(stream.charCodeAt(i-this.db_matrix[0]['message_len'])&0xFF)==this.db_matrix[0]['header'][0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 							if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
 								this.message_parser(stream,i,0);
@@ -523,7 +523,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 						tmp_float_from_byte=tmp_float_from_byte<<8;
 						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
-						
+
 						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//tmp_float_from_byte;
 					}else if(this.db_matrix[m_id]['message'][i][1]==2){//byte.float
 						//float_from_byte_arr_gr(buf)
@@ -535,7 +535,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 						tmp_float_from_byte=tmp_float_from_byte<<8;
 						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
-						
+
 						this.db_matrix[m_id]['message'][i][3]=float_from_byte_arr_gr(tmp_float_from_byte);//+stream.charCodeAt(end_byte+this.db_matrix[i][2]-this.MESSAGE_LEN-4)&0xFF
 					}else if(this.db_matrix[m_id]['message'][i][1]==3){//int
 						tmp_float_from_byte=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-0)&0xFF;
@@ -546,14 +546,14 @@ class nt_raw_parser_gr extends parser_parent_gr{
 						tmp_float_from_byte=tmp_float_from_byte<<8;
 						tmp_float_from_byte+=stream.charCodeAt(end_byte+this.db_matrix[m_id]['message'][i][2]-this.db_matrix[m_id]['message_len']-3)&0xFF;
 						//tmp_float_from_byte=tmp_float_from_byte<<8;
-						
+
 						this.db_matrix[m_id]['message'][i][3]=tmp_float_from_byte;
 					}else{
 						this.db_matrix[m_id]['message'][i][3]="undf...";
 					}
 
 					this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
-				}				
+				}
 			}
 			error_event(message){
 				this.hub_handler.error_event(message);
@@ -563,7 +563,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 		//чуть
 
 		//чуть
-		
+
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -581,10 +581,10 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				this.parser_start_valid=0;				//установка при обнаружении $, сброс про обнаружении конца строки
 				this.nmea_data;							//буфер для выдергивания сообщений
 				this.parser_nmea_array=new Array();
-				
+
 				this.start_point=0;
 				this.end_point=0;
-				
+
 				this.hub_handler=hub;
 			}
 		//Парсинг
@@ -628,7 +628,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 		//чуть
 
 		//чуть
-		
+
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -664,37 +664,37 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				var this_parameter=parameter;
 				this.parameter=parameter;
 				this.xmlhttprq = new XMLHttpRequest();
-			
+
 				//this.xmlhttprq.open('GET', parameter.url, true);//!!!
 					this.is_post=('post_data' in parameter) ? 1 : 0;
-					
-					
+
+
 					('mime_type' 	in this.parameter) ? null : (this.parameter.mime_type='text/plain; charset=x-user-defined');
 					('url_w' 		in this.parameter) ? null : (this.parameter.url_w='');
 					this.is_flush_en=('flush_en' in this.parameter) ? (this.parameter.flush_en ? 1:0) : 0;
-					this.is_auto_start=('auto_start' in this.parameter) ? (this.parameter.auto_start ? 1:0) : 1;	
+					this.is_auto_start=('auto_start' in this.parameter) ? (this.parameter.auto_start ? 1:0) : 1;
 					this.is_status_en=('status_en' in this.parameter) ? (this.parameter.status_en ? 1:0) : 0;
 					this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
 					this.is_timeout_en=('timeout_en' in this.parameter) ? (this.parameter.timeout_en ? 1:0) : 0;
-					
+
 					if(this.is_auto_start){
 						this.open_c();
 					}
 
 					/*this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , parameter.url, true);
-					this.xmlhttprq.overrideMimeType(parameter.mime_type);				
+					this.xmlhttprq.overrideMimeType(parameter.mime_type);
 					if('timeout_en'	in parameter){
 						if(parameter.timeout_en){
 							this.xmlhttprq.timeout = parameter.timeout_time;;
 						}
 					}
 					this.xmlhttprq.send( ((this.is_post) ? parameter.post_data : null) );//!!!*/
-				
+
 				this.stat_bps=0;
 				this.stat_rp=0;
 				this.last_statusText="";
 				this.last_readyState=0;
-				
+
 				if(this.is_status_en){
 					this.status_div = document.createElement('div');
 					this.stat_div = document.createElement('div');
@@ -704,30 +704,30 @@ class nt_raw_parser_gr extends parser_parent_gr{
 					main_status_div.appendChild(this.status_div);
 					main_status_div.appendChild(this.stat_div);
 					document.getElementById(parameter.status_div).appendChild(main_status_div);
-				
+
 					setInterval(function(){this_of_class.view_stat();},parameter.status_timer);
-					
+
 					//console.log(this.status_div);
 				}
-				
+
 				this.xmlhttprq.abort=function(e){
 					console.log("xmlhttprq_stream_gr:abort",this.parameter.name,e);
 				}
 				this.xmlhttprq.error=function(e){
 					console.log("xmlhttprq_stream_gr:error",this.parameter.name,e);
 				}
-				
+
 				this.xmlhttprq.onprogress=function(e){
 					//console.log(this.responseText);
 					if(this_of_class.is_flush_en && this_of_class.xmlhttprq.readyState!=4){
 						parameter.parser.parser_data(this.responseText);//!!!
 					}
-				}				
-				
-				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();    
+				}
+
+				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
 					if(this.readyState==4){//DONE
 						parameter.parser.parser_data(this.responseText);//!!!
-						
+
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
 						if(this_of_class.is_reload_en){
@@ -735,7 +735,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 						}
 					}
 				}
-				
+
 				//this.tii=setInterval(function(){this_of_class.stat_div.innerHTML+=1},1000);
 
 			}
@@ -748,8 +748,8 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").close_c();'>Close</a>";
 				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").open_c();'>Open</a>";
 				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").freeze_c();'>Freeze</a>";
-				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").reload_en_inv_c();'>Reload_inv</a>";				
-				
+				this.status_div.innerHTML+="  <a onclick='xhrsc.find(elem  => elem.parameter.name==\""+this.parameter.name+"\").reload_en_inv_c();'>Reload_inv</a>";
+
 				this.stat_bps=this.stat_bps*0.95+8*((this.xmlhttprq.responseText.length-this.stat_rp)/1)*0.05;
 				this.stat_rp=this.xmlhttprq.responseText.length;
 				if(this.stat_bps<1000){
@@ -772,7 +772,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 			}
 			open_c(){
 				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , this.parameter.url, true);
-				//this.xmlhttprq.overrideMimeType(this.parameter.mime_type);	//!!!???			
+				//this.xmlhttprq.overrideMimeType(this.parameter.mime_type);	//!!!???
 				//if('timeout_en'	in this.parameter){
 					//if(this.parameter.timeout_en){
 					this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
@@ -804,21 +804,21 @@ class web_sock_stream_gr {
 				if (typeof MozWebSocket == 'function'){//type def for wat?wtf
                         WebSocket = MozWebSocket;
 				}
-				
-										
+
+
 				var this_of_class=this;
 				var this_parameter=parameter;
 				this.parameter=parameter;
 				this.websocket = null;
-				
+
 				this.wsUri = this.parameter.url;//"ws://192.168.0.101:3129/dev/gps/r";
 				this.websocket = null;
-				
+
 				this.is_reload_en=('reload_en' in this.parameter) ? (this.parameter.reload_en ? 1:0) : 0;
 				if(this.is_reload_en){
 					this.reload_time= ('reload_time' in this.parameter) ? this.parameter.reload_time : 5000;
 				}
-				
+
 				this.open_c(this);
 			}
 		//123
@@ -826,15 +826,15 @@ class web_sock_stream_gr {
 				if ( this.websocket && this.websocket.readyState == 1 ){
 					this.websocket.close();
 				}
-				
+
 				delete this.websocket;
 				this.websocket = new WebSocket( this.wsUri );
-				
+
 				this.websocket.onopen = function (evt) {
 					e.parameter.parser.open_event();
 					//console.log("CONNECTED");
 				};
-				
+
 				this.websocket.onclose = function (evt) {
 					e.parameter.parser.close_event();
 					//console.log("DISCONNECTED");
@@ -842,12 +842,12 @@ class web_sock_stream_gr {
 						setTimeout(function() {e.open_c(e);},e.reload_time);
 					}
 				};
-				
+
 				this.websocket.onerror = function (evt) {
 					e.parameter.parser.error_event();
 					console.log('ERROR: ' + evt.data);
 				};
-				
+
 				this.websocket.onmessage = function (evt) {
 					e.parameter.parser.parser_data(evt.data);
 				};
@@ -867,7 +867,7 @@ class web_sock_stream_gr {
 				this.period_cnt=0;
 				this.fall_data="";
 				this.datafall_array=new Array();
-				
+
 				this.start_point=0;
 				this.end_point=0;
 			}
@@ -893,11 +893,11 @@ class web_sock_stream_gr {
 			clear_data_array(){
 				this.datafall_array=new Array();
 			}
-			
+
 		//чуть
-		
+
 		//чуть
-		
+
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -912,9 +912,9 @@ class web_sock_stream_gr {
 				this.paper_image.PaperScope();
 				this.paper_image.setup(inner);
 				this.children = this.paper_image.project.activeLayer.children;
-				
+
 				/*this.i=0;
-				for(this.i = 0; this.i < 10; this.i++){    
+				for(this.i = 0; this.i < 10; this.i++){
 					this.x = Math.floor(Math.random()*(this.canvas_width-50))+20;
 					this.y = Math.floor(Math.random()*(this.canvas_height-50))+20;
 					this.text = new paper.PointText(new this.paper_image.paper.Point(this.x, this.y))
@@ -929,17 +929,17 @@ class web_sock_stream_gr {
 			push_graph(value,size){//add_obj
 				//this.canvas_width  = 500;// document.getElementById(this.inner).width;// 500;// $("#canvas").width();
 				//this.canvas_height = 300;// document.getElementById(this.inner).height;//300 $("#canvas").height();
-				
+
 				this.paper_image.activate();
 				this.move();
-				
+
 				var x=500-10;
 				var y=300-value-10;
-				
+
 				var graph_point=new this.paper_image.Path.Rectangle(new this.paper_image.Point(x, y), size,size);
 				graph_point.fillColor='#FF0000';
 				this.paper_image.view.draw();
-				//this.mashtab();				
+				//this.mashtab();
 			}
 			//
 			mashtab(){
@@ -975,7 +975,7 @@ class web_sock_stream_gr {
 		//alert(document.getElementById(inner).style.position);
 		//alert(document.getElementById(inner).style.zIndex);
 		//console.log(document.getElementById(inner_html).style);
-		
+
 		if(document.getElementById(inner_html).style.visibility=="visible" || document.getElementById(inner_html).style.position=="unset" ||
 		   document.getElementById(inner_html).style.zIndex=="unset" || document.getElementById(inner_html).style.visibility=="" ||
 		   document.getElementById(inner_html).style.position=="" ||  document.getElementById(inner_html).style.zIndex==""){
@@ -1020,7 +1020,7 @@ class web_sock_stream_gr {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //create_table
 	function create_table_from_array_gr(arr_in,div){
-		
+
 		var table = document.createElement("table");
 		var tr,td,text,temp;
         table.setAttribute("border", "2px");
@@ -1048,7 +1048,7 @@ class web_sock_stream_gr {
 					text = document.createTextNode(key);
 					td.appendChild(text);
 					tr.appendChild(td);
-				
+
 					if(arr[key].length>0 && Array.isArray(arr[key])){
 						td.setAttribute("rowspan", arr[key].length);
 						for(var k in arr[key]) {
@@ -1057,7 +1057,7 @@ class web_sock_stream_gr {
 							td.appendChild(text);
 							tr.appendChild(td);
 							table.appendChild(tr);
-							
+
 							tr = document.createElement("tr");
 							table.appendChild(tr);
 						}
@@ -1093,7 +1093,7 @@ class web_sock_stream_gr {
 		var i=0;
 		var ul=document.createElement("ul");
 		inner.appendChild(ul);
-		
+
 		for(var key in arr) {
 			var li = document.createElement("li");
 			ul.appendChild(li);
@@ -1107,7 +1107,7 @@ class web_sock_stream_gr {
 					div_c.appendChild(value_v);
 					value_v.setAttribute('style','display: inline-block;');
 						value_v.innerHTML='&nbsp;<=&nbsp;'+arr[key];
-			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){				
+			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				div_c.removeChild(value_v);
 				create_tree_ul_li_from_array_gr(arr[key],li);
 			}
@@ -1121,21 +1121,21 @@ class web_sock_stream_gr {
 		var sig=0;
 		var por=0;
 		var man=0;
-		
+
 		if((buf&0x80000000)){//Знак
 			var sig=-1;
 		}else{
 			var sig=1;
 		}
-		
+
 		por=((buf>>23)&0xFF);//Порядок
-		
+
 		if(por!=0){//Мантисса
 			man=((buf& 0x7FFFFF)|0x800000);
 		}else{
 			man=((buf&0x7FFFFF)<<1);
 		}
-		
+
 		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
 		return res;
 	}////////////////////////////////////
