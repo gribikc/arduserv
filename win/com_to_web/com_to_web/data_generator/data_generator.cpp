@@ -26,9 +26,25 @@ data_generator::data_generator(GR_http_client *partner) : QObject(nullptr){
 
 void data_generator::timer_event(){
     QString text;
-    QByteArray ba;
-    text="Hello world. I am data generator!:"+QString::number(cnt)+"\n\r";
-    ba=text.toUtf8();
+    if(traffic_type=="cnt"){
+        text=type_cnt(traffic_size);
+    }else{
+        text=type_none(traffic_size);
+    }
     partner->socket->write(&text);
     cnt++;
+}
+
+QString data_generator::type_none(int size){
+    QString text;
+    text="Hello world. I am data generator!:"+QString::number(cnt)+"\n\r";
+    return text;
+}
+
+QString data_generator::type_cnt(int size){
+    QString text="";
+    for (int i=0;i<size;i++) {
+        text+=QString::number(i);
+    }
+    return text;
 }

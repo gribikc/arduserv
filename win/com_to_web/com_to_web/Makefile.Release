@@ -9235,25 +9235,7 @@ release/mainwindow.o: main_windows/mainwindow.cpp main_windows/mainwindow.h \
 		D:/Qt/5.13.0/mingw73_32/include/QtGui/qtouchdevice.h \
 		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qtabwidget.h \
 		D:/Qt/5.13.0/mingw73_32/include/QtGui/qicon.h \
-		ui_mainwindow.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtCore/QVariant \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/QApplication \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qapplication.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtCore/qcoreapplication.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtCore/qeventloop.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qdesktopwidget.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtGui/qguiapplication.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtGui/qinputmethod.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/QMenuBar \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qmenubar.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qmenu.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qaction.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qactiongroup.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/QStatusBar \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qstatusbar.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/QToolBar \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/qtoolbar.h \
-		D:/Qt/5.13.0/mingw73_32/include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o main_windows\mainwindow.cpp
 
 release/gr_serial.o: gr_serial/gr_serial.cpp gr_serial/gr_serial.h \

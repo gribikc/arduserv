@@ -50,6 +50,7 @@ function main_init(){
 			new xmlhttprq_stream_gr(gps_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112*/
 			terminal_stream_param={
 				url		:	"ws://127.0.0.1:3129/sys/gen/",
+				url		:	"ws://127.0.0.1:3129/sys/gen/1000/cnt/10",
 				//parser	:	new nt_json_stream_gr(serial_list,{collected:1}),
 				parser	:	new terminal(),// //new nt_json_gr(serial_list,{collected:0}),
 
