@@ -9,6 +9,7 @@ class data_generator : public QObject
 {
     Q_OBJECT
 public:
+    int cnt=0;
     explicit data_generator(GR_http_client *parent = nullptr);
 
     QTimer *timer;

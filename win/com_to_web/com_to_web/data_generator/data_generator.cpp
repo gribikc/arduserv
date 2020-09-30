@@ -11,20 +11,20 @@ data_generator::data_generator(GR_http_client *partner) : QObject(nullptr){
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &data_generator::timer_event);
     timer->start(timer_period);
-
-    disconnect(partner->socket,nullptr,nullptr,nullptr);
+    //
+    disconnect(partner->socket,&gr_socket::disconnected,nullptr,nullptr);
     connect(partner->socket, &gr_socket::disconnected, this, [&](){
         timer->stop();
         timer->deleteLater();
         deleteLater();
     });
     connect(partner->socket, &gr_socket::readyRead, this,  [&](){
-        partner->socket->readAll();
+        //QByteArray data;//!!!WTF
+        //data=partner->socket->readAll();
     });
 }
 
 void data_generator::timer_event(){
-    static int cnt=0;
     QString text;
     QByteArray ba;
     text="Hello world. I am data generator!:"+QString::number(cnt)+"\n\r";
