@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //gps
-	class terminal{
+	class terminal_gr{
 		constructor(hub){
 			this.parser_data_array=new Array();
 			this.hub_handler=hub;
@@ -13,23 +13,19 @@
 			this.json_begin_point_valid=0;
 
 			this.speed=0;
-			
+
 			this.message_cnt=0;
+			this.socket;
 		}
-		//////////
-		//xdstartjson:{
-		//}:xdstopjson
+		////////////////////
 		parser_data(stream){
-			var inner =document.getElementById('terminal');
-			//console.log(stream);
-			//document.getElementById('terminal').innerHTML+=stream;
-			
+			var inner =document.getElementById('terminal_in_div');
 			var div = document.createElement("div");
 				var div_pre = document.createElement("div");
-				div_pre.innerHTML="NUM:"+this.message_cnt+"		|";
+				div_pre.innerHTML=":"+this.message_cnt+"#";
 				div_pre.style="float: left;";
 				div.appendChild(div_pre);
-			    
+
 			    var div_data = document.createElement("div");
 			    div_data.innerHTML=stream;
 			    div.appendChild(div_data);
@@ -38,8 +34,16 @@
 			while(inner.childElementCount>10){
 				inner.children[0].remove();
 			}
-			
+
 			this.message_cnt++;
+		}
+		///////////////////
+		add_socket(socket){
+			this.socket=socket;
+		}
+		////////////
+		send_data(){
+			this.socket.websocket.send(document.getElementById('terminal_out_input').value);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
