@@ -26,7 +26,7 @@ void gr_web_socket::connected_s(){
     falsh_get+=0x0A;
     indata_s.append(falsh_get);
     emit this->readyRead();
-    //disconnect(socket,nullptr,nullptr,nullptr);
+    disconnect(socket,nullptr,nullptr,nullptr);
     //disconnect(socket,&QWebSocket::destroyed,nullptr,nullptr);
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
         [=](QAbstractSocket::SocketError error){

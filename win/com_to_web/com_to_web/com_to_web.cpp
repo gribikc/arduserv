@@ -146,6 +146,7 @@ void com_to_web::gr_sock_srv_start(){
 void com_to_web::onNewWebs_connect(){
     qDebug() << "WBS new";
     QWebSocket *pSocket = webs_server->nextPendingConnection();
+     disconnect(pSocket,nullptr,nullptr,nullptr);
     GR_http_client *abv=new GR_http_client();
     connect(abv,&GR_http_client::dataComplete, this,&com_to_web::client_requestComplete);
     abv->init(pSocket);

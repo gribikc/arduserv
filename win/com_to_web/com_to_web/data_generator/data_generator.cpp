@@ -12,16 +12,22 @@ data_generator::data_generator(GR_http_client *partner) : QObject(nullptr){
     connect(timer, &QTimer::timeout, this, &data_generator::timer_event);
     timer->start(timer_period);
     //
-    disconnect(partner->socket,&gr_socket::disconnected,nullptr,nullptr);
+    disconnect(partner->socket,nullptr,nullptr,nullptr);
     connect(partner->socket, &gr_socket::disconnected, this, [&](){
         timer->stop();
         timer->deleteLater();
         deleteLater();
     });
-    connect(partner->socket, &gr_socket::readyRead, this,  [&](){
-        //QByteArray data;//!!!WTF
+    connect(partner->socket, &gr_socket::readyRead, this,&data_generator::readyread);
+    /*connect(partner->socket, &gr_socket::readyRead, this,  [&](){
+        QByteArray data;//!!!WTF
         //data=partner->socket->readAll();
-    });
+    });*/
+}
+
+void data_generator::readyread(){
+    QByteArray data;//!!!WTF
+    data=partner->socket->readAll();
 }
 
 void data_generator::timer_event(){

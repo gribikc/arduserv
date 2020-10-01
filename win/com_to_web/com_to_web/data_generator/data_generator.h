@@ -19,6 +19,7 @@ public:
     int traffic_size;
     QString type_none(int size);
     QString type_cnt(int size);
+    void readyread();
 private slots:
     void timer_event();
 protected:
