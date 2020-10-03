@@ -125,6 +125,7 @@ QStringList GR_http_client::get_list_param(){
         //socket->write("Content-type:application/json;charset=utf-8\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
         socket->write("\n");
         GR_logger::log(this,"Http Send Data header");
     }
@@ -134,6 +135,7 @@ QStringList GR_http_client::get_list_param(){
         socket->write("Content-type: text/html; charset=utf-8\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
         socket->write("\n");
         GR_logger::log(this,"Http Send HTML header");
     }
@@ -143,6 +145,7 @@ QStringList GR_http_client::get_list_param(){
         socket->write("Content-type: text/css; charset=utf-8\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
         socket->write("\n");
         GR_logger::log(this,"Http Send CSS header");
     }
@@ -152,6 +155,7 @@ QStringList GR_http_client::get_list_param(){
         socket->write("Content-type: text/javascript; charset=utf-8\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
         socket->write("\n");
         GR_logger::log(this,"Http Send HTML header");
     }
@@ -161,6 +165,7 @@ QStringList GR_http_client::get_list_param(){
         socket->write("HTTP/1.1 200 OK\n");
         socket->write("Connection: keep-alive\n");
         socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
         socket->write("\n");
         GR_logger::log(this,"Http Send Neutral header");
     }

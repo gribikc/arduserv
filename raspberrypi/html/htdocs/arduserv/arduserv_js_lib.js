@@ -633,6 +633,80 @@ class nt_raw_parser_gr extends parser_parent_gr{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class single_shot_gr {
+	constructor(parameter) {
+		this.parameter=parameter;
+		this.single_shot_param={
+			url				: parameter.url,
+			url_w			: "",
+			parser		:	new nt_json_gr(this),
+			//post_data : 0,
+			flush_en 	: 0,
+			auto_start: 1,
+			status_en : 0,
+			reload_en : 0,
+			timeout_en: 0
+		}
+		this.req=new xmlhttprq_stream_gr(this.single_shot_param);
+	}
+
+	parser_data(stream){
+		this.parameter.callback(stream);
+	}
+}
+
+class periodic_shot_gr {
+	constructor(parameter) {
+		this.parameter=parameter;
+		this.single_shot_param={
+			url				: parameter.url,
+			url_w			: "",
+			parser		:	new nt_json_gr(this),
+			//post_data : 0,
+			flush_en 	: 0,
+			auto_start: 1,
+			status_en : 0,
+			reload_en : 1,
+			reload_time:1000,
+			timeout_en: 0
+		}
+		this.req=new xmlhttprq_stream_gr(this.single_shot_param);
+	}
+
+	parser_data(stream){
+		this.parameter.callback(stream);
+	}
+}
+
+class singl_shot_send_gr {
+	constructor(parameter) {
+		this.parameter=parameter;
+		this.single_shot_param={
+			url				: parameter.url,
+			url_w			: "",
+			parser		:	this,
+			post_data : parameter.data,
+			flush_en 	: 0,
+			auto_start: 1,
+			status_en : 0,
+			reload_en : 0,
+			reload_time:0,
+			timeout_en: 0
+		}
+		this.req=new xmlhttprq_stream_gr(this.single_shot_param);
+	}
+
+	parser_data(stream){
+		try {
+			this.parameter.callback(stream);
+		}catch (exception) {
+			//console.log('ERROR: ' + exception);
+		}
+	}
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //xmlhttprq_stream_gr
 	/*
 	!!!В случае перезагрузки потока обеспечивать сброс указателей...

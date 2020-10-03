@@ -140,8 +140,8 @@ void com_to_web::htdocs_db_write_do(GR_http_client *socket){
         file_req.setFileName(file_str);
         file_req.open(QIODevice::ReadWrite);
         file_req.setPermissions(file_str,QFileDevice::WriteOther);
-        if(file_req.exists()){qDebug() << "существует_1";}else{qDebug() << "нет файла_0";}
-        if(file_req.isWritable()){qDebug() << "записываемый_1";}else{qDebug() << "не открыть для записи_0";}
+        if(file_req.exists()){qDebug() << "exist";}else{qDebug() << "no file";}
+        if(file_req.isWritable()){qDebug() << "writeble";}else{qDebug() << "not open for write";}
         qDebug() << file_req.permissions(file_str);
         qDebug() << file_req.errorString();
 
