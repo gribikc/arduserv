@@ -20,7 +20,7 @@
 		<div>
 				<input id="terminal_addr" type="text" value="ws://127.0.0.1:3129/sys/gen/" size="30">
 				<input type="button" value="Соединить" onclick="javascript:(terminal_open())">
-				История:<select id="terminal_history">
+				История:<select id="terminal_history" onchange="javascript:(terminal_addr_change())">
 				</select>
 		</div>
 		<!---------------------------------------------------------------------------------------------------------->

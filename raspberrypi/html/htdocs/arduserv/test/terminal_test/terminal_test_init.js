@@ -23,15 +23,20 @@ let terminal=new Object();
 let socket=new Object();
 
 var hystory_load=function(stream){
-	console.log("History:",stream);
 	var options_id=document.getElementById('terminal_history').options;
 	for(var i=0;i<stream.length;i++){
 		var newOption = new Option(stream[i], "");
 		document.getElementById('terminal_history').options[i]=newOption;
 	}
+	document.getElementById('terminal_addr').value=stream[0];
 }
 var get_history=function(){
 	new single_shot_gr({url:"http://localhost:3128/htdocs/db/terminal/history.json",callback:hystory_load });
+}
+
+function terminal_addr_change(){
+	var options_id=document.getElementById('terminal_history').options;
+	document.getElementById('terminal_addr').value=options_id[options_id.selectedIndex].text;
 }
 
 var hystory_save=function(stream){
@@ -42,6 +47,8 @@ var hystory_save=function(stream){
 	for(var i=0;i<N;i++){
 		arr[i+1]=document.getElementById('terminal_history').options[i].text;
 	}
+	console.log(arr);
+	bubble_sort(arr);
 	new singl_shot_send_gr({url:"http://localhost:3128/db/w/terminal/history.json",data:JSON.stringify(arr),callback:get_history });
 }
 
