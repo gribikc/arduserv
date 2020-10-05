@@ -55,8 +55,8 @@ var hystory_save=function(stream){
 
 function terminal_open(){
 	hystory_save();
+	try{socket.stop();}catch(exception){}
 
-	terminal=new terminal_gr();
 	terminal_stream_param={
 		url			: document.getElementById('terminal_addr').value,
 		//url		:	,//"ws://127.0.0.1:3129/sys/gen/",
@@ -78,6 +78,7 @@ function terminal_open(){
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 function main_init(){
+		terminal=new terminal_gr();
 	//load history
 		//new single_shot_gr({url:"http://localhost:3128/htdocs/db/terminal/history.json",callback:hystory_load });
 		get_history();
