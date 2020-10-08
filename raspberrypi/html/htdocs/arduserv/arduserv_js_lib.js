@@ -154,7 +154,7 @@ class nt_json_gr extends parser_parent_gr{
 		try {
 			this.parser_data_array=JSON.parse( this.buf );
 		}catch (exception) {
-			//console.log('ERROR: ' + exception);
+			console.log('ERROR: ' + exception);
 		}
 		this.find();
 	}
@@ -200,7 +200,7 @@ class nt_json_stream_gr extends parser_parent_gr{
 								this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
 								//this.find(i);
 							}catch (exception) {
-								console.log(this.buf.slice(this.parser_begin_point, i-10));
+								console.log('ERROR: ' + exception);
 							}
 							this.find(i);
 						}
@@ -651,7 +651,9 @@ class single_shot_gr {
 	}
 
 	parser_data(stream){
-		this.parameter.callback(stream);
+		if(this.parameter.callback){
+			this.parameter.callback(stream);
+		}
 	}
 }
 
@@ -674,7 +676,9 @@ class periodic_shot_gr {
 	}
 
 	parser_data(stream){
-		this.parameter.callback(stream);
+		if(this.parameter.callback){
+			this.parameter.callback(stream);
+		}
 	}
 }
 
@@ -697,10 +701,8 @@ class singl_shot_send_gr {
 	}
 
 	parser_data(stream){
-		try {
+		if(this.parameter.callback){
 			this.parameter.callback(stream);
-		}catch (exception) {
-			//console.log('ERROR: ' + exception);
 		}
 	}
 }
@@ -720,7 +722,7 @@ class db_query_gr{
 	save(param){
 		var url	=(document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" )
 						+"/db/w/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
-		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.load});
+		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.save_callback});//callback:this.load
 		console.log("SAVE");
 	}
 }
