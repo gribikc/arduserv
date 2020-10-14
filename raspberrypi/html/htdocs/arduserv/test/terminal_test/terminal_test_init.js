@@ -20,7 +20,7 @@ let hystory_db=new Object();
 		bubble_sort(arr);
 		//new singl_shot_send_gr({url:"http://localhost:3128/db/w/terminal/history.json",data:JSON.stringify(arr),callback:get_history });
 		hystory_db.save({arr:arr});
-		console.log(arr);
+		//console.log(arr);
 	}
 	//
 	var on_hystory_load=function(stream){
@@ -30,7 +30,7 @@ let hystory_db=new Object();
 			document.getElementById('terminal_history').options[i]=newOption;
 		}
 		document.getElementById('terminal_addr').value=stream[0];
-		console.log(stream);
+		//console.log(stream);
 	}
 	//
 	var on_hystory_save=function(){

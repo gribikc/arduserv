@@ -135,7 +135,7 @@ void GR_http_client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
 }
 
 QT_INIT_METAOBJECT const QMetaObject GR_http_client::staticMetaObject = { {
-    &QTcpSocket::staticMetaObject,
+    &QObject::staticMetaObject,
     qt_meta_stringdata_GR_http_client.data,
     qt_meta_data_GR_http_client,
     qt_static_metacall,
@@ -154,12 +154,12 @@ void *GR_http_client::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_GR_http_client.stringdata0))
         return static_cast<void*>(this);
-    return QTcpSocket::qt_metacast(_clname);
+    return QObject::qt_metacast(_clname);
 }
 
 int GR_http_client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QTcpSocket::qt_metacall(_c, _id, _a);
+    _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

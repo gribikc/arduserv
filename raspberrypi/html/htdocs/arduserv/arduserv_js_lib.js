@@ -717,13 +717,13 @@ class db_query_gr{
 		var url	=(document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" )
 						+"/htdocs/db/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		new single_shot_gr({url:url,callback:this.parameter.load_callback });
-		console.log("LOAD");
+		//console.log("LOAD");
 	}
 	save(param){
 		var url	=(document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" )
 						+"/db/w/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.save_callback});//callback:this.load
-		console.log("SAVE");
+		//console.log("SAVE");
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
