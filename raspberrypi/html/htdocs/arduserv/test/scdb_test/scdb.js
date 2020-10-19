@@ -1,9 +1,19 @@
 let xhrsc=[];
 
+let db=new Object();
+let scdb=new Object();
+
+let test=function(data){
+	scdb.parser_data(data);
+}
 function main_init(){
+	scdb=new scdb_gr(0,'tbl_db')
+
+	db=new db_query_gr({db_name:"terminal",table_name:"history",save_callback:scdb.parser_data,load_callback:test});
+	db.load();
 
 	//////////////////////////////
-		simple_test_stream_param={//location.hostname
+		/*simple_test_stream_param={//location.hostname
 			//url   : (document.location.protocol=="file:" ? "http://172.18.26.112:3128" : "" ) +"/dev/com/r/34/115200", //(document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/R/COM/28/57600/',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
 			url   : "http://127.0.0.1:3128/htdocs/db/test/fname_2.json",
 			//url   : "http://172.18.26.112:3128/htdocs/db/test/fname.json",
@@ -25,8 +35,8 @@ function main_init(){
 
 			reload_en:false,
 			reload_time:1000
-		};
-		xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param));
+		};*/
+		//xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param));
 
 		//xhrsc.push(new xmlhttprq_stream_gr(simple_test_stream_param2));
 	//////////////////////////////////////////////////////////////////
