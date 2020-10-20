@@ -1284,6 +1284,87 @@ function bubble_sort(arr){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//те самые функйии!!!
+	function create_tree_form_from_array_gr(name,arr,inner){
+		var i=0;
+		var ul=document.createElement("ul");
+		inner.appendChild(ul);
+
+		for(var key in arr) {
+			var li = document.createElement("li");
+			ul.appendChild(li);
+				var div_c = document.createElement("div");
+				li.appendChild(div_c);
+					var input_n=document.createElement("input");
+					div_c.appendChild(input_n);
+						input_n.name='name';
+						input_n.value=key;
+					var input_v=document.createElement("input");
+					div_c.appendChild(input_v);
+						input_v.name='value';
+						input_v.value=arr[key];
+				var div_r = document.createElement("div");
+				//li.appendChild(div_r);
+				//	div_r.innerHTML+="ADE";
+
+			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
+				div_c.removeChild(input_v);
+				create_tree_form_from_array_gr(key,arr[key],li);
+			}
+		}
+	}
+	//////////////////////////////////////////
+	function create_array_from_form_gr(inner){
+		var arr=new Array();
+
+		for(var i=0;i<inner.childElementCount;i++){
+			if(inner.children[i].tagName=='UL'){
+				var arr_new=create_array_from_form_gr(inner.children[i]);
+
+				if (Object.keys(arr).length == 0) {
+					for (let key in arr_new) {
+						arr[key]=arr_new[key];
+					}
+				}else{
+					for (let key in arr) {
+						arr[key]=arr_new;
+					}
+				}
+			}else if(inner.children[i].tagName=='LI'){
+				var arr_new=create_array_from_form_gr(inner.children[i]);
+				for (let key in arr_new) {
+					arr[key]=arr_new[key];
+				}
+			}else if(inner.children[i].tagName=='DIV'){
+				arr=create_array_from_form_gr(inner.children[i]);
+			}else if(inner.children[i].tagName=='INPUT'){
+				if(inner.children[i].name=='name' && i==(inner.childElementCount-1)){
+					arr[inner.children[i].value]=inner.children[i].name;
+				}else{
+					var value=inner.children[i+1].value;
+					if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)){
+						arr[inner.children[i].value]=Number(value);
+					}else if(value=='true'){
+						arr[inner.children[i].value]=true;
+					}else if(value=='false'){
+						arr[inner.children[i].value]=false;
+					}else{
+						arr[inner.children[i].value]=value;
+					}
+					i++;
+				}
+			}else{
+				console.log('Error:',inner.children[i].tagName);
+			}
+		}
+		if(arr.length==0){
+			arr=Object.assign({},arr);
+		}
+		return arr;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //...
 	function float_from_byte_arr_gr(buf){
 		var sig=0;
