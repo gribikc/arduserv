@@ -714,14 +714,12 @@ class db_query_gr{
 		this.parameter=param;
 	}
 	load(param){
-		var url	=(document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" )
-						+"/htdocs/db/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
+		var url	= wpp_gr.db_server_def+"/htdocs/db/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		new single_shot_gr({url:url,callback:this.parameter.load_callback});
 		//console.log("LOAD");
 	}
 	save(param){
-		var url	=(document.location.protocol=="file:" ? "http://127.0.0.1:3128" : "" )
-						+"/db/w/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
+		var url	=wpp_gr.db_server_def+"/db/w/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.save_callback});//callback:this.load
 		//console.log("SAVE");
 	}
@@ -1416,12 +1414,11 @@ if (!Array.isAssociativeArray) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	var url_get_params_gr = window
-    .location
-    .search
-    .replace('?','')
-    .split('&')
-    .reduce(
+	let wpp_gr=new Object();
+	wpp_gr.web_server_def="http://127.0.0.1:3128";
+	wpp_gr.db_server_def="http://127.0.0.1:3128";
+	wpp_gr.data_server_def="http://127.0.0.1:3129";
+	wpp_gr.url_get_params = window.location.search.replace('?','').split('&').reduce(
         function(p,e){
             var a = e.split('=');
             p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);

@@ -13,8 +13,7 @@
 		create_form(stream){
 			var div_p = document.getElementById(this.div);
 			div_p.innerHTML="";
-			var div_lip = document.getElementById('tbl_db3');
-			div_lip.innerHTML="";
+
 			var arr=new Object();//Object//Array//
 
 			create_tree_form_from_array_gr("conf",stream,div_p);
@@ -28,7 +27,11 @@
 				console.log(JSON.stringify(Object.assign({},arr)));
 			}
 
-			create_tree_ul_li_from_array_gr(stream,div_lip);
+		}
+		create_view_tree(stream){
+			var div_p = document.getElementById(this.div);
+			div_p.innerHTML="";
+			create_tree_ul_li_from_array_gr(stream,div_p);
 		}
 		/////////
 		parser_form(stream){
