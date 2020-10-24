@@ -155,6 +155,7 @@ class nt_json_gr extends parser_parent_gr{
 			this.parser_data_array=JSON.parse( this.buf );
 		}catch (exception) {
 			console.log('ERROR: ' + exception);
+			this.error_event("parser error");
 		}
 		this.find();
 	}
@@ -633,13 +634,13 @@ class nt_raw_parser_gr extends parser_parent_gr{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class single_shot_gr {
+class single_shot_gr  {
 	constructor(parameter) {
 		this.parameter=parameter;
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	new nt_json_gr(this),
+			parser		:	new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -655,6 +656,12 @@ class single_shot_gr {
 			this.parameter.callback(stream);
 		}
 	}
+
+	error_event(message="NAN"){
+		if(this.parameter.error_callback){
+			this.parameter.error_callback(message);
+		}
+	}
 }
 
 class periodic_shot_gr {
@@ -663,7 +670,7 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	new nt_json_gr(this),
+			parser		:	new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -678,6 +685,12 @@ class periodic_shot_gr {
 	parser_data(stream){
 		if(this.parameter.callback){
 			this.parameter.callback(stream);
+		}
+	}
+	
+	error_event(message="NAN"){
+		if(this.parameter.error_callback){
+			this.parameter.error_callback(message);
 		}
 	}
 }
@@ -705,6 +718,12 @@ class singl_shot_send_gr {
 			this.parameter.callback(stream);
 		}
 	}
+
+	error_event(message="NAN"){
+		if(this.parameter.error_callback){
+			this.parameter.error_callback(message);
+		}
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -715,12 +734,12 @@ class db_query_gr{
 	}
 	load(param){
 		var url	= wpp_gr.db_server_def+"/htdocs/db/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
-		new single_shot_gr({url:url,callback:this.parameter.load_callback});
+		new single_shot_gr({url:url,callback:this.parameter.on_load,error_callback:this.parameter.on_error});
 		//console.log("LOAD");
 	}
 	save(param){
 		var url	=wpp_gr.db_server_def+"/db/w/"+this.parameter.db_name+"/"+this.parameter.table_name+".json";
-		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.save_callback});//callback:this.load
+		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.on_save});//callback:this.load
 		//console.log("SAVE");
 	}
 }

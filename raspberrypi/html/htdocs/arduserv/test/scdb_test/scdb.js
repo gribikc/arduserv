@@ -11,11 +11,14 @@ function load_db(mode){
 	tb_name=document.getElementById("i_tb_name").value;
 
 	db=new db_query_gr({db_name:db_name,table_name:tb_name,
-		save_callback:function(data){
+		on_save:function(data){
 			db.load();
 		},
-		load_callback:function(data){
+		on_load:function(data){
 			(mode=="edit") ? scdb.create_form(data) : scdb.create_view_tree(data);
+		},
+		on_error:function(data){
+			scdb.error(data);
 		}
 	});
 	db.load();

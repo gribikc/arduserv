@@ -63,7 +63,7 @@ function terminal_open(){
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 function main_init(){
-		hystory_db=new db_query_gr({db_name:"terminal",table_name:"history",save_callback:on_hystory_save,load_callback:on_hystory_load});
+		hystory_db=new db_query_gr({db_name:"terminal",table_name:"history",on_save:on_hystory_save,on_load:on_hystory_load});
 		hystory_db.load();
 		terminal=new terminal_gr();
 }
