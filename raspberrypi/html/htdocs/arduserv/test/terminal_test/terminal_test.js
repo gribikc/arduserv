@@ -19,6 +19,7 @@
 		}
 		////////////////////
 		parser_data(stream){
+			console.log(stream);
 			var inner =document.getElementById('terminal_in_div');
 			var div = document.createElement("div");
 				var div_pre = document.createElement("div");

@@ -147,7 +147,7 @@
 			parser_data(arr){
 				//console.log(arr);
 				//if(Array.isArray(arr)){
-					auto_boat_config=arr;
+					//auto_boat_config=arr;
 					//!!!update_config_data();
 					create_table_from_array_gr(arr,'main_settings_edit');
 				//}else{

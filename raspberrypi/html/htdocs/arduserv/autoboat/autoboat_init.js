@@ -1,11 +1,16 @@
 
 var autoboat;
+
+var db_routing_sets;
 var autoboat_routing_sets;
+
+var db_config;
+var data_config;
 ///////////////////////////////////////////////////////////
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='192.168.1.44';
+	config['remoute_serv_ip']='127.0.0.1';//'192.168.1.44';
 	config['db_config_name']='config.json';
 	config['db_routing_sets']='routing_sets.json';
 	//////////////////////////////////////////////
@@ -26,6 +31,7 @@ var config=new Object();
 function main_init(){
 	autoboat=new autoboat_gr();
 	autoboat_routing_sets=new json_routing_sets_read_gr();
+	data_config=new json_config_read_gr();
 
 	//HUB
 			var message=new Array();
@@ -83,49 +89,33 @@ function main_init(){
 			new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//_arduino_uart
 		//CONFIG READ
-			config_request_param={
-				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) + '/htdocs/db/autoboat/config.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
-				url_w : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/w/db/autoboat/config.json',//'http://localhost:3128/W/COM/28/57600/',
-				mime_type:'text/plain; charset=x-user-defined',
-				name:"CRP:",
-				parser:  new json_parser_gr(new json_config_read_gr()),//new raw_parser_gr(message_hub),
-				
-				flush_en:false,
-				auto_start:true,
-				
-				status_en:true,//!!!
-				status_timer:1000,
-				status_div:"xhr_config_div",
-				status_div_status_css:"xmlhttprq_stream_gr_status",
-				status_div_stat_css:"xmlhttprq_stream_gr_stat",
-				
-				reload_en:false,
-				reload_time:1000
-			};
-			//new xmlhttprq_stream_gr(config_request_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-		//_CONFIG READ
+			db_config=new db_query_gr({db_name:"autoboat",table_name:"config",
+				on_save:function(data){
+					db_config.load();
+				},
+				on_load:function(data){
+					data_config.parser_data(data);
+				},
+				on_error:function(data){
+					console.log(data);
+				}
+			});
+			db_config.load();
+			//_CONFIG READ
 		//routing_sets
-			routing_sets_param={
-				url   : (document.location.protocol=="file:" ? "http://192.168.1.44:3128" : "" ) + '/htdocs/db/autoboat/routing_sets.json',//'http://localhost:3128/R/COM/28/57600/',//'http://192.168.0.122:3128/R/BT/HC-06/',//http://172.20.10.4:3128/R/BT/HC-06///http://192.168.0.122:3128/R/BT/HC-06/',//'/cgi-bin/stream_usart.sh',
-				url_w : (document.location.protocol=="file:" ? "http://localhost:3128" : "" ) + '/w/db/autoboat/routing_sets.json',//http://localhost:3128/W/COM/28/57600/',
-				mime_type:'text/plain; charset=x-user-defined',
-				name:"RPR:",
-				parser: new json_parser_gr(autoboat_routing_sets),//new raw_parser_gr(message_hub),
-				
-				flush_en:false,
-				auto_start:true,
-				
-				status_en:true,//!!!
-				status_timer:1000,
-				status_div:"xhr_routing_sets_div",
-				status_div_status_css:"xmlhttprq_stream_gr_status",
-				status_div_stat_css:"xmlhttprq_stream_gr_stat",
-				
-				reload_en:false,
-				reload_time:1000
-			};
-			new xmlhttprq_stream_gr(routing_sets_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
-		//_routing_sets
+			db_routing_sets=new db_query_gr({db_name:"autoboat",table_name:"routing_sets",
+				on_save:function(data){
+					db_routing_sets.load();
+				},
+				on_load:function(data){
+					autoboat_routing_sets.parser_data(data);
+				},
+				on_error:function(data){
+					console.log(data);
+				}
+			});
+			db_routing_sets.load();
+			//_routing_sets
 	//_STREAM
 	//PAPER JS
 		//test_paper_cnt=new paper_js_gr('canvas2');//!!!

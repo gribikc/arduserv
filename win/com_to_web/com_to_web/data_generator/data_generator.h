@@ -20,6 +20,7 @@ public:
     QString type_none(int size);
     QString type_cnt(int size);
     void readyread();
+    QString type_nmea(int size);
 private slots:
     void timer_event();
 protected:

@@ -34,6 +34,8 @@ void data_generator::timer_event(){
     QString text;
     if(traffic_type=="cnt"){
         text=type_cnt(traffic_size);
+    }else if(traffic_type=="nmea"){
+        text=type_nmea(traffic_size);
     }else{
         text=type_none(traffic_size);
     }
@@ -52,5 +54,10 @@ QString data_generator::type_cnt(int size){
     for (int i=0;i<size;i++) {
         text+=QString::number(i);
     }
+    return text;
+}
+
+QString data_generator::type_nmea(int size){
+    QString text="$GPVTG,360.0,T,348.7,M,000.0,N,000.0,K*43\n\r";
     return text;
 }
