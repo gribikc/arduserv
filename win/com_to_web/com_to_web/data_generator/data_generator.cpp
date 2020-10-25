@@ -58,6 +58,9 @@ QString data_generator::type_cnt(int size){
 }
 
 QString data_generator::type_nmea(int size){
-    QString text="$GPVTG,360.0,T,348.7,M,000.0,N,000.0,K*43\n\r";
+    QString text="";
+    text="$GPVTG,360.0,T,348.7,M,000.0,N,000.0,K*43\n\r";
+    text+="$GPAAM,A,A,0.10,N,WPTNME*43\n\r";
+    text+="$CNTGR,"+QString::number(cnt)+"*00\n\r";
     return text;
 }

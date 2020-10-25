@@ -49,7 +49,7 @@ function terminal_open(){
 
 	terminal_stream_param={
 		url			: document.getElementById('terminal_addr').value,//"ws://127.0.0.1:3129/sys/gen/",
-		parser	:	new nmea_parser_gr(terminal),// //new nt_json_gr(serial_list,{collected:0}),
+		parser	:	new nt_nmea_parser_gr(terminal),// //new nt_json_gr(serial_list,{collected:0}),
 		auto_start:true,
 		reload_en:true,
 		reload_time:1000

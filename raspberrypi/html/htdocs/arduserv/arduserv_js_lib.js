@@ -195,15 +195,15 @@ class nt_json_stream_gr extends parser_parent_gr{
 					(this.buf.charAt(i-9)) 	==	"x" &&
 					(this.buf.charAt(i-10)) ==	":" &&
 					(this.buf.charAt(i-11)) ==	"}"){//}:xdstopjson
-						if(this.parser_begin_point_valid==1){
+						if(this.parser_begin_point_valid==1){//!!!
 							//this.cut_point=i;
-							try {
+							try {//!!!
 								this.parser_data_array=JSON.parse( this.buf.slice(this.parser_begin_point, i-10) );
 								//this.find(i);
 							}catch (exception) {
 								console.log('ERROR: ' + exception);
 							}
-							this.find(i);
+							this.find(i);//!!!
 						}
 						this.parser_begin_point_valid=0;
 				}
@@ -292,6 +292,33 @@ class nt_raw_parser_gr extends parser_parent_gr{
 		parser(){
 			console.log(buf.toString());
 		}
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class nt_nmea_parser_gr extends parser_parent_gr{
+		//Парсинг
+			parser(){
+				for(var i=this.buf_start_point;i<this.buf_end_point;i++){	//обходим все поступившие данные
+					//console.log(this.buf.charAt(i));
+					if(this.buf.charAt(i)=='$'){			//Обнаружели начало
+						this.parser_start_valid=1;
+						this.nmea_data="$";				//очищаем буфер
+					}else{
+						this.nmea_data+=this.buf.charAt(i);
+						if(this.buf.charCodeAt(i)==10 && this.parser_start_valid==1){//Обнаружели конец////(xhr.responseText.charCodeAt(i-4)=="*" && xhr.responseText.charCodeAt(i-1)==13 || xhr.responseText.charCodeAt(i)==10 && nmea_start_point_valid==1
+							this.parser_start_valid=0;
+
+							var nmea_array=this.nmea_data.split(",");				//парсинг NMEA
+							var temp=nmea_array[nmea_array.length-1].split("*");	//выделяем контрольную сумму
+							nmea_array[nmea_array.length-1]=temp[0];
+							nmea_array[nmea_array.length]=temp[1];
+							this.parser_data_array.push(nmea_array);//!!!
+							this.find(i);
+						}
+					}
+				}
+			}
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -561,71 +588,6 @@ class nt_raw_parser_gr extends parser_parent_gr{
 			}
 		//Сброс данных
 
-		//чуть
-
-		//чуть
-
-	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//NMEA
-	/*
-	Класс принимает бесконечный поток данных,
-	определяет начало сообщения согласно протоколу.
-	Подсчитывает контрольную сумму.
-	Передает в виде массива структурированные сообщения хабу...
-	*/
-	class nmea_parser_gr {
-		//Инициализация
-			constructor(hub) {
-				this.parser_start_valid=0;				//установка при обнаружении $, сброс про обнаружении конца строки
-				this.nmea_data;							//буфер для выдергивания сообщений
-				this.parser_nmea_array=new Array();
-
-				this.start_point=0;
-				this.end_point=0;
-
-				this.hub_handler=hub;
-			}
-		//Парсинг
-			parser_data(stream){
-				//console.log(stream);
-				this.end_point=stream.length;
-				if(this.start_point>=this.end_point){
-					this.start_point=0;
-				}
-				for(var i=this.start_point;i<this.end_point;i++){	//обходим все поступившие данные
-					if(stream.charAt(i)=='$'){			//Обнаружели начало
-						this.parser_start_valid=1;
-						this.nmea_data="$";				//очищаем буфер
-					}else{
-						this.nmea_data+=stream.charAt(i);
-						if(stream.charCodeAt(i)==10 && this.parser_start_valid==1){//Обнаружели конец////(xhr.responseText.charCodeAt(i-4)=="*" && xhr.responseText.charCodeAt(i-1)==13 || xhr.responseText.charCodeAt(i)==10 && nmea_start_point_valid==1
-							this.parser_start_valid=0;
-
-							var nmea_array=this.nmea_data.split(",");				//парсинг NMEA
-							var temp=nmea_array[nmea_array.length-1].split("*");	//выделяем контрольную сумму
-							nmea_array[nmea_array.length-1]=temp[0];
-							nmea_array[nmea_array.length]=temp[1];
-							this.parser_nmea_array.push(nmea_array);//!!!
-							//console.log(nmea_array);
-						}
-					}
-				}
-				this.start_point=this.end_point;
-				if(this.parser_nmea_array.length>0 && 1){
-					this.hub_handler.parser_data(this.parser_nmea_array);
-					this.parser_nmea_array=new Array();
-				}
-			}
-			error_event(message){
-				this.hub_handler.error_event(message);
-			}
-		//Сброс данных
-			clear_nmea_array(){
-				this.parser_nmea_array=new Array();
-			}
 		//чуть
 
 		//чуть
