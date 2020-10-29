@@ -35,8 +35,8 @@ void gr_web_socket::connected_s(){
     connect(socket, &QWebSocket::textMessageReceived, this, &gr_web_socket::readyRead_s_txt);
     connect(socket, &QWebSocket::binaryMessageReceived, this, &gr_web_socket::readyRead_s_bin);
     connect(socket, &QWebSocket::disconnected, this, &gr_web_socket::disconnected_s);
-    connect(socket, &QWebSocket::stateChanged, this, &gr_web_socket::disconnected_s);
-    connect(socket, &QWebSocket::destroyed, this, &gr_web_socket::disconnected_s);
+    //connect(socket, &QWebSocket::stateChanged, this, &gr_web_socket::disconnected_s);
+    //connect(socket, &QWebSocket::destroyed, this, &gr_web_socket::disconnected_s);
     emit this->readyRead();
 }
 
@@ -50,6 +50,7 @@ void gr_web_socket::readyRead_s_bin(QByteArray message){
 }
 
 void gr_web_socket::disconnected_s(){
+    qDebug()<<"WS emmit disconnect";
     emit disconnected();
     deleteLater();
 }

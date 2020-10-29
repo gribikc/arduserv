@@ -49,7 +49,7 @@ function terminal_open(){
 
 	terminal_stream_param={
 		url			: document.getElementById('terminal_addr').value,//"ws://127.0.0.1:3129/sys/gen/",
-		parser	:	new nt_nmea_parser_gr(terminal),// //new nt_json_gr(serial_list,{collected:0}),
+		parser	:	terminal,// //new nt_json_gr(serial_list,{collected:0}),
 		auto_start:true,
 		reload_en:true,
 		reload_time:1000
@@ -58,6 +58,10 @@ function terminal_open(){
 	socket=new web_sock_stream_gr(terminal_stream_param);
 	terminal.add_socket(socket);
 
+}
+
+function terminal_chvin(){
+	terminal.change_view();
 }
 //////////////////////////////////////////////
 //////////////////////////////////////////////

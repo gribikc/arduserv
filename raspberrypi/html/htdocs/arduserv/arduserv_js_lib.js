@@ -95,7 +95,14 @@ class parser_parent_gr{
 	}
 
 	parser_data(stream){
-		this.buf+=stream;
+		if(typeof stream=="object"){
+			var view   = new Uint8Array(stream);
+			for(var i=0;i<view.length;i++){
+				this.buf+=String.fromCharCode(view[i]);
+			}
+		}else{
+			this.buf+=stream;
+		}
 		this.buf_end_point=this.buf.length;
 		this.cut_point=0;
 		if(this.buf_start_point>=this.buf_end_point){//!!!>=???//
@@ -217,13 +224,14 @@ class nt_json_stream_gr extends parser_parent_gr{
 class nt_raw_parser_gr extends parser_parent_gr{
 	parser(){
 		for(var i=this.buf_start_point;i<this.buf_end_point;i++){
-			if(this.end_point>=(this.parameter.db_matrix[0]['message_len'])){	//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
+			if( this.buf_end_point>=(this.parameter.db_matrix[0]['message_len']) ){	//if(this.start_point>=(this.db_matrix[0]['message_len']+1)){
 				if(	(this.buf.charCodeAt(i   )&0xFF)==this.parameter.db_matrix[0]['footer'][1] &&
 					(this.buf.charCodeAt(i-1 )&0xFF)==this.parameter.db_matrix[0]['footer'][0] &&
 					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len']+1)&0xFF)==this.parameter.db_matrix[0]['header'][1] &&
 					(this.buf.charCodeAt(i-this.parameter.db_matrix[0]['message_len'])&0xFF)==this.parameter.db_matrix[0]['header'][0] ){	//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 					if((this.buf.charCodeAt(i-93)&0xFF)==0x03){	//61
 						this.message_parser(this.buf,i,0);
+						//console.log("find");
 					}
 				}
 			}
@@ -274,7 +282,9 @@ class nt_raw_parser_gr extends parser_parent_gr{
 				this.parameter.db_matrix[m_id]['message'][i][3]="undf...";
 			}
 
-			this.hub_handler.parser_data(this.parameter.db_matrix[m_id]['message']);
+			//this.hub_handler.parser_data(this.parameter.db_matrix[m_id]['message']);
+			this.parser_data_array=this.parameter.db_matrix[m_id]['message'];
+			this.find(end_byte);
 		}
 	}
 }
@@ -516,6 +526,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 			}
 		//Парсинг
 			parser_data(stream){
+				//console.log(stream);
 				this.end_point=stream.length;
 				if(this.start_point>=this.end_point){
 					this.start_point=0;
@@ -529,6 +540,7 @@ class nt_raw_parser_gr extends parser_parent_gr{
 							(stream.charCodeAt(i-this.db_matrix[0]['message_len'])&0xFF)==this.db_matrix[0]['header'][0] ){//-62//-63							//console.log(stream.charCodeAt(i-28)&0xFF);
 							if((stream.charCodeAt(i-93)&0xFF)==0x03){//61
 								this.message_parser(stream,i,0);
+								//console.log("Find");
 							}
 						}
 					}
@@ -904,6 +916,7 @@ class web_sock_stream_gr {
 
 				delete this.websocket;
 				this.websocket = new WebSocket( this.wsUri );
+				this.websocket.binaryType="arraybuffer";
 
 				this.websocket.onopen = function (evt) {
 					if(e.parameter.parser.open_event){

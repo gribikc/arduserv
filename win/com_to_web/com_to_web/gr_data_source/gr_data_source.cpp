@@ -35,7 +35,13 @@
         client_added();
     }
     void gr_data_source::sub_client(void *client){
-        client_list.removeOne(static_cast<GR_http_client*>(client));
+        //client_list.removeOne(static_cast<GR_http_client*>(client));
+        for(int i=0;i<client_list.size();i++){
+            if( client_list.at(i)->socket == client  ){
+                client_list.removeAt(i);
+                i--;
+            }
+        }
         if(client_list.size()==0){
             no_more_client();
         }
@@ -47,7 +53,7 @@
     void gr_data_source::send_data_to_client(QByteArray *data){
         for(int i=0;i<client_list.size();i++){
             if( client_list.at(i)->socket->state() != QAbstractSocket::UnconnectedState ){
-                client_list.at(i)->socket->write(*data);
+                client_list.at(i)->socket->write(data);
             }else{
                 client_list.removeAt(i);
                 i--;
