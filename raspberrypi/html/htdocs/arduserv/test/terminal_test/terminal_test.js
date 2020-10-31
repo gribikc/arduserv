@@ -17,11 +17,12 @@
 			this.message_cnt=0;
 			this.socket;
 
-			this.type_view="txt";
+			this.type_view=0;
 		}
 		////////////////////
 		change_view(){
-			this.type_view=(this.type_view=="txt")?this.type_view=="hex":this.type_view="txt";
+			this.type_view++;
+			if(this.type_view>=4){this.type_view=0;};
 		}
 		parser_data(stream){
 			//console.log(stream);
@@ -34,7 +35,7 @@
 				//div.appendChild(div_pre);
 
 				var div_data = document.createElement("div");
-				if(this.type_view=="txt"){
+				if(this.type_view==0){
 					if(typeof stream=="object"){
 						var view   = new Uint8Array(stream);
 						//div_data.innerHTML=view;
@@ -44,7 +45,7 @@
 					}else{
 						div_data.innerHTML=stream;
 					}
-				}else{
+				}else if(this.type_view==1){
 					if(typeof stream=="object"){
 						var view   = new Uint8Array(stream);
 						for(var i=0;i<view.length;i++){
@@ -53,6 +54,28 @@
 					}else{
 						for(var i=0;i<stream.length;i++){
 							div_data.innerHTML+=" "+stream.charCodeAt(i).toString(16)+",";
+						}
+					}
+				}else if(this.type_view==2){
+					if(typeof stream=="object"){
+						var view   = new Uint8Array(stream);
+						for(var i=0;i<view.length;i++){
+							div_data.innerHTML+=" "+view[i].toString(10)+",";
+						}
+					}else{
+						for(var i=0;i<stream.length;i++){
+							div_data.innerHTML+=" "+stream.charCodeAt(i).toString(10)+",";
+						}
+					}
+				}else if(this.type_view==3){
+					if(typeof stream=="object"){
+						var view   = new Uint8Array(stream);
+						for(var i=0;i<view.length;i++){
+							div_data.innerHTML+=""+view[i].toString(2);
+						}
+					}else{
+						for(var i=0;i<stream.length;i++){
+							div_data.innerHTML+=""+stream.charCodeAt(i).toString(2);
 						}
 					}
 				}
