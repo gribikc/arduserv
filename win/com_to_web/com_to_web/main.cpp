@@ -60,33 +60,46 @@ int main(int argc, char *argv[])
     //    qWarning() << "Unrecognized command line argument";
     //    return -1;
     //}
+
+
     /*QProcess *process = new QProcess();
     QString program = "cmd.exe";
     QString folder = "C:\\";
     process->start(program, QStringList() << folder);*/
 
     //QtWebView::initialize();
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+        QApplication a(argc, argv);
+        MainWindow w;
+        w.show();
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+        com_to_web ctw;
 
-
-
-
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    
-    com_to_web ctw;
-    //gr_ctw_thread ctw;
-    //ctw.start(QThread::HighestPriority);
-
-    //com_to_web *ctw_point=ctw.get_ctw_handler();
-    //QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);
-    /*QObject::connect(ctw_point,&com_to_web::info,nullptr,[] (int type,QString str)
-    {
-        qDebug()<<"AAA";
-    }
-    );*/
-
-
+        //QObject::disconnect(&ctw,&com_to_web::info,nullptr,nullptr);
+        QObject::connect(&ctw,&com_to_web::info,&w,[] (int type,QString str)
+            {
+                qDebug()<<str;
+            }
+        );
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+        /*gr_ctw_thread ctw;
+        ctw.start(QThread::HighestPriority);
+        com_to_web *ctw_point=ctw.get_ctw_handler();
+        QObject::disconnect(ctw_point,nullptr,nullptr,nullptr);
+        QObject::connect(ctw_point,&com_to_web::info,nullptr,[] (int type,QString str)
+        {
+            qDebug()<<"AAA";
+        }
+        );*/
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
     return a.exec();
 }
 

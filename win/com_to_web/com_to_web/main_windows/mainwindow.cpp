@@ -6,6 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QWidget *mainWidget=new QWidget(this);
+
+}
+
+void MainWindow::write_text(){
+
 }
 
 MainWindow::~MainWindow()

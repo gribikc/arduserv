@@ -13,13 +13,15 @@ com_to_web::com_to_web(QWidget *parent) :
     //!!!ui->setupUi(this);
 
     //!!!ui->textEdit->insertPlainText("Start...\n");
+    emit info(0,"Start...");
 
     ///////
         if(settings.load_settings(&conf_var)){
             //!!!ui->textEdit->insertPlainText("Setting is valid...\n");
+            emit info(0,"Setting is valid...\n");
         }else {
             //!!!ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
-
+            emit info(0,"Setting is Invalid...Load Default!\n");
             conf_var["tcp_listen_port"]=3128;
 
             conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
@@ -168,6 +170,7 @@ void com_to_web::incommingConnection(){ // обработчик подключе
     //QString a=QString(socket->peerName());
 
     GR_logger::log(abv,"CtW Client connected;");
+    emit info(0,"CtW Client connected;");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

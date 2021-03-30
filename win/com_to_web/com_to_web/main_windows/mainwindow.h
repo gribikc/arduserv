@@ -13,7 +13,10 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    void write_text();
     ~MainWindow();
+
+private slots:
 
 private:
     Ui::MainWindow *ui;
