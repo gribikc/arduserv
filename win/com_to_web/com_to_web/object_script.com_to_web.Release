@@ -17,6 +17,7 @@ release/gr_udp_client.o
 release/gr_web_socket.o
 release/mainwindow.o
 release/gr_serial.o
+release/qrc_html.o
 release/moc_com_to_web.o
 release/moc_data_generator.o
 release/moc_gr_ctw_thread.o

@@ -26,6 +26,7 @@ void com_to_web::init(){
             //!!!ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
             emit info(0,"Setting is Invalid...Load Default!\n");
             conf_var["tcp_listen_port"]=3128;
+            conf_var["wbs_listen_port"]=3129;
 
             conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
             QDir dir;
@@ -91,6 +92,9 @@ void com_to_web::init(){
                 }
             }else{
                 conf_var["htdocs_patch"]=dir.currentPath();
+                emit info(0,"Dir patch error;\n");
+                emit info(0,conf_var["htdocs_patch"].toString());
+                emit info(0,"\n |- ");
             }
         }
     /////
@@ -116,7 +120,7 @@ void com_to_web::gr_sock_srv_start(){
     server->listen(QHostAddress::Any, conf_var["tcp_listen_port"].toInt());//3128
 
     webs_server=new QWebSocketServer("CTW", QWebSocketServer::NonSecureMode, this);
-    webs_server->listen(QHostAddress::Any, 3129);
+    webs_server->listen(QHostAddress::Any, conf_var["wbs_listen_port"].toInt());
     connect(webs_server, &QWebSocketServer::newConnection,this, &com_to_web::onNewWebs_connect);
 
     emit info(0,"WebSocket Port: 3129\n");
@@ -126,7 +130,7 @@ void com_to_web::gr_sock_srv_start(){
         //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
         //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
         //!!!ui->textEdit->insertPlainText("\n");
-        emit info(0,"Socket start PORT: ");
+        emit info(0,"HttpSocket start Port: ");
         emit info(0,conf_var["tcp_listen_port"].toString());
         emit info(0,"\n");
 
@@ -251,10 +255,17 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
 
         if(http_client->is_rsw("/sys/settings/c")>0){
             settings.clear_settings();
+            http_client->socket->write("Ok clear;");
         }else if(http_client->is_rsw("/sys/settings/w/j")>0){
             conf_var.clear();
             conf_var.operator=(settings.create_arr_from_json(http_client->indata));
             settings.save_settings(&conf_var);
+        }else if(http_client->is_rsw("/sys/settings/edit.html")==2){
+            //Q_INIT_RESOURCE(resources);
+            QFile file(":/settings_editor.html");
+            file.open(QIODevice::ReadOnly);
+            http_client->socket->write(file.readAll());
+            file.close();
         }else{
             http_client->socket->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
         }
@@ -312,7 +323,7 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
         http_client->socket->write("/db/(r,w,s)/(name)                  <br>\n");
         http_client->socket->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
-        http_client->socket->write("<a href=\"/sys/settings\">/sys/settings</a>                       <br>\n");
+        http_client->socket->write("<a href=\"/sys/settings/edit.html\">/sys/settings</a>                       <br>\n");
         http_client->socket->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
         http_client->socket->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
         http_client->socket->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");

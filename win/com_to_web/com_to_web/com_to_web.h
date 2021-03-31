@@ -30,7 +30,6 @@
     #include "gr_web_socket/gr_web_socket.h"
 
 
-
 /*namespace Ui {
 class com_to_web;
 }*/

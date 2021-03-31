@@ -85,7 +85,7 @@
 					console.log(arr);
 					
 					var xmlhttprq_test = new XMLHttpRequest();
-					xmlhttprq_test.open('POST', 'http://127.0.0.1:3128/sys/settings/w/j', true);//, true
+                                        xmlhttprq_test.open('POST', '/sys/settings/w/j', true);//, true
 					xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 					xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 					xmlhttprq_test.send(JSON.stringify(arr,null, '\t'));
@@ -298,7 +298,7 @@
 					}
 				}
 			//////////////////////////////////////////////////////////////////
-			loadXMLDoc("http://127.0.0.1:3128/sys/settings");
+                        loadXMLDoc("/sys/settings");
 		}
 	</script>
 </head>
@@ -309,6 +309,7 @@
 			<!---------------------------------------------------------------------------------------------------------->
 				<div id="tbl_db"></div>
 				<a href="javascript:editor.save_settings('tbl_db');">Сохранить</a>
+                                <a href="/sys/settings/c">Сбросить</a>
 			<!---------------------------------------------------------------------------------------------------------->
 		</div>
 </body>

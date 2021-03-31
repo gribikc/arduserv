@@ -17,6 +17,7 @@ debug/gr_udp_client.o
 debug/gr_web_socket.o
 debug/mainwindow.o
 debug/gr_serial.o
+debug/qrc_html.o
 debug/moc_com_to_web.o
 debug/moc_data_generator.o
 debug/moc_gr_ctw_thread.o
