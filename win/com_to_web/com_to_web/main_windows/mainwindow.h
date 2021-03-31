@@ -14,9 +14,9 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    void write_text();
     ~MainWindow();
-
+public slots:
+    void write_text(int type, QString str);
 private slots:
 
 private:

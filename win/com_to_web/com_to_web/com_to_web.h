@@ -98,6 +98,7 @@ public:
     explicit com_to_web(QWidget *parent = 0);
     ~com_to_web();
 
+    void init();
 private slots:
 
 signals:

@@ -78,13 +78,8 @@ int main(int argc, char *argv[])
     ////////////////////////////
     ////////////////////////////
         com_to_web ctw;
-
-        //QObject::disconnect(&ctw,&com_to_web::info,nullptr,nullptr);
-        QObject::connect(&ctw,&com_to_web::info,&w,[] (int type,QString str)
-            {
-                qDebug()<<str;
-            }
-        );
+        QObject::connect(&ctw,&com_to_web::info,&w,&MainWindow::write_text);
+        ctw.init();
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////

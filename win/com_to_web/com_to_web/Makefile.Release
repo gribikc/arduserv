@@ -9253,6 +9253,15 @@ release/mainwindow.o: main_windows/mainwindow.cpp main_windows/mainwindow.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qactiongroup.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QStatusBar \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qstatusbar.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QTextEdit \
+		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qtextedit.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qabstractscrollarea.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qframe.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextdocument.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextoption.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextcursor.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextformat.h \
+		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qpen.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QToolBar \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qtoolbar.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QWidget

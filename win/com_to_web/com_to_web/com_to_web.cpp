@@ -10,10 +10,13 @@ com_to_web::com_to_web(QWidget *parent) :
     QObject(parent)//,
     //ui(new Ui::com_to_web)
 {
+
+}
+void com_to_web::init(){
     //!!!ui->setupUi(this);
 
     //!!!ui->textEdit->insertPlainText("Start...\n");
-    emit info(0,"Start...");
+    emit info(0,"Start...\n");
 
     ///////
         if(settings.load_settings(&conf_var)){
@@ -43,32 +46,42 @@ com_to_web::com_to_web(QWidget *parent) :
                         //!!!ui->textEdit->insertPlainText("Find SD:");
                         //!!!ui->textEdit->insertPlainText(sdcommonPaths.at(i));
                         //!!!ui->textEdit->insertPlainText("\n");
+                        emit info(0,"Find SD:");
+                        emit info(0,sdcommonPaths.at(i));
+                        emit info(0,"\n");
                         if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web")){
                             dir.mkdir("com_to_web");
                             //!!!ui->textEdit->insertPlainText("Create com_to_web/\n");
+                            emit info(0,"Create com_to_web/\n");
                         }else{
                             //!!!ui->textEdit->insertPlainText("Find com_to_web/\n");
+                            emit info(0,"Find com_to_web/\n");
                         }
                         dir.setPath(sdcommonPaths[i]+"/com_to_web");
                         if(!dir.exists()){continue;}else{
                             if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs")){
                                 //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs\n");
+                                emit info(0,"Create com_to_web/htdocs\n");
                                 dir.mkdir("htdocs");
                             }else {
                                 //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs\n");
+                                emit info(0,"Find com_to_web/htdocs\n");
                             }
                             dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs");
                             if(!dir.exists()){continue;}else{
                                 if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs/db")){
                                     //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs/db\n");
+                                    emit info(0,"Create com_to_web/htdocs/db\n");
                                     dir.mkdir("db");
                                 }else{
                                     //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs/db\n");
+                                    emit info(0,"Find com_to_web/htdocs/db\n");
                                 }
                                 dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs/db");
                                 if(!dir.exists()){continue;}else{
                                     //!!!ui->textEdit->insertPlainText("Find SD, htdocs and db");
                                     //!!!ui->textEdit->insertPlainText("\n");
+                                    emit info(0,"Find SD, htdocs and db\n");
                                     conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/";
                                     break;
                                 }
@@ -98,6 +111,7 @@ com_to_web::~com_to_web()
 ////////////////////////////////////////////////////////////////////////////
 void com_to_web::gr_sock_srv_start(){
     qDebug() << "Server start";
+    emit info(0,"Server start\n");
     server = new QTcpServer();//this
     server->listen(QHostAddress::Any, conf_var["tcp_listen_port"].toInt());//3128
 
@@ -105,41 +119,59 @@ void com_to_web::gr_sock_srv_start(){
     webs_server->listen(QHostAddress::Any, 3129);
     connect(webs_server, &QWebSocketServer::newConnection,this, &com_to_web::onNewWebs_connect);
 
+    emit info(0,"WebSocket Port: 3129\n");
+
     if(server->isListening()){
         qDebug() << "Server is open";
         //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
         //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
         //!!!ui->textEdit->insertPlainText("\n");
+        emit info(0,"Socket start PORT: ");
         emit info(0,conf_var["tcp_listen_port"].toString());
+        emit info(0,"\n");
+
 
         //!!!ui->textEdit->insertPlainText("HTDocsPatch: ");
         //!!!ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());
         //!!!ui->textEdit->insertPlainText("\n |- ");
+        emit info(0,"HTDocsPatch: ");
+        emit info(0,conf_var["htdocs_patch"].toString());
+        emit info(0,"\n |- ");
+
         QDir dir(conf_var["htdocs_patch"].toString()+"/htdocs");//!!!&db
         if (!dir.exists()){
             QDir dir(conf_var["htdocs_patch"].toString());
             if (!dir.exists()){
                 //!!!ui->textEdit->insertPlainText("Invalid");
+                emit info(0,"Invalid");
             }else{
                 //!!!ui->textEdit->insertPlainText("Need to Create htdocs dir in patch");
+                emit info(0,"Need to Create htdocs dir in patch");
             }
         }else{
             //!!!ui->textEdit->insertPlainText("Valid");
+            emit info(0,"Valid");
         }
         //!!!ui->textEdit->insertPlainText("\n");
+        emit info(0,"\n");
 
         //!!!ui->textEdit->insertPlainText("IP:\n");
+        emit info(0,"IP:\n");
         QList<QHostAddress> addr = QNetworkInterface::allAddresses();
         for(int i=0;i<addr.size();i++){
             //!!!ui->textcEdit->insertPlainText(" |- ");
             //!!!ui->textEdit->insertPlainText(addr.at(i).toString());
             //!!!ui->textEdit->insertPlainText("\n");
+            emit info(0," |- ");
+            emit info(0,addr.at(i).toString());
+            emit info(0,"\n");
         }
 
         server->setMaxPendingConnections(9999);
         connect(server, &QTcpServer::newConnection, this, &com_to_web::incommingConnection);
     }else {
         //!!!ui->textEdit->insertPlainText("Socket not Start :(\n");
+        emit info(0,"Socket not Start :(\n");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
