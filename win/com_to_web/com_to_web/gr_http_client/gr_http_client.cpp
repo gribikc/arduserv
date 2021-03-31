@@ -139,6 +139,16 @@ QStringList GR_http_client::get_list_param(){
         socket->write("\n");
         GR_logger::log(this,"Http Send HTML header");
     }
+    void GR_http_client::send_json_header(){
+        if(socket->type_of_socket!=1){return;}
+        socket->write("HTTP/1.1 200 OK\n");
+        socket->write("Content-type: application/json; charset=utf-8\n");
+        socket->write("Connection: keep-alive\n");
+        socket->write("Access-Control-Allow-Origin: *\n");
+        socket->write("Access-Control-Allow-Methods: *\n");
+        socket->write("\n");
+        GR_logger::log(this,"Http Send HTML header");
+    }
     void GR_http_client::send_css_header(){
         if(socket->type_of_socket!=1){return;}
         socket->write("HTTP/1.1 200 OK\n");

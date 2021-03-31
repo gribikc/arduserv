@@ -264,6 +264,8 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
             http_client->send_css_header();
         }else if(list_param[list_param.size()-1].endsWith("js")){
             http_client->send_js_header();
+        }else if(list_param[list_param.size()-1].endsWith("json")){
+                http_client->send_json_header();
         }else{
             http_client->send_neutral_header();
         }

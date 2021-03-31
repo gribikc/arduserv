@@ -6,10 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QWidget *mainWidget=new QWidget(this);
-
+    //ui->textEdit_bbb->insertPlainText("Create com_to_web/htdocs\n");
 }
-
 void MainWindow::write_text(){
 
 }

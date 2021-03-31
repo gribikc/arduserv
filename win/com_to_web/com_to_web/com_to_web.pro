@@ -85,7 +85,7 @@ win32 {
     HEADERS +=gr_serial/gr_serial.h
 }
 
-FORMS    += main_windows/mainwindow.ui#com_to_web.ui
+FORMS    += main_windows/mainwindow.ui#com_to_web.ui#
 
 #DISTFILES += \
 #    android/AndroidManifest.xml \

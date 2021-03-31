@@ -53,6 +53,7 @@ public:
         void send_neutral_header();
         void send_css_header();
         void send_js_header();
+        void send_json_header();
 public slots:
     void readyRead(); // обработчик входящих данных
     void disconnected(); // обработчик изменения состояния вещающего
