@@ -9245,34 +9245,7 @@ release/mainwindow.o: main_windows/mainwindow.cpp main_windows/mainwindow.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qtabwidget.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qicon.h \
 		D:/Qt2/5.13.0/mingw73_32/include/QtCore/QDebug \
-		ui_mainwindow.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtCore/QVariant \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QApplication \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qapplication.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtCore/qcoreapplication.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtCore/qeventloop.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qdesktopwidget.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qguiapplication.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qinputmethod.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QMenuBar \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qmenubar.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qmenu.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qaction.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qactiongroup.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QStatusBar \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qstatusbar.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QTextEdit \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qtextedit.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qabstractscrollarea.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qframe.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextdocument.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextoption.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextcursor.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qtextformat.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtGui/qpen.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QToolBar \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/qtoolbar.h \
-		D:/Qt2/5.13.0/mingw73_32/include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o main_windows\mainwindow.cpp
 
 release/gr_serial.o: gr_serial/gr_serial.cpp gr_serial/gr_serial.h \

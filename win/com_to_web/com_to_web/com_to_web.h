@@ -19,9 +19,9 @@
         #include "gr_serial/gr_serial.h"
     #endif
     #include "data_generator/data_generator.h"
-    #include "gr_bluetooth/gr_bluetooth.h"
-    #include "gr_gps/gr_gps.h"
-    #include "gr_sensor/gr_sensor.h"
+    //#include "gr_bluetooth/gr_bluetooth.h"
+    //#include "gr_gps/gr_gps.h"
+    //#include "gr_sensor/gr_sensor.h"
     #include "gr_tcp_client/gr_tcp_client.h"
     #include "gr_udp_client/gr_udp_client.h"
     #include "gr_settings.h"
@@ -49,6 +49,17 @@ public slots:
     void client_requestComplete(GR_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
 public:
     void gr_sock_srv_start();
+
+    enum HeaderType {
+            NoHeader        = 0,
+            DataHeader      = 1,
+            HTMLHeader      = 2,
+            NeutralHeader   = 3,
+            CSSHeader       = 4,
+            JSHeader        = 5,
+            JSONHeader      = 6
+    };
+
 
 
     //void http_request_parsing(gr_httprqs_parser *parser_data);
@@ -84,6 +95,17 @@ public:
 
     QMap<QString, QVariant> conf_var;
 
+    struct sub_request{
+        QString str;
+        int type;//0:>0,1:==2
+        void (*cb)(GR_http_client *http_client);
+        bool single_shot;
+        int send_header_type;
+    };
+    QVector<sub_request> sub_requests;
+    int reg_on(QString str,int type,bool single_shot,int send_header_type,void (*cb)(GR_http_client *http_client));
+    int reg_off(QString str);
+    int reg_off(int num);
 
     //GPS
     //gr_gps gr_gps_point;

@@ -99,6 +99,11 @@ void com_to_web::init(){
         }
     /////
 
+        reg_on("/reg_on",0,1,HeaderType::HTMLHeader,[](GR_http_client *http_client){
+            http_client->socket->write("reg_on");
+            qDebug() << "reg_on";
+        });
+
     gr_sock_srv_start();
 }
 
@@ -213,6 +218,43 @@ void com_to_web::incommingConnection(){ // обработчик подключе
 void com_to_web::client_requestComplete(GR_http_client *http_client){
     qDebug() << "REQ done";
     QStringList list_param=http_client->get_list_param();
+    //////////////////////////       ///////
+    for(int i=0;i<sub_requests.size();i++){
+        int a=http_client->is_rsw(sub_requests[i].str);
+        int b=http_client->is_rsw(sub_requests[i].str);
+        if( (sub_requests[i].type==0 && http_client->is_rsw(sub_requests[i].str)>0 ) ||
+            (sub_requests[i].type==1 && http_client->is_rsw(sub_requests[i].str)==2)   ){
+                switch(sub_requests[i].send_header_type){
+                    case HeaderType::NoHeader:
+                        break;
+                    case HeaderType::DataHeader:
+                        http_client->send_data_header();
+                        break;
+                    case HeaderType::HTMLHeader:
+                        http_client->send_html_header();
+                        break;
+                    case HeaderType::NeutralHeader:
+                        http_client->send_neutral_header();
+                        break;
+                    case HeaderType::CSSHeader:
+                        http_client->send_css_header();
+                        break;
+                    case HeaderType::JSHeader:
+                        http_client->send_js_header();
+                        break;
+                    case HeaderType::JSONHeader:
+                        http_client->send_json_header();
+                        break;
+                    default:
+                        break;
+                }
+
+                sub_requests[i].cb(http_client);
+                if(sub_requests[i].single_shot){
+                    http_client->socket->close();
+                }
+        }
+    }
     //////////////////////////       ///////
     if(http_client->is_rsw("/dev")>0){
         http_client->send_data_header();
@@ -335,7 +377,18 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
 
     //http_client->destroyed();
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+int com_to_web::reg_on(QString str,int type,bool single_shot,int send_header_type,void (*cb)(GR_http_client *http_client)){
+    sub_request temp;
+    temp.str=str;
+    temp.type=type;
+    temp.cb=cb;
+    temp.single_shot=single_shot;
+    temp.send_header_type=send_header_type;
+    sub_requests<<temp;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
