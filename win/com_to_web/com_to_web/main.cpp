@@ -1,5 +1,6 @@
 #include "main_windows/mainwindow.h"
 #include "com_to_web.h"
+#include "GR_web_server/gr_web_server.h"
 #include "gr_ctw_thread/gr_ctw_thread.h"
 
 #include <QApplication>
@@ -77,9 +78,15 @@ int main(int argc, char *argv[])
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////
-        com_to_web ctw;
-        QObject::connect(&ctw,&com_to_web::info,&w,&MainWindow::write_text);
-        ctw.init();
+        //!!!com_to_web ctw;
+        //!!!QObject::connect(&ctw,&com_to_web::info,&w,&MainWindow::write_text);
+        //!!!ctw.init();
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+        GR_web_server gws;
+        QObject::connect(&gws,&GR_web_server::info,&w,&MainWindow::write_text);
+        gws.init();
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////

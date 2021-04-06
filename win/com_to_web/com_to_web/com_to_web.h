@@ -59,7 +59,14 @@ public:
             JSHeader        = 5,
             JSONHeader      = 6
     };
-
+    enum ComparisonType {
+            StartsWith     = 0,
+            Matches        = 1
+    };
+    enum ModeType {
+            Continuous     = 0,
+            SingleShot     = 1
+    };
 
 
     //void http_request_parsing(gr_httprqs_parser *parser_data);
@@ -104,8 +111,11 @@ public:
     };
     QVector<sub_request> sub_requests;
     int reg_on(QString str,int type,bool single_shot,int send_header_type,void (*cb)(GR_http_client *http_client));
+    //template<class T >
+    //int reg_on(QString str,int type,bool single_shot,int send_header_type,T);
     int reg_off(QString str);
     int reg_off(int num);
+    void registaration_sys();
 
     //GPS
     //gr_gps gr_gps_point;
@@ -120,6 +130,7 @@ public:
     ~com_to_web();
 
     void init();
+
 private slots:
 
 signals:

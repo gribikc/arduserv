@@ -1,4 +1,5 @@
 release/main.o
+release/gr_web_server.o
 release/com_to_web.o
 release/data_generator.o
 release/gr_ctw_thread.o
@@ -19,6 +20,7 @@ release/mainwindow.o
 release/gr_serial.o
 release/qrc_html.o
 release/moc_com_to_web.o
+release/moc_gr_web_server.o
 release/moc_data_generator.o
 release/moc_gr_ctw_thread.o
 release/moc_gr_data_source.o

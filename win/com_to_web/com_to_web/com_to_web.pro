@@ -38,6 +38,7 @@ CONFIG += c++11
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES +=  main.cpp\
+    GR_web_server/gr_web_server.cpp \
             com_to_web.cpp\
     data_generator/data_generator.cpp \
     gr_ctw_thread/gr_ctw_thread.cpp \
@@ -62,6 +63,7 @@ win32 {
 }
 
 HEADERS  += com_to_web.h\
+    GR_web_server/gr_web_server.h \
     data_generator/data_generator.h \
     file_system.h \
     gr_ctw_thread/gr_ctw_thread.h \
@@ -79,7 +81,8 @@ HEADERS  += com_to_web.h\
     gr_tcpsocket/gr_tcpsocket.h \
     gr_udp_client/gr_udp_client.h \
     gr_web_socket/gr_web_socket.h \
-    main_windows/mainwindow.h
+    main_windows/mainwindow.h \
+    gr_web_server/gr_web_server_file_system.h
 
 win32 {
     HEADERS +=gr_serial/gr_serial.h
