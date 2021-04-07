@@ -368,6 +368,23 @@ void GR_web_server::registaration_sys(){
         qDebug() << "reg_on";
     });
 
+    auto a=[](int i){
+        i++;
+    };
+    auto b=[&](int i){
+        i++;
+    };
+
+    void (*d)(int i);
+    d=a;
+    d=b;
+//error: cannot convert ‘main()::<lambda(int)>’ to ‘void (*)(int)’ in assignment
+//   20 |     d=b;
+//      |       ^
+//      |       |
+//      |       main()::<lambda(int)>
+//
+
     ///////////////////////////////
 }
 
