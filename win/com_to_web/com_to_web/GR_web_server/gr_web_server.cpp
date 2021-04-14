@@ -246,18 +246,7 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
         }
     }
     ///////////////
-        if(http_client->is_rsw("/sys/tree")>0){
-            QDir dir;
-            http_client->send_html_header();
-            if(QSysInfo::productType()=="android"){
-                get_tree_file(android_htdocs_patch+"/htdocs/","",http_client,android_htdocs_patch);
-            }else{
-                get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
-            }
-            GR_logger::log(this,"CtW Htdocs Tree");
-            http_client->socket->close();
-        ////////////////////////////////     ////////
-        }else if(http_client->is_rsw("/sys/log")>0){
+        if(http_client->is_rsw("/sys/log")>0){
             http_client->send_html_header();
             if(http_client->is_rsw("/sys/log/c")>0){
                 GR_logger::clear();
@@ -342,49 +331,44 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ///
-//template<typename T>
-//void GR_web_server::reg_on(QString str,int type,bool single_shot,int send_header_type,const T cb){//void (*cb)(GR_http_client *http_client)
-//    sub_request temp;
-//    temp.str=str;
-//    temp.type=type;
-//    temp.cb=cb;//cbt;
-//    temp.single_shot=single_shot;
-//    temp.send_header_type=send_header_type;
-//    sub_requests<<temp;
-//}
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-///
 void GR_web_server::registaration_sys(){
     reg_on("/reg_on",StartsWith,SingleShot,HTMLHeader,[](GR_http_client *http_client){
         http_client->socket->write("reg_on");
         qDebug() << "reg_on";
     });
 
-    reg_on("/reg_on2",Matches,SingleShot,HTMLHeader,[=](GR_http_client *http_client){
-        http_client->socket->write("reg_on");
-        //android_htdocs_patch;
-        qDebug() << "reg_on";
+    reg_on("/sys/tree",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        QDir dir;
+        if(QSysInfo::productType()=="android"){
+            get_tree_file(android_htdocs_patch+"/htdocs/","",http_client,android_htdocs_patch);
+        }else{
+            get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
+        }
+        GR_logger::log(this,"CtW Htdocs Tree");
     });
 
-    auto a=[](int i){
-        i++;
-    };
-    auto b=[&](int i){
+    ///////////////////////////////
+
+    // store a lambda
+    /*std::function<void(int i)> f_display_42 = [](int i) { i++; };
+    std::function<void(int i)> f_display_43 = [&](int i) { i++; };
+
+
+    std::function<void(int i)> a=[](int i){
+            i++;
+        };
+    std::function<void(int i)> b=[&](int i){
         i++;
     };
 
-    void (*d)(int i);
+    //void (*d)(int i);
+    std::function<void(int i)> d;
     d=a;
     d=b;
-//error: cannot convert ‘main()::<lambda(int)>’ to ‘void (*)(int)’ in assignment
-//   20 |     d=b;
-//      |       ^
-//      |       |
-//      |       main()::<lambda(int)>
-//
+    d(1);
+    //d=
+    std::function<void(int i)> F([](int i){ i++; });*/
 
-    ///////////////////////////////
+
 }
 

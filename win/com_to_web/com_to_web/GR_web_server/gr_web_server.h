@@ -66,24 +66,26 @@ public:
     struct sub_request{
         QString str;
         int type;//0:>0,1:==2
-        void (*cb)(GR_http_client *http_client);
+        //void (*cb)(GR_http_client *http_client);
+        std::function<void(GR_http_client *http_client)> cb;
         bool single_shot;
         int send_header_type;
     };
     QVector<sub_request> sub_requests;
     //template<typename T>
     //typedef void (*func)(GR_http_client *http_client);
-    template<class F>
-    void reg_on(QString str,int type,bool single_shot,int send_header_type,const F& cb){//;//void (*cb)(GR_http_client *http_client)
+    //template<typename F>
+    void reg_on(QString str,int type,bool single_shot,int send_header_type,std::function<void(GR_http_client *http_client)> cb){//;//void (*cb)(GR_http_client *http_client)
         sub_request temp;
         temp.str=str;
         temp.type=type;
-        //temp.cb=cb;//cbt;
+        temp.cb=cb;//cbt;
         //void (*aaa)(GR_http_client *http_client)=cb;
         temp.single_shot=single_shot;
         temp.send_header_type=send_header_type;
         sub_requests<<temp;
     }
+
 
     int reg_off(QString str);
     int reg_off(int num);
