@@ -83,7 +83,8 @@ public:
         //void (*aaa)(GR_http_client *http_client)=cb;
         temp.single_shot=single_shot;
         temp.send_header_type=send_header_type;
-        sub_requests<<temp;
+        //sub_requests<<temp;
+        sub_requests.push_front(temp);
     }
 
 

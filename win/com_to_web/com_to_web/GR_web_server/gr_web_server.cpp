@@ -246,85 +246,22 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
         }
     }
     ///////////////
-        if(http_client->is_rsw("/sys/log")>0){
-            http_client->send_html_header();
-            if(http_client->is_rsw("/sys/log/c")>0){
-                GR_logger::clear();
-            }else{
-                GR_logger::send_log_to_socket_json(http_client);
-            }
-            GR_logger::log(this,"CtW GET Log");
-            http_client->socket->close();
-        }else if(http_client->is_rsw("/sys/settings")>0){   //    /sys/settings/(r),w/(j),l,p,/
-            http_client->send_html_header();
+    //тут проверять наличие файла в htdocs и редиректить
+    http_client->send_html_header();
+    http_client->socket->write("400 Bad Request!<br>\n");
+    http_client->socket->write("Try:<br>\n");
+    http_client->socket->write("/                                   <br>\n");
+    http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
+    http_client->socket->write("/db/(r,w,s)/(name)                  <br>\n");
+    http_client->socket->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
+    http_client->socket->write("<a href=\"/sys/settings/edit.html\">/sys/settings</a>                       <br>\n");
+    http_client->socket->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
+    http_client->socket->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
+    http_client->socket->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
+    http_client->socket->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
 
-            if(http_client->is_rsw("/sys/settings/c")>0){
-                settings.clear_settings();
-                http_client->socket->write("Ok clear;");
-            }else if(http_client->is_rsw("/sys/settings/w/j")>0){
-                conf_var.clear();
-                conf_var.operator=(settings.create_arr_from_json(http_client->indata));
-                settings.save_settings(&conf_var);
-            }else if(http_client->is_rsw("/sys/settings/edit.html")==2){
-                //Q_INIT_RESOURCE(resources);
-                QFile file(":/settings_editor.html");
-                file.open(QIODevice::ReadOnly);
-                http_client->socket->write(file.readAll());
-                file.close();
-            }else{
-                http_client->socket->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
-            }
-
-            GR_logger::log(this,"CtW GET Log");
-            http_client->socket->close();
-        //////////////////////////////  ////////
-        }else if(http_client->is_rsw("/db/w")>0){
-            http_client->send_html_header();
-            htdocs_db_write_do(http_client);
-            GR_logger::log(this,"CtW DB Write");
-            http_client->socket->close();
-        ////////
-        }else if(http_client->is_rsw("/favicon.ico")==2){
-            http_client->send_html_header();
-            http_client->socket->write("Nice try to get favicon.ico :)))");
-            GR_logger::log(this,"CtW TTG favicon.ico");
-            http_client->socket->close();
-        }else if(http_client->is_rsw("/")==2){
-            http_client->send_html_header();
-            http_client->socket->write("Main Page!");
-            GR_logger::log(this,"CtW Main Page");
-            http_client->socket->close();
-        }else if(http_client->is_rsw("/htdocs")>0){
-            if(list_param[list_param.size()-1].endsWith("css")){
-                http_client->send_css_header();
-            }else if(list_param[list_param.size()-1].endsWith("js")){
-                http_client->send_js_header();
-            }else if(list_param[list_param.size()-1].endsWith("json")){
-                    http_client->send_json_header();
-            }else{
-                http_client->send_neutral_header();
-            }
-            htdocs_page_request_do(list_param,http_client);
-            GR_logger::log(this,"CtW Page Send");
-            http_client->socket->close();
-            ////////////////////////////////     ////////
-        }else{//тут проверять наличие файла в htdocs и редиректить
-            http_client->send_html_header();
-            http_client->socket->write("400 Bad Request!<br>\n");
-            http_client->socket->write("Try:<br>\n");
-            http_client->socket->write("/                                   <br>\n");
-            http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
-            http_client->socket->write("/db/(r,w,s)/(name)                  <br>\n");
-            http_client->socket->write("<a href=\"/sys/tree\">/sys/tree/(h,j,r,...)</a> -Дерево HtDocs               <br>\n");
-            http_client->socket->write("<a href=\"/sys/settings/edit.html\">/sys/settings</a>                       <br>\n");
-            http_client->socket->write("<a href=\"/dev/com/l\">/dev/com/(w,r,s,l)/(num)/(speed)/</a>   <br>\n");
-            http_client->socket->write("/dev/sens/(w,r,s)/(type)/           <br>\n");
-            http_client->socket->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
-            http_client->socket->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
-
-            GR_logger::log(this,"CtW Error 400");
-            http_client->socket->close();
-        }
+    GR_logger::log(this,"CtW Error 400");
+    http_client->socket->close();
     ///////////////
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -346,8 +283,63 @@ void GR_web_server::registaration_sys(){
         }
         GR_logger::log(this,"CtW Htdocs Tree");
     });
+    reg_on("/sys/settings",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        if(http_client->is_rsw("/sys/settings/c")>0){
+            settings.clear_settings();
+            http_client->socket->write("Ok clear;");
+        }else if(http_client->is_rsw("/sys/settings/w/j")>0){
+            conf_var.clear();
+            conf_var.operator=(settings.create_arr_from_json(http_client->indata));
+            settings.save_settings(&conf_var);
+        }else if(http_client->is_rsw("/sys/settings/edit.html")==2){
+            //Q_INIT_RESOURCE(resources);
+            QFile file(":/settings_editor.html");
+            file.open(QIODevice::ReadOnly);
+            http_client->socket->write(file.readAll());
+            file.close();
+        }else{
+            http_client->socket->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
+        }
 
-    ///////////////////////////////
+        GR_logger::log(this,"CtW GET Log");
+    });
+    reg_on("/sys/log",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        if(http_client->is_rsw("/sys/log/c")>0){
+            GR_logger::clear();
+        }else{
+            GR_logger::send_log_to_socket_json(http_client);
+        }
+        GR_logger::log(this,"CtW GET Log");
+    });
+
+
+    reg_on("/",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        http_client->socket->write("Main Page!");
+        GR_logger::log(this,"CtW Main Page");
+    });
+    reg_on("/favicon.ico",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        http_client->socket->write("Nice try to get favicon.ico :)))");
+        GR_logger::log(this,"CtW TTG favicon.ico");
+    });
+    reg_on("/htdocs",StartsWith,SingleShot,NoHeader,[&](GR_http_client *http_client){
+        QStringList list_param=http_client->get_list_param();
+        if(list_param[list_param.size()-1].endsWith("css")){
+            http_client->send_css_header();
+        }else if(list_param[list_param.size()-1].endsWith("js")){
+            http_client->send_js_header();
+        }else if(list_param[list_param.size()-1].endsWith("json")){
+                http_client->send_json_header();
+        }else{
+            http_client->send_neutral_header();
+        }
+        htdocs_page_request_do(list_param,http_client);
+        GR_logger::log(this,"CtW Page Send");
+    });
+    reg_on("/db/w",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+        htdocs_db_write_do(http_client);
+        GR_logger::log(this,"CtW DB Write");
+    });
+
 
     // store a lambda
     /*std::function<void(int i)> f_display_42 = [](int i) { i++; };
