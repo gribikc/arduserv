@@ -29,9 +29,9 @@ void GR_web_server::init(){
             conf_var["tcp_listen_port"]=3128;
             conf_var["wbs_listen_port"]=3129;
 
-            conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
             QDir dir;
             if(QSysInfo::productType()=="android"){
+                conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web/htdocs";
                 QStringList sdcommonPaths = {
                     "/storage/86BB-1D02",
                     "/storage/emulated/0",
@@ -84,7 +84,7 @@ void GR_web_server::init(){
                                     //!!!ui->textEdit->insertPlainText("Find SD, htdocs and db");
                                     //!!!ui->textEdit->insertPlainText("\n");
                                     emit info(0,"Find SD, htdocs and db\n");
-                                    conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/";
+                                    conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/htdocs";
                                     break;
                                 }
                             }
@@ -92,7 +92,7 @@ void GR_web_server::init(){
                     }
                 }
             }else{
-                conf_var["htdocs_patch"]=dir.currentPath();
+                conf_var["htdocs_patch"]=dir.currentPath()+"/htdocs/";//conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
                 emit info(0,"Dir patch error;\n");
                 emit info(0,conf_var["htdocs_patch"].toString());
                 emit info(0,"\n |- ");
@@ -276,11 +276,11 @@ void GR_web_server::registaration_sys(){
 
     reg_on("/sys/tree",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
         QDir dir;
-        if(QSysInfo::productType()=="android"){
-            get_tree_file(android_htdocs_patch+"/htdocs/","",http_client,android_htdocs_patch);
-        }else{
-            get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
-        }
+        //if(QSysInfo::productType()=="android"){
+            get_tree_file(conf_var["htdocs_patch"].toString()+"\\htdocs","",http_client,conf_var["htdocs_patch"].toString());//android_htdocs_patch+"/htdocs/"
+        //}else{
+        //    get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
+        //}
         GR_logger::log(this,"CtW Htdocs Tree");
     });
     reg_on("/sys/settings",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){

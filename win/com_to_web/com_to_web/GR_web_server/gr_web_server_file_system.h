@@ -54,7 +54,7 @@
                 socket->socket->write(prefix_add.toLocal8Bit());
 
                     //socket->write(fileInfo.absolutePath().toLocal8Bit());
-                    socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,""));
+                    socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
                     socket->socket->write("/");
                         socket->socket->write(fileInfo.fileName().toLocal8Bit());
                     socket->socket->write("/");
@@ -65,11 +65,12 @@
                 socket->socket->write(prefix_add.toLocal8Bit());
 
                 socket->socket->write("<a href='");
-                socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,""));
+                //socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
+                socket->socket->write(fileInfo.absolutePath().toUtf8().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
                 socket->socket->write("/");
-                socket->socket->write(fileInfo.fileName().toLocal8Bit());
+                socket->socket->write(fileInfo.fileName().toUtf8());
                 socket->socket->write("'>");
-                socket->socket->write(fileInfo.fileName().toLocal8Bit());
+                socket->socket->write(fileInfo.fileName().toUtf8());
                 socket->socket->write("</a>");
 
                      socket->socket->write("(");
@@ -87,18 +88,14 @@ void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client
     QString file="";
 
     for(int i=1;i<list_param.size();i++){
-        file+="/"+list_param.at(i);
+        file+="\\"+list_param.at(i);
     }
 
     QDir dir;
-    //dir.currentPath()+"/htdocs/";
     QString file_str="";
-    if(QSysInfo::productType()=="android"){
-        file_str=android_htdocs_patch+file.toLocal8Bit();
-    }else{
-        file_str=dir.currentPath()+file.toLocal8Bit();
-    }
-    //QString file_str=dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit();
+
+    file_str=conf_var["htdocs_patch"].toString()+file.toUtf8();//dir.currentPath()+file.toLocal8Bit();
+
     QFile file_req(file_str);///dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit());
     file_req.open(QIODevice::ReadOnly);
 
@@ -110,13 +107,9 @@ void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void GR_web_server::htdocs_db_write_do(GR_http_client *socket){
     QDir dir;
-    //QString file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
     QString file_str="";
-    if(QSysInfo::productType()=="android"){
-        file_str=android_htdocs_patch+"/htdocs/db";
-    }else{
-        file_str=dir.currentPath()+"/htdocs/db";//+parser_data->htdocs_file_query.toLocal8Bit();
-    }
+
+    file_str=conf_var["htdocs_patch"].toString()+"/htdocs/db";
 
     //QStringList fpa=list_param->htdocs_file_query.split("/");
     //static_cast<GR_http_client*>(socket);
