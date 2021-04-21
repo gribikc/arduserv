@@ -146,11 +146,13 @@ void GR_web_server::gr_sock_srv_start(){
 ///
 void GR_web_server::onNewWebs_connect(){
     qDebug() << "WBS new";
-    QWebSocket *pSocket = webs_server->nextPendingConnection();
-     disconnect(pSocket,nullptr,nullptr,nullptr);
+    QWebSocket *socket = webs_server->nextPendingConnection();
+    disconnect(socket,nullptr,nullptr,nullptr);
+
     GR_http_client *abv=new GR_http_client();
     connect(abv,&GR_http_client::dataComplete, this,&GR_web_server::client_requestComplete);
-    abv->init(pSocket);
+    abv->init(socket);
+
     GR_logger::log(abv,"CtW Client connected;");
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -163,11 +165,8 @@ void GR_web_server::incommingConnection(){ // обработчик подклю�
     disconnect(socket,nullptr,nullptr,nullptr);
 
     GR_http_client *abv=new GR_http_client();
-    //connect(abv,&GR_http_client::requestComplete, this,&com_to_web::client_requestComplete);
-      connect(abv,&GR_http_client::dataComplete, this,&GR_web_server::client_requestComplete);
+    connect(abv,&GR_http_client::dataComplete, this,&GR_web_server::client_requestComplete);
     abv->init(socket);
-    //socket->peerAddress();
-    //QString a=QString(socket->peerName());
 
     GR_logger::log(abv,"CtW Client connected;");
 }
@@ -180,8 +179,8 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
     QStringList list_param=http_client->get_list_param();
     //////////////////////////       ///////
     for(int i=0;i<sub_requests.size();i++){
-        if( (sub_requests[i].type==ComparisonType::StartsWith && http_client->is_rsw(sub_requests[i].str)>0 ) ||//!!!???==1?
-            (sub_requests[i].type==ComparisonType::Matches && http_client->is_rsw(sub_requests[i].str)==2)   ){
+        if( (sub_requests[i].type==ComparisonType::StartsWith   && http_client->is_rsw(sub_requests[i].str)>0 ) ||      //!!!???==1?
+            (sub_requests[i].type==ComparisonType::Matches      && http_client->is_rsw(sub_requests[i].str)==2)   ){
             switch(sub_requests[i].send_header_type){
                 case HeaderType::NoHeader:
                     break;
@@ -214,10 +213,11 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
             return;
         }
     }
+    //надо бы возможность регистрации события 404
     ///////////////
     //тут проверять наличие файла в htdocs и редиректить
     http_client->send_html_header();
-    http_client->socket->write("400 Bad Request!<br>\n");
+    http_client->socket->write("404 Not Found!<br>\n");
     http_client->socket->write("Try:<br>\n");
     http_client->socket->write("/                                   <br>\n");
     http_client->socket->write("/htdocs/(d/i/r/fi.le)               <br>\n");
@@ -229,7 +229,7 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
     http_client->socket->write("<a href=\"/dev/bt/l\">/dev/bt/(w,r,s,l)/(name)</a>            <br>\n");
     http_client->socket->write("<a href=\"/dev/gps/r\">/dev/gps/(w,r,s)/</a>                   <br>\n");
 
-    GR_logger::log(this,"CtW Error 400");
+    GR_logger::log(this,"CtW Error 404");
     http_client->socket->close();
     ///////////////
 }
@@ -260,7 +260,6 @@ void GR_web_server::registaration_sys(){
         }else{
             http_client->socket->write(settings.create_json_from_arr(conf_var).toLocal8Bit());
         }
-
         GR_logger::log(this,"CtW GET Log");
     });
     reg_on("/sys/log",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
@@ -273,10 +272,14 @@ void GR_web_server::registaration_sys(){
     });
 
 
-    reg_on("/",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
-        http_client->socket->write("Main Page!");
-        GR_logger::log(this,"CtW Main Page");
-    });
+    //reg_on("/",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
+    //    http_client->socket->write("Main Page!");
+    //    //HTTP/1.1 301 Moved Permanently
+    //    //Location: http://www.example.org/
+    //    //Content-Type: text/html
+    //    //Content-Length: 174
+    //    GR_logger::log(this,"CtW Main Page");
+    //});
     reg_on("/favicon.ico",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
         http_client->socket->write("Nice try to get favicon.ico :)))");
         GR_logger::log(this,"CtW TTG favicon.ico");
