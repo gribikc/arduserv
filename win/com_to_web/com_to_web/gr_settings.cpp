@@ -1,48 +1,58 @@
 #include "gr_settings.h"
 
 GR_settings::GR_settings(){
-    QCoreApplication::setOrganizationName("Gribikc inc");
-    QCoreApplication::setOrganizationDomain("www.ru");
-    QCoreApplication::setApplicationName("COM TO WEB");
     settings=new QSettings();
-    /*settings->beginGroup("main");
-    QString margin = settings->value("htdocs_patch").toString();
-    settings->setValue("htdocs_patch", "test");
-    settings->endGroup();*/
 }
 
 const QVariant GR_settings::get_value(QString group_name,QString param_name){
-    /*if(group_name==""){
+    if(group_name==""){
         group_name="main";
-    }*/
-    //settings->beginGroup(group_name);
+    }
+    settings->beginGroup(group_name);
     QVariant val= settings->value(param_name);
-    //settings->endGroup();
+    settings->endGroup();
     return val;
 }
 
 void GR_settings::set_value(QString group_name,QString param_name,QVariant val){
-    /*if(group_name==""){
+    if(group_name==""){
         group_name="main";
-    }*/
-    //settings->beginGroup(group_name);
+    }
+    settings->beginGroup(group_name);
     settings->setValue(param_name, val);
-    //settings->endGroup();
+    settings->endGroup();
 }
 
-QStringList GR_settings::get_list(){
-    return settings->allKeys();
+QStringList GR_settings::get_list(QString group_name){
+    if(group_name==""){
+        group_name="main";
+    }
+    settings->beginGroup(group_name);
+    auto ret=settings->allKeys();
+    settings->endGroup();
+    return ret;
 }
 
-void GR_settings::save_settings(QMap<QString, QVariant> *conf_var){
+void GR_settings::save_settings(QString group_name,QMap<QString, QVariant> *conf_var){
+    if(group_name==""){
+        group_name="main";
+    }
+    settings->beginGroup(group_name);
+
     QStringList settings_list=conf_var->keys();
     for(int i=0;i<settings_list.size();i++){
         settings->setValue(settings_list.at(i),conf_var->value(settings_list.at(i)));
     }
     settings->setValue("_valid_settings_is_",1);
+
+    settings->endGroup();
 }
 
-int GR_settings::load_settings(QMap<QString, QVariant> *conf_var){
+int GR_settings::load_settings(QString group_name,QMap<QString, QVariant> *conf_var){
+    if(group_name==""){
+        group_name="main";
+    }
+    settings->beginGroup(group_name);
     if(settings->value("_valid_settings_is_").toInt()==1){
         conf_var->clear();
         QStringList settings_list=settings->allKeys();
@@ -51,8 +61,10 @@ int GR_settings::load_settings(QMap<QString, QVariant> *conf_var){
                 conf_var->insert(settings_list.at(i),settings->value(settings_list.at(i)));
             }
         }
+        settings->endGroup();
         return 1;
     }else {
+        settings->endGroup();
         return 0;
     }
 }
@@ -80,6 +92,13 @@ QMap<QString, QVariant> GR_settings::create_arr_from_json(QString in_data){
     return conf;
 }
 
-void GR_settings::clear_settings(){
+void GR_settings::clear_settings(QString group_name){
+    if(group_name==""){
+        group_name="main";
+    }
+    settings->beginGroup(group_name);
+
     settings->clear();
+
+    settings->endGroup();
 }

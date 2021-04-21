@@ -23,6 +23,10 @@
 int main(int argc, char *argv[])
 {
     qDebug() << "Main start;";
+    QCoreApplication::setOrganizationName("Gribikc inc");
+    QCoreApplication::setOrganizationDomain("www.ru");
+    QCoreApplication::setApplicationName("COM TO WEB");
+
     //if (argc <= 1) {
     //    QApplication a(argc, argv);
     //    MainWindow w;

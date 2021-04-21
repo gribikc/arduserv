@@ -19,7 +19,7 @@ void com_to_web::init(){
     emit info(0,"Start...\n");
 
     ///////
-        if(settings.load_settings(&conf_var)){
+        if(settings.load_settings("GR_web_server",&conf_var)){
             //!!!ui->textEdit->insertPlainText("Setting is valid...\n");
             emit info(0,"Setting is valid...\n");
         }else {
@@ -290,12 +290,12 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->send_html_header();
 
         if(http_client->is_rsw("/sys/settings/c")>0){
-            settings.clear_settings();
+            settings.clear_settings("GR_web_server");
             http_client->socket->write("Ok clear;");
         }else if(http_client->is_rsw("/sys/settings/w/j")>0){
             conf_var.clear();
             conf_var.operator=(settings.create_arr_from_json(http_client->indata));
-            settings.save_settings(&conf_var);
+            settings.save_settings("GR_web_server",&conf_var);
         }else if(http_client->is_rsw("/sys/settings/edit.html")==2){
             //Q_INIT_RESOURCE(resources);
             QFile file(":/settings_editor.html");

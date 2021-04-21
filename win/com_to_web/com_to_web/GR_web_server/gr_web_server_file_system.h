@@ -51,19 +51,18 @@
             QFileInfo fileInfo = list.at(i);
             //socket->write(fileInfo.size() );
             if( fileInfo.isDir() && fileInfo.fileName()!=".." && fileInfo.fileName()!="." ){
-                socket->socket->write(prefix_add.toLocal8Bit());
+                socket->socket->write(""+prefix_add.toLocal8Bit()+"");
 
                     //socket->write(fileInfo.absolutePath().toLocal8Bit());
-                    socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
+                    socket->socket->write(""+fileInfo.absolutePath().toLocal8Bit().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
                     socket->socket->write("/");
                         socket->socket->write(fileInfo.fileName().toLocal8Bit());
                     socket->socket->write("/");
 
                 socket->socket->write("\n<br>");
-                get_tree_file( dir.absoluteFilePath( fileInfo.fileName()),(prefix_add+"&nbsp;&nbsp;&nbsp;&nbsp;"),socket,base_dir);
+                get_tree_file( dir.absoluteFilePath( fileInfo.fileName()),(prefix_add+"|&nbsp;&nbsp;"),socket,base_dir);//&nbsp;&nbsp;&nbsp;&nbsp;
             }else if(fileInfo.isFile()){
-                socket->socket->write(prefix_add.toLocal8Bit());
-
+                socket->socket->write(""+prefix_add.toLocal8Bit()+"");
                 socket->socket->write("<a href='");
                 //socket->socket->write(fileInfo.absolutePath().toLocal8Bit().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));
                 socket->socket->write(fileInfo.absolutePath().toUtf8().replace(base_dir,"").replace(base_dir.replace("\\","/"),""));

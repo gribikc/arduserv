@@ -15,16 +15,12 @@ GR_web_server::~GR_web_server(){
 ///
 void GR_web_server::init(){
     //!!!ui->setupUi(this);
-
-    //!!!ui->textEdit->insertPlainText("Start...\n");
     emit info(0,"Start...\n");
-
     ///////
-        if(settings.load_settings(&conf_var)){
-            //!!!ui->textEdit->insertPlainText("Setting is valid...\n");
+        //auto a=settings.get_list("GR_web_server");//!!! HZ CZ
+        if(settings.load_settings("GR_web_server",&conf_var)){
             emit info(0,"Setting is valid...\n");
         }else {
-            //!!!ui->textEdit->insertPlainText("Setting is Invalid...Load Default!\n");
             emit info(0,"Setting is Invalid...Load Default!\n");
             conf_var["tcp_listen_port"]=3128;
             conf_var["wbs_listen_port"]=3129;
@@ -45,46 +41,35 @@ void GR_web_server::init(){
                 for(int i=0;i<sdcommonPaths.count();i++){
                     dir.setPath(sdcommonPaths.at(i));
                     if (!dir.exists()){continue;}else{//SD find.
-                        //!!!ui->textEdit->insertPlainText("Find SD:");
-                        //!!!ui->textEdit->insertPlainText(sdcommonPaths.at(i));
-                        //!!!ui->textEdit->insertPlainText("\n");
                         emit info(0,"Find SD:");
                         emit info(0,sdcommonPaths.at(i));
                         emit info(0,"\n");
                         if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web")){
                             dir.mkdir("com_to_web");
-                            //!!!ui->textEdit->insertPlainText("Create com_to_web/\n");
                             emit info(0,"Create com_to_web/\n");
                         }else{
-                            //!!!ui->textEdit->insertPlainText("Find com_to_web/\n");
                             emit info(0,"Find com_to_web/\n");
                         }
                         dir.setPath(sdcommonPaths[i]+"/com_to_web");
                         if(!dir.exists()){continue;}else{
                             if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs")){
-                                //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs\n");
                                 emit info(0,"Create com_to_web/htdocs\n");
                                 dir.mkdir("htdocs");
                             }else {
-                                //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs\n");
                                 emit info(0,"Find com_to_web/htdocs\n");
                             }
                             dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs");
                             if(!dir.exists()){continue;}else{
                                 if(!dir.exists(sdcommonPaths.at(i)+"/com_to_web/htdocs/db")){
-                                    //!!!ui->textEdit->insertPlainText("Create com_to_web/htdocs/db\n");
                                     emit info(0,"Create com_to_web/htdocs/db\n");
                                     dir.mkdir("db");
                                 }else{
-                                    //!!!ui->textEdit->insertPlainText("Find com_to_web/htdocs/db\n");
                                     emit info(0,"Find com_to_web/htdocs/db\n");
                                 }
                                 dir.setPath(sdcommonPaths[i]+"/com_to_web/htdocs/db");
                                 if(!dir.exists()){continue;}else{
-                                    //!!!ui->textEdit->insertPlainText("Find SD, htdocs and db");
-                                    //!!!ui->textEdit->insertPlainText("\n");
                                     emit info(0,"Find SD, htdocs and db\n");
-                                    conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web/htdocs";
+                                    conf_var["htdocs_patch"]=sdcommonPaths[i]+"/com_to_web";
                                     break;
                                 }
                             }
@@ -92,10 +77,10 @@ void GR_web_server::init(){
                     }
                 }
             }else{
-                conf_var["htdocs_patch"]=dir.currentPath()+"/htdocs/";//conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";
-                emit info(0,"Dir patch error;\n");
-                emit info(0,conf_var["htdocs_patch"].toString());
-                emit info(0,"\n |- ");
+                conf_var["htdocs_patch"]=dir.currentPath();//conf_var["htdocs_patch"]="/storage/emulated/0/com_to_web";///htdocs/
+                //emit info(0,"Dir patch error;\n");
+                //emit info(0,conf_var["htdocs_patch"].toString());
+                //emit info(0,"\n |- ");
             }
         }
     /////
@@ -120,17 +105,10 @@ void GR_web_server::gr_sock_srv_start(){
 
     if(server->isListening()){
         qDebug() << "Server is open";
-        //!!!ui->textEdit->insertPlainText("Socket start PORT: ");
-        //!!!ui->textEdit->insertPlainText(conf_var["tcp_listen_port"].toString());
-        //!!!ui->textEdit->insertPlainText("\n");
         emit info(0,"HttpSocket start Port: ");
         emit info(0,conf_var["tcp_listen_port"].toString());
         emit info(0,"\n");
 
-
-        //!!!ui->textEdit->insertPlainText("HTDocsPatch: ");
-        //!!!ui->textEdit->insertPlainText(conf_var["htdocs_patch"].toString());
-        //!!!ui->textEdit->insertPlainText("\n |- ");
         emit info(0,"HTDocsPatch: ");
         emit info(0,conf_var["htdocs_patch"].toString());
         emit info(0,"\n |- ");
@@ -139,26 +117,18 @@ void GR_web_server::gr_sock_srv_start(){
         if (!dir.exists()){
             QDir dir(conf_var["htdocs_patch"].toString());
             if (!dir.exists()){
-                //!!!ui->textEdit->insertPlainText("Invalid");
                 emit info(0,"Invalid");
             }else{
-                //!!!ui->textEdit->insertPlainText("Need to Create htdocs dir in patch");
                 emit info(0,"Need to Create htdocs dir in patch");
             }
         }else{
-            //!!!ui->textEdit->insertPlainText("Valid");
             emit info(0,"Valid");
         }
-        //!!!ui->textEdit->insertPlainText("\n");
         emit info(0,"\n");
 
-        //!!!ui->textEdit->insertPlainText("IP:\n");
         emit info(0,"IP:\n");
         QList<QHostAddress> addr = QNetworkInterface::allAddresses();
         for(int i=0;i<addr.size();i++){
-            //!!!ui->textcEdit->insertPlainText(" |- ");
-            //!!!ui->textEdit->insertPlainText(addr.at(i).toString());
-            //!!!ui->textEdit->insertPlainText("\n");
             emit info(0," |- ");
             emit info(0,addr.at(i).toString());
             emit info(0,"\n");
@@ -167,7 +137,6 @@ void GR_web_server::gr_sock_srv_start(){
         server->setMaxPendingConnections(9999);
         connect(server, &QTcpServer::newConnection, this, &GR_web_server::incommingConnection);
     }else {
-        //!!!ui->textEdit->insertPlainText("Socket not Start :(\n");
         emit info(0,"Socket not Start :(\n");
     }
 }
@@ -269,28 +238,19 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
 ////////////////////////////////////////////////////////////////////////////
 ///
 void GR_web_server::registaration_sys(){
-    reg_on("/reg_on",StartsWith,SingleShot,HTMLHeader,[](GR_http_client *http_client){
-        http_client->socket->write("reg_on");
-        qDebug() << "reg_on";
-    });
-
     reg_on("/sys/tree",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
         QDir dir;
-        //if(QSysInfo::productType()=="android"){
-            get_tree_file(conf_var["htdocs_patch"].toString()+"\\htdocs","",http_client,conf_var["htdocs_patch"].toString());//android_htdocs_patch+"/htdocs/"
-        //}else{
-        //    get_tree_file(dir.currentPath()+"/htdocs/","",http_client,dir.currentPath());
-        //}
+        get_tree_file(conf_var["htdocs_patch"].toString()+"\\htdocs","",http_client,conf_var["htdocs_patch"].toString());
         GR_logger::log(this,"CtW Htdocs Tree");
     });
     reg_on("/sys/settings",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
         if(http_client->is_rsw("/sys/settings/c")>0){
-            settings.clear_settings();
+            settings.clear_settings("GR_web_server");
             http_client->socket->write("Ok clear;");
         }else if(http_client->is_rsw("/sys/settings/w/j")>0){
             conf_var.clear();
             conf_var.operator=(settings.create_arr_from_json(http_client->indata));
-            settings.save_settings(&conf_var);
+            settings.save_settings("GR_web_server",&conf_var);
         }else if(http_client->is_rsw("/sys/settings/edit.html")==2){
             //Q_INIT_RESOURCE(resources);
             QFile file(":/settings_editor.html");
@@ -339,28 +299,5 @@ void GR_web_server::registaration_sys(){
         htdocs_db_write_do(http_client);
         GR_logger::log(this,"CtW DB Write");
     });
-
-
-    // store a lambda
-    /*std::function<void(int i)> f_display_42 = [](int i) { i++; };
-    std::function<void(int i)> f_display_43 = [&](int i) { i++; };
-
-
-    std::function<void(int i)> a=[](int i){
-            i++;
-        };
-    std::function<void(int i)> b=[&](int i){
-        i++;
-    };
-
-    //void (*d)(int i);
-    std::function<void(int i)> d;
-    d=a;
-    d=b;
-    d(1);
-    //d=
-    std::function<void(int i)> F([](int i){ i++; });*/
-
-
 }
 
