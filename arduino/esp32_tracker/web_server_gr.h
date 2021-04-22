@@ -137,6 +137,7 @@ void Web_server_gr::handleFileList() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
   void Web_server_gr::write_db() {
+    DBG_OUTPUT_PORT.println("================================================");
     DBG_OUTPUT_PORT.println("Write DB.");
     if(server->hasArg("plain") && server->hasArg("file")){
       String file_name="/"+server->arg("file");
@@ -144,7 +145,7 @@ void Web_server_gr::handleFileList() {
       DBG_OUTPUT_PORT.println("File:"+file_name);
       //DBG_OUTPUT_PORT.println(data);
       if (exists(file_name)) {
-        DBG_OUTPUT_PORT.println("File est.");
+        DBG_OUTPUT_PORT.println("File exists");
       }
     	File file = FILESYSTEM.open(file_name, "w");
       if (file) {
