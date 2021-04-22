@@ -40,7 +40,7 @@ void setup() {
   //init_web_server_gr();
   //Web_server_gr web_server;
   web_server.init();
-  web_server.server->on("/status", HTTP_GET, [web_server]() {
+  web_server.server->on("/status", HTTP_GET, [&web_server]() {
 		String json = "{";
 			json += "\"Time_h\":";		json += gnss_cordinate_valid.Time_h;				json += ",";
 			json += "\"Time_m\":";		json += gnss_cordinate_valid.Time_m;				json += ",";
