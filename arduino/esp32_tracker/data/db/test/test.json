@@ -1,0 +1,50 @@
+[
+	{
+		"type": "filelllll",
+		"name": "arduserv_js_lib.js"
+	},
+	{
+		"type": "file",
+		"name": "esp32_tracker_js_xhr_lib.js"
+	},
+	{
+		"type": "file",
+		"name": "esp32_tracker_lib_gribikc.js"
+	},
+	{
+		"type": "file",
+		"name": "favicon.ico"
+	},
+	{
+		"type": "file",
+		"name": "icons8-double-left-50.png"
+	},
+	{
+		"type": "file",
+		"name": "icons8-double-right-50.png"
+	},
+	{
+		"type": "file",
+		"name": "icons8-menu-50.png"
+	},
+	{
+		"type": "file",
+		"name": "icons8-settings-50.png"
+	},
+	{
+		"type": "file",
+		"name": "index.htm"
+	},
+	{
+		"type": "file",
+		"name": "tipo_proga_css_lib.css"
+	},
+	{
+		"type": "file",
+		"name": "tipo_proga_js_lib_gr.js"
+	},
+	{
+		"type": "file22222",
+		"name": "yandex_map_gr.js"
+	}
+]

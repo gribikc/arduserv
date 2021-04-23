@@ -4,6 +4,7 @@
 #include <WebServer.h>
 #include <SPIFFS.h>
 
+
  #ifdef __cplusplus
   extern "C" {
  #endif
@@ -32,6 +33,9 @@ class Web_server_gr{
 		void write_db();
 		String formatBytes(size_t bytes);
 
+		int params();
+		String param(int k);
+
 		Web_server_gr();
 		void init();
 		void do_web();
@@ -40,6 +44,51 @@ class Web_server_gr{
 	private:	
 	protected:
 };
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+	int Web_server_gr::params(){
+		String url=server->uri();
+		int url_len=url.length();
+		int k=0;
+		for(int i=0;i<url_len;i++){
+			if(url[i]=='/'){
+			  k++;
+			}
+		}
+		return k;
+	}
+	String Web_server_gr::param(int k){
+		String url=server->uri();
+		int url_len=url.length();
+		String str="";
+		int cnt=0;
+		for(int i=1;i<url_len;i++){
+			if(url[i]=='/'){
+				if(cnt==k){
+					return str;
+				}
+				str="";
+				cnt++;
+			}else{
+				str+=url[i];
+			}
+		}
+		return str;
+	}
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+String Web_server_gr::formatBytes(size_t bytes) {
+  if (bytes < 1024) {
+    return String(bytes) + "B";
+  } else if (bytes < (1024 * 1024)) {
+    return String(bytes / 1024.0) + "KB";
+  } else if (bytes < (1024 * 1024 * 1024)) {
+    return String(bytes / 1024.0 / 1024.0) + "MB";
+  } else {
+    return String(bytes / 1024.0 / 1024.0 / 1024.0) + "GB";
+  }
+}
+///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 String Web_server_gr::getContentType(String filename) {
   if (server->hasArg("download")) {
@@ -139,9 +188,12 @@ void Web_server_gr::handleFileList() {
   void Web_server_gr::write_db() {
     DBG_OUTPUT_PORT.println("================================================");
     DBG_OUTPUT_PORT.println("Write DB.");
-    if(server->hasArg("plain") && server->hasArg("file")){
-      String file_name="/"+server->arg("file");
+    //if(server->hasArg("plain") && server->hasArg("file")){
+	if(server->hasArg("plain") && params()>=4 && (server->method() == HTTP_POST)){
+      //String file_name="/"+server->arg("file");
+      String file_name="/db/"+param(2)+"/"+param(3);
       String data=server->arg("plain");
+	  
       DBG_OUTPUT_PORT.println("File:"+file_name);
       //DBG_OUTPUT_PORT.println(data);
       if (exists(file_name)) {
@@ -165,24 +217,7 @@ void Web_server_gr::handleFileList() {
     }
   }
 /////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-String Web_server_gr::formatBytes(size_t bytes) {
-  if (bytes < 1024) {
-    return String(bytes) + "B";
-  } else if (bytes < (1024 * 1024)) {
-    return String(bytes / 1024.0) + "KB";
-  } else if (bytes < (1024 * 1024 * 1024)) {
-    return String(bytes / 1024.0 / 1024.0) + "MB";
-  } else {
-    return String(bytes / 1024.0 / 1024.0 / 1024.0) + "GB";
-  }
-}
 ///////////////////////////////
-Web_server_gr::Web_server_gr(){
-	server=new WebServer(80);
-}
-
 void Web_server_gr::init(){
 	FILESYSTEM.begin();
 	{
@@ -197,58 +232,64 @@ void Web_server_gr::init(){
 		DBG_OUTPUT_PORT.printf("\n");
 	}
 	server->enableCORS(1);
-  
-	server->onNotFound([this]() {
+
 
   
-		if (!handleFileRead(server->uri())) {
-			server->send(404, "text/plain", "FileNotFound");   
-      
-        int a;
-        String str;
-        DBG_OUTPUT_PORT.println("Arg num:"+server->args());
-        for(int k=0;k<server->args();k++){
-          DBG_OUTPUT_PORT.println(server->arg(i));
-        }
-        DBG_OUTPUT_PORT.println("---0");
-        String message = "";
-        message += "URI: ";
-        message += server->uri();
-        message += "\nMethod: ";
-        message += (server->method() == HTTP_GET) ? "GET" : "POST";
-        message += "\nArguments: ";
-        message += server->args();
-        message += "\n";
-        DBG_OUTPUT_PORT.println(message);
-        message="";
-        DBG_OUTPUT_PORT.println("---1");
-        for (uint8_t i = 0; i < server->args(); i++) {
-          message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
-        }
-          DBG_OUTPUT_PORT.println("---2");
-        DBG_OUTPUT_PORT.println(message);
-        for (uint8_t i = 0; i < server->headers(); i++) {
-          DBG_OUTPUT_PORT.println(server->header(i)+"\n");
-        }
-        DBG_OUTPUT_PORT.println("---3");
-        //DBG_OUTPUT_PORT.println(server->pathArg(0)+"\n");
-        //DBG_OUTPUT_PORT.println(server->pathArg(1)+"\n");
-        //DBG_OUTPUT_PORT.println(server->pathArg(2)+"\n");
-        DBG_OUTPUT_PORT.println("---4");
+	server->onNotFound([this]() {
+		if (handleFileRead(server->uri())) {
+			return;
 		}
+		
+		String url=server->uri();
+		if(url.startsWith("/db/w")){
+			write_db();
+		}
+
+		server->send(404, "text/plain", "FileNotFound");   
+
+		DBG_OUTPUT_PORT.println("------------------------------------------------------");
+		DBG_OUTPUT_PORT.print("Params:");
+		DBG_OUTPUT_PORT.println(params());
+		for(int k=0;k<params();k++){
+		  DBG_OUTPUT_PORT.println(param(k));
+		}
+		DBG_OUTPUT_PORT.println("---0");
+
+		DBG_OUTPUT_PORT.println("---1");
+		String message = "";
+		message += "URI: ";
+		message += server->uri();
+		message += "\nMethod: ";
+		message += (server->method() == HTTP_GET) ? "GET" : "POST";
+		message += "\nArguments: ";
+		message += server->args();
+		message += "\n";
+		DBG_OUTPUT_PORT.println(message);
+		message="";
+		DBG_OUTPUT_PORT.println("---2");
+		for (uint8_t i = 0; i < server->args(); i++) {
+		  message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
+		}
+		DBG_OUTPUT_PORT.println("---3");
+		DBG_OUTPUT_PORT.println(message);
+		for (uint8_t i = 0; i < server->headers(); i++) {
+		  DBG_OUTPUT_PORT.println(server->header(i)+"\n");
+		}
+		DBG_OUTPUT_PORT.println("---4");
 	});
  
 	server->on("/test", HTTP_GET, [this]() {
 		String json = "TEST:OK;";
 		server->send(200, "text/json", json);
-
 	});
+ 
 	server->on("/list", HTTP_GET, [this]() {
 		handleFileList();
 	});
-	server->on("/db/w/",HTTP_POST,[&]() {
-		write_db();
-	});
+ 
+	//server->on("/db/w/",HTTP_POST,[&]() {
+	//	write_db();
+	//});
   
 	server->on("/help", HTTP_GET, [this]() {
 		String 	json  = "Hello world!!!;\n";
@@ -259,14 +300,16 @@ void Web_server_gr::init(){
 		server->send(200, "text/plain", json);
 	});
 
- 
-
-        //server->pathArg()
-
 	server->begin();
 	DBG_OUTPUT_PORT.println("HTTP server started");
 }
-/////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+Web_server_gr::Web_server_gr(){
+	server=new WebServer(80);
+}
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 void Web_server_gr::do_web(){
 	server->handleClient();
 }
