@@ -1276,11 +1276,29 @@ function bubble_sort(arr){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//те самые функйии!!!
-	function create_tree_form_from_array_gr(name,arr,inner){
+//те самые функйии!!!;)
+	function create_tree_form_from_array_gr_add(){
+		let el = document.activeElement.parentElement.nextElementSibling;//при наличии элеметов передаем указатель на UL и добавляем LI
+		let a={0:""};
+		//let a=[""];
+		if(el==null){//при отсутствие элеметов передаем указатель на LI и в нем создадим UL?
+			el = document.activeElement.parentElement.parentElement;
+		}
+		console.log(el);
+		create_tree_form_from_array_gr(a,el);
+	}
+	function create_tree_form_from_array_gr_del(){
+		var el = document.activeElement.parentElement.parentElement;
+		el.remove();
+	}
+	function create_tree_form_from_array_gr(arr,inner){
 		var i=0;
-		var ul=document.createElement("ul");
-		inner.appendChild(ul);
+		if(inner.tagName=='UL'){//Проверка для добавления элементов create_tree_form_from_array_gr_add
+			ul=inner;
+		}else{
+			var ul=document.createElement("ul");
+			inner.appendChild(ul);
+		}
 
 		for(var key in arr) {
 			var li = document.createElement("li");
@@ -1295,13 +1313,20 @@ function bubble_sort(arr){
 					div_c.appendChild(input_v);
 						input_v.name='value';
 						input_v.value=arr[key];
-				var div_r = document.createElement("div");
-				//li.appendChild(div_r);
-				//	div_r.innerHTML+="ADE";
+			//STAFF
+			var del_a = document.createElement("a");
+			del_a.innerText="DEL";
+			del_a.href='javascript:create_tree_form_from_array_gr_del()';
+			div_c.appendChild(del_a);
+
+			var add_a = document.createElement("a");
+			add_a.innerText="ADD";
+			add_a.href="javascript:create_tree_form_from_array_gr_add()";
+			div_c.appendChild(add_a);
 
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				div_c.removeChild(input_v);
-				create_tree_form_from_array_gr(key,arr[key],li);
+				create_tree_form_from_array_gr(arr[key],li);
 			}
 		}
 	}
@@ -1345,6 +1370,8 @@ function bubble_sort(arr){
 					}
 					i++;
 				}
+			}else if(inner.children[i].tagName=='A'){
+				//
 			}else{
 				console.log('Error:',inner.children[i].tagName);
 			}

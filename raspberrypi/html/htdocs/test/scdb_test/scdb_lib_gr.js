@@ -16,7 +16,7 @@
 
 			var arr=new Object();//Object//Array//
 
-			create_tree_form_from_array_gr("conf",stream,div_p);
+			create_tree_form_from_array_gr(stream,div_p);
 
 			arr=create_array_from_form_gr(div_p);
 
@@ -38,6 +38,7 @@
 			var arr=new Object();//Object//Array//
 			var div_p = document.getElementById(this.div);
 			arr=create_array_from_form_gr(div_p);
+			//console.log(JSON.stringify(Object.assign({},arr)));
 			return arr;
 		}
 		/////////

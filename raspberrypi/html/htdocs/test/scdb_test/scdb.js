@@ -3,7 +3,7 @@ let xhrsc=[];
 let db=new Object();
 let scdb=new Object();
 
-function sava_db(){
+function parse_and_sava_db(){
 	db.save({arr:scdb.parser_form()});
 }
 function load_db(mode){
