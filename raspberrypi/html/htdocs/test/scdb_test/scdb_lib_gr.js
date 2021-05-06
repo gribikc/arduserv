@@ -13,6 +13,11 @@
 		create_form(stream){
 			var div_p = document.getElementById(this.div);
 			div_p.innerHTML="";
+			var add_a = document.createElement("a");
+			add_a.innerText="ADD";
+			add_a.href="javascript:create_tree_form_from_array_gr_add(1)";
+			div_p.appendChild(add_a);
+
 
 			var arr=new Object();//Object//Array//
 

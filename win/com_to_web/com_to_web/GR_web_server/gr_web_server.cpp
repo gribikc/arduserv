@@ -24,6 +24,7 @@ void GR_web_server::init(){
             emit info(0,"Setting is Invalid...Load Default!\n");
             conf_var["tcp_listen_port"]=3128;
             conf_var["wbs_listen_port"]=3129;
+            conf_var["save_db_change"]=0;
 
             QDir dir;
             if(QSysInfo::productType()=="android"){

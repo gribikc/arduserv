@@ -15,15 +15,21 @@ function load_db(mode){
 			db.load();
 		},
 		on_load:function(data){
-			(mode=="edit") ? scdb.create_form(data) : scdb.create_view_tree(data);
+			(mode=="edit" || mode=="create") ? scdb.create_form(data) : scdb.create_view_tree(data);
 		},
 		on_error:function(data){
 			scdb.error(data);
 		}
 	});
-	db.load();
+	if(mode!="create"){
+		db.load();
+	}
 }
 
+function create_db(){
+	scdb.create_form({0:""});
+	load_db("create");
+}
 
 function main_init(){
 	if(wpp_gr.url_get_params["db"]){

@@ -1277,14 +1277,17 @@ function bubble_sort(arr){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //те самые функйии!!!;)
-	function create_tree_form_from_array_gr_add(){
-		let el = document.activeElement.parentElement.nextElementSibling;//при наличии элеметов передаем указатель на UL и добавляем LI
+	function create_tree_form_from_array_gr_add(mode=0){
+		let el = (mode==0)?	document.activeElement.parentElement.nextElementSibling:
+							document.activeElement.nextElementSibling;//при наличии элеметов передаем указатель на UL и добавляем LI
 		let a={0:""};
 		//let a=[""];
 		if(el==null){//при отсутствие элеметов передаем указатель на LI и в нем создадим UL?
-			el = document.activeElement.parentElement.parentElement;
+			el =  (mode==0)?document.activeElement.parentElement.parentElement:
+							document.activeElement.parentElement;//!!!
+			console.log("A");
 		}
-		console.log(el);
+		//console.log(el);
 		create_tree_form_from_array_gr(a,el);
 	}
 	function create_tree_form_from_array_gr_del(){
@@ -1314,15 +1317,15 @@ function bubble_sort(arr){
 						input_v.name='value';
 						input_v.value=arr[key];
 			//STAFF
-			var del_a = document.createElement("a");
-			del_a.innerText="DEL";
-			del_a.href='javascript:create_tree_form_from_array_gr_del()';
-			div_c.appendChild(del_a);
+				var del_a = document.createElement("a");
+				del_a.innerText="DEL";
+				del_a.href='javascript:create_tree_form_from_array_gr_del()';
+				div_c.appendChild(del_a);
 
-			var add_a = document.createElement("a");
-			add_a.innerText="ADD";
-			add_a.href="javascript:create_tree_form_from_array_gr_add()";
-			div_c.appendChild(add_a);
+				var add_a = document.createElement("a");
+				add_a.innerText="ADD";
+				add_a.href="javascript:create_tree_form_from_array_gr_add()";
+				div_c.appendChild(add_a);
 
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				div_c.removeChild(input_v);
@@ -1355,7 +1358,7 @@ function bubble_sort(arr){
 			}else if(inner.children[i].tagName=='DIV'){
 				arr=create_array_from_form_gr(inner.children[i]);
 			}else if(inner.children[i].tagName=='INPUT'){
-				if(inner.children[i].name=='name' && i==(inner.childElementCount-1)){
+				if(inner.children[i].name=='name' && (i==(inner.childElementCount-1) || inner.children[i+1].tagName!='INPUT') ){
 					arr[inner.children[i].value]=inner.children[i].name;
 				}else{
 					var value=inner.children[i+1].value;

@@ -118,9 +118,15 @@ void GR_web_server::htdocs_db_write_do(GR_http_client *socket){
     QFile file_req(file_str);
     file_req.setPermissions(file_str,QFileDevice::WriteOther);
     //Если такойфайлужеесть сохраняем копию
+    if(conf_var["save_db_change"]==1){
         file_req.setFileName(file_str);
         QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
         file_req.rename(nfn);
+    }else{
+        file_req.setFileName(file_str);
+        QString nfn=file_str+"_"+QDateTime::currentDateTime().toString("ddMMyyyyHHmmss");//QTime::currentTime().toString() ;
+        file_req.remove();
+    }
     //Сохраняем данные в фал
         //file_req.open(QIODevice::ReadOnly);
         //socket->write(file_req.readAll());
