@@ -168,17 +168,19 @@ void Web_server_gr::handleFileList() {
       File file = root.openNextFile();
       while(file){
           if (output != "[") {
-            output += ',';
+            output += ", \n ";
+          }else{
+            output += "\n ";            
           }
           output += "{\"type\":\"";
           output += (file.isDirectory()) ? "dir" : "file";
           output += "\",\"name\":\"";
           output += String(file.name()).substring(1);
-          output += "\"}\n";
+          output += "\"}";
           file = root.openNextFile();
       }
   }
-  output += "]";
+  output += "\n]";
   //server->send(204);
   server->send(200, "text/json", output);
 }
@@ -243,39 +245,41 @@ void Web_server_gr::init(){
 		String url=server->uri();
 		if(url.startsWith("/db/w")){
 			write_db();
+      return;
 		}
 
-		server->send(404, "text/plain", "FileNotFound");   
+		server->send(404, "text/plain", "FileNotFound");
+      //dbg
+      DBG_OUTPUT_PORT.println("------------------------------------------------------");
+      DBG_OUTPUT_PORT.print("Params:");
+      DBG_OUTPUT_PORT.println(params());
+      for(int k=0;k<params();k++){
+        DBG_OUTPUT_PORT.println(param(k));
+      }
+      DBG_OUTPUT_PORT.println("---0");
 
-		DBG_OUTPUT_PORT.println("------------------------------------------------------");
-		DBG_OUTPUT_PORT.print("Params:");
-		DBG_OUTPUT_PORT.println(params());
-		for(int k=0;k<params();k++){
-		  DBG_OUTPUT_PORT.println(param(k));
-		}
-		DBG_OUTPUT_PORT.println("---0");
-
-		DBG_OUTPUT_PORT.println("---1");
-		String message = "";
-		message += "URI: ";
-		message += server->uri();
-		message += "\nMethod: ";
-		message += (server->method() == HTTP_GET) ? "GET" : "POST";
-		message += "\nArguments: ";
-		message += server->args();
-		message += "\n";
-		DBG_OUTPUT_PORT.println(message);
-		message="";
-		DBG_OUTPUT_PORT.println("---2");
-		for (uint8_t i = 0; i < server->args(); i++) {
-		  message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
-		}
-		DBG_OUTPUT_PORT.println("---3");
-		DBG_OUTPUT_PORT.println(message);
-		for (uint8_t i = 0; i < server->headers(); i++) {
-		  DBG_OUTPUT_PORT.println(server->header(i)+"\n");
-		}
-		DBG_OUTPUT_PORT.println("---4");
+      DBG_OUTPUT_PORT.println("---1");
+      String message = "";
+      message += "URI: ";
+      message += server->uri();
+      message += "\nMethod: ";
+      message += (server->method() == HTTP_GET) ? "GET" : "POST";
+      message += "\nArguments: ";
+      message += server->args();
+      message += "\n";
+      DBG_OUTPUT_PORT.println(message);
+      message="";
+      DBG_OUTPUT_PORT.println("---2");
+      for (uint8_t i = 0; i < server->args(); i++) {
+        message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
+      }
+      DBG_OUTPUT_PORT.println("---3");
+      DBG_OUTPUT_PORT.println(message);
+      for (uint8_t i = 0; i < server->headers(); i++) {
+        DBG_OUTPUT_PORT.println(server->header(i)+"\n");
+      }
+      DBG_OUTPUT_PORT.println("---4");
+      //dbg
 	});
  
 	server->on("/test", HTTP_GET, [this]() {
@@ -292,12 +296,13 @@ void Web_server_gr::init(){
 	//});
   
 	server->on("/help", HTTP_GET, [this]() {
-		String 	json  = "Hello world!!!;\n";
-				json += "/list?dir=/: File List\n";
-				json += "/neme.exp: Get File\n";
+		String 	json  = "<html><head></head><body>Hello world!!!;<br>\n";
+				json += "<a href=\"/list?dir=/\">/list?dir=/: File List</a><br>\n";
+				json += "/neme.exp: Get File<br>\n";
 				json +="Temperature: ";
 				json += ((temprature_sens_read() - 32) / 1.8);
-		server->send(200, "text/plain", json);
+        json += "\n</body></html>";
+		server->send(200, "text/html", json);
 	});
 
 	server->begin();

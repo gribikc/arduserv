@@ -85,7 +85,7 @@
 					console.log(arr);
 					
 					var xmlhttprq_test = new XMLHttpRequest();
-                                        xmlhttprq_test.open('POST', 'http://192.168.5.168/db/w/test/test.json', true);//, true
+                                        xmlhttprq_test.open('POST', '/db/w/test/test.json', true);//, true
 					xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 					//xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 					//xmlhttprq_test.setRequestHeader('Content-Type', 'multipart/form-data');
@@ -300,7 +300,7 @@
 					}
 				}
 			//////////////////////////////////////////////////////////////////
-                        loadXMLDoc("http://192.168.5.168/db/test/test.json");
+                        loadXMLDoc("/db/test/test.json");
 		}
 	</script>
 </head>
