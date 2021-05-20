@@ -1439,11 +1439,14 @@ if (!Array.isAssociativeArray) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	let wpp_gr=new Object();
-	wpp_gr.web_server_def="http://127.0.0.1:3128";
-	wpp_gr.data_server_def="http://127.0.0.1:3129";
-	wpp_gr.db_server_def="http://127.0.0.1:3128";
+	//тут жобавить иф для локальных файлов//
+	wpp_gr.web_server_def="";//http://127.0.0.1:3128
+	wpp_gr.data_server_def="";//http://127.0.0.1:3129
+	wpp_gr.db_server_def="";//http://127.0.0.1:3128
+	
 	wpp_gr.db_read_prefix="/htdocs/db/";
 	wpp_gr.db_write_prefix="/db/w/";
+	
 	wpp_gr.url_get_params = window.location.search.replace('?','').split('&').reduce(
         function(p,e){
             var a = e.split('=');
