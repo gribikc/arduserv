@@ -82,15 +82,15 @@ int main(int argc, char *argv[])
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////
-        //!!!com_to_web ctw;
-        //!!!QObject::connect(&ctw,&com_to_web::info,&w,&MainWindow::write_text);
-        //!!!ctw.init();
+        com_to_web ctw;
+        QObject::connect(&ctw,&com_to_web::info,&w,&MainWindow::write_text);
+        ctw.init();
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////
-        GR_web_server gws;
-        QObject::connect(&gws,&GR_web_server::info,&w,&MainWindow::write_text);
-        gws.init();
+        //GR_web_server gws;
+        //QObject::connect(&gws,&GR_web_server::info,&w,&MainWindow::write_text);
+        //gws.init();
     ////////////////////////////
     ////////////////////////////
     ////////////////////////////

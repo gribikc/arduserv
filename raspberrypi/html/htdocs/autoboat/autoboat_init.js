@@ -66,18 +66,18 @@ function main_init(){
 	//_HUB
 	//STREAM
 		//arduino_uart
-			/*bap_uart_stream_param={
-				url   : "http://127.0.0.1:3128/dev/com/r/5/115200/",//config['dev_url'],
+			bap_uart_stream_param={
+				url   : "http://192.168.0.242/status",//config['dev_url'],
 				url_w : config['dev_url_w'],
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"BAP:",
 				//parser: autoboat,//new raw_parser_gr(message_hub),
-				parser: new raw_parser_gr(autoboat,message),
+				parser: new nt_raw_parser_gr(autoboat,{collected:0,db_matrix:message}),
 				
-				flush_en:true,
+				flush_en:false,
 				auto_start:true,
 				
-				status_en:true,
+				status_en:false,
 				status_timer:1000,
 				status_div:"xhr_status_div",
 				status_div_status_css:"xmlhttprq_stream_gr_status",
@@ -85,17 +85,19 @@ function main_init(){
 				
 				reload_en:true,
 				reload_time:1000
-			};*/
-			//new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			};
+			new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
+			
+			
 			terminal_stream_param={
-				url			: "ws://127.0.0.1:3129/dev/com/r/5/115200",//"ws://127.0.0.1:3129/sys/gen/",
+				url			: "ws://127.0.0.1:3129/dev/com/r/3/115200",//"ws://127.0.0.1:3129/sys/gen/",
 				parser	:	new nt_raw_parser_gr(autoboat,{collected:1,db_matrix:message}),// //new nt_json_gr(serial_list,{collected:0}),
 				auto_start:true,
 				reload_en:true,
 				reload_time:1000
 			}
 		
-			var socket=new web_sock_stream_gr(terminal_stream_param);
+			//var socket=new web_sock_stream_gr(terminal_stream_param);
 		
 			//_arduino_uart
 		//CONFIG READ
