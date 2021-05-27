@@ -21,6 +21,7 @@ public:
     QString type_cnt(int size);
     void readyread();
     QString type_nmea(int size);
+    QByteArray type_bin(int size);
 private slots:
     void timer_event();
 protected:

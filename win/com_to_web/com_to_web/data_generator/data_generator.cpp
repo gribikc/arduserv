@@ -1,4 +1,5 @@
 #include "data_generator.h"
+#include "data_generator.h"
 
 data_generator::data_generator(GR_http_client *partner) : QObject(nullptr){
     //sys/gen/timer_ms/type/size
@@ -32,14 +33,20 @@ void data_generator::readyread(){
 
 void data_generator::timer_event(){
     QString text;
+    QByteArray data;
     if(traffic_type=="cnt"){
         text=type_cnt(traffic_size);
+        partner->socket->write(&text);
+    }else if(traffic_type=="bin"){
+        data=type_bin(traffic_size);
+        partner->socket->write(data);
     }else if(traffic_type=="nmea"){
         text=type_nmea(traffic_size);
+        partner->socket->write(&text);
     }else{
         text=type_none(traffic_size);
+        partner->socket->write(&text);
     }
-    partner->socket->write(&text);
     cnt++;
 }
 
@@ -55,6 +62,10 @@ QString data_generator::type_cnt(int size){
         text+=QString::number(i);
     }
     return text;
+}
+QByteArray data_generator::type_bin(int size){
+    QByteArray data= QByteArray::fromHex("0102040810204080");
+    return data;
 }
 
 QString data_generator::type_nmea(int size){
