@@ -112,7 +112,7 @@ function main_init(){
 					console.log(data);
 				}
 			});
-			db_config.load();
+			//db_config.load();
 			//_CONFIG READ
 		//routing_sets
 			db_routing_sets=new db_query_gr({db_name:"autoboat",table_name:"routing_sets",
@@ -126,7 +126,7 @@ function main_init(){
 					console.log(data);
 				}
 			});
-			db_routing_sets.load();
+			//db_routing_sets.load();
 			//_routing_sets
 	//_STREAM
 	//PAPER JS
