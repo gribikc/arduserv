@@ -52,11 +52,15 @@ function terminal_open(){
 		parser	:	terminal,// //new nt_json_gr(serial_list,{collected:0}),
 		auto_start:true,
 		reload_en:true,
+		flush_en:true,
+		//mime_type:'text/plain; charset=x-user-defined',
 		reload_time:1000
 	}
+	
+	new xmlhttprq_stream_gr(terminal_stream_param);//http://127.0.0.1:3128/sys/gen/1000/bin/
 
-	socket=new web_sock_stream_gr(terminal_stream_param);
-	terminal.add_socket(socket);
+	//socket=new web_sock_stream_gr(terminal_stream_param);
+	//terminal.add_socket(socket);
 
 }
 

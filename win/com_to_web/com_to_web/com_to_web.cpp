@@ -310,7 +310,8 @@ void com_to_web::client_requestComplete(GR_http_client *http_client){
         http_client->socket->close();
         //////////////////////////////  ////////
     }else if(http_client->is_rsw("/sys/gen/")>0){
-        http_client->send_data_header();
+        //http_client->send_data_header();
+        http_client->send_neutral_header();
         new data_generator(http_client);
         GR_logger::log(this,"CtW GEN");
     }else if(http_client->is_rsw("/db/w")>0){

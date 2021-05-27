@@ -39,7 +39,7 @@ void data_generator::timer_event(){
         partner->socket->write(&text);
     }else if(traffic_type=="bin"){
         data=type_bin(traffic_size);
-        partner->socket->write(data);
+        partner->socket->write(&data);
     }else if(traffic_type=="nmea"){
         text=type_nmea(traffic_size);
         partner->socket->write(&text);
@@ -47,6 +47,7 @@ void data_generator::timer_event(){
         text=type_none(traffic_size);
         partner->socket->write(&text);
     }
+    partner->socket->flush();
     cnt++;
 }
 
@@ -64,7 +65,7 @@ QString data_generator::type_cnt(int size){
     return text;
 }
 QByteArray data_generator::type_bin(int size){
-    QByteArray data= QByteArray::fromHex("0102040810204080");
+    QByteArray data= QByteArray::fromHex("000A141E28323C46505A646E78828C96A0AAB4BEC8D2DCE6F0FA");
     return data;
 }
 

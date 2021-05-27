@@ -756,7 +756,7 @@ class db_query_gr{
 					this.is_post=('post_data' in parameter) ? 1 : 0;
 
 
-					('mime_type' 	in this.parameter) ? null : (this.parameter.mime_type='text/plain; charset=x-user-defined');
+					('mime_type' 	in this.parameter) ? null : (this.parameter.mime_type="");
 					('url_w' 		in this.parameter) ? null : (this.parameter.url_w='');
 					this.is_flush_en=('flush_en' in this.parameter) ? (this.parameter.flush_en ? 1:0) : 0;
 					this.is_auto_start=('auto_start' in this.parameter) ? (this.parameter.auto_start ? 1:0) : 1;
@@ -859,12 +859,10 @@ class db_query_gr{
 			}
 			open_c(){
 				this.xmlhttprq.open( ((this.is_post) ? 'POST' : 'GET') , this.parameter.url, true);
-				//this.xmlhttprq.overrideMimeType(this.parameter.mime_type);	//!!!???
-				//if('timeout_en'	in this.parameter){
-					//if(this.parameter.timeout_en){
-					this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
-					//}
-				//}
+				if(this.parameter.mime_type!=""){//!!!без "text/plain; charset=x-user-defined" не работают бинарные данные, с ним не работет видимо json
+					this.xmlhttprq.overrideMimeType(this.parameter.mime_type);
+				}
+				this.xmlhttprq.timeout =(this.is_timeout_en) ? (this.parameter.timeout_time) : null;
 				this.xmlhttprq.send( ((this.is_post) ? this.parameter.post_data : null) );//!!!
 			}
 			freeze_c(){
