@@ -1,4 +1,3 @@
-
 var autoboat;
 
 var db_routing_sets;
@@ -10,12 +9,10 @@ var data_config;
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='127.0.0.1';//'192.168.1.44';
-	config['db_config_name']='config.json';
-	config['db_routing_sets']='routing_sets.json';
+	config['remoute_serv_ip']='127.0.0.1';//'192.168.1.44';//192.168.0.138
+	config['remoute_serv_port']='3128';
 	//////////////////////////////////////////////
-	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/r/"+config['dev_name']+"/"),
-	config['dev_url_w']=( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":3128" : "" )+"/dev/bt/w/"+config['dev_name']+"/"),
+	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port'] : "" )),
 	//////////////////////////////////////////////
 	//config['auto_move_map_to_boat']=true;
 	config['map']=new Object();
@@ -24,15 +21,18 @@ var config=new Object();
 	//////////////////////////////////////////////
 	config['ssf']=false;
 	//////////////////////////////////////////////
+	wpp_gr.web_server_def	=config['dev_url'];
+	wpp_gr.data_server_def	=config['dev_url'];
+	wpp_gr.db_server_def	=config['dev_url'];
+	wpp_gr.db_read_prefix="/htdocs/db/";//"/db/"
+	wpp_gr.db_write_prefix="/db/w/";
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 //$(document).ready(function(){
 function main_init(){
 	autoboat=new autoboat_gr();
-	autoboat_routing_sets=new json_routing_sets_read_gr();
 	data_config=new json_config_read_gr();
-
 	//HUB
 			var message=new Array();
 			message[0]=new Object();
@@ -67,8 +67,8 @@ function main_init(){
 	//STREAM
 		//arduino_uart
 			bap_uart_stream_param={
-				url   : "http://192.168.0.242/status",//config['dev_url'],
-				url_w : config['dev_url_w'],
+				url   : config['dev_url']+"/status",//config['dev_url'],
+				url_w : config['dev_url']+"/write",
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"BAP:",
 				//parser: autoboat,//new raw_parser_gr(message_hub),
@@ -88,18 +88,17 @@ function main_init(){
 			};
 			new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 			
-			
-			terminal_stream_param={
-				url			: "ws://127.0.0.1:3129/dev/com/r/3/115200",//"ws://127.0.0.1:3129/sys/gen/",
-				parser	:	new nt_raw_parser_gr(autoboat,{collected:1,db_matrix:message}),// //new nt_json_gr(serial_list,{collected:0}),
-				auto_start:true,
-				reload_en:true,
-				reload_time:1000
-			}
-		
-			//var socket=new web_sock_stream_gr(terminal_stream_param);
-		
-			//_arduino_uart
+			//WS
+				terminal_stream_param={
+					url			: "ws://127.0.0.1:3129/dev/com/r/3/115200",//"ws://127.0.0.1:3129/sys/gen/",
+					parser	:	new nt_raw_parser_gr(autoboat,{collected:1,db_matrix:message}),// //new nt_json_gr(serial_list,{collected:0}),
+					auto_start:true,
+					reload_en:true,
+					reload_time:1000
+				}		
+				//var socket=new web_sock_stream_gr(terminal_stream_param);
+			//WS
+
 		//CONFIG READ
 			db_config=new db_query_gr({db_name:"autoboat",table_name:"config",
 				on_save:function(data){
@@ -115,18 +114,7 @@ function main_init(){
 			//db_config.load();
 			//_CONFIG READ
 		//routing_sets
-			db_routing_sets=new db_query_gr({db_name:"autoboat",table_name:"routing_sets",
-				on_save:function(data){
-					db_routing_sets.load();
-				},
-				on_load:function(data){
-					autoboat_routing_sets.parser_data(data);
-				},
-				on_error:function(data){
-					console.log(data);
-				}
-			});
-			//db_routing_sets.load();
+			autoboat_routing_sets=new json_routing_sets_read_gr({db_name:"autoboat",table_name:"routing_sets"});
 			//_routing_sets
 	//_STREAM
 	//PAPER JS

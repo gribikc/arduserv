@@ -168,9 +168,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class json_routing_sets_read_gr{
+	class json_routing_sets_read_gr {
 		//Инициализация
-			constructor() {
+			constructor(param) {
+				this.param=param;
 				this.main_div=document.getElementById('routing_sets');
 				this.div=document.createElement('div');
 				this.main_div.appendChild(this.div);
@@ -179,7 +180,18 @@
 				this.routing_sets=new Array();
 				
 				document.getElementById('map').onclick=this.update_map_data;
+
+
+				this.db=new db_query_gr({db_name:this.param.db_name,table_name:"routing_sets",
+					on_save:this,
+					on_load:this,
+				});
+				this.db.load();
 			}
+		on_save(arr){
+			console.log(arr);
+			this.db.load();
+		}
 		//Парсинг
 			parser_data(arr){
 				this.routing_sets=arr;
@@ -254,11 +266,14 @@
 				this.routing_save_to_db();
 			}
 			routing_save_to_db(){
-				var xmlhttprq_test = new XMLHttpRequest();
+				/*var xmlhttprq_test = new XMLHttpRequest();
 				xmlhttprq_test.open('POST', 'http://192.168.1.44:3128/db/w/autoboat/routing_sets.json', true);//, true
 				xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 				xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-				xmlhttprq_test.send(JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t'));
+				xmlhttprq_test.send(JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t'));*/
+				let data=JSON.stringify(autoboat_routing_sets.routing_sets,null, '\t');
+				//data.arr=autoboat_routing_sets.routing_sets;
+				this.db.save(data);
 			}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

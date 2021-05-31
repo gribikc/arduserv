@@ -4,7 +4,6 @@
 #include <WebServer.h>
 #include <SPIFFS.h>
 
-
  #ifdef __cplusplus
   extern "C" {
  #endif
@@ -219,7 +218,6 @@ void Web_server_gr::handleFileList() {
     }
   }
 /////////////////////////////////////////////////
-///////////////////////////////
 void Web_server_gr::init(){
 	FILESYSTEM.begin();
 	{
@@ -245,41 +243,41 @@ void Web_server_gr::init(){
 		String url=server->uri();
 		if(url.startsWith("/db/w")){
 			write_db();
-      return;
+			return;
 		}
 
 		server->send(404, "text/plain", "FileNotFound");
-      //dbg
-      DBG_OUTPUT_PORT.println("------------------------------------------------------");
-      DBG_OUTPUT_PORT.print("Params:");
-      DBG_OUTPUT_PORT.println(params());
-      for(int k=0;k<params();k++){
-        DBG_OUTPUT_PORT.println(param(k));
-      }
-      DBG_OUTPUT_PORT.println("---0");
+		//dbg
+		DBG_OUTPUT_PORT.println("------------------------------------------------------");
+		DBG_OUTPUT_PORT.print("Params:");
+		DBG_OUTPUT_PORT.println(params());
+		for(int k=0;k<params();k++){
+			DBG_OUTPUT_PORT.println(param(k));
+		}
+		DBG_OUTPUT_PORT.println("---0");
 
-      DBG_OUTPUT_PORT.println("---1");
-      String message = "";
-      message += "URI: ";
-      message += server->uri();
-      message += "\nMethod: ";
-      message += (server->method() == HTTP_GET) ? "GET" : "POST";
-      message += "\nArguments: ";
-      message += server->args();
-      message += "\n";
-      DBG_OUTPUT_PORT.println(message);
-      message="";
-      DBG_OUTPUT_PORT.println("---2");
-      for (uint8_t i = 0; i < server->args(); i++) {
-        message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
-      }
-      DBG_OUTPUT_PORT.println("---3");
-      DBG_OUTPUT_PORT.println(message);
-      for (uint8_t i = 0; i < server->headers(); i++) {
-        DBG_OUTPUT_PORT.println(server->header(i)+"\n");
-      }
-      DBG_OUTPUT_PORT.println("---4");
-      //dbg
+		DBG_OUTPUT_PORT.println("---1");
+		String message = "";
+		message += "URI: ";
+		message += server->uri();
+		message += "\nMethod: ";
+		message += (server->method() == HTTP_GET) ? "GET" : "POST";
+		message += "\nArguments: ";
+		message += server->args();
+		message += "\n";
+		DBG_OUTPUT_PORT.println(message);
+		message="";
+		DBG_OUTPUT_PORT.println("---2");
+		for (uint8_t i = 0; i < server->args(); i++) {
+			message += "" + server->argName(i) + ":::::::::::::" + server->arg(i) + "\n---------------------------------------------------------\n";
+		}
+		DBG_OUTPUT_PORT.println("---3");
+		DBG_OUTPUT_PORT.println(message);
+		for (uint8_t i = 0; i < server->headers(); i++) {
+			DBG_OUTPUT_PORT.println(server->header(i)+"\n");
+		}
+		DBG_OUTPUT_PORT.println("---4");
+		//dbg
 	});
  
 	server->on("/test", HTTP_GET, [this]() {

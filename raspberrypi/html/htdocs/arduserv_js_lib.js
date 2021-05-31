@@ -614,7 +614,8 @@ class single_shot_gr  {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	new nt_json_gr(this,{}),
+			//!!!в случае если калбек содержит функцию парсера то ссылаемся на него, иначе напрямую в функцию указанную
+				parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -625,13 +626,13 @@ class single_shot_gr  {
 		this.req=new xmlhttprq_stream_gr(this.single_shot_param);
 	}
 
-	parser_data(stream){
+	parser_data(stream){//!!!
 		if(this.parameter.callback){
 			this.parameter.callback(stream);
 		}
 	}
 
-	error_event(message="NAN"){
+	error_event(message="NAN"){//???
 		if(this.parameter.error_callback){
 			this.parameter.error_callback(message);
 		}
@@ -644,7 +645,7 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	new nt_json_gr(this,{}),
+			parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -675,7 +676,8 @@ class singl_shot_send_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	this,
+			//parser		:	this,
+			parser		:	(this.parameter.callback.parser_data)?this.parameter.callback:this,
 			post_data : parameter.data,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -704,17 +706,32 @@ class singl_shot_send_gr {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class db_query_gr{
 	constructor(param){
-		this.parameter=param;
+		this.parameter=new Object();
+		if(param!=null){
+			this.parameter=param;
+		}
 	}
 	load(param){
 		var url	= wpp_gr.db_server_def+wpp_gr.db_read_prefix+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		new single_shot_gr({url:url,callback:this.parameter.on_load,error_callback:this.parameter.on_error});
-		//console.log("LOAD");
 	}
 	save(param){
 		var url	=wpp_gr.db_server_def+wpp_gr.db_write_prefix+this.parameter.db_name+"/"+this.parameter.table_name+".json";
-		new singl_shot_send_gr({url:url,data:JSON.stringify(param.arr),callback:this.parameter.on_save});//callback:this.load
-		//console.log("SAVE");
+		let data=(param.arr)?param.arr:param;
+		if(Array.isArray(data) && Array.isAssociativeArray(data)){
+			data=JSON.stringify(data);
+		}
+		new singl_shot_send_gr({url:url,data:data,callback:this});//parameter.on_save
+	}
+	on_error(data){//!!
+		console.log(data);
+	}
+	parser_data(arr){
+		if(this.parameter.on_save.on_save){
+			this.parameter.on_save.on_save(arr);
+		}else{
+			this.parameter.on_save(arr);
+		}
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1419,40 +1436,43 @@ function bubble_sort(arr){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if (!Array.isAssociativeArray) {
-  Array.isAssociativeArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Object]';
-  };
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*window.onerror = function (msg, url, line) {
 	//alert(msg + "\n" + url + "\n" + "\n" + line);
 	//document.getElementById("error_log").innerHTML+=msg + "\n" + url + "\n" + "\n" + line;
 	return true;
 };*/
-//...
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	let wpp_gr=new Object();
-	//тут жобавить иф для локальных файлов//
-	wpp_gr.web_server_def="";//http://127.0.0.1:3128
-	wpp_gr.data_server_def="";//http://127.0.0.1:3129
-	wpp_gr.db_server_def="";//http://127.0.0.1:3128
-	
-	wpp_gr.db_read_prefix="/htdocs/db/";
-	wpp_gr.db_write_prefix="/db/w/";
-	
-	wpp_gr.url_get_params = window.location.search.replace('?','').split('&').reduce(
-        function(p,e){
-            var a = e.split('=');
-            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-            return p;
-        },
-        {}
-    );
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//executable section
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		let wpp_gr=new Object();
+		//тут жобавить иф для локальных файлов//
+		wpp_gr.web_server_def="";//http://127.0.0.1:3128
+		wpp_gr.data_server_def="";//http://127.0.0.1:3129
+		wpp_gr.db_server_def="";//http://127.0.0.1:3128
+		
+		wpp_gr.db_read_prefix="/htdocs/db/";
+		wpp_gr.db_write_prefix="/db/w/";
+		
+		wpp_gr.url_get_params = window.location.search.replace('?','').split('&').reduce(
+			function(p,e){
+				var a = e.split('=');
+				p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+				return p;
+			},
+			{}
+		);
+
+		////////////////////////////////
+		if (!Array.isAssociativeArray) {
+			Array.isAssociativeArray = function(arg) {
+				return Object.prototype.toString.call(arg) === '[object Object]';
+			};
+		}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
