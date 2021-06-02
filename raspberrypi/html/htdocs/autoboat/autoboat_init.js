@@ -24,7 +24,7 @@ var config=new Object();
 	wpp_gr.web_server_def	=config['dev_url'];
 	wpp_gr.data_server_def	=config['dev_url'];
 	wpp_gr.db_server_def	=config['dev_url'];
-	wpp_gr.db_read_prefix="/htdocs/db/";//"/db/"
+	wpp_gr.db_read_prefix="/htdocs/db/";// esp32:"/db/",CTW:"/htdocs/db/"
 	wpp_gr.db_write_prefix="/db/w/";
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ function main_init(){
 					console.log(data);
 				}
 			});
-			//db_config.load();
+			db_config.load();
 			//_CONFIG READ
 		//routing_sets
 			autoboat_routing_sets=new json_routing_sets_read_gr({db_name:"autoboat",table_name:"routing_sets"});
@@ -120,7 +120,9 @@ function main_init(){
 	//PAPER JS
 		//test_paper_cnt=new paper_js_gr('canvas2');//!!!
 		//test_paper=new paper_js_gr('canvas3');
-		
+		//console.log(autoboat_routing_sets);
+		//console.log(autoboat_routing_sets.parser_data);
+		//autoboat_routing_sets.parser_data("{}");
 		
 	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');
 	create_table_from_array_gr(config,'main_div_setings');

@@ -729,7 +729,7 @@ class db_query_gr{
 	parser_data(arr){
 		if(this.parameter.on_save.on_save){
 			this.parameter.on_save.on_save(arr);
-		}else{
+		}else if(this.parameter.on_save){
 			this.parameter.on_save(arr);
 		}
 	}

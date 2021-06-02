@@ -183,8 +183,8 @@
 
 
 				this.db=new db_query_gr({db_name:this.param.db_name,table_name:"routing_sets",
-					on_save:this,
-					on_load:this,
+					on_save:this,//on_save(arr)
+					on_load:this,//parser_data(arr)
 				});
 				this.db.load();
 			}
@@ -196,6 +196,7 @@
 			parser_data(arr){
 				this.routing_sets=arr;
 
+				this.div.innerHTML='';
 				this.div.innerHTML+='<br>';
 				for(var i=0;i<arr.length;i++){
 					this.div.innerHTML+=arr[i]['name'];
