@@ -3,6 +3,10 @@ let xhrsc=[];
 let db=new Object();
 let scdb=new Object();
 
+/*wpp_gr.db_server_def="";
+wpp_gr.db_read_prefix="/db/";
+wpp_gr.db_write_prefix="/db/w/";*/
+
 function parse_and_sava_db(){
 	db.save({arr:scdb.parser_form()});
 }
@@ -23,6 +27,11 @@ function load_db(mode){
 	});
 	if(mode!="create"){
 		db.load();
+	}
+	if(mode=='view'){
+		document.getElementById("btn_save").disabled=true;
+	}else{
+		document.getElementById("btn_save").disabled=false;
 	}
 }
 
