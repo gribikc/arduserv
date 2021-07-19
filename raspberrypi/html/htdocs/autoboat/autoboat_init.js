@@ -9,8 +9,8 @@ var data_config;
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='127.0.0.1';//'192.168.1.44';//192.168.0.138
-	config['remoute_serv_port']='3128';
+	config['remoute_serv_ip']='192.168.3.176';//'192.168.1.44';//192.168.0.138
+	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port'] : "" )),
 	//////////////////////////////////////////////
@@ -24,7 +24,7 @@ var config=new Object();
 	wpp_gr.web_server_def	=config['dev_url'];
 	wpp_gr.data_server_def	=config['dev_url'];
 	wpp_gr.db_server_def	=config['dev_url'];
-	wpp_gr.db_read_prefix="/htdocs/db/";// esp32:"/db/",CTW:"/htdocs/db/"
+	wpp_gr.db_read_prefix="/db/";// esp32:"/db/",CTW:"/htdocs/db/"
 	wpp_gr.db_write_prefix="/db/w/";
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////

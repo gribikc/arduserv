@@ -718,7 +718,7 @@ class db_query_gr{
 	save(param){
 		var url	=wpp_gr.db_server_def+wpp_gr.db_write_prefix+this.parameter.db_name+"/"+this.parameter.table_name+".json";
 		let data=(param.arr)?param.arr:param;
-		if(Array.isArray(data) && Array.isAssociativeArray(data)){
+		if(Array.isArray(data) || Array.isAssociativeArray(data)){
 			data=JSON.stringify(data);
 		}
 		new singl_shot_send_gr({url:url,data:data,callback:this});//parameter.on_save
