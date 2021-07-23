@@ -1,15 +1,15 @@
 var autoboat;
 
-var db_routing_sets;
+//var db_routing_sets;
 var autoboat_routing_sets;
 
-var db_config;
+//var db_config;
 var data_config;
 ///////////////////////////////////////////////////////////
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='192.168.3.176';//'192.168.1.44';//192.168.0.138
+	config['remoute_serv_ip']='192.168.5.176';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port'] : "" )),
@@ -32,7 +32,6 @@ var config=new Object();
 //$(document).ready(function(){
 function main_init(){
 	autoboat=new autoboat_gr();
-	data_config=new json_config_read_gr();
 	//HUB
 			var message=new Array();
 			message[0]=new Object();
@@ -100,30 +99,15 @@ function main_init(){
 			//WS
 
 		//CONFIG READ
-			db_config=new db_query_gr({db_name:"autoboat",table_name:"config",
-				on_save:function(data){
-					db_config.load();
-				},
-				on_load:function(data){
-					data_config.parser_data(data);
-				},
-				on_error:function(data){
-					console.log(data);
-				}
-			});
-			db_config.load();
-			//_CONFIG READ
+			data_config=new json_config_read_gr({db_name:"autoboat",table_name:"config"});
+		//_CONFIG READ
 		//routing_sets
 			autoboat_routing_sets=new json_routing_sets_read_gr({db_name:"autoboat",table_name:"routing_sets"});
-			//_routing_sets
+		//_routing_sets
 	//_STREAM
-	//PAPER JS
-		//test_paper_cnt=new paper_js_gr('canvas2');//!!!
-		//test_paper=new paper_js_gr('canvas3');
-		//console.log(autoboat_routing_sets);
-		//console.log(autoboat_routing_sets.parser_data);
-		//autoboat_routing_sets.parser_data("{}");
+
 		
 	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');
 	create_table_from_array_gr(config,'main_div_setings');
 }
+

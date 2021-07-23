@@ -22,6 +22,14 @@ class Web_server_gr{
 	#define DBG_OUTPUT_PORT Serial
 	typedef std::function<void(void)> THandlerFunction;
 	public:
+		Web_server_gr(){
+			server=new WebServer(80);
+		}
+
+		void do_web(){
+			server->handleClient();
+		}
+
 		//WebServer server(80);
 		WebServer *server;
     
@@ -35,9 +43,7 @@ class Web_server_gr{
 		int params();
 		String param(int k);
 
-		Web_server_gr();
 		void init();
-		void do_web();
 		
 		
 	private:	
@@ -200,7 +206,8 @@ void Web_server_gr::handleFileList() {
       if (exists(file_name)) {
         DBG_OUTPUT_PORT.println("File exists");
       }
-    	File file = FILESYSTEM.open(file_name, "w");
+      
+	  File file = FILESYSTEM.open(file_name, "w");
       if (file) {
       	uint8_t a;
       	for(int i=0;i<data.length();i++){
@@ -236,7 +243,7 @@ void Web_server_gr::init(){
 
   
 	server->onNotFound([this]() {
-		if (handleFileRead(server->uri())) {
+		if (handleFileRead(server->uri())) {//if file exist, send him!!!
 			return;
 		}
 		
@@ -281,26 +288,22 @@ void Web_server_gr::init(){
 	});
  
 	server->on("/test", HTTP_GET, [this]() {
-		String json = "TEST:OK;";
-		server->send(200, "text/json", json);
+		String str = "TEST:OK;";
+		server->send(200, "text/json", str);
 	});
  
 	server->on("/list", HTTP_GET, [this]() {
 		handleFileList();
 	});
- 
-	//server->on("/db/w/",HTTP_POST,[&]() {
-	//	write_db();
-	//});
   
 	server->on("/help", HTTP_GET, [this]() {
-		String 	json  = "<html><head></head><body>Hello world!!!;<br>\n";
-				json += "<a href=\"/list?dir=/\">/list?dir=/: File List</a><br>\n";
-				json += "/neme.exp: Get File<br>\n";
-				json +="Temperature: ";
-				json += ((temprature_sens_read() - 32) / 1.8);
-        json += "\n</body></html>";
-		server->send(200, "text/html", json);
+		String 	html  = "<html><head></head><body>Hello world!!!;<br>\n";
+				html += "<a href=\"/list?dir=/\">/list?dir=/: File List</a><br>\n";
+				html += "/neme.exp: Get File<br>\n";
+				html +="Temperature: ";
+				html += ((temprature_sens_read() - 32) / 1.8);
+        html += "\n</body></html>";
+		server->send(200, "text/html", html);
 	});
 
 	server->begin();
@@ -308,11 +311,3 @@ void Web_server_gr::init(){
 }
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-Web_server_gr::Web_server_gr(){
-	server=new WebServer(80);
-}
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void Web_server_gr::do_web(){
-	server->handleClient();
-}
