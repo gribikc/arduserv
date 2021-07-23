@@ -54,6 +54,7 @@ public:
         void send_css_header();
         void send_js_header();
         void send_json_header();
+        void send_file_header(QString f_name);
 public slots:
     void readyRead(); // обработчик входящих данных
     void disconnected(); // обработчик изменения состояния вещающего

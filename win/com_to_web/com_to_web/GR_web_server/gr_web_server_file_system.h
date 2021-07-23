@@ -95,7 +95,14 @@ void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client
     QFile file_req(file_str);///dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit());
     file_req.open(QIODevice::ReadOnly);
 
-    socket->socket->write(file_req.readAll());
+    socket->socket->write("accept-ranges: bytes\r\n");
+    socket->socket->write("Content-length: ");
+    auto len=QString::number(file_req.bytesAvailable()+3);
+    socket->socket->write(&len);
+    socket->socket->write("\r\n\r\n");
+
+    auto a=file_req.readAll();
+    socket->socket->write(a);
     file_req.close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -287,7 +287,7 @@ void GR_web_server::registaration_sys(){
     });
     reg_on("/htdocs",StartsWith,SingleShot,NoHeader,[&](GR_http_client *http_client){
         QStringList list_param=http_client->get_list_param();
-        if(list_param[list_param.size()-1].endsWith("css")){
+        /*if(list_param[list_param.size()-1].endsWith("css")){
             http_client->send_css_header();
         }else if(list_param[list_param.size()-1].endsWith("js")){
             http_client->send_js_header();
@@ -295,7 +295,8 @@ void GR_web_server::registaration_sys(){
                 http_client->send_json_header();
         }else{
             http_client->send_neutral_header();
-        }
+        }*/
+        http_client->send_file_header(list_param[list_param.size()-1]);
         htdocs_page_request_do(list_param,http_client);
         GR_logger::log(this,"CtW Page Send");
     });

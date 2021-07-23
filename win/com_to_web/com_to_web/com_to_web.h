@@ -11,6 +11,7 @@
 #include <QWebSocket>
 
     //EXT
+    #include "GR_web_server/gr_web_server.h"
     #include "gr_logger/gr_logger.h"
     //#include "gr_data_source/gr_data_source.h"
     #include "gr_dev_manager/gr_dev_manager.h"
@@ -40,13 +41,13 @@ class com_to_web : public QObject//QMainWindow
     Q_OBJECT
 /////////////////////
 public slots:
-    void onNewWebs_connect();
+    //void onNewWebs_connect();
     //void processTextMessage(QString message);
     //void processBinaryMessage(QByteArray message);
-    void incommingConnection(); // обработчик входящего подключения
+    //void incommingConnection(); // обработчик входящего подключения
     //void readyRead(); // обработчик входящих данных
     //void stateChanged(); // обработчик изменения состояния вещающего
-    void client_requestComplete(GR_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
+    //void client_requestComplete(GR_http_client *http_client);//QMap<QByteArray, QByteArray> *hrp_headers,
 public:
     void gr_sock_srv_start();
 
@@ -74,10 +75,10 @@ public:
     //void postget_request_parsing(gr_httprqs_parser *parser_data);
     //void find_device_and_do(gr_httprqs_parser *parser_data);
 
-    void main_page_request_do(GR_http_client *socket);
-    void get_tree_file(QString dir_patch, QString prefix_add, GR_http_client *socket, QString base_dir);
-    void htdocs_page_request_do(QStringList list_param, GR_http_client *socket);
-    void htdocs_db_write_do(GR_http_client *socket);
+    //void main_page_request_do(GR_http_client *socket);
+   // void get_tree_file(QString dir_patch, QString prefix_add, GR_http_client *socket, QString base_dir);
+    //void htdocs_page_request_do(QStringList list_param, GR_http_client *socket);
+    //void htdocs_db_write_do(GR_http_client *socket);
 
     // /storage/sdcard0/
     // /storage/emulated/0/
@@ -86,6 +87,8 @@ public:
 
     QTcpServer *server; // указатель на сервер
     QWebSocketServer *webs_server;
+
+    GR_web_server *gr_web_server;
     //QList<gr_httprqs_parser> httprqs_parser; // получатели данных
 
     QList<void*> test;

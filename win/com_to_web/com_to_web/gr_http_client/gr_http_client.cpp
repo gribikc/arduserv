@@ -170,6 +170,8 @@ QStringList GR_http_client::get_list_param(){
         GR_logger::log(this,"Http Send HTML header");
     }
 
+
+
     void GR_http_client::send_neutral_header(){
         if(socket->type_of_socket!=1){return;}
         socket->write("HTTP/1.1 200 OK\n");
@@ -180,3 +182,45 @@ QStringList GR_http_client::get_list_param(){
         GR_logger::log(this,"Http Send Neutral header");
     }
 
+    void GR_http_client::send_file_header(QString f_name){
+        if(socket->type_of_socket!=1){return;}
+        socket->write("HTTP/1.1 200 OK\r\n");
+
+        QString type="text/plain";
+        if (f_name.endsWith(".htm")) {
+          type="text/html; charset=utf-8";
+        } else if (f_name.endsWith(".html")) {
+          type="text/html; charset=utf-8";
+        } else if (f_name.endsWith(".css")) {
+          type="text/css; charset=utf-8";
+        } else if (f_name.endsWith(".js")) {
+          type="application/javascript";
+        } else if (f_name.endsWith(".png")) {
+          type="image/png";
+        } else if (f_name.endsWith(".gif")) {
+          type="image/gif";
+        } else if (f_name.endsWith(".jpg")) {
+          type="image/jpeg";
+        } else if (f_name.endsWith(".ico")) {
+          type="image/x-icon";
+        } else if (f_name.endsWith(".xml")) {
+          type="text/xml; charset=utf-8";
+        } else if (f_name.endsWith(".pdf")) {
+          type="application/x-pdf";
+        } else if (f_name.endsWith(".zip")) {
+          type="application/x-zip";
+        } else if (f_name.endsWith(".gz")) {
+          type="application/x-gzip";
+        }
+
+        socket->write("Content-type: ");
+        socket->write(&type);
+        socket->write(+"\r\n");
+
+        //socket->write("Transfer-Encoding:identity\r\n");
+        socket->write("Connection: keep-alive\r\n");
+        socket->write("Access-Control-Allow-Origin: *\r\n");
+        socket->write("Access-Control-Allow-Methods: *\r\n");
+        //socket->write("\r\n");
+        GR_logger::log(this,"Http Send File header");
+    }
