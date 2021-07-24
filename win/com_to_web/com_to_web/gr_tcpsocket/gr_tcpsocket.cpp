@@ -8,9 +8,12 @@
 void gr_TcpSocket::setSocketDescriptor(QTcpSocket *sdscrp){
      type_of_socket=1;
      socket=sdscrp;
+     //socket->setSocketOption(QAbstractSocket::LowDelayOption,1);
+     //socket->waitForBytesWritten(1);
      connect(socket, &QTcpSocket::disconnected, this, &gr_TcpSocket::disconnected_s);
      connect(socket, &QTcpSocket::readyRead, this, &gr_TcpSocket::readyRead_s);
      emit this->readyRead();
+     //socket->waitForBytesWritten(1);
      //Ex
      //QMetaMethod readyRead = QMetaMethod::fromSignal(&QTcpSocket::readyRead);
      //connect(this, readyRead,this, [=](){ qDebug()<<"DADADA!!!";}     );
@@ -50,9 +53,14 @@ QAbstractSocket::SocketState gr_TcpSocket::state(){
 }
 
 void gr_TcpSocket::close(){
+    auto a=socket->bytesToWrite();
     socket->close();
 }
 
 void gr_TcpSocket::flush(){
+    //auto a=socket->bytesToWrite();
+    //socket->commitTransaction();
+    //auto b=socket->errorString();
+    //socket->startTransaction();
     socket->flush();
 }

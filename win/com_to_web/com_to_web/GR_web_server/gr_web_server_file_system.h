@@ -95,14 +95,20 @@ void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client
     QFile file_req(file_str);///dir.currentPath()+parser_data->htdocs_file_query.toLocal8Bit());
     file_req.open(QIODevice::ReadOnly);
 
-    socket->socket->write("accept-ranges: bytes\r\n");
-    socket->socket->write("Content-length: ");
-    auto len=QString::number(file_req.bytesAvailable()+3);
-    socket->socket->write(&len);
-    socket->socket->write("\r\n\r\n");
+    if(file_req.isReadable()){
+        socket->socket->write("Content-Length: ");
+        auto len=QString::number(file_req.bytesAvailable());
+        socket->socket->write(&len);
+        socket->socket->write("\r\n\r\n");
 
-    auto a=file_req.readAll();
-    socket->socket->write(a);
+        QByteArray b=file_req.readAll();
+        socket->socket->write(&b);
+    }else{
+        socket->socket->write("\r\n\r\n");
+        socket->socket->write("404 File Not Found!!!");
+    }
+
+    socket->socket->flush();
     file_req.close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////

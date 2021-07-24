@@ -37,9 +37,7 @@ public:
             DataHeader      = 1,
             HTMLHeader      = 2,
             NeutralHeader   = 3,
-            CSSHeader       = 4,
-            JSHeader        = 5,
-            JSONHeader      = 6
+            FileHeader      = 4
     };
     enum ComparisonType {
             StartsWith     = 0,

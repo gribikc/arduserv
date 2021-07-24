@@ -213,12 +213,13 @@ QStringList GR_http_client::get_list_param(){
           type="application/x-gzip";
         }
 
-        socket->write("Content-type: ");
+        socket->write("Content-Type: ");
         socket->write(&type);
         socket->write(+"\r\n");
 
         //socket->write("Transfer-Encoding:identity\r\n");
-        socket->write("Connection: keep-alive\r\n");
+        socket->write("Connection: close\r\n");
+        socket->write("Access-Control-Allow-Headers: *\r\n");
         socket->write("Access-Control-Allow-Origin: *\r\n");
         socket->write("Access-Control-Allow-Methods: *\r\n");
         //socket->write("\r\n");
