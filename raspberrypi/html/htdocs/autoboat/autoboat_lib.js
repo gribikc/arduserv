@@ -128,12 +128,8 @@
 			
 			var xmlhttprq_test = new XMLHttpRequest();
 			xmlhttprq_test.open('POST', url, true);//, true
-			xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
-			xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			//var uint8 = new Uint8Array(2);
-			//uint8[0] = 1;
-			//uint8[1] = 2;
-			xmlhttprq_test.send(send_data);//this.upr_cmd[name]
+			xmlhttprq_test.send(send_data.toString(10).toUpperCase());//esp32
+			
 			//console.log(send_data);
 		}
 	}

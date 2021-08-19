@@ -50,7 +50,7 @@ public:
 
     void main_page_request_do(GR_http_client *socket);
     void get_tree_file(QString dir_patch, QString prefix_add, GR_http_client *socket, QString base_dir);
-    void htdocs_page_request_do(QStringList list_param, GR_http_client *socket);
+    bool htdocs_page_request_do(QStringList list_param, GR_http_client *socket);
     void htdocs_db_write_do(GR_http_client *socket);
 
     QString android_htdocs_patch="/storage/emulated/0/com_to_web";

@@ -102,7 +102,9 @@ void GR_web_server::gr_sock_srv_start(){
     webs_server->listen(QHostAddress::Any, conf_var["wbs_listen_port"].toInt());
     connect(webs_server, &QWebSocketServer::newConnection,this, &GR_web_server::onNewWebs_connect);
 
-    emit info(0,"WebSocket Port: 3129\n");
+    emit info(0,"WebSocket Port: ");
+    emit info(0,conf_var["wbs_listen_port"].toString());
+    emit info(0,"\n");
 
     if(server->isListening()){
         qDebug() << "Server is open";
@@ -211,7 +213,22 @@ void GR_web_server::client_requestComplete(GR_http_client *http_client){
     //надо бы возможность регистрации события 404
     ///////////////
     //тут проверять наличие файла в htdocs и редиректить
-    http_client->send_html_header();
+    http_client->send_file_header(list_param[list_param.size()-1]);
+
+    if(list_param[0]!="htdocs"){
+        QStringList list_param_s=list_param;
+        list_param_s.insert(1,"htdocs");
+        if(htdocs_page_request_do(list_param_s,http_client)){
+            GR_logger::log(this,"CtW end page found");
+            http_client->socket->close();
+            return;
+        }
+    }
+    ///////////////
+
+    //http_client->send_html_header();
+    http_client->socket->write("\r\n\r\n");
+
     http_client->socket->write("404 Not Found!<br>\n");
     http_client->socket->write("Try:<br>\n");
     http_client->socket->write("/                                   <br>\n");
@@ -267,21 +284,28 @@ void GR_web_server::registaration_sys(){
     });
 
 
-    //reg_on("/",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
-    //    http_client->socket->write("Main Page!");
-    //    //HTTP/1.1 301 Moved Permanently
-    //    //Location: http://www.example.org/
-    //    //Content-Type: text/html
-    //    //Content-Length: 174
-    //    GR_logger::log(this,"CtW Main Page");
-    //});
+    reg_on("/",Matches,SingleShot,FileHeader,[&](GR_http_client *http_client){
+        //http_client->socket->write("Main Page!");
+        QStringList list_param_s=http_client->get_list_param();
+        list_param_s[1]="htdocs";
+        list_param_s.insert(2,"index.html");
+        if(htdocs_page_request_do(list_param_s,http_client)){
+            GR_logger::log(this,"CtW end page found");
+            http_client->socket->close();
+            return;
+        }
+        http_client->socket->write("Main Page! out of index.html in htdocs!");
+        GR_logger::log(this,"CtW Main Page");
+    });
     reg_on("/favicon.ico",Matches,SingleShot,HTMLHeader,[&](GR_http_client *http_client){
         http_client->socket->write("Nice try to get favicon.ico :)))");
         GR_logger::log(this,"CtW TTG favicon.ico");
     });
-    reg_on("/htdocs",StartsWith,SingleShot,FileHeader,[&](GR_http_client *http_client){
+    reg_on("/htdocs",StartsWith,SingleShot,FileHeader,[&](GR_http_client *http_client){//!!! убрать
         QStringList list_param=http_client->get_list_param();
-        htdocs_page_request_do(list_param,http_client);
+        if(!htdocs_page_request_do(list_param,http_client)){
+            http_client->socket->write("404 File Not Found!!!");
+        };
         GR_logger::log(this,"CtW Page Send");
     });
     reg_on("/db/w",StartsWith,SingleShot,HTMLHeader,[&](GR_http_client *http_client){

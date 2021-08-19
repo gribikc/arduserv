@@ -186,7 +186,7 @@ QStringList GR_http_client::get_list_param(){
         if(socket->type_of_socket!=1){return;}
         socket->write("HTTP/1.1 200 OK\r\n");
 
-        QString type="text/plain";
+        QString type="text/html";
         if (f_name.endsWith(".htm")) {
           type="text/html; charset=utf-8";
         } else if (f_name.endsWith(".html")) {

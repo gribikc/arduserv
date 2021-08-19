@@ -9,10 +9,10 @@ var data_config;
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='192.168.5.176';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='192.168.3.176';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
-	config['dev_url']=	( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port'] : "" )),
+	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
 	//////////////////////////////////////////////
 	//config['auto_move_map_to_boat']=true;
 	config['map']=new Object();

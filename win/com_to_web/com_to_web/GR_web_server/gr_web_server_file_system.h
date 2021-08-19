@@ -79,7 +79,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client *socket){
+bool GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client *socket){
     QByteArray qbt_temp;
     QString file="";
 
@@ -103,13 +103,12 @@ void GR_web_server::htdocs_page_request_do(QStringList list_param,GR_http_client
 
         QByteArray b=file_req.readAll();
         socket->socket->write(&b);
+        socket->socket->flush();
+        file_req.close();
+        return 1;
     }else{
-        socket->socket->write("\r\n\r\n");
-        socket->socket->write("404 File Not Found!!!");
+        return 0;
     }
-
-    socket->socket->flush();
-    file_req.close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
