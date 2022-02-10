@@ -1,0 +1,43 @@
+<html>
+    <head>
+
+        <script type="application/javascript">
+			window.onload = function() {
+				document.getElementById("info").innerHTML +=navigator.userAgent;
+				document.getElementById("info").innerHTML +="<br>---<br>";
+				document.getElementById("info").innerHTML +=screen.width+"x";
+				document.getElementById("info").innerHTML +=screen.height;
+				document.getElementById("info").innerHTML +="<br>---<br>";
+				
+				//document.getElementById("info").innerHTML ="3";
+			}
+			
+			
+
+			function run() {
+			  var xhr = new XMLHttpRequest();
+			  write(xhr.readyState);
+			  xhr.open('GET', 'digits', true);
+			  write(xhr.readyState);
+			  xhr.onreadystatechange = function() {
+				write(xhr.readyState + " получено символов:" + xhr.responseText.length);
+			  };
+
+			  xhr.send();
+			}
+
+			function write(text) {
+			  var li = log.appendChild(document.createElement('li'));
+			  li.innerHTML = text;
+			}
+
+
+        </script>
+    </head>
+    <body document>
+        <div id='info'></div>
+		
+		<button onclick="run()">Загрузить digits</button>
+		<ul id="log"></ul>
+    </body>
+<html>
