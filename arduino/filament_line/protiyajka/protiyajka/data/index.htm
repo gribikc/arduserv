@@ -1,1 +1,74 @@
-123
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="tipo_proga_css_lib.css">
+
+	<!--script language="javascript" type="text/javascript"  src="../paper-full.js"></script-->
+	<script language="javascript" type="text/javascript"  src="tipo_proga_js_lib_gr.js"></script>
+	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
+	
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['line']});
+	</script>
+	
+	
+	<script language="javascript" type="text/javascript"  src="fillstruder_lib_gribikc.js"></script>
+	<script language="javascript" type="text/javascript"  src="fillstruder_js_xhr_lib.js"></script>	
+
+</head>
+<body onload="main_init()">
+	<!---------------------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_top_gr">
+			<a class="img_menu_up_a_gr" onclick="view_main_menu_hide_all('main_list_of_all','main_wiev_div',0);"><img class="img_menu_up_img_gr" src="icons8-menu-50.png"></a>
+				<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img class="img_menu_up_img_gr" src="icons8-double-left-50.png"></a>
+			<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img class="img_menu_up_img_gr" src="icons8-settings-50.png"></a>
+				<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img class="img_menu_up_img_gr" src="icons8-double-right-50.png"></a>
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
+			<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">Карта->Текущие положение</a><br>
+			<a class="menu_up_a_gr" onclick="config['map']['auto_move_map_to_boat'] ? config['map']['auto_move_map_to_boat']=0 : config['map']['auto_move_map_to_boat']=1;">Карта->Следовать</a><br>
+			<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
+			<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>		
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_menu_icon" id='main_list_of_all' style="position:absolute;visibility:hidden;display:none;"></div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id='main_div_setings' class="div_in_main_div">
+					
+				</div>
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="График" id='graph' class="div_in_main_div">
+					<div id="linechart_material" style="width: 900px; height: 500px"></div>
+				</div>
+			<!--UPRAVLENIE--------------------------------------------------------------------------------------------------->
+				<div data-name="Управление" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
+
+				</div>
+			<!--SETTINGS----------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">main_settings_edit</div>
+			<!--routing_sets------------------------------------------------------------------------------------------------->
+				<div data-name="Маршруты/Точки" id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">
+
+				</div>
+			<!--routing_safe------------------------------------------------------------------------------------------------->
+				<div data-name="Редактирование маршрута" id="routing_safe" style="background: #FFFFFF;border: 3px solid #000000;">
+
+				</div>
+			<!--MAP---------------------------------------------------------------------------------------------------------->
+				<div data-name="Карта" id="map_div" class="wh_100">
+
+				</div>
+		</div>
+	<!---------------------------------------------------------------------------------------------------------->
+</body>
+</html>
+
+

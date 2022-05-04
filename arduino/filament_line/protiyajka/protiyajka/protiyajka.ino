@@ -29,8 +29,8 @@ void loop(){
     //Serial.print("from loop:");
     //obrv(izm.get_izm());
   }
-  //web_server.do_web();
-  //wifi_do_all();
+  web_server.do_web();
+  wifi_do_all();
   //Serial.println(izm.lost_cnt);
 } 
 
