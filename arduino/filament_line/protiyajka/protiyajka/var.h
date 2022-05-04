@@ -15,13 +15,18 @@ int i,j,k;
 //Web
 	Web_server_gr web_server;
 
-//Code
+//Global
 	GR_digital_micrometer izm(PIN_data0,PIN_clk0);
+	GR_data_collector<float> collect_izm;
+
+	GR_data_collector<float> collect_time_mes(100);
+	GR_time_mesure mes_int_izm;
 	
+//Func
 	void obrv(float data){
 		Serial.println(data,3);
 	};
 
 	void IRAM_ATTR izm_irq() {
-	izm.get_bit();
+		izm.get_bit();
 	}

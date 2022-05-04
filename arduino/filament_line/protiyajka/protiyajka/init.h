@@ -21,4 +21,45 @@ void start_init(){
 
 	//WEB
     	web_server.init();
+
+	//
+	web_server.server->on("/status", HTTP_GET, [web_server]() {
+		String str;
+		str.clear();
+		std::vector<float> &data=collect_izm.get();
+		str+="[\n";
+		bool st=1;
+		for(auto &d:data){
+			if(!st)str+=", ";st=0;
+			str+=String(d,4);
+		}
+		str+="\n]";
+		//str=String(izm.get_izm(),4);
+		web_server.server->send(200, "text/plan;", str);
+	});
+
+	web_server.server->on("/status1", HTTP_GET, [web_server]() {
+		String str;
+		str.clear();
+		std::vector<float> &data=collect_time_mes.get();
+		str+="[\n";
+		bool st=1;
+		for(auto &d:data){
+			if(!st)str+=", ";st=0;
+			str+=String(d,4);
+		}
+		str+="\n]";
+		//str=String(izm.get_izm(),4);
+		web_server.server->send(200, "text/plan;", str);
+	});
+
+	web_server.server->on("/status2", HTTP_GET, [web_server]() {
+		String str;
+		str.clear();
+
+		str+="[";
+		str+=String(izm.lost_cnt);
+		str+="]";
+		web_server.server->send(200, "text/plan;", str);
+	});
 }

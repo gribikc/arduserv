@@ -1,61 +1,82 @@
 class GR_digital_micrometer{
     public:
         GR_digital_micrometer(int data_pin,int clk_pin):data_pin_(data_pin),clk_pin_(clk_pin){
-            digitalWrite (data_pin_, 0);
-            digitalWrite (clk_pin_, 0);
             pinMode (data_pin_, INPUT);
             pinMode (clk_pin_, INPUT);
+            digitalWrite (data_pin_, 1);
+            digitalWrite (clk_pin_, 1);
             //attachInterrupt(clk_pin_,get_bit,RISING);
         }
     
         void get_bit(){
-            bit_valid_=1;
-            bit_=digitalRead(data_pin_);
-            time_arrave_=millis();
+            //bit_valid_=1;
+            //bit_=digitalRead(data_pin_);
+            //time_arrave_=millis();
+            ///!!! переделать на кольцевой буфер !!!
+            data_in_buf_[wr_p]=std::make_pair(digitalRead(data_pin_),millis());
+            ++wr_p&=0xF;
         }
 
         bool doit(){
-            if(!bit_valid_)
-                return 0;
-            bit_valid_=0;
-
-            if ((bit_cnt_ !=0) && (time_arrave_ - previousGetMillis_ > 8) ) { //обнуление по превышению таймаута
-                bit_cnt_ = 0; 
-                xData_ = 0; 
-            }; 
-            previousGetMillis_=time_arrave_; 
-
-            if(bit_cnt_ < 20){ 
-                if(bit_==1){ 
-                    xData_|= 1<<bit_cnt_;
-                } 
-            } else { 
-                if (bit_cnt_==20) //минус
-                    isfs_=bit_; 
+            //for(auto &data:data_in_buf_){
+            while(wr_p!=rd_p){
+                //auto& data=data_in_buf_[0];
+                auto& time_arrave=data_in_buf_[rd_p].second;
+                auto& bit=data_in_buf_[rd_p].first;
+                ++rd_p&=0xF;
                 
-                if (bit_cnt_==23) //дюймы
-                    isin_=bit_; 
-            }; 
-            bit_cnt_++; 
+                auto delta_time=time_arrave - previousGetMillis_;
+                if ((bit_cnt_ !=0) && (delta_time > 8/*8*/) ) { //обнуление по превышению таймаута
+                    //Serial.print(time_arrave - previousGetMillis_);
+                    //Serial.print(":");
+                    //Serial.println(bit_cnt_);
+                    //Serial.print(":");
+                    //Serial.println(lost_cnt);
 
-            if (bit_cnt_ >23) { //если слово считано полностью
-                if (isin_==1){ //дюймы 
-                    return 0; 
-                }else{ //мм
-                    izm_ =xData_;//1000.00;
-                    izm_/=1000.00;
-                    if (isfs_==1){ //минус
-                        izm_=(float)(izm_*(-1.0f));
-                    }
-                    if(obr_!=nullptr){
-                        obr_(izm_);
-                    }
+                    bit_cnt_ = 0; 
+                    xData_ = 0; 
+                    lost_cnt++;
                 }; 
+                previousGetMillis_=time_arrave; 
 
-                bit_cnt_=0; 
-                xData_=0; 
-                return 1;
-            } 
+                if(bit_cnt_ < 20){ 
+                    if(bit==1){ 
+                        xData_|= 1<<bit_cnt_;
+                    } 
+                } else { 
+                    if (bit_cnt_==20) //минус
+                        isfs_=bit; 
+                    
+                    if (bit_cnt_==23) //дюймы
+                        isin_=bit; 
+                }; 
+                bit_cnt_++; 
+
+                if (bit_cnt_ >23) { //если слово считано полностью
+                    if (isin_==1){ //дюймы 
+                        return 0; 
+                    }else{ //мм
+                        izm_ =xData_;//1000.00;
+                        izm_/=1000.00;
+                        if (isfs_==1){ //минус
+                            izm_=(float)(izm_*(-1.0f));
+                        }
+                        if(obr_!=nullptr){
+                            obr_(izm_);
+                        }
+                    }; 
+                    if(izm_<-10.051 || izm_>-10.046){
+                        Serial.println(izm_);
+                        //Serial.print(":");
+                        //Serial.print(delta_time);
+                        //Serial.print(":");
+                        //Serial.println(xData_);
+                    }
+                    bit_cnt_=0; 
+                    xData_=0; 
+                    return 1;
+                } 
+            }
             return 0;
         }
 
@@ -68,15 +89,18 @@ class GR_digital_micrometer{
         }
 
         //void (*obr)(float)=nullptr;
+        int lost_cnt=0;
     private:
         int data_pin_=13;
         int clk_pin_=14;
         
-        long previousGetMillis_=0;
+        long unsigned int previousGetMillis_=0;
 
-        bool bit_valid_=0;
-        bool bit_=0;
-        long time_arrave_=0;
+        //bool bit_valid_=0;
+        //bool bit_=0;
+        //long unsigned int time_arrave_=0;
+        std::array<std::pair<bool,long unsigned int>,16> data_in_buf_;
+        int rd_p=0,wr_p=0;
         
         int bit_cnt_=0;
         int isin_ = 0; //д=1 мм=0 
