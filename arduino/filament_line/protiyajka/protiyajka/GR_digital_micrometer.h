@@ -47,7 +47,6 @@ class GR_digital_micrometer{
                     if (isfs_==1){ //минус
                         izm_=(float)(izm_*(-1.0f));
                     }
-
                     if(obr_!=nullptr){
                         obr_(izm_);
                     }
