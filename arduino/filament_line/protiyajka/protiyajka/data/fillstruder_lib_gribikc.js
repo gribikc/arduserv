@@ -6,6 +6,12 @@
 		//Инициализация
 		constructor(){
 			this.data = new google.visualization.DataTable();
+
+			this.formatPattern = '#,##0.000';
+			this.formatter = new google.visualization.NumberFormat({
+				pattern: this.formatPattern
+			});
+
 			this.options = {
 				chart: {
 				  title: 'Box Office Earnings in First Two Weeks of Opening',
@@ -13,9 +19,9 @@
 				},
 				width: 900,
 				height: 500,
-				vAxis:{format: 'scientific'},
-				vAxis:{gridlines:{multiple:1000000}},
-				vAxis:{viewWindowMode:'pretty'}
+				vAxis:{format: this.formatPattern},
+				//vAxis:{gridlines:{multiple:1000}}//,
+				//vAxis:{viewWindowMode:'pretty'}
 				//vAxis:{gridlines:{interval:1}}
 			  };
 
@@ -23,8 +29,10 @@
 			this.chart = new google.charts.Line(document.getElementById('linechart_material'));
 						this.data.addColumn('number', 'Time');
 			this.data.addColumn('number', 'Diametr');
+			
 			this.array=[];
 			this.cnt=1;
+			this.izm_stat={min:-10000,max:100000,avg:0};
 		}
 		
 		//////////
@@ -32,18 +40,29 @@
 			//console.log(stream+'');
 			//this.array=this.array.concat(stream);
 			//this.intervalID = setInterval(this.myCallback, 1000/(this.array.length+1), this);
+			//mma_izm
 
 			
 			for(var i=0;i<stream.length;i++){
 				this.data.addRows([[this.cnt,stream[i]]]);
 				this.cnt++;
+				if(this.izm_stat.min>stream[i] || this.izm_stat.min<=-10000){
+					this.izm_stat.min=stream[i];
+				}
+				if(this.izm_stat.max<stream[i] || this.izm_stat.max>=100000){
+					this.izm_stat.max=stream[i];
+				}
+				this.izm_stat.avg=this.izm_stat.avg*0.999+stream[i]*0.001
 			}
 			if(this.data.Wf.length>2000){
 				this.data.Wf.splice(0, this.data.Wf.length-2000);
 			}
 			
-			
+			this.formatter.format(this.data, 1);
+					
 			this.chart.draw(this.data, google.charts.Line.convertOptions(this.options));
+			
+			document.getElementById("mma_izm").innerHTML="тек:"+stream[stream.length-1]+"<br>мин: "+this.izm_stat.min+"<br>срд: "+this.izm_stat.avg+"<br>мак: "+this.izm_stat.max;
 		}
 		
 		/*myCallback(t){
