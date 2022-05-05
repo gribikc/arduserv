@@ -26,7 +26,7 @@ class GR_digital_micrometer{
                 Serial.print("major:");
                 Serial.println(a);
             }
-            ++wr_p&=0x1F;
+            ++wr_p&=mask;
         }
 
         bool doit(){
@@ -35,14 +35,14 @@ class GR_digital_micrometer{
                 //auto& data=data_in_buf_[0];
                 auto& time_arrave=data_in_buf_[rd_p].second;
                 auto& bit=data_in_buf_[rd_p].first;
-                ++rd_p&=0x1F;
+                ++rd_p&=mask;
                 
                 auto delta_time=time_arrave - previousGetMillis_;
                 if ((bit_cnt_ !=0) && (delta_time > 8/*8*/) ) { //обнуление по превышению таймаута
                     Serial.print("lost sync:");
                     Serial.print(time_arrave - previousGetMillis_);
                     Serial.print(":");
-                    Serial.println(bit_cnt_);
+                    Serial.print(bit_cnt_);
                     Serial.print(":");
                     Serial.println(lost_cnt);
 
@@ -112,7 +112,8 @@ class GR_digital_micrometer{
         //bool bit_valid_=0;
         //bool bit_=0;
         //long unsigned int time_arrave_=0;
-        std::array<std::pair<bool,long unsigned int>,32> data_in_buf_;
+        std::array<std::pair<bool,long unsigned int>,128> data_in_buf_;
+        const char mask=0x7F;
         volatile int rd_p=0,wr_p=0;
         
         int bit_cnt_=0;

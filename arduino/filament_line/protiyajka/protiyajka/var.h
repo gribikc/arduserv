@@ -1,6 +1,6 @@
 int i,j,k;
 /////
-
+	hw_timer_t * timer = NULL;
 
 //DeBUG&SYS
 	#ifdef DEBUG_ON
@@ -22,6 +22,7 @@ int i,j,k;
 	GR_data_collector<float> collect_time_mes(100);
 	GR_time_mesure mes_int_izm;
 	
+	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
 //Func
 	void obrv(float data){
 		Serial.println(data,3);
@@ -29,4 +30,11 @@ int i,j,k;
 
 	void IRAM_ATTR izm_irq() {
 		izm.get_bit();
+	}
+
+	void IRAM_ATTR onTimer() {
+		sm_prot.doit();
+		//portENTER_CRITICAL_ISR(&timerMux);
+		////interruptCounter++;
+		//portEXIT_CRITICAL_ISR(&timerMux);
 	}

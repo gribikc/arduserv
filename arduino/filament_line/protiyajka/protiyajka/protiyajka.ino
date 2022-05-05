@@ -7,6 +7,7 @@
 #include "GR_digital_micrometer.h"
 #include "GR_data_collector.h"
 #include "GR_time_mesure.h"
+#include "GR_step_driver.h"
 #include "wifi_key.h"
 #include "web_server_gr.h"
 #include "var.h"

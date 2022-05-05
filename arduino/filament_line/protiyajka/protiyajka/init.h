@@ -22,6 +22,12 @@ void start_init(){
 	//WEB
     	web_server.init();
 
+	//StepMotor
+		timer = timerBegin(0, 80, true);
+		timerAttachInterrupt(timer, &onTimer, true);
+		timerAlarmWrite(timer, 10, true);//1 000 000 ~ 1c
+		timerAlarmEnable(timer);
+
 	//
 	web_server.server->on("/status", HTTP_GET, [web_server]() {
 		String str;
@@ -60,6 +66,26 @@ void start_init(){
 		str+="[";
 		str+=String(izm.lost_cnt);
 		str+="]";
+		web_server.server->send(200, "text/plan;", str);
+	});
+
+	web_server.server->on("/motgo", HTTP_GET, [web_server]() {
+		String str;
+		sm_prot.move();
+		str+="OK.";
+		web_server.server->send(200, "text/plan;", str);
+	});
+
+	web_server.server->on("/motset", HTTP_POST, [web_server]() {
+		String str;
+		sm_prot.move();
+		str+="OK.";
+		for (uint8_t i = 0; i < web_server.server->args(); i++) {
+  			if(web_server.server->argName(i) == "speed"){
+				float speed=atof(web_server.server->arg(i).c_str());
+				sm_prot.set_f(speed);
+			}
+  		}
 		web_server.server->send(200, "text/plan;", str);
 	});
 }

@@ -12,8 +12,14 @@
 //	#36-only INPUT
 //	#39-only INPUT
 
+	//IZM
 	#define PIN_data0 13 //шина данных
 	#define PIN_clk0 14 //шина clock
+
+	//MOT
+	#define MOT_EN 27
+	#define MOT_STEP 25
+	#define MOT_DIR 26
 
 //BT
 	#define BT_DEV_NAME ""

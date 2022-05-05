@@ -45,16 +45,24 @@
 					
 				</div>
 			<!--STATUS------------------------------------------------------------------------------------------------------->
-				<div data-name="График" id='graph' class="div_in_main_div">
+				<div data-name="График " id='graph' class="div_in_main_div">
 					<div id="mma_izm"></div>
 					<div id="linechart_material" style="width: 900px; height: 500px"></div>
 				</div>
 			<!--UPRAVLENIE--------------------------------------------------------------------------------------------------->
-				<div data-name="Управление" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
-
+				<div data-name="Управление Мотором" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
+					<div id="cur_mot_speed"></div><br>
+					<div>
+						<form id="set_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','set_mot_speed_form');return false;">
+							Установка скорости об.сек<input name="speed" type="text" id="set_mot_speed">
+							<a onclick="send_form_data('http://192.168.0.108/motset','set_mot_speed_form')">Установить</a>
+						</form>
+					</div><br>
 				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
-				<div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">main_settings_edit</div>
+				<div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">
+					main_settings_edit
+				</div>
 			<!--routing_sets------------------------------------------------------------------------------------------------->
 				<div data-name="Маршруты/Точки" id="routing_sets" style="background: #FFFFFF;border: 3px solid #000000;">
 

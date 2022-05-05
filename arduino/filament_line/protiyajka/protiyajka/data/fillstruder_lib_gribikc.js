@@ -94,6 +94,18 @@
 				create_table_from_array_gr(arr,'main_settings_edit');
 			}
 	}
+	
+	function send_form_data(url,form_name){
+		let formData = new FormData(document.getElementById(form_name));
+		// добавим ещё одно поле
+		//formData.append("middle", "Иванович");
+		var xmlhttprq_test = new XMLHttpRequest();
+		xmlhttprq_test.open('POST', url, true);//, true
+		//xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+		//xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlhttprq_test.send(formData);
+	}
+	
 
 	function autoboat_save_settings_send_db(){
 		var xmlhttprq_test = new XMLHttpRequest();
