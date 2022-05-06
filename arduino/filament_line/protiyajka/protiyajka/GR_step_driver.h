@@ -34,29 +34,33 @@ public:
             digitalWrite(step_pin_,step_state_);
         }
     }
-    
-    void move(int incriment=0){
-        inc_=inc_+(incriment==0)?2147483:incriment;
-    }
-
-    int get_f(){//!!!
-        return (fs_*inc_)/exp32_;
-    }
-
-    void inc_f(float freq){
-        inc_+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
-    }
-
-    void set_f(float freq){
-        inc_=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
-    }
 
     void set_ob_sec(float freq){
         inc_=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
     }
 
+    void inc_ob_sec(float freq){
+        inc_+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
+    }
+
+    float get_ob_sec(){
+        return (get_freq()/(micro_step_*360/degres_));
+    }
+
     void set_freq(float freq){
         inc_=(freq*exp32_)/fs_;
+    }
+
+    void inc_freq(float freq){
+        inc_=(freq*exp32_)/fs_;
+    }
+        
+    float get_freq(){
+        return (fs_/exp32_)*inc_;
+    }
+
+    signed int get_inc(){
+        return inc_;
     }
 
 
@@ -79,9 +83,9 @@ private:
     volatile signed long int target_odometr=0;
     //
     //f0=(fs*inc_)/2^32
-    //1об/сек==200pps;  200*2^32/100000= 8589934,592
-    //2об/сек==400pps;  400*2^32/100000=17179869,184
-    //400,00001899898052215576171875    17179870
+    //1об/сек==200pps;          200*2^32/100000= 8589934,592
+    //2об/сек==400pps;          400*2^32/100000=17179869,184
+    //         400,00001899     17179870
     //8об/сек==1600pps;1600*2^32/100000=68719476,736
     //inc_=(f0*2^32)/fs
 

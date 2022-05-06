@@ -7,7 +7,7 @@
 		constructor(){
 			this.data = new google.visualization.DataTable();
 
-			this.formatPattern = '#,##0.000';
+			this.formatPattern = '#,##0.0000';
 			this.formatter = new google.visualization.NumberFormat({
 				pattern: this.formatPattern
 			});
@@ -95,8 +95,17 @@
 			}
 	}
 	
-	function send_form_data(url,form_name){
-		let formData = new FormData(document.getElementById(form_name));
+	function send_form_data(url,form_name,array){
+		let formData;
+		if(form_name!=""){
+			formData = new FormData(document.getElementById(form_name));
+		}else{
+			formData = new FormData();
+		}
+		for(var index in array){
+			formData.append(index, array[index]);
+			//console.log(index+":"+array[index]);
+		}
 		// добавим ещё одно поле
 		//formData.append("middle", "Иванович");
 		var xmlhttprq_test = new XMLHttpRequest();

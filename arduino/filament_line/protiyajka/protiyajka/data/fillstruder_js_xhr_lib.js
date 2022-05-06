@@ -29,8 +29,8 @@ function main_init(){
 	//STREAM
 		//
 			bap_uart_stream_param={
-				url   : config['dev_url']+"/status", //config['dev_url'],
-				url_w : config['dev_url']+"/status",
+				url   : config['dev_url']+"/get_izm_data", //config['dev_url'],
+				url_w : config['dev_url']+"/get_izm_data",
 				mime_type:'text/plain; charset=x-user-defined',
 				name:"BAP:",
 				//parser: autoboat,//new raw_parser_gr(message_hub),

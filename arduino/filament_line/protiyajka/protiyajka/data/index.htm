@@ -53,14 +53,13 @@
 				<div data-name="Управление Мотором" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
 					<div id="cur_mot_speed"></div><br>
 					<div>
-						<form id="set_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','set_mot_speed_form');return false;">
+						<form id="set_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','set_mot_speed_form',{type:'set'});return false;">
 							Установка скорости об.сек<input name="speed" type="text" id="set_mot_speed">
-							<a onclick="send_form_data('http://192.168.0.108/motset','set_mot_speed_form')">Установить</a>
+							<button type="submit">Установить</button>
 						</form>
-						<form id="stop_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','stop_mot_speed_form');return false;">
-							<input name="speed" type="hidden" id="set_mot_speed" value=0>
-							<a onclick="send_form_data('http://192.168.0.108/motset','stop_mot_speed_form')">Остановить</a>
-						</form>
+						
+						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.0,type:'set'})">Остановить</a>
+						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.1,type:'inc'})">тест</a>
 					</div><br>
 				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->

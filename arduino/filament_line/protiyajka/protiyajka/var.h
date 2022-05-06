@@ -20,8 +20,9 @@ int i,j,k;
 	GR_digital_micrometer izm(PIN_data0,PIN_clk0);
 	GR_data_collector<float> collect_izm;
 
-	GR_data_collector<float> collect_time_mes(100);
 	GR_time_mesure mes_int_izm;
+
+	GR_time_mesure loop_timer;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
 //Func

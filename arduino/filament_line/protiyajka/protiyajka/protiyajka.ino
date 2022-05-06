@@ -22,17 +22,20 @@ void setup(){
 
 }
 
-void loop(){ 
-  if(izm.doit()){
-    mes_int_izm.doit();
-    collect_time_mes.add(mes_int_izm.get());
-    collect_izm.add(izm.get_izm());
+void loop(){
+  if(izm.doit()){//есть новое измерение
+    mes_int_izm.doit();//мерим переод измерений, точнее входа в функцию
+    collect_izm.add(izm.get_izm());//сохраняем в массив измерения
+
     //Serial.print("from loop:");
     //obrv(izm.get_izm());
   }
-  web_server.do_web();
-  wifi_do_all();
+
+
+  web_server.do_web();//отдаем пользователю данные
+  wifi_do_all();//проверяем статус вайфая и новые соединения
   //Serial.println(izm.lost_cnt);
+  loop_timer.doit();//измеряем загрузку
 } 
 
 
