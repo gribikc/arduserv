@@ -22,10 +22,10 @@ class GR_digital_micrometer{
             a+=digitalRead(data_pin_);
             a+=digitalRead(data_pin_);
             data_in_buf_[wr_p]=std::make_pair( ((a>2)?true:false),t);
-            if(a==4 || a==3 || a==2 || a==1){
-                Serial.print("major:");
-                Serial.println(a);
-            }
+            //if(a==4 || a==3 || a==2 || a==1){
+            //    Serial.print("major:");
+            //    Serial.println(a);
+            //}
             ++wr_p&=mask;
         }
 

@@ -12,17 +12,20 @@ void start_init(){
 
 	//WiFi
 		WiFi.mode(WIFI_STA);
+		WiFi.disconnect();
 		WiFi.begin(WIFI_SSID, WIFI_KEY);
-	  	delay(500);
+	  	//delay(500);
 
 	//Code
+
+		//tcp_ip.begin();
 		//izm.set_obr(obrv);
   		attachInterrupt(PIN_clk0,izm_irq,RISING);
 
-	//WEB
+		//WEB
     	web_server.init();
 
-	//StepMotor
+		//StepMotor
 		timer = timerBegin(0, 80, true);
 		timerAttachInterrupt(timer, &onTimer, true);
 		timerAlarmWrite(timer, 10, true);//1 000 000 ~ 1c

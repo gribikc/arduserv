@@ -20,11 +20,12 @@ void wifi_do_all(){
       }else{
   			#ifdef DEBUG_ON
   				debug_stream->println("WiFi: AP DISconnected!");
+				//WiFi.reconnect();
   			#endif
       }
     }
   //Проверка новых подключившихся
-    /*if(wifi_state_tg.status == WL_CONNECTED){
+    if(last_status == WL_CONNECTED){
       if (tcp_ip.hasClient()){
         for(i = 0; i < TCP_MAX_SRV_CLIENTS; i++){
           if (!tcp_ipClients[i] || !tcp_ipClients[i].connected()){
@@ -58,6 +59,6 @@ void wifi_do_all(){
 				tcp_ipClients[i].stop();
 			}
 		}
-    }*/
+    }
   //
 }

@@ -57,6 +57,10 @@
 							Установка скорости об.сек<input name="speed" type="text" id="set_mot_speed">
 							<a onclick="send_form_data('http://192.168.0.108/motset','set_mot_speed_form')">Установить</a>
 						</form>
+						<form id="stop_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','stop_mot_speed_form');return false;">
+							<input name="speed" type="hidden" id="set_mot_speed" value=0>
+							<a onclick="send_form_data('http://192.168.0.108/motset','stop_mot_speed_form')">Остановить</a>
+						</form>
 					</div><br>
 				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
