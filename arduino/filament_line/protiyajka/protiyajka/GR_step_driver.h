@@ -39,8 +39,12 @@ public:
         inc_=inc_+(incriment==0)?2147483:incriment;
     }
 
-    int get_f(){
-        return (fs_*inc_)/fs_;
+    int get_f(){//!!!
+        return (fs_*inc_)/exp32_;
+    }
+
+    void inc_f(float freq){
+        inc_+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
     }
 
     void set_f(float freq){
@@ -77,6 +81,7 @@ private:
     //f0=(fs*inc_)/2^32
     //1об/сек==200pps;  200*2^32/100000= 8589934,592
     //2об/сек==400pps;  400*2^32/100000=17179869,184
+    //400,00001899898052215576171875    17179870
     //8об/сек==1600pps;1600*2^32/100000=68719476,736
     //inc_=(f0*2^32)/fs
 

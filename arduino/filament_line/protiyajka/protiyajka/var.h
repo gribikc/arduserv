@@ -8,6 +8,7 @@ int i,j,k;
 	#endif
 	
 //WiFi
+	//!!!Адовый костыль нее убирать отвалится веб сервер
 	WiFiServer tcp_ip(TCP_PORT);
 	WiFiClient tcp_ipClients[TCP_MAX_SRV_CLIENTS];
 

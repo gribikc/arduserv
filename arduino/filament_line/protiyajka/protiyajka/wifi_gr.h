@@ -25,7 +25,9 @@ void wifi_do_all(){
       }
     }
   //Проверка новых подключившихся
-    if(last_status == WL_CONNECTED){
+  //!!!Адовый костыль нее убирать отвалится веб сервер
+  tcp_ip.hasClient();
+    /*if(last_status == WL_CONNECTED){
       if (tcp_ip.hasClient()){
         for(i = 0; i < TCP_MAX_SRV_CLIENTS; i++){
           if (!tcp_ipClients[i] || !tcp_ipClients[i].connected()){
@@ -59,6 +61,6 @@ void wifi_do_all(){
 				tcp_ipClients[i].stop();
 			}
 		}
-    }
+    }*/
   //
 }
