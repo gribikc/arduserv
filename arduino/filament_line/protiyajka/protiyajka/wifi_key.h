@@ -1,2 +1,2 @@
-#define WIFI_SSID	""
-#define WIFI_KEY	""
+#define WIFI_SSID	"you_ap"
+#define WIFI_KEY	"you_key"
