@@ -1,4 +1,3 @@
-
 *.user
 *.so
 *.obj
@@ -35,4 +34,4 @@ win/com_to_web/com_to_web/debug/
 *.o
 *.bak
 arduino/filament_line/protiyajka/protiyajka/wifi_key.h
-*.h
+
