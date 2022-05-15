@@ -25,7 +25,7 @@ win/com_to_web/com_to_web/Makefile
 *.Release
 win/com_to_web/build-com_to_web-Desktop_Qt_5_13_0_MinGW_32_bit-unknown/Makefile
 *.user
-*wifi_key.h
+
 arduino/esp32_tracker/wifi_key.h
 *.Release
 *.Debug
@@ -33,7 +33,7 @@ win/com_to_web/build-com_to_web-Desktop_Qt_5_15_1_clang_64bit-Debug/
 win/com_to_web/com_to_web/debug/
 *.o
 *.bak
-arduino/filament_line/protiyajka/protiyajka/wifi_key.h
+
 wifi_key.h
 
-arduino/filament_line/protiyajka/protiyajka/wifi_key.h
+
