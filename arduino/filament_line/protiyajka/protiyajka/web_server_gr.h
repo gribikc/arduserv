@@ -26,6 +26,13 @@ class Web_server_gr{
 			server=new WebServer(80);
 		}
 
+   void TaskDo(void *pvParameters){
+    for(;;){
+      do_web();
+      //vTaskDelay(10);
+    } 
+   }
+
 		void do_web(){
 			server->handleClient();
 		}
@@ -308,14 +315,20 @@ void Web_server_gr::init(){
 		String 	html  = "<html><head></head><body>Hello world!!!;<br>\n";
 				html += "<a href=\"/list?dir=/\">/list?dir=/: File List</a><br>\n";
 				html += "/neme.exp: Get File<br>\n";
-				html +="Temperature: ";
+        html += "RSSI:";
+        html += WiFi.RSSI();
+				html +="<br>\nTemperature: ";
 				html += ((temprature_sens_read() - 32) / 1.8);
-        html += "\n</body></html>";
+        html += "<br>\n</body></html>";
 		server->send(200, "text/html", html);
 	});
 
 	server->begin();
 	DBG_OUTPUT_PORT.println("HTTP server started");
+
+    //xTaskCreatePinnedToCore(      this->TaskDo    ,  "TaskBlink"      ,  1024*8      ,  NULL    ,  2      ,  NULL     ,  0);
+
+ 
 }
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

@@ -1,3 +1,4 @@
+#include <esp_task_wdt.h>
 void start_init(){
 	//SYS
 	
@@ -24,6 +25,17 @@ void start_init(){
 
 		//WEB
     	web_server.init();
+      
+      xTaskCreatePinnedToCore(
+        [](void * pvParameters){
+          for(;;){
+            //esp_task_wdt_delete(0);
+            esp_task_wdt_deinit();
+            web_server.do_web();
+            esp_task_wdt_init(3,true);
+            vTaskDelay(10);
+          } 
+        }    ,  "WebServer"      ,  1024*8      ,  NULL    ,  2      ,  NULL     ,  0);
 
 		//StepMotor
 		timer = timerBegin(0, 80, true);

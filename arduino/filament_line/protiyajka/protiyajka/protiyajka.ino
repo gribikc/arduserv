@@ -14,11 +14,9 @@
 #include "wifi_gr.h"
 #include "init.h"
 
-
 void setup(){ 
   start_init();
-//
-   		
+  //
 
 }
 
@@ -32,10 +30,8 @@ void loop(){
   }
 
 
-  web_server.do_web();//отдаем пользователю данные
+  //web_server.do_web();//отдаем пользователю данные
   wifi_do_all();//проверяем статус вайфая и новые соединения
   //Serial.println(izm.lost_cnt);
   loop_timer.doit();//измеряем загрузку
 } 
-
-
