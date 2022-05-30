@@ -49,23 +49,37 @@
 					<div id="mma_izm"></div>
 					<div id="linechart_material" style="width: 900px; height: 500px"></div>
 				</div>
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="График PID" id='graph_pid' class="div_in_main_div">
+					<div id="mma_pid"></div>
+					<div id="linechart_pid_div" style="width: 900px; height: 500px"></div>
+				</div>
+			<!--UPRAVLENIE_Izmeritelem--------------------------------------------------------------------------------------------------->
+				<div data-name="Управление Измерителем" id="upr_izm" style="background: #FFFFFF;border: 3px solid #000000;">
+					<div><form id="set_iad" onsubmit="send_form_data('/iadset','set_iad',{type:'set'});return false;">
+						Integrate And Dump<br>
+						<input name="interval" type="text" id="set_iad"><br>
+						<button type="submit">Установить</button>
+						</form>Integrate And Dump
+					</div>
+				</div>
 			<!--UPRAVLENIE--------------------------------------------------------------------------------------------------->
 				<div data-name="Управление Мотором" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
 					<div id="cur_mot_speed"></div><br>
-					<div>	<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.5,type:'inc'})">+0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:1.0,type:'inc'})">+1.0</a>
-						<form id="set_mot_speed_form" onsubmit="send_form_data('http://192.168.0.108/motset','set_mot_speed_form',{type:'set'});return false;">
+					<div>	<a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a onclick="send_form_data('/motset','',{speed:0.5,type:'inc'})">+0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a onclick="send_form_data('/motset','',{speed:1.0,type:'inc'})">+1.0</a>
+						<form id="set_mot_speed_form" onsubmit="send_form_data('/motset','set_mot_speed_form',{type:'set'});return false;">
 							Скорости об.сек<br>
 							<input name="speed" type="text" id="set_mot_speed"><br>
 							<button type="submit">Установить</button>
 						</form>
-						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:-0.1,type:'inc'})">-0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:-0.5,type:'inc'})">-0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:-1.0,type:'inc'})">-1.0</a>
+						<a onclick="send_form_data('/motset','',{speed:-0.1,type:'inc'})">-0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="send_form_data('/motset','',{speed:-0.5,type:'inc'})">-0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="send_form_data('/motset','',{speed:-1.0,type:'inc'})">-1.0</a>
 						<br><br>
-						<a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.0,type:'set'})">Остановить</a>
-						<!--a onclick="send_form_data('http://192.168.0.108/motset','',{speed:0.1,type:'inc'})">тест</a-->
+						<a onclick="send_form_data('/motset','',{speed:0.0,type:'set'})">Остановить</a>
+						<!--a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">тест</a-->
 					</div><br>
 				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->

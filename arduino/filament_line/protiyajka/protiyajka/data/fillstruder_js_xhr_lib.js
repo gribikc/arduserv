@@ -1,7 +1,7 @@
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='192.168.0.108';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='10.11.0.122';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
@@ -23,8 +23,10 @@ var config=new Object();
 ///////////////////////////////////////////////////////////
 //$(document).ready(function(){
 var	prog;//=new izm_gr();
+var pid_data;
 function main_init(){
 	prog=new izm_gr();
+	pid_data=new pid_gr();
 	//_HUB
 	//STREAM
 		//
@@ -50,6 +52,27 @@ function main_init(){
 			};
 			new xmlhttprq_stream_gr(bap_uart_stream_param);//'/cgi-bin/test_counter.sh',test_cnt_nmea,"xhr_status_div","TSTCNT:");//14*8*1=112
 		//
+			pid_stream_param={
+				url   : config['dev_url']+"/get_pid_data", //config['dev_url'],
+				url_w : config['dev_url']+"/get_pid_data",
+				mime_type:'text/plain; charset=x-user-defined',
+				name:"BAP:",
+				//parser: autoboat,//new raw_parser_gr(message_hub),
+				parser: new nt_json_gr(pid_data),
+				
+				flush_en:false,
+				auto_start:true,
+				
+				status_en:false,
+				status_timer:1000,
+				status_div:"xhr_status_div",
+				status_div_status_css:"xmlhttprq_stream_gr_status",
+				status_div_stat_css:"xmlhttprq_stream_gr_stat",
+				
+				reload_en:true,
+				reload_time:1000
+			};
+			new xmlhttprq_stream_gr(pid_stream_param);
 
 	//_STREAM
 	//PAPER JS

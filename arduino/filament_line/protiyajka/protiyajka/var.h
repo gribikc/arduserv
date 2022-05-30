@@ -16,12 +16,18 @@ int i,j,k;
 //Web
 	Web_server_gr web_server;
 
-//Global
+//Global for Work
 	GR_digital_micrometer izm(PIN_data0,PIN_clk0);
+	
 	GR_data_collector<float> collect_izm;
+  GR_circle_buf<float> collect_izm_circle(100);
+  GR_integrate_and_dump<float> iad;
+
+  GR_circle_buf<float> collect_pid_circle(100);
+  float out=0;
+  float pre=0;
 
 	GR_time_mesure mes_int_izm;
-
 	GR_time_mesure loop_timer;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);

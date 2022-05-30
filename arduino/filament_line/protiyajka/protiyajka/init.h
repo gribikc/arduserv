@@ -57,6 +57,32 @@ void start_init(){
 		str+="\n]";
 		web_server.server->send(200, "text/plan;", str);
 	});
+ 
+  web_server.server->on("/get_izm_data2", HTTP_GET, [web_server]() {
+   String str;
+    str.clear();
+    str+="[\n";
+    bool st=1;
+    while(collect_izm_circle.is_readable()){
+      if(!st)str+=", ";st=0;
+      str+=String(collect_izm_circle.read().first,4);
+    }
+    str+="\n]";
+    web_server.server->send(200, "text/plan;", str);
+  });
+  
+  web_server.server->on("/get_pid_data", HTTP_GET, [web_server]() {
+   String str;
+    str.clear();
+    str+="[\n";
+    bool st=1;
+    while(collect_pid_circle.is_readable()){
+      if(!st)str+=", ";st=0;
+      str+=String(collect_pid_circle.read().first,4);
+    }
+    str+="\n]";
+    web_server.server->send(200, "text/plan;", str);
+  });
 
 	web_server.server->on("/error", HTTP_GET, [web_server]() {
 		String str;
@@ -139,4 +165,29 @@ void start_init(){
 		str+=sm_prot.get_ob_sec();
 		web_server.server->send(200, "text/plan;", str);
 	});
+
+  web_server.server->on("/iadset", HTTP_POST, [web_server]() {
+    String str;
+    str+="OK.";
+    int interval;
+    String type;
+    for (uint8_t i = 0; i < web_server.server->args(); i++) {
+        if(web_server.server->argName(i) == "interval"){
+        interval=atoi(web_server.server->arg(i).c_str());
+      }
+      if(web_server.server->argName(i) == "type"){
+        type=web_server.server->arg(i);
+      }
+      }
+    Serial.print("Type:");
+    Serial.print(type);
+    Serial.print(":NUM:");
+    Serial.println(interval);
+    if(type=="set"){
+      iad.set_interval(interval);
+    }
+    str+="cur_speed:";
+    str+=iad.get_interval();
+    web_server.server->send(200, "text/plan;", str);
+  });
 }
