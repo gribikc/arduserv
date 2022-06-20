@@ -1,4 +1,6 @@
 #include <esp_task_wdt.h>
+#include <unordered_map>
+
 void start_init(){
 	//SYS
 	
@@ -140,28 +142,17 @@ void start_init(){
 	});
 
 	web_server.server->on("/motset", HTTP_POST, [web_server]() {
-		String str;
-		str+="OK.";
-		float speed;
-		String type;
-		for (uint8_t i = 0; i < web_server.server->args(); i++) {
-  			if(web_server.server->argName(i) == "speed"){
-				speed=atof(web_server.server->arg(i).c_str());
-			}
-			if(web_server.server->argName(i) == "type"){
-				type=web_server.server->arg(i);
-			}
-  		}
-		//Serial.print("Type:");
-		//Serial.print(type);
-		//Serial.print(":NUM:");
-		//Serial.println(speed);
-		if(type=="set"){
-			sm_prot.set_ob_sec(speed);
-		}else if(type=="inc"){
-			sm_prot.inc_ob_sec(speed);
-		}
-		str+="cur_speed:";
+    std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
+
+    if(arguments_map["type"]=="set"){
+      sm_prot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+    }else if(arguments_map["type"]=="inc"){
+      sm_prot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+    }else{
+      //err
+    }
+   
+    String str="OK.cur_speed:";
 		str+=sm_prot.get_ob_sec();
 		web_server.server->send(200, "text/plan;", str);
 	});

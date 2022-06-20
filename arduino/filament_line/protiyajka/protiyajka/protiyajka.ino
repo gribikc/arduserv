@@ -34,7 +34,7 @@ void loop(){
       collect_izm.add(iad.get());
 
       float in=(iad.get()-1.75)*(-1);
-      out+=in-0.9*pre;
+      out+=in-0.99*pre;
       pre=in;
       collect_pid_circle.write(out);
     }
