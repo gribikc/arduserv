@@ -591,9 +591,8 @@ class nt_raw_parser_gr extends parser_parent_gr{
 					}else{
 						this.db_matrix[m_id]['message'][i][3]="undf...";
 					}
-
-					this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
 				}
+				this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
 			}
 			error_event(message){
 				this.hub_handler.error_event(message);
