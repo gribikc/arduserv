@@ -1,7 +1,7 @@
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='10.11.0.122';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='prot';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
@@ -81,5 +81,5 @@ function main_init(){
 		
 		
 	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');
-	create_table_from_array_gr(config,'main_div_setings');
+	//create_table_from_array_gr(config,'main_div_setings');
 }

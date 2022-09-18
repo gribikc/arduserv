@@ -15,7 +15,13 @@ void start_init(){
 
 	//WiFi
 		WiFi.mode(WIFI_STA);
-		WiFi.disconnect();
+
+    String hostname = WIFI_DNAME;
+    WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
+    WiFi.setHostname(hostname.c_str()); //define hostname
+    MDNS.begin(hostname.c_str());
+    
+		//WiFi.disconnect();
 		WiFi.begin(WIFI_SSID, WIFI_KEY);
 	  	//delay(500);
 
@@ -32,6 +38,7 @@ void start_init(){
         [](void * pvParameters){
           for(;;){
             //esp_task_wdt_delete(0);
+            tcp_ip.hasClient();//!!hz!!!//
             esp_task_wdt_deinit();
             web_server.do_web();
             esp_task_wdt_init(3,true);
@@ -154,6 +161,12 @@ void start_init(){
    
     String str="OK.cur_speed:";
 		str+=sm_prot.get_ob_sec();
+
+    /*web_server.server->sendHeader(F("Access-Control-Allow-Origin"), F("*"));
+    web_server.server->sendHeader(F("Access-Control-Max-Age"), F("600"));
+    web_server.server->sendHeader(F("Access-Control-Allow-Methods"), F("PUT,POST,GET,OPTIONS"));
+    web_server.server->sendHeader(F("Access-Control-Allow-Headers"), F("*"));*/
+
 		web_server.server->send(200, "text/plan;", str);
 	});
 
@@ -179,6 +192,58 @@ void start_init(){
     }
     str+="cur_speed:";
     str+=iad.get_interval();
+    web_server.server->send(200, "text/plan;", str);
+  });
+
+  web_server.server->on("/mode_auto", HTTP_GET, [web_server]() {
+    String str;
+    str+="OK.";
+    work_model.w_mode=1;
+    web_server.server->send(200, "text/plan;", str);
+  });
+  web_server.server->on("/mode_stop", HTTP_GET, [web_server]() {
+    String str;
+    str+="OK.";
+    work_model.w_mode=0;
+    web_server.server->send(200, "text/plan;", str);
+  });
+  web_server.server->on("/set_diametr", HTTP_POST, [web_server]() {
+    String str;
+    str+="OK.";
+    float diametr;
+    for (uint8_t i = 0; i < web_server.server->args(); i++) {
+      if(web_server.server->argName(i) == "diametr"){
+        diametr=atof(web_server.server->arg(i).c_str());
+      }
+    }
+
+    work_model.target_diametr=diametr;
+    
+    str+="diametr:";
+    str+=diametr;
+    web_server.server->send(200, "text/plan;", str);
+  });
+  web_server.server->on("/set_pid", HTTP_POST, [web_server]() {
+    String str;
+    str+="OK.";
+    float kp;
+    float kd;
+    for (uint8_t i = 0; i < web_server.server->args(); i++) {
+      if(web_server.server->argName(i) == "kp"){
+        kp=atof(web_server.server->arg(i).c_str());
+      }
+      if(web_server.server->argName(i) == "kd"){
+        kd=atof(web_server.server->arg(i).c_str());
+      }
+    }
+
+    work_model.k_p=kp;
+    work_model.k_d=kd;
+    
+    str+="kp:";
+    str+=kp;
+    str+=";kd:";
+    str+=kd;
     web_server.server->send(200, "text/plan;", str);
   });
 }

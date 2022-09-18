@@ -23,20 +23,27 @@ void setup(){
 }
 
 void loop(){
-  if(izm.doit()){//есть новое измерение
-    mes_int_izm.doit();//мерим переод измерений, точнее входа в функцию
+  if(izm.doit()){//есть новое измерение c микрометра
+    mes_int_izm.doit();//мерим переод измерений, точнее входа в функцию для отладки
 
-    float data=izm.get_izm();
+    float data=izm.get_izm();//получаем измерение
     //collect_izm.add(data);//сохраняем в массив измерения
-    collect_izm_circle.write(data);
+    collect_izm_circle.write(data);//сохраняем в массив измерения для передачи в web
 
-    if(iad.put(data)){
-      collect_izm.add(iad.get());
+    if(iad.put(data)){//загоняем измерение в усреднитель и проверяем можно ли брать измерение
+      collect_izm.add(iad.get());//сохраняем в массив измерения для передачи в web
 
-      float in=(iad.get()-1.75)*(-1);
-      out+=in-0.99*pre;
-      pre=in;
-      collect_pid_circle.write(out);
+      float error=(iad.get()-work_model.target_diametr)*(-1)*work_model.k_p;//вычисление ошибки: измеренное значение диаметра минус заданное и умноженоое на коэффицент передачи ПИД
+      
+      float out=error-work_model.k_d*work_model.pre_error;//Реализация ПИД
+      out+=sm_prot.get_ob_sec();
+      
+      work_model.pre_error=error;//сохранение преведущий ошибки
+      
+      if(work_model.w_mode==1){
+        sm_prot.set_ob_sec(out);
+      }
+      collect_pid_circle.write(sm_prot.get_ob_sec());
     }
 
     //Serial.print("from loop:");

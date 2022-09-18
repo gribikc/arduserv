@@ -11,8 +11,6 @@ int i,j,k;
 	//!!!Адовый костыль нее убирать отвалится веб сервер
 	WiFiServer tcp_ip(TCP_PORT);
 	WiFiClient tcp_ipClients[TCP_MAX_SRV_CLIENTS];
-
-
 //Web
 	Web_server_gr web_server;
 
@@ -31,6 +29,15 @@ int i,j,k;
 	GR_time_mesure loop_timer;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
+
+  struct{
+    float k_p=0.1;
+    float k_d=0.99;
+    float pre_error=0;
+    float target_diametr=1.75f;
+
+    int w_mode=1;//!!!=0//0-none;1-auto;2-uderjanie;
+  }work_model;
 //Func
 	void obrv(float data){
 		Serial.println(data,3);

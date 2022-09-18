@@ -28,7 +28,7 @@
 //WIFI
 	#define TCP_PORT 483
 	#define TCP_MAX_SRV_CLIENTS 3
-	#define WIFI_DNAME "fil"
+	#define WIFI_DNAME "prot"
 	
 	//#define WIFI_SSID	"***"
 	//#define WIFI_KEY	"***"

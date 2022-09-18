@@ -1,27 +1,46 @@
+  struct{
+    int status=-100;
+    bool init=0;
+
+    unsigned long timeout=0;
+  } wifi_state_tg;
 
 void wifi_do_all(){
-  static int last_status=-1230;
+  //timeout
+  if(wifi_state_tg.status != WL_CONNECTED){
+    auto t=millis();
+    if((t-wifi_state_tg.timeout)>3000){
+      WiFi.mode(WIFI_STA);
+ 
+      WiFi.begin(WIFI_SSID, WIFI_KEY);
+       #ifdef DEBUG_ON
+          debug_stream->println("WiFi: Reconect!");
+       #endif
+       wifi_state_tg.timeout=millis();
+    }
+  }
   //Проверка статуса подключения
-    if(last_status!=WiFi.status()){
-      last_status=WiFi.status();
-      if(last_status == WL_CONNECTED){
-        //tcp_ip.begin(TCP_PORT);
-        //tcp_ip.setNoDelay(true);
-    		#ifdef DEBUG_ON
-    			debug_stream->println("WiFi: AP connected!");
-    			debug_stream->print("WiFi: IP address: ");
-    			debug_stream->println(WiFi.localIP());
-    		#endif
+    if(wifi_state_tg.status!=WiFi.status() || wifi_state_tg.init==0){
+      wifi_state_tg.init=1;
+      wifi_state_tg.status=WiFi.status();
+      
+      if(wifi_state_tg.status == WL_CONNECTED){
+        tcp_ip.begin(TCP_PORT);
+        tcp_ip.setNoDelay(true);
+        #ifdef DEBUG_ON
+          debug_stream->println("WiFi: AP connected!");
+          debug_stream->print("WiFi: IP address: ");
+          debug_stream->println(WiFi.localIP());
+        #endif
         if(MDNS.begin(WIFI_DNAME)){
-    			#ifdef DEBUG_ON
-    				debug_stream->println("WiFi: MDNS responder started");
-    			#endif
+          #ifdef DEBUG_ON
+            debug_stream->println("WiFi: MDNS responder started");
+          #endif
         }
       }else{
-  			#ifdef DEBUG_ON
-  				debug_stream->println("WiFi: AP DISconnected!");
-				//WiFi.reconnect();
-  			#endif
+        #ifdef DEBUG_ON
+          debug_stream->println("WiFi: AP DISconnected!");
+        #endif
       }
     }
   //Проверка новых подключившихся

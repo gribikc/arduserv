@@ -16,8 +16,8 @@
 
 			this.options = {
 				chart: {
-				  title: 'Box Office Earnings in First Two Weeks of Opening',
-				  subtitle: 'in millions of dollars (USD)'
+				  title: 'Filament diametr',
+				  subtitle: 'in mm'
 				},
 				width: 900,
 				height: 500,
@@ -117,8 +117,8 @@ class pid_gr{
 
 		this.options = {
 			chart: {
-			  title: 'Box Office Earnings in First Two Weeks of Opening',
-			  subtitle: 'in millions of dollars (USD)'
+			  title: 'PID output',
+			  subtitle: 'in turn per second'
 			},
 			width: 900,
 			height: 500,
@@ -128,7 +128,7 @@ class pid_gr{
 
 		this.chart = new google.charts.Line(document.getElementById('linechart_pid_div'));
 		this.data.addColumn('number', 'Time');
-		this.data.addColumn('number', 'Diametr');
+		this.data.addColumn('number', 'tps');
 		
 		this.array=[];
 		this.cnt=1;
@@ -189,7 +189,17 @@ class pid_gr{
 		// добавим ещё одно поле
 		//formData.append("middle", "Иванович");
 		var xmlhttprq_test = new XMLHttpRequest();
-		xmlhttprq_test.open('POST', url, true);//, true
+		
+		if(document.location.protocol=="file:"){
+			url="http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']+url;
+		}
+		
+		var type_xnr="POST";
+		if(array==""){
+			type_xnr="GET";
+		}
+		
+		xmlhttprq_test.open(type_xnr, url, true);//, true
 		//xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		//xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xmlhttprq_test.send(formData);

@@ -12,6 +12,7 @@ public:
     {
         pinMode (step_pin_, OUTPUT);
         pinMode (dir_pin_, OUTPUT);
+        digitalWrite(dir_pin_,1);
         if(en_pin!=0){
             pinMode (en_pin_, OUTPUT);
         }
@@ -90,7 +91,3 @@ private:
     //inc_=(f0*2^32)/fs
 
 };
-
-
-
-

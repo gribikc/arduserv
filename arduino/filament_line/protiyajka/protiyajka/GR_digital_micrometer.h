@@ -32,13 +32,14 @@ class GR_digital_micrometer{
         bool doit(){
             if(fake_mode_==1){
               auto t=millis();
-              if(t-previousGetMillis_>1000/14){//70*24
+              if(t-previousGetMillis_>100/14){//70*24
                 previousGetMillis_=t;
                 izm_=1.75f+(float)((float)(random(-1000, 1000))/(float)100000.0f)+(float)((float)fake_cnt_/(float)10000.0f);
                 ++fake_cnt_;
-                //if(fake_cnt>1000)
-                return 1;
+                if(fake_cnt_>1000) fake_cnt_=-1000;
+                return true;
               }
+              return false;
             }
             //for(auto &data:data_in_buf_){
             while(wr_p!=rd_p){
@@ -119,7 +120,7 @@ class GR_digital_micrometer{
         int lost_cnt=0;
     private:
         bool fake_mode_=0;
-        signed char fake_cnt_=0;
+        int fake_cnt_=0;
     
         int data_pin_=13;
         int clk_pin_=14;
