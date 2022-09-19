@@ -10,7 +10,7 @@ void wifi_do_all(){
   if(wifi_state_tg.status != WL_CONNECTED){
     auto t=millis();
     if((t-wifi_state_tg.timeout)>3000){
-      WiFi.mode(WIFI_STA);
+      //WiFi.mode(WIFI_STA);
  
       WiFi.begin(WIFI_SSID, WIFI_KEY);
        #ifdef DEBUG_ON

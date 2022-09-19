@@ -14,7 +14,7 @@ void start_init(){
 		#endif
 
 	//WiFi
-		WiFi.mode(WIFI_STA);
+		//WiFi.mode(WIFI_STA);
 
     String hostname = WIFI_DNAME;
     WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
@@ -23,7 +23,12 @@ void start_init(){
     
 		//WiFi.disconnect();
 		WiFi.begin(WIFI_SSID, WIFI_KEY);
-	  	//delay(500);
+
+    WiFi.softAP("prot", "12345678");
+    IPAddress IP = WiFi.softAPIP();
+    Serial.print("AP IP address: ");
+    Serial.println(IP);
+  
 
 	//Code
 
