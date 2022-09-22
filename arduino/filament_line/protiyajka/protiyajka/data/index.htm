@@ -5,16 +5,25 @@
 	<meta http-equiv="Cache-Control" content="no-cache">
 	<LINK REL=STYLESHEET TYPE="text/css" HREF="tipo_proga_css_lib.css">
 
-	<!--script language="javascript" type="text/javascript"  src="../paper-full.js"></script-->
+
+
 	<script language="javascript" type="text/javascript"  src="tipo_proga_js_lib_gr.js"></script>
 	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
 	
 	<!--script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script-->
-	<script type="text/javascript" src="plotly_min.js.gz"></script>
-	
+	<!--script src="plotly_fin_min.js.gz" type="application/javascript"></script-->
+	<script>	
+		var loadedJS = document.createElement('script');
+		loadedJS.src = (document.location.protocol=="file:") ? "https://cdn.plot.ly/plotly-finance-2.14.0.min.js" : "plotly_fin_min.js.gz";
+		loadedJS.type = "text/javascript";
+		loadedJS.language = "javascript";
+		var head = document.getElementsByTagName('head')[0];
+		head.appendChild(loadedJS);
+	</script>
 	
 	<script language="javascript" type="text/javascript"  src="fillstruder_lib_gribikc.js"></script>
 	<script language="javascript" type="text/javascript"  src="fillstruder_js_xhr_lib.js"></script>	
+	
 
 </head>
 <body onload="main_init()">
