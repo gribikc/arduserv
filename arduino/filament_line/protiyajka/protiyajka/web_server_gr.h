@@ -137,6 +137,8 @@ String Web_server_gr::getContentType(String filename) {
     return "application/x-pdf";
   } else if (filename.endsWith(".zip")) {
     return "application/x-zip";
+  } else if (filename.endsWith("js.gz")) {
+    return "gzip_types/application/javascript";
   } else if (filename.endsWith(".gz")) {
     return "application/x-gzip";
   }
