@@ -31,12 +31,13 @@ int i,j,k;
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
 
   struct{
-    float k_p=0.1;
+    float k_p=-0.05;
     float k_d=0.99;
     float pre_error=0;
     float target_diametr=1.75f;
+    int iad=20;
 
-    int w_mode=1;//!!!=0//0-none;1-auto;2-uderjanie;
+    int w_mode=0;//!!!=0//0-none;1-auto;2-uderjanie;
   }work_model;
 //Func
 	void obrv(float data){

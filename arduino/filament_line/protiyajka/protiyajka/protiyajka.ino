@@ -20,6 +20,7 @@ void setup(){
   start_init();
   //
   izm.fake_mode_set(1);
+  iad.set_interval(work_model.iad);
 }
 
 void loop(){

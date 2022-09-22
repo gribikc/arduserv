@@ -9,11 +9,8 @@
 	<script language="javascript" type="text/javascript"  src="tipo_proga_js_lib_gr.js"></script>
 	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
 	
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.load('current', {'packages':['line']});
-	</script>
+	<!--script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script-->
+	<script type="text/javascript" src="plotly.min.js"></script>
 	
 	
 	<script language="javascript" type="text/javascript"  src="fillstruder_lib_gribikc.js"></script>
@@ -83,15 +80,20 @@
 					</div><br>
 				</div>
 			<!--GR1------------------------------------------------------------------------------------------------------->
-				<div data-name="График " id='graph' class="div_in_main_div">
+				<div data-name="График Измерителя" id='graph' class="div_in_main_div">
 					<div id="mma_izm"></div>
-					<div id="linechart_material" style="width: 900px; height: 500px"></div>
+					<!--div id="linechart_material" style="width: 900px; height: 500px"></div-->
+					<div id='linechart_izm'>
 				</div>
 			<!--GR2------------------------------------------------------------------------------------------------------->
 				<div data-name="График PID" id='graph_pid' class="div_in_main_div">
 					<div id="mma_pid"></div>
-					<div id="linechart_pid_div" style="width: 900px; height: 500px"></div>
+					<div id="linechart_pid_div"></div>
 				</div>
+			<!--GR3------------------------------------------------------------------------------------------------------->
+				<!--div data-name="График " id='graph' class="div_in_main_div">
+					<div id='myDiv'>
+				</div-->
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
 				<!--div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">
 					main_settings_edit
