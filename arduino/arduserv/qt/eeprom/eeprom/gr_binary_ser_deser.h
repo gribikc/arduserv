@@ -8,78 +8,123 @@
 #include <iostream>
 
 using Buffer = std::vector<uint8_t>;
-//using Node = std::unordered_map<std::string,std::variant<bool,char,int,float,double,std::string,std::vector<Node>>>;
+//using Node2 = std::variant<bool,char,int,float,double,std::string,std::vector<Node2>>;
+//using Array = std::vector<std::variant<bool,char,int,float,double,std::string>>;
 class Node;
-using Array = std::vector<std::variant<bool,char,int,float,double>>;
+using Array = std::vector<Node>;
+
 class Node
-    : public std::unordered_map<std::string,std::variant<bool,char,int,float,double,std::string,Array>> {
+    : public std::variant<bool,char,int,float,double,std::string,Array> {
 public:
+    /*Node operator= (Node other){
+        *this=other;
+        return *this;
+    }*/
+    /*template<typename T>
+    Node(T t){
+         *this=t;
+    }*/
+
+    template<typename T>
+    void set(T i){
+        *this={i};
+    }
+    template<typename T>
+    T get_t(){
+        T t;
+        if(std::holds_alternative<T>(*this)){
+            t=std::get<T>(*this);
+        }
+        return t;
+    }
 
 };
-
+//Array a(1,{2});
+//Array b({ {1},{2},{3} });
+//Node c({Array({ {1},{2},{3} })});
 
 class GR_binary_ser_deser
 {
 public:
-    GR_binary_ser_deser(Node node):node_(std::move(node)){
+    GR_binary_ser_deser(std::unordered_map<std::string,Node> structure_ext):structure(std::move(structure_ext)){
 
     }
 
-public:
-    void to_bin(Buffer &buff){
-        for(auto &data:node_){
-            switch ( data.second.index() ) {
+private:
+    void to_bin_parser(Buffer &buff,Node &node){
+        switch ( node.index() ) {
             case 0://bool
-                serialize(buff,std::get<bool>(data.second));
+                serialize(buff,std::get<bool>(node));
                 break;
             case 1://char
-                serialize(buff,std::get<char>(data.second));
+                serialize(buff,std::get<char>(node));
                 break;
             case 2://int
-                serialize(buff,std::get<int>(data.second));
+                serialize(buff,std::get<int>(node));
                 break;
             case 3://float
-                serialize(buff,std::get<float>(data.second));
+                serialize(buff,std::get<float>(node));
                 break;
             case 4://double
-                serialize(buff,std::get<double>(data.second));
+                serialize(buff,std::get<double>(node));
                 break;
             case 5://string
-                serialize(buff,std::get<std::string>(data.second));
+                serialize(buff,std::get<std::string>(node));
                 break;
             case 6://Array
-                //serialize(buff,std::get<Array>(data.second));
+                //serialize_vector(buff,std::get<Array>(data.second));
+                //to_bin_parser(buff,node);
+                for(auto &a:std::get<Array>(node)){
+                    to_bin_parser(buff,a);
+                }
                 break;
-            }
+        }
+    }
+
+    void from_bin_parser(Buffer &buff,Node &node,size_t &offset){
+        switch ( node.index() ) {
+            case 0://bool
+                node={deserialize<bool>(buff, offset)};
+                break;
+            case 1://char
+                //data.second={deserialize<char>(buff, offset)};//!!!
+                node.set(deserialize<char>(buff, offset));
+                break;
+            case 2://int
+                node={deserialize<int>(buff, offset)};
+                break;
+            case 3://float
+                node={deserialize<float>(buff, offset)};
+                break;
+            case 4://double
+                node={deserialize<double>(buff, offset)};
+                break;
+            case 5://string
+                //data.second=deserialize<std::string>(buff, offset);
+                node={deserialize_string(buff, offset)};
+                break;
+            case 6://Array
+                //deserialize_vector(buff,std::get<Array>(data.second));
+                for(auto &a:std::get<Array>(node)){
+                    from_bin_parser(buff,a,offset);
+                }
+                break;
+        }
+    }
+public:
+    void to_bin(Buffer &buff){
+        for(auto &data:structure){
+            to_bin_parser(buff,data.second);
         }
     }
     void from_bin(Buffer &buff){
         size_t offset = 0;
-        for(auto &data:node_){
-            switch ( data.second.index() ) {
-            case 0://bool
-                data.second=deserialize<bool>(buff, offset);
-                break;
-            case 1://char
-                data.second=deserialize<char>(buff, offset);
-                break;
-            case 2://int
-                data.second=deserialize<int>(buff, offset);
-                break;
-            case 3://float
-                data.second=deserialize<float>(buff, offset);
-                break;
-            case 4://double
-                data.second=deserialize<double>(buff, offset);
-                break;
-            case 5://string
-                //data.second=deserialize<std::string>(buff, offset);
-                data.second=deserialize_string(buff, offset);
-                break;
-            }
+       for(auto &data:structure){
+           from_bin_parser(buff,data.second,offset);
         }
     }
 private:
+    ///bool,char,int,float,double
     template<typename T>
     typename std::enable_if<std::is_pod_v<T>>::type
     serialize(Buffer& buff, T value)
@@ -105,18 +150,17 @@ private:
         }
         return value;
     }
-    //////
-    //////
+    /// string
     template<typename String>
     typename std::enable_if<std::is_same_v<std::string, typename std::remove_reference<String>::type>>::type
     serialize(Buffer& buff, String&& value)
     {
         auto offset = buff.size();
-        buff.resize(buff.size() + /*sizeof(size_t)*/ 1 + value.size() * sizeof(char));
-        const auto size = value.size()&0xFF;
-        memcpy(&buff[offset], &size, sizeof(size_t));
-        offset += /*sizeof(size_t)*/ 1;
-        memcpy(&buff[offset], value.data(), size);
+        buff.resize(buff.size() + 1 + value.size() * sizeof(char));
+        const auto size = value.size();
+        memcpy(&buff[offset], &size, 1);
+        offset += 1;
+        memcpy(&buff[offset], value.data(), size * sizeof(char));
     }
 
     //template<>//нет у меня 20 стандарта)))
@@ -124,15 +168,44 @@ private:
     {
         std::string value;
         size_t size{0};
-        memcpy( &size, &buf[offset],  /*sizeof(size_t)*/1);
-        offset += /*sizeof(size_t)*/1;
+        memcpy( &size, &buf[offset], 1);
+        offset += 1;
         value.resize(size);
         memcpy(value.data(),&buf[offset] , size);
         offset += size;
         return value;
     }
-private:
-    Node node_;
+    /// vector
+    template<typename T>
+    void serialize_vector(Buffer& buff, T& value)
+    {
+        typename T::value_type s;
+        auto offset = buff.size();
+        buff.resize(buff.size() + 1 + value.size() * sizeof(s));//рассчет размера буфера
+        const auto size = value.size();
+        memcpy(&buff[offset], &size, 1);
+        offset += 1;
+        memcpy(&buff[offset], value.data(), size*sizeof(s));
+    }
+
+    //template<>//нет у меня 20 стандарта)))
+    template<typename T>
+    std::vector<T> deserialize_vector(const Buffer& buf, size_t& offset)
+    {
+        typename T::value_type s;
+        T value;//возвращаемый вектор
+        size_t size{0};
+        memcpy( &size, &buf[offset], 1);//определяем размер вектора
+        offset += 1;//переход по адресу к началу массива
+        value.resize(size);
+        size*=sizeof(s);
+        memcpy(value.data(),&buf[offset] , size);
+        offset += size;
+        return value;
+    }
+    //
+    public:
+    std::unordered_map<std::string,Node> structure;
 };
 
 #endif // GR_BINARY_SER_DESER_H
