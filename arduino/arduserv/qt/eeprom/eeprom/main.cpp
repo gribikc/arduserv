@@ -9,7 +9,7 @@
 using namespace std;
 
 ////////////////////////////////////
-void print_rec(Node &node,string pre="") {
+void print_rec(bsd::Node &node,string pre="") {
     cout<<pre;
     switch ( node.index() ) {
         case 0://bool
@@ -39,7 +39,7 @@ void print_rec(Node &node,string pre="") {
             //for(auto &a:vect){
             //    cout<<"    "<<a<<endl;
             //}
-            for(auto &a:std::get<Array>(node)){
+            for(auto &a:std::get<bsd::Array>(node)){
                 print_rec(a,pre+"|-");
             }
             break;
@@ -53,34 +53,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     //////////////////////////////////
-
-
-    //Array arr({1,2,3});
-
-
-    /*GR_binary_ser_deser inf({{
-                             {
-                              {"a"s,false}, //bool
-                              {"b"s,3},     //int
-                              {"c"s,4.35},   //double
-                              {"d"s,7.2f}, //float
-                              {"e"s,'a'},   //char
-                              {"f"s,"eee"s},//string
-                              {"g"s,'b'},   //char
-                              {"h"s,'c'}    //char
-                              //{"i",arr},
-                              //{"j",'h'},
-                              //{"k","f"},
-                              //{"l",3},
-                              //{"m",45.0},
-                              //{"n",arr}
-                             }
-                            }});*/
-    //Node test{3};
-    //test=4;
-
-    Array fff={Array({ {1},{2},{3} })};
-    GR_binary_ser_deser inf({{
+    bsd::GR_binary_ser_deser inf({{
                                  {
                                   {"a"s,{false}}, //bool
                                   {"b"s,{3}},     //int
@@ -90,7 +63,7 @@ int main(int argc, char *argv[])
                                   {"f"s,{"eee"s}},//string
                                   {"g"s,{'b'}},   //char
                                   {"h"s,{'c'}},    //char
-                                  {"i",{Array({ {"asvas"s},{2.2},{3.3},{'v'} })}},
+                                  {"i",{bsd::Array({ {"asvas"s},{2.2},{3.3},{'v'} })}},
                                   {"j"s,{'h'}},
                                   {"k",{"f"}},
                                   {"l",{3}},
@@ -98,7 +71,7 @@ int main(int argc, char *argv[])
                                   //{"n",arr}
                                  }
                                 }});
-    GR_binary_ser_deser inf2({{
+    bsd::GR_binary_ser_deser inf2({{
                                  {
                                   {"a"s,{true}}, //bool
                                   {"b"s,{0}},     //int
@@ -108,7 +81,7 @@ int main(int argc, char *argv[])
                                   {"f"s,{""s}},//string
                                   {"g"s,{'0'}},   //char
                                   {"h"s,{'0'}},    //char
-                                  {"i",{Array({ {""s},{0.0},{0.0},{'0'} })}},
+                                  {"i",{bsd::Array({ {""s},{0.0},{0.0},{'0'} })}},
                                   {"j"s,{'0'}},
                                   {"k",{"0"}},
                                   {"l",{0}},
@@ -117,9 +90,9 @@ int main(int argc, char *argv[])
                                  }
                                 }});
 
-    Buffer buff;
+    bsd::Buffer buff;
     inf.to_bin(buff);
-    Buffer buff_test=buff;
+    bsd::Buffer buff_test=buff;
 
     inf2.from_bin(buff);
     buff.erase(buff.begin(),buff.end());

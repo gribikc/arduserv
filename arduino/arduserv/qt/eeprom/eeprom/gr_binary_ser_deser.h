@@ -7,9 +7,9 @@
 #include <unordered_map>
 #include <iostream>
 
+namespace bsd {
+
 using Buffer = std::vector<uint8_t>;
-//using Node2 = std::variant<bool,char,int,float,double,std::string,std::vector<Node2>>;
-//using Array = std::vector<std::variant<bool,char,int,float,double,std::string>>;
 class Node;
 using Array = std::vector<Node>;
 
@@ -39,9 +39,6 @@ public:
     }
 
 };
-//Array a(1,{2});
-//Array b({ {1},{2},{3} });
-//Node c({Array({ {1},{2},{3} })});
 
 class GR_binary_ser_deser
 {
@@ -72,8 +69,6 @@ private:
                 serialize(buff,std::get<std::string>(node));
                 break;
             case 6://Array
-                //serialize_vector(buff,std::get<Array>(data.second));
-                //to_bin_parser(buff,node);
                 for(auto &a:std::get<Array>(node)){
                     to_bin_parser(buff,a);
                 }
@@ -104,7 +99,6 @@ private:
                 node={deserialize_string(buff, offset)};
                 break;
             case 6://Array
-                //deserialize_vector(buff,std::get<Array>(data.second));
                 for(auto &a:std::get<Array>(node)){
                     from_bin_parser(buff,a,offset);
                 }
@@ -208,4 +202,5 @@ private:
     std::unordered_map<std::string,Node> structure;
 };
 
+}
 #endif // GR_BINARY_SER_DESER_H
