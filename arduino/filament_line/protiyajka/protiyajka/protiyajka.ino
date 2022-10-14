@@ -2,6 +2,8 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <ESPmDNS.h>
+//#include <EEPROM.h>
+#include "EEPROM.h"
 
 #include "def.h"
 #include "GR_digital_micrometer.h"
@@ -20,7 +22,9 @@ void setup(){
   start_init();
   //
   izm.fake_mode_set(1);
-  iad.set_interval(work_model.iad);
+  iad.set_interval(eedat_upr.iad);
+
+  //EEPROM.writeByte(0, 0);
 }
 
 void loop(){
@@ -34,9 +38,9 @@ void loop(){
     if(iad.put(data)){//загоняем измерение в усреднитель и проверяем можно ли брать измерение
       collect_izm.add(iad.get());//сохраняем в массив измерения для передачи в web
 
-      float error=(iad.get()-work_model.target_diametr)*(-1)*work_model.k_p;//вычисление ошибки: измеренное значение диаметра минус заданное и умноженоое на коэффицент передачи ПИД
+      float error=(iad.get()-eedat_upr.target_diametr)*(-1)*eedat_upr.k_p;//вычисление ошибки: измеренное значение диаметра минус заданное и умноженоое на коэффицент передачи ПИД
       
-      float out=error-work_model.k_d*work_model.pre_error;//Реализация ПИД
+      float out=error-eedat_upr.k_d*work_model.pre_error;//Реализация ПИД
       out+=sm_prot.get_ob_sec();
       
       work_model.pre_error=error;//сохранение преведущий ошибки

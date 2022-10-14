@@ -32,6 +32,21 @@ void start_init(){
 
 	//Code
 
+  //EEPROM
+
+    //EEPROM.writeByte(0, 0);
+    //byte valid=0;
+    /*if(valid==1){
+      //EEPROM.get(1,work_model.mem);
+    }*/
+
+    char eeprom_valid=0;
+    EEPROM.get(0, eeprom_valid);
+    if(eeprom_valid&0x01){
+      EEPROM.get(1, eedat_upr);
+    }
+    
+
 		//tcp_ip.begin();
 		//izm.set_obr(obrv);
   		attachInterrupt(PIN_clk0,izm_irq,RISING);
@@ -222,7 +237,7 @@ void start_init(){
       }
     }
 
-    work_model.target_diametr=diametr;
+    eedat_upr.target_diametr=diametr;
     
     str+="diametr:";
     str+=diametr;
@@ -242,8 +257,8 @@ void start_init(){
       }
     }
 
-    work_model.k_p=kp;
-    work_model.k_d=kd;
+    eedat_upr.k_p=kp;
+    eedat_upr.k_d=kd;
     
     str+="kp:";
     str+=kp;

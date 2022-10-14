@@ -204,3 +204,66 @@ private:
 
 }
 #endif // GR_BINARY_SER_DESER_H
+ /* //////////////////////////////////
+    bsd::GR_binary_ser_deser inf({{
+                                 {
+                                  {"a"s,{false}}, //bool
+                                  {"b"s,{3}},     //int
+                                  {"c"s,{4.35}},   //double
+                                  {"d"s,{7.2f}}, //float
+                                  {"e"s,{'a'}},   //char
+                                  {"f"s,{"eee"s}},//string
+                                  {"g"s,{'b'}},   //char
+                                  {"h"s,{'c'}},    //char
+                                  {"i",{bsd::Array({ {"asvas"s},{2.2},{3.3},{'v'} })}},
+                                  {"j"s,{'h'}},
+                                  {"k",{"f"}},
+                                  {"l",{3}},
+                                  {"m",{45.736}}
+                                  //{"n",arr}
+                                 }
+                                }});
+    bsd::GR_binary_ser_deser inf2({{
+                                 {
+                                  {"a"s,{true}}, //bool
+                                  {"b"s,{0}},     //int
+                                  {"c"s,{0.0}},   //double
+                                  {"d"s,{0.0f}}, //float
+                                  {"e"s,{'0'}},   //char
+                                  {"f"s,{""s}},//string
+                                  {"g"s,{'0'}},   //char
+                                  {"h"s,{'0'}},    //char
+                                  {"i",{bsd::Array({ {""s},{0.0},{0.0},{'0'} })}},
+                                  {"j"s,{'0'}},
+                                  {"k",{"0"}},
+                                  {"l",{0}},
+                                  {"m",{0.0}}
+                                  //{"n",arr}
+                                 }
+                                }});
+
+    bsd::Buffer buff;
+    inf.to_bin(buff);
+    bsd::Buffer buff_test=buff;
+
+    inf2.from_bin(buff);
+    buff.erase(buff.begin(),buff.end());
+    inf2.to_bin(buff);
+
+    if(buff_test==buff){
+        cout<<"OK"<<endl;;
+    }else{
+        cout<<"NE OK"<<endl;;
+    }
+
+
+    for(auto& data:inf2.structure){
+        print_rec(data.second);
+    }
+
+    cout<<endl<<"-----"<<endl;
+    cout<<inf2.structure["m"].get_t<double>()<<endl;
+    inf2.structure["m"].set<double>(3.56);
+    cout<<inf2.structure["m"].get_t<double>()<<endl;
+    //////////////////////////////////
+ */

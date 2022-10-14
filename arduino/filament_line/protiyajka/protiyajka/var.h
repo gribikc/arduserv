@@ -29,16 +29,23 @@ int i,j,k;
 	GR_time_mesure loop_timer;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
+  ///Work Mode & EEPROM
+  
+    struct eedat_upr_def{
+      float k_p=-0.05;
+      float k_d=0.99;
+      float target_diametr=1.75f;
+      int iad=20;
+    }eedat_upr;
 
-  struct{
-    float k_p=-0.05;
-    float k_d=0.99;
-    float pre_error=0;
-    float target_diametr=1.75f;
-    int iad=20;
+    struct work_model_def{
+      float pre_error=0;
+      int w_mode=0;//!!!=0//0-none;1-auto;2-uderjanie;
+    }work_model;
 
-    int w_mode=0;//!!!=0//0-none;1-auto;2-uderjanie;
-  }work_model;
+
+  
+
 //Func
 	void obrv(float data){
 		Serial.println(data,3);

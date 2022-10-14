@@ -32,13 +32,6 @@ void print_rec(bsd::Node &node,string pre="") {
             cout<<node.get_t<string>()<<endl;
             break;
         case 6://Array
-            //serialize(buff,std::get<Array>(data.second));
-            //auto vect=std::get<Array>(data.second);
-            //auto a=3;
-            //a++;
-            //for(auto &a:vect){
-            //    cout<<"    "<<a<<endl;
-            //}
             for(auto &a:std::get<bsd::Array>(node)){
                 print_rec(a,pre+"|-");
             }
@@ -51,6 +44,50 @@ void print_rec(bsd::Node &node,string pre="") {
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    //////////////////////////////////
+    char valid=0;
+    //EEPROM.get(0,valid);
+    if(valid==1){
+      //EEPROM.get(1,work_model.mem);
+    }
+
+    ///
+    struct eedat_upr_def{
+      char valid=0;
+      float k_p=-0.05;
+      float k_d=0.99;
+      float pre_error=0;
+      float target_diametr=1.75f;
+      int iad=20;
+    };
+
+    struct work_model_def:eedat_upr_def{
+      int w_mode=0;//!!!=0//0-none;1-auto;2-uderjanie;
+    }work_model;
+
+    //EEPROM.get(0);
+    work_model=work_model_def({});
+
+    ///
+    struct Data {
+      double bright = 0;
+      int counter = 0;
+      float fvalue = 0;
+      //16
+      char text='c';
+      //24
+      string str="svsbvdbsdb";
+      string str2="svsbvdbsdb";
+
+      array<double,3> ard;
+
+    };
+    // глобальный экземпляр для личного использования
+    Data data{1,2,3};
+    Data data2{0,0,0};
+    cout<<sizeof (data)<<endl;
+    memcpy(&data2,&data,sizeof (data));
+    data.str="";
 
     //////////////////////////////////
     bsd::GR_binary_ser_deser inf({{
