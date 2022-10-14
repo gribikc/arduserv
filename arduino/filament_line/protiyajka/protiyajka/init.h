@@ -13,6 +13,21 @@ void start_init(){
 			debug_stream=&Serial;//&Serial;//&tcp_ipClients[0]//
 		#endif
 
+
+  //EEPROM
+    EEPROM.begin(1000);
+
+    if(EEPROM.read(0)>0){
+      EEPROM.get(1, eedat_upr);
+    }else{
+      Serial.println("EEPROM not valid!");
+    }
+    
+    //eedat_upr.ap_name="hello from EEPROM ;)";
+    //EEPROM.put(1, eedat_upr);
+    //EEPROM.write(0, 1 );
+
+
 	//WiFi
 		//WiFi.mode(WIFI_STA);
 
@@ -31,22 +46,6 @@ void start_init(){
   
 
 	//Code
-
-  //EEPROM
-
-    //EEPROM.writeByte(0, 0);
-    //byte valid=0;
-    /*if(valid==1){
-      //EEPROM.get(1,work_model.mem);
-    }*/
-
-    char eeprom_valid=0;
-    EEPROM.get(0, eeprom_valid);
-    if(eeprom_valid&0x01){
-      EEPROM.get(1, eedat_upr);
-    }
-    
-
 		//tcp_ip.begin();
 		//izm.set_obr(obrv);
   		attachInterrupt(PIN_clk0,izm_irq,RISING);
@@ -72,7 +71,18 @@ void start_init(){
 		timerAlarmWrite(timer, 10, true);//1 000 000 ~ 1c
 		timerAlarmEnable(timer);
 
-	//
+//////////////////////////////////////////
+//////////////////////////////////////////
+  web_server.server->on("/eeprom_store", HTTP_GET, [web_server]() {
+    String str;
+    str.clear();
+
+    EEPROM.put(1, eedat_upr);
+    EEPROM.write(0, 1 );
+    str+="Ok";
+    web_server.server->send(200, "text/plan;", str);
+  });
+  
 	web_server.server->on("/get_izm_data", HTTP_GET, [web_server]() {
 		String str;
 		str.clear();

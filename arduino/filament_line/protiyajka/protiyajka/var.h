@@ -36,6 +36,11 @@ int i,j,k;
       float k_d=0.99;
       float target_diametr=1.75f;
       int iad=20;
+      String ap_name_host="prot";
+      String ap_key_host="12345678";
+      String ap_name_client=WIFI_SSID;
+      String ap_key_client=WIFI_KEY;
+      String local_name="prot";
     }eedat_upr;
 
     struct work_model_def{
