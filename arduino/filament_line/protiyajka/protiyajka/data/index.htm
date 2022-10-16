@@ -47,7 +47,8 @@
 		<!---------------------------------------------------------------------------------------------------------->
 		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
 			<!--UPRAVLENIE_Automatikoy--------------------------------------------------------------------------------------------------->
-				<div data-name="Управление Автоматикой" id="upr_izm" style="background: #FFFFFF;border: 3px solid #000000;">
+				<div data-name="Управление Автоматикой" id="upr_izm" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Управление Автоматикой</b><br>
 					<input type="button" value="Старт" 	onclick="send_form_data('/mode_auto','','')">&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="button" value="Стоп"	onclick="send_form_data('/mode_stop','','')"><br>
 					<div><form id="set_diametr" onsubmit="send_form_data('/set_diametr','set_diametr',{});return false;">
@@ -70,7 +71,8 @@
 					</div>
 				</div>
 			<!--UPRAVLENIE Motorom--------------------------------------------------------------------------------------------------->
-				<div data-name="Управление Мотором" id="upr" style="background: #FFFFFF;border: 3px solid #000000;">
+				<div data-name="Управление Мотором" id="upr" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Управление Мотором</b><br>
 					<div id="cur_mot_speed"></div><br>
 					<div>	<a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a onclick="send_form_data('/motset','',{speed:0.5,type:'inc'})">+0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -89,20 +91,23 @@
 					</div><br>
 				</div>
 			<!--GR1------------------------------------------------------------------------------------------------------->
-				<div data-name="График Измерителя" id='graph' class="div_in_main_div">
+				<div data-name="График Измерителя" id='graph' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Диаметр филамента</b><br>
 					<div id="mma_izm"></div>
 					<!--div id="linechart_material" style="width: 900px; height: 500px"></div-->
-					<div id='linechart_izm'>
+					<div id='linechart_izm'></div>
 				</div>
 			<!--GR2------------------------------------------------------------------------------------------------------->
-				<div data-name="График PID" id='graph_pid' class="div_in_main_div">
+				<div data-name="График PID" id='graph_pid' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Выход регулятора</b><br>
 					<div id="mma_pid"></div>
 					<div id="linechart_pid_div"></div>
 				</div>
-			<!--GR3------------------------------------------------------------------------------------------------------->
-				<!--div data-name="График " id='graph' class="div_in_main_div">
-					<div id='myDiv'>
-				</div-->
+			<!--SETTINGS------------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id='eeprom_main_div' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Редактирование настроек EEPROM</b><br>
+					<div id='eeprom_edit_div'></div>
+				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
 				<!--div data-name="Настройки" id="main_settings_edit" style="background: #FFFFFF;border: 3px solid #000000;">
 					main_settings_edit

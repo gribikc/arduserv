@@ -1,7 +1,47 @@
 'use strict';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//autoboat
+	class eeprom_gr{
+		//Инициализация
+		constructor(param){
+			this.param=param;
+			new single_shot_gr({url:config['dev_url']+"/eeprom_read",callback:new nt_json_gr(this) });
+		}
+		
+		//////////
+		parser_data(stream){
+			//console.log(this.param);
+			document.getElementById(this.param.div).innerHTML="";
+			create_tree_form_from_array_gr(stream,document.getElementById(this.param.div),0);
+			
+			//new single_shot_gr({url:config['dev_url']+"/eeprom_read",callback:this });
+			/*eeprom_stream_param={
+				url   : config['dev_url']+"/eeprom_read",
+				url_w : config['dev_url']+"/eeprom_write",
+				mime_type:'text/plain; charset=x-user-defined',
+				name:"EEPROM:",
+
+				parser: new nt_json_gr(this),
+				
+				flush_en:false,
+				auto_start:true,
+				
+				status_en:false,
+				
+				reload_en:false,
+				reload_time:1000
+			};
+			new xmlhttprq_stream_gr(eeprom_stream_param);*/
+		}
+		
+		//////////
+		error_event(message){
+			console.log(message+'');
+		}
+
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class izm_gr{
 		//Инициализация
 		constructor(){
@@ -34,9 +74,6 @@
 					if(this.speedometr.time!=0){
 						this.speedometr.speed=1000*this.speedometr.cnt/(time-this.speedometr.time);
 					}
-
-					//console.log('cnt:'+this.speedometr.cnt+'time:'+(time-this.speedometr.time));
-					//console.log('S:'+this.speedometr.speed);
 					
 					this.speedometr.time=time;
 					this.speedometr.cnt=0;
@@ -45,7 +82,7 @@
 			}
 
 			
-			for(var i=0;i<stream.length;i++){			
+			for(var i=0;i<stream.length;i++){//обработка данных для статистики и графика
 				this.data_plotly[0].y.push(stream[i]);
 				this.data_plotly[0].x.push(this.cnt++);
 				
@@ -59,7 +96,7 @@
 				this.izm_stat.avg=this.izm_stat.avg*0.999+stream[i]*0.001
 			}
 			
-			if(this.data_plotly[0].y.length>2000){
+			if(this.data_plotly[0].y.length>2000){//обрезаем лишнее
 				this.data_plotly[0].y.splice(0,this.data_plotly[0].y.length);
 				this.data_plotly[0].x.splice(0,this.data_plotly[0].x.length);
 			}
@@ -69,17 +106,6 @@
 			Plotly.newPlot('linechart_izm', this.data_plotly);
 
 		}
-		
-		/*myCallback(t){
-			t.data.addRows([[t.cnt,t.array[0]]]);
-			t.array.splice(0, 1);
-			t.cnt++;
-			if(t.data.Wf.length>2000){
-				t.data.Wf.splice(0, 1);
-			}
-			
-			t.chart.draw(t.data, google.charts.Line.convertOptions(t.options));
-		}*/
 		
 		//////////
 		error_event(message){
@@ -128,16 +154,6 @@ class pid_gr{
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class json_config_read_gr{
-		//Инициализация
-			constructor() {}
-		//Парсинг
-			parser_data(arr){
-				auto_boat_config=arr;
-				create_table_from_array_gr(arr,'main_settings_edit');
-			}
-	}
-	
 	function send_form_data(url,form_name,array){
 		let formData;
 		if(form_name!=""){
@@ -149,8 +165,7 @@ class pid_gr{
 			formData.append(index, array[index]);
 			//console.log(index+":"+array[index]);
 		}
-		// добавим ещё одно поле
-		//formData.append("middle", "Иванович");
+
 		var xmlhttprq_test = new XMLHttpRequest();
 		
 		if(document.location.protocol=="file:"){
@@ -158,7 +173,7 @@ class pid_gr{
 		}
 		
 		var type_xnr="POST";
-		if(array==""){
+		if(array==""){///!!!
 			type_xnr="GET";
 		}
 		

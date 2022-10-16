@@ -615,7 +615,11 @@ class single_shot_gr  {
 			url				: parameter.url,
 			url_w			: "",
 			//!!!в случае если калбек содержит функцию парсера то ссылаемся на него, иначе напрямую в функцию указанную
-				parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
+				parser		:	(this.parameter.callback.parser_data)?
+									this.parameter.callback:
+									new nt_json_gr(this,{}),
+									//new nt_json_gr(this.parameter.callback,{}):
+									//new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -645,7 +649,9 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
+			parser		:	(this.parameter.callback.parser_data)?
+								new nt_json_gr(this.parameter.callback,{}):
+								new nt_json_gr(this,{}),
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -677,7 +683,9 @@ class singl_shot_send_gr {
 			url				: parameter.url,
 			url_w			: "",
 			//parser		:	this,
-			parser		:	(this.parameter.callback.parser_data)?this.parameter.callback:this,
+			parser		:	(this.parameter.callback.parser_data)?
+								this.parameter.callback:
+								this,
 			post_data : parameter.data,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -1170,6 +1178,16 @@ function bubble_sort(arr){
 			document.getElementById(inner_html).style.visibility="visible";
 		}
 	}
+	///////////////////////////////////////////
+	///////////////////////////////////////////
+	function isOnVisibleSpace(element) {
+		var bodyHeight = window.innerHeight;
+		var elemRect = element.getBoundingClientRect();
+		var offset   = elemRect.top;// - bodyRect.top;
+		if(offset<0) return false;
+		if(offset>bodyHeight) return false;
+		return true;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1309,7 +1327,7 @@ function bubble_sort(arr){
 		var el = document.activeElement.parentElement.parentElement;
 		el.remove();
 	}
-	function create_tree_form_from_array_gr(arr,inner){
+	function create_tree_form_from_array_gr(arr,inner,staff_en=1){
 		var i=0;
 		if(inner.tagName=='UL'){//Проверка для добавления элементов create_tree_form_from_array_gr_add
 			ul=inner;
@@ -1332,6 +1350,7 @@ function bubble_sort(arr){
 						input_v.name='value';
 						input_v.value=arr[key];
 			//STAFF
+			if(staff_en){
 				var del_a = document.createElement("a");
 				del_a.innerText="DEL";
 				del_a.href='javascript:create_tree_form_from_array_gr_del()';
@@ -1341,7 +1360,8 @@ function bubble_sort(arr){
 				add_a.innerText="ADD";
 				add_a.href="javascript:create_tree_form_from_array_gr_add()";
 				div_c.appendChild(add_a);
-
+			}
+			
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				div_c.removeChild(input_v);
 				create_tree_form_from_array_gr(arr[key],li);

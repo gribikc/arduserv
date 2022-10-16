@@ -13,6 +13,7 @@ void wifi_do_all(){
       //WiFi.mode(WIFI_STA);
  
       WiFi.begin(WIFI_SSID, WIFI_KEY);
+      //WiFi.reconnect();
        #ifdef DEBUG_ON
           debug_stream->println("WiFi: Reconect!");
        #endif

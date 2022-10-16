@@ -30,7 +30,7 @@ int i,j,k;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
   ///Work Mode & EEPROM
-  
+
     struct eedat_upr_def{
       float k_p=-0.05;
       float k_d=0.99;

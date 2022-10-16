@@ -1,6 +1,7 @@
 #include <esp_task_wdt.h>
 #include <unordered_map>
 
+
 void start_init(){
 	//SYS
 	
@@ -21,6 +22,7 @@ void start_init(){
       EEPROM.get(1, eedat_upr);
     }else{
       Serial.println("EEPROM not valid!");
+      EEPROM.put(1, eedat_upr);
     }
     
     //eedat_upr.ap_name="hello from EEPROM ;)";
@@ -30,6 +32,9 @@ void start_init(){
 
 	//WiFi
 		//WiFi.mode(WIFI_STA);
+
+    Serial.println(WiFi.macAddress());
+
 
     String hostname = WIFI_DNAME;
     WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
@@ -73,13 +78,31 @@ void start_init(){
 
 //////////////////////////////////////////
 //////////////////////////////////////////
-  web_server.server->on("/eeprom_store", HTTP_GET, [web_server]() {
+  web_server.server->on("/eeprom_read", HTTP_GET, [web_server]() {
     String str;
     str.clear();
 
-    EEPROM.put(1, eedat_upr);
-    EEPROM.write(0, 1 );
-    str+="Ok";
+    str+="{\n";
+      str+=" \"k_p\":";str+=String(eedat_upr.k_p);str+=",\n";
+      str+=" \"k_d\":";str+=String(eedat_upr.k_d);str+=",\n";
+      str+=" \"target_diametr\":";str+=String(eedat_upr.target_diametr);str+=",\n";
+      str+=" \"iad\":";str+=String(eedat_upr.iad );str+=",\n";
+      str+=" \"ap_name_host\":\"";str+=String("prot");str+="\",\n";
+      str+=" \"ap_key_host\":\"";str+=String("12345678");str+="\",\n";
+      str+=" \"ap_name_client\":\"";str+=String("prot");str+="\",\n";
+      str+=" \"ap_key_client\":\"";str+=String("12345678");str+="\",\n";
+      str+=" \"local_name\":\"";str+=String("prot");str+="\"\n";
+    str+="}\n";
+
+    web_server.server->send(200, "text/plan;", str);
+  });
+  
+  web_server.server->on("/eeprom_reset", HTTP_GET, [web_server]() {
+    String str;
+    str.clear();
+    EEPROM.write(0,0);
+    EEPROM.commit();
+    str="Reset EEPROM OK!";
     web_server.server->send(200, "text/plan;", str);
   });
   
