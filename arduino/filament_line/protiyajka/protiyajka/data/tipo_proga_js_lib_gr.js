@@ -1,39 +1,5 @@
 'use strict';
 /////////////////////////////////
-	function is_inner_visible(e){
-		if(e.offsetWidth > 0 || e.offsetHeight > 0){
-			//console.log("есть размер",e.offsetWidth,e.offsetHeight);
-		}else{
-			//console.log("нет размера",e.offsetWidth,e.offsetHeight);
-			return 0;
-		}
-		
-	  var targetPosition = {
-		  top: window.pageYOffset + e.getBoundingClientRect().top,
-		  left: window.pageXOffset + e.getBoundingClientRect().left,
-		  right: window.pageXOffset + e.getBoundingClientRect().right,
-		  bottom: window.pageYOffset + e.getBoundingClientRect().bottom,
-		},
-		// Получаем позиции окна
-		windowPosition = {
-		  top: window.pageYOffset,
-		  left: window.pageXOffset,
-		  right: window.pageXOffset + document.documentElement.clientWidth,
-		  bottom: window.pageYOffset + document.documentElement.clientHeight
-		};
-
-		if (targetPosition.bottom > windowPosition.top && // Если позиция нижней части элемента больше позиции верхней чайти окна, то элемент виден сверху
-			targetPosition.top < windowPosition.bottom && // Если позиция верхней части элемента меньше позиции нижней чайти окна, то элемент виден снизу
-			targetPosition.right > windowPosition.left && // Если позиция правой стороны элемента больше позиции левой части окна, то элемент виден слева
-			targetPosition.left < windowPosition.right) { // Если позиция левой стороны элемента меньше позиции правой чайти окна, то элемент виден справа
-			//console.log('виден');
-		} else {
-			//console.log('не видно');
-			return 0;
-		};
-		
-		return 1;
-	}
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////

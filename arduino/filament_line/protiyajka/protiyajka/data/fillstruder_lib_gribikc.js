@@ -3,39 +3,104 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class eeprom_gr{
 		//Инициализация
-		constructor(param){
+		constructor(param){//конструктор должен принимать обьект див или его id
 			this.param=param;
+			
+			if(typeof this.param.div == "string"){
+				this.main_div_element=document.getElementById(this.param.div);
+				this.full_div_patch=this.param.div;//сделать рекурсивный путь до документ!!!
+			}else{//доделать
+				this.main_div_element=this.param.div;
+				this.full_div_patch=this.main_div_element.id;
+			}
+
+			this.global=find_father(eeprom_gr,function() {return window[member].param.div==this.dataset.keyname;});
+			
+			//Create HTML
+				this.div_button = document.createElement("div");
+				this.main_div_element.appendChild(this.div_button);
+
+				this.div_form = document.createElement("div");
+				this.main_div_element.appendChild(this.div_form);
+
+				//Запросить
+				this.upd_button = document.createElement("input");
+				this.upd_button.type="button";
+				this.upd_button.value="Запросить";
+				this.upd_button.dataset.keyname=this.full_div_patch;
+				this.upd_button.onclick = function() {
+					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
+					if(father){
+						father[0].update_data();
+					}
+				};
+				this.div_button.appendChild(this.upd_button);
+				
+				//Установить
+				this.save_button = document.createElement("input");
+				this.save_button.type="button";
+				this.save_button.value="Установить и Сохранить";
+				this.save_button.dataset.keyname=this.full_div_patch;
+				this.save_button.onclick = function() {
+					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
+					if(father){
+						father[0].save_data();
+					}
+				};
+				this.div_button.appendChild(this.save_button);
+
+				//Сброс
+				this.save_button = document.createElement("input");
+				this.save_button.type="button";
+				this.save_button.value="Сброс EEPROM";
+				this.save_button.dataset.keyname=this.full_div_patch;
+				this.save_button.onclick = function() {
+					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
+					if(father){
+						father[0].reset_eeprom();
+					}
+				};
+				this.div_button.appendChild(this.save_button);
+
+				//
+
+			//END Create HTML
+
+			this.update_data();
+		}
+		reset_eeprom(){
+			new single_shot_gr({url:config['dev_url']+"/eeprom_reset"});
+		}
+
+		update_data(message){
 			new single_shot_gr({url:config['dev_url']+"/eeprom_read",callback:new nt_json_gr(this) });
 		}
-		
-		//////////
-		parser_data(stream){
-			//console.log(this.param);
-			document.getElementById(this.param.div).innerHTML="";
-			create_tree_form_from_array_gr(stream,document.getElementById(this.param.div),0);
-			
-			//new single_shot_gr({url:config['dev_url']+"/eeprom_read",callback:this });
-			/*eeprom_stream_param={
-				url   : config['dev_url']+"/eeprom_read",
-				url_w : config['dev_url']+"/eeprom_write",
-				mime_type:'text/plain; charset=x-user-defined',
-				name:"EEPROM:",
 
-				parser: new nt_json_gr(this),
-				
-				flush_en:false,
-				auto_start:true,
-				
-				status_en:false,
-				
-				reload_en:false,
-				reload_time:1000
-			};
-			new xmlhttprq_stream_gr(eeprom_stream_param);*/
+		save_data(){
+			var arr=create_array_from_form_gr(this.div_form)
+
+			var formData = new FormData();
+			for(var index in arr){
+				formData.append(index, arr[index]);
+			}
+
+			new singl_shot_send_gr({url:config['dev_url']+"/eeprom_write",data:formData,callback:{
+					parser_data:function(message) {this.thather.on_save_data(message)},
+					thather:this
+				}});
 		}
-		
-		//////////
+
+		on_save_data(message){
+			console.log("Data save");
+		}
+
+		parser_data(stream){
+			this.div_form.innerHTML="";
+			create_tree_form_from_array_gr(stream,this.div_form,0);
+		}
+
 		error_event(message){
+			console.log(this);
 			console.log(message+'');
 		}
 
@@ -58,6 +123,8 @@
 			this.array=[];
 			this.cnt=1;
 			this.izm_stat={min:-10000,max:100000,avg:0};
+
+			Plotly.newPlot('linechart_izm', this.data_plotly);;
 		}
 		
 		//////////
@@ -86,7 +153,6 @@
 				this.data_plotly[0].y.push(stream[i]);
 				this.data_plotly[0].x.push(this.cnt++);
 				
-				this.cnt++;
 				if(this.izm_stat.min>stream[i] || this.izm_stat.min<=-10000){
 					this.izm_stat.min=stream[i];
 				}
@@ -97,13 +163,18 @@
 			}
 			
 			if(this.data_plotly[0].y.length>2000){//обрезаем лишнее
-				this.data_plotly[0].y.splice(0,this.data_plotly[0].y.length);
-				this.data_plotly[0].x.splice(0,this.data_plotly[0].x.length);
+				this.data_plotly[0].y.splice(0,this.data_plotly[0].y.length-2000);
+				this.data_plotly[0].x.splice(0,this.data_plotly[0].x.length-2000);
 			}
 
-			document.getElementById("mma_izm").innerHTML="тек:"+stream[stream.length-1]+"<br>мин: "+this.izm_stat.min+"<br>срд: "+this.izm_stat.avg+"<br>мак: "+this.izm_stat.max+"<br>ips:"+this.speedometr.speed;
+			document.getElementById("mma_izm").innerHTML=	"тек:"+stream[stream.length-1]+
+														"<br>мин: "+this.izm_stat.min+
+														"<br>срд: "+this.izm_stat.avg+
+														"<br>мак: "+this.izm_stat.max+
+														"<br>ips:"+this.speedometr.speed;
 
-			Plotly.newPlot('linechart_izm', this.data_plotly);
+			//Plotly.newPlot('linechart_izm', this.data_plotly);
+			Plotly.redraw('linechart_izm');
 
 		}
 		
@@ -129,6 +200,7 @@ class pid_gr{
 		this.speedometr={time:0,cnt:0,speed:0};
 		
 		this.cnt=1;
+		Plotly.newPlot('linechart_pid_div', this.data_plotly);
 	}
 	
 	//////////
@@ -136,14 +208,14 @@ class pid_gr{
 		for(var i=0;i<stream.length;i++){
 			this.data_plotly[0].y.push(stream[i]);
 			this.data_plotly[0].x.push(this.cnt++);
-			this.cnt++;
 		}
 		if(this.data_plotly[0].y.length>2000){
-			this.data_plotly[0].y.splice(0,this.data_plotly[0].y.length);
-			this.data_plotly[0].x.splice(0,this.data_plotly[0].x.length);
+			this.data_plotly[0].y.splice(0,this.data_plotly[0].y.length-2000);
+			this.data_plotly[0].x.splice(0,this.data_plotly[0].x.length-2000);
 		}
 		
-		Plotly.newPlot('linechart_pid_div', this.data_plotly);
+		//Plotly.newPlot('linechart_pid_div', this.data_plotly);
+		Plotly.redraw('linechart_pid_div');
 	}
 
 	//////////

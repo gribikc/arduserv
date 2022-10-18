@@ -1,7 +1,7 @@
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='172.20.10.3';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='prot';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
@@ -76,23 +76,6 @@ function main_init(){
 			};
 			new xmlhttprq_stream_gr(pid_stream_param);
 		//
-			/*eeprom_stream_param={
-				url   : config['dev_url']+"/eeprom_read",
-				url_w : config['dev_url']+"/eeprom_write",
-				mime_type:'text/plain; charset=x-user-defined',
-				name:"EEPROM:",
-
-				parser: new nt_json_gr(eeprom),
-				
-				flush_en:false,
-				auto_start:true,
-				
-				status_en:false,
-				
-				reload_en:false,
-				reload_time:1000
-			};
-			new xmlhttprq_stream_gr(eeprom_stream_param);*/
 	//_STREAM		
 		
 	generate_show_hide_menu_from_div('main_wiev_div','main_list_of_all');

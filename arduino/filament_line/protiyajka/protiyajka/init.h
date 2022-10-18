@@ -16,13 +16,16 @@ void start_init(){
 
 
   //EEPROM
-    EEPROM.begin(1000);
+    EEPROM.begin(100);
 
+    //EEPROM.write(0,1);
+    //EEPROM.commit();
     if(EEPROM.read(0)>0){
       EEPROM.get(1, eedat_upr);
     }else{
       Serial.println("EEPROM not valid!");
       EEPROM.put(1, eedat_upr);
+      EEPROM.commit();
     }
     
     //eedat_upr.ap_name="hello from EEPROM ;)";
@@ -83,17 +86,47 @@ void start_init(){
     str.clear();
 
     str+="{\n";
-      str+=" \"k_p\":";str+=String(eedat_upr.k_p);str+=",\n";
-      str+=" \"k_d\":";str+=String(eedat_upr.k_d);str+=",\n";
-      str+=" \"target_diametr\":";str+=String(eedat_upr.target_diametr);str+=",\n";
-      str+=" \"iad\":";str+=String(eedat_upr.iad );str+=",\n";
-      str+=" \"ap_name_host\":\"";str+=String("prot");str+="\",\n";
-      str+=" \"ap_key_host\":\"";str+=String("12345678");str+="\",\n";
-      str+=" \"ap_name_client\":\"";str+=String("prot");str+="\",\n";
-      str+=" \"ap_key_client\":\"";str+=String("12345678");str+="\",\n";
-      str+=" \"local_name\":\"";str+=String("prot");str+="\"\n";
+      str+=" \"EEPROM_valid\":";      str+=String(EEPROM.read(0));            str+=",\n";EEPROM.commit();
+      str+=" \"k_p\":";               str+=String(eedat_upr.k_p);             str+=",\n";
+      str+=" \"k_d\":";               str+=String(eedat_upr.k_d);             str+=",\n";
+      str+=" \"target_diametr\":";    str+=String(eedat_upr.target_diametr);  str+=",\n";
+      str+=" \"iad\":";               str+=String(eedat_upr.iad );            str+=",\n";
+      str+=" \"ap_name_host\":\"";    str+=eedat_upr.ap_name_host;            str+="\",\n";
+      str+=" \"ap_key_host\":\"";     str+=eedat_upr.ap_key_host;             str+="\",\n";
+      str+=" \"ap_name_client\":\"";  str+=eedat_upr.ap_name_client;          str+="\",\n";
+      str+=" \"ap_key_client\":\"";   str+=eedat_upr.ap_key_client;           str+="\",\n";
+      str+=" \"local_name\":\"";      str+=eedat_upr.local_name;              str+="\"\n";
     str+="}\n";
 
+    web_server.server->send(200, "text/plan;", str);
+  });
+
+  web_server.server->on("/eeprom_write", HTTP_POST, [web_server]() {
+    std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
+
+    /*Serial.print("Size:");
+    Serial.println(arguments_map.size());
+    for (auto& a : arguments_map){
+      Serial.print(a.first.c_str());
+      Serial.print(":");
+      Serial.println(a.second.c_str());
+    }*/
+      
+    eedat_upr.k_p             =atof(arguments_map["k_p"].c_str());
+    eedat_upr.k_d             =atof(arguments_map["k_d"].c_str());
+    eedat_upr.target_diametr  =atof(arguments_map["target_diametr"].c_str());
+    eedat_upr.iad             =atoi(arguments_map["iad"].c_str());
+    eedat_upr.ap_name_host    =arguments_map["ap_name_host"].c_str();
+    eedat_upr.ap_key_host     =arguments_map["ap_key_host"].c_str();
+    eedat_upr.ap_name_client  =arguments_map["ap_name_client"].c_str();
+    eedat_upr.ap_key_client   =arguments_map["ap_key_client"].c_str();
+    eedat_upr.local_name      =arguments_map["local_name"].c_str();
+
+    EEPROM.write(0,1);
+    EEPROM.put(1, eedat_upr);
+    EEPROM.commit();
+   
+    String str="OK";
     web_server.server->send(200, "text/plan;", str);
   });
   
@@ -229,13 +262,13 @@ void start_init(){
     int interval;
     String type;
     for (uint8_t i = 0; i < web_server.server->args(); i++) {
-        if(web_server.server->argName(i) == "interval"){
+      if(web_server.server->argName(i) == "interval"){
         interval=atoi(web_server.server->arg(i).c_str());
       }
       if(web_server.server->argName(i) == "type"){
         type=web_server.server->arg(i);
       }
-      }
+    }
     Serial.print("Type:");
     Serial.print(type);
     Serial.print(":NUM:");

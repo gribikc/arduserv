@@ -615,9 +615,9 @@ class single_shot_gr  {
 			url				: parameter.url,
 			url_w			: "",
 			//!!!в случае если калбек содержит функцию парсера то ссылаемся на него, иначе напрямую в функцию указанную
-				parser		:	(this.parameter.callback.parser_data)?
+				parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
 									this.parameter.callback:
-									new nt_json_gr(this,{}),
+									this,
 									//new nt_json_gr(this.parameter.callback,{}):
 									//new nt_json_gr(this,{}),
 			//post_data : 0,
@@ -649,9 +649,9 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	(this.parameter.callback.parser_data)?
-								new nt_json_gr(this.parameter.callback,{}):
-								new nt_json_gr(this,{}),
+			parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
+								this.parameter.callback:
+								this,
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -683,7 +683,7 @@ class singl_shot_send_gr {
 			url				: parameter.url,
 			url_w			: "",
 			//parser		:	this,
-			parser		:	(this.parameter.callback.parser_data)?
+			parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
 								this.parameter.callback:
 								this,
 			post_data : parameter.data,
@@ -698,6 +698,7 @@ class singl_shot_send_gr {
 	}
 
 	parser_data(stream){
+		console.log("Oh no!");
 		if(this.parameter.callback){
 			this.parameter.callback(stream);
 		}
@@ -838,7 +839,10 @@ class db_query_gr{
 
 				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
 					if(this.readyState==4){//DONE
-						parameter.parser.parser_data(this.responseText);//!!!
+						//parameter.parser.parser_data(this.responseText);//!!!
+						(parameter.parser.parser_data)?
+							parameter.parser.parser_data(this.responseText):
+							parameter.parser(this.responseText);
 
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
@@ -1187,6 +1191,56 @@ function bubble_sort(arr){
 		if(offset<0) return false;
 		if(offset>bodyHeight) return false;
 		return true;
+	}
+	///////////////////////////////////////////
+	///////////////////////////////////////////
+	function find_father(type,comparator){
+		for (var member in window)
+		{
+			if (window[member] instanceof type){//console.info(member + " is instance of eeprom_gr");
+				if(comparator){
+					//console.info(member + " is father");
+					return [window[member],member];
+				}
+			}
+		}
+		return null;
+	}
+	///////////////////////////////////////////
+	///////////////////////////////////////////
+	function is_inner_visible(e){
+		if(e.offsetWidth > 0 || e.offsetHeight > 0){
+			//console.log("есть размер",e.offsetWidth,e.offsetHeight);
+		}else{
+			//console.log("нет размера",e.offsetWidth,e.offsetHeight);
+			return 0;
+		}
+		
+	  var targetPosition = {
+		  top: window.pageYOffset + e.getBoundingClientRect().top,
+		  left: window.pageXOffset + e.getBoundingClientRect().left,
+		  right: window.pageXOffset + e.getBoundingClientRect().right,
+		  bottom: window.pageYOffset + e.getBoundingClientRect().bottom,
+		},
+		// Получаем позиции окна
+		windowPosition = {
+		  top: window.pageYOffset,
+		  left: window.pageXOffset,
+		  right: window.pageXOffset + document.documentElement.clientWidth,
+		  bottom: window.pageYOffset + document.documentElement.clientHeight
+		};
+
+		if (targetPosition.bottom > windowPosition.top && // Если позиция нижней части элемента больше позиции верхней чайти окна, то элемент виден сверху
+			targetPosition.top < windowPosition.bottom && // Если позиция верхней части элемента меньше позиции нижней чайти окна, то элемент виден снизу
+			targetPosition.right > windowPosition.left && // Если позиция правой стороны элемента больше позиции левой части окна, то элемент виден слева
+			targetPosition.left < windowPosition.right) { // Если позиция левой стороны элемента меньше позиции правой чайти окна, то элемент виден справа
+			//console.log('виден');
+		} else {
+			//console.log('не видно');
+			return 0;
+		};
+		
+		return 1;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
