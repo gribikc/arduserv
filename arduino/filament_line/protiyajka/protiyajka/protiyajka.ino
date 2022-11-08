@@ -21,7 +21,7 @@
 void setup(){ 
   start_init();
   //
-  izm.fake_mode_set(1);
+  izm.fake_mode_set(0);
   iad.set_interval(eedat_upr.iad);
 
   //EEPROM.writeByte(0, 0);
