@@ -2,17 +2,18 @@ class GR_step_driver
 {
 
 public:
-    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,int reduction=0):
+    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,int reduction=0,bool dir=true):
         step_pin_(step_pin),
         dir_pin_(dir_pin),
         en_pin_(en_pin),
         fb_pin_(fb_pin),
         degres_(degres),
-        reduction_(reduction)
+        reduction_(reduction),
+        dir_(dir)
     {
         pinMode (step_pin_, OUTPUT);
         pinMode (dir_pin_, OUTPUT);
-        digitalWrite(dir_pin_,1);
+        digitalWrite(dir_pin_,dir);
         if(en_pin!=0){
             pinMode (en_pin_, OUTPUT);
         }
@@ -73,6 +74,7 @@ private:
     float degres_=1.8f;
     int micro_step_=8;
     int reduction_=1;
+    bool dir_=true;
 
     signed int acc_=0;
     signed int inc_=21474836;

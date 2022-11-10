@@ -28,7 +28,7 @@ int i,j,k;
 	GR_time_mesure mes_int_izm;
 	GR_time_mesure loop_timer;
 	
-	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN);
+	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN,true);//true/false направление вращение двигателя
   ///Work Mode & EEPROM
 
     struct eedat_upr_def{

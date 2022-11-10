@@ -47,7 +47,7 @@ class GR_digital_micrometer{
                 auto& time_arrave=data_in_buf_[rd_p].second;
                 auto& bit=data_in_buf_[rd_p].first;
                 ++rd_p&=mask;
-                
+
                 auto delta_time=time_arrave - previousGetMillis_;
                 if ((bit_cnt_ !=0) && (delta_time > 8/*8*/) ) { //обнуление по превышению таймаута
                     Serial.print("lost sync:");
