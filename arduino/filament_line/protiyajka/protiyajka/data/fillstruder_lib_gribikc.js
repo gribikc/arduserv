@@ -84,6 +84,7 @@
 				formData.append(index, arr[index]);
 			}
 
+			//тут передаемь обьект с обьектом...!!!
 			new singl_shot_send_gr({url:config['dev_url']+"/eeprom_write",data:formData,callback:{
 					parser_data:function(message) {this.thather.on_save_data(message)},
 					thather:this

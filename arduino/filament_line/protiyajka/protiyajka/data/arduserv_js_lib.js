@@ -591,9 +591,8 @@ class nt_raw_parser_gr extends parser_parent_gr{
 					}else{
 						this.db_matrix[m_id]['message'][i][3]="undf...";
 					}
-
-					this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
 				}
+				this.hub_handler.parser_data(this.db_matrix[m_id]['message']);
 			}
 			error_event(message){
 				this.hub_handler.error_event(message);
@@ -615,11 +614,9 @@ class single_shot_gr  {
 			url				: parameter.url,
 			url_w			: "",
 			//!!!в случае если калбек содержит функцию парсера то ссылаемся на него, иначе напрямую в функцию указанную
-				parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
-									this.parameter.callback:
-									this,
-									//new nt_json_gr(this.parameter.callback,{}):
-									//new nt_json_gr(this,{}),
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -649,9 +646,9 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
-								this.parameter.callback:
-								this,
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -683,9 +680,9 @@ class singl_shot_send_gr {
 			url				: parameter.url,
 			url_w			: "",
 			//parser		:	this,
-			parser		:	(this.parameter.callback && this.parameter.callback.parser_data)?
-								this.parameter.callback:
-								this,
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,			
 			post_data : parameter.data,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -698,7 +695,6 @@ class singl_shot_send_gr {
 	}
 
 	parser_data(stream){
-		console.log("Oh no!");
 		if(this.parameter.callback){
 			this.parameter.callback(stream);
 		}
@@ -843,6 +839,7 @@ class db_query_gr{
 						(parameter.parser.parser_data)?
 							parameter.parser.parser_data(this.responseText):
 							parameter.parser(this.responseText);
+
 
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
@@ -1182,7 +1179,7 @@ function bubble_sort(arr){
 			document.getElementById(inner_html).style.visibility="visible";
 		}
 	}
-	///////////////////////////////////////////
+		///////////////////////////////////////////
 	///////////////////////////////////////////
 	function isOnVisibleSpace(element) {
 		var bodyHeight = window.innerHeight;
@@ -1242,6 +1239,7 @@ function bubble_sort(arr){
 		
 		return 1;
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1381,7 +1379,7 @@ function bubble_sort(arr){
 		var el = document.activeElement.parentElement.parentElement;
 		el.remove();
 	}
-	function create_tree_form_from_array_gr(arr,inner,staff_en=1){
+		function create_tree_form_from_array_gr(arr,inner,staff_en=1){
 		var i=0;
 		if(inner.tagName=='UL'){//Проверка для добавления элементов create_tree_form_from_array_gr_add
 			ul=inner;
@@ -1422,6 +1420,7 @@ function bubble_sort(arr){
 			}
 		}
 	}
+
 	//////////////////////////////////////////
 	function create_array_from_form_gr(inner){
 		var arr=new Array();
@@ -1498,7 +1497,8 @@ function bubble_sort(arr){
 
 		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
 		return res;
-	}////////////////////////////////////
+	}
+	////////////////////////////////////
 	/////////////////////////////////////
 	function byte_arr_from_float_gr(buf){
 		var float32	= new Float32Array(1);
@@ -1507,6 +1507,15 @@ function bubble_sort(arr){
 		//console.log(float32_ba);
 		return float32_ba;
 	}
+	function byte_arr_from_double_gr(number) {
+		var buffer = new ArrayBuffer(8);
+		var longNum = new Float64Array(buffer);
+
+		longNum[0] = number;
+
+		return Array.from(new Int8Array(buffer)).reverse();  // reverse to get little endian
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

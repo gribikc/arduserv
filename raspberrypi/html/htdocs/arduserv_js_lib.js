@@ -614,7 +614,9 @@ class single_shot_gr  {
 			url				: parameter.url,
 			url_w			: "",
 			//!!!в случае если калбек содержит функцию парсера то ссылаемся на него, иначе напрямую в функцию указанную
-				parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -644,7 +646,9 @@ class periodic_shot_gr {
 		this.single_shot_param={
 			url				: parameter.url,
 			url_w			: "",
-			parser		:	(this.parameter.callback.parser_data)?new nt_json_gr(this.parameter.callback,{}):new nt_json_gr(this,{}),
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,
 			//post_data : 0,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -676,7 +680,9 @@ class singl_shot_send_gr {
 			url				: parameter.url,
 			url_w			: "",
 			//parser		:	this,
-			parser		:	(this.parameter.callback.parser_data)?this.parameter.callback:this,
+			parser	:	(this.parameter.callback && this.parameter.callback.parser_data)?
+						this.parameter.callback:
+						this,			
 			post_data : parameter.data,
 			flush_en 	: 0,
 			auto_start: 1,
@@ -829,7 +835,11 @@ class db_query_gr{
 
 				this.xmlhttprq.onreadystatechange=function(){//this.check_stage();
 					if(this.readyState==4){//DONE
-						parameter.parser.parser_data(this.responseText);//!!!
+						//parameter.parser.parser_data(this.responseText);//!!!
+						(parameter.parser.parser_data)?
+							parameter.parser.parser_data(this.responseText):
+							parameter.parser(this.responseText);
+
 
 						this_of_class.stat_rp-=this.responseText.length;
 						//console.log(e);
@@ -1169,6 +1179,67 @@ function bubble_sort(arr){
 			document.getElementById(inner_html).style.visibility="visible";
 		}
 	}
+		///////////////////////////////////////////
+	///////////////////////////////////////////
+	function isOnVisibleSpace(element) {
+		var bodyHeight = window.innerHeight;
+		var elemRect = element.getBoundingClientRect();
+		var offset   = elemRect.top;// - bodyRect.top;
+		if(offset<0) return false;
+		if(offset>bodyHeight) return false;
+		return true;
+	}
+	///////////////////////////////////////////
+	///////////////////////////////////////////
+	function find_father(type,comparator){
+		for (var member in window)
+		{
+			if (window[member] instanceof type){//console.info(member + " is instance of eeprom_gr");
+				if(comparator){
+					//console.info(member + " is father");
+					return [window[member],member];
+				}
+			}
+		}
+		return null;
+	}
+	///////////////////////////////////////////
+	///////////////////////////////////////////
+	function is_inner_visible(e){
+		if(e.offsetWidth > 0 || e.offsetHeight > 0){
+			//console.log("есть размер",e.offsetWidth,e.offsetHeight);
+		}else{
+			//console.log("нет размера",e.offsetWidth,e.offsetHeight);
+			return 0;
+		}
+		
+	  var targetPosition = {
+		  top: window.pageYOffset + e.getBoundingClientRect().top,
+		  left: window.pageXOffset + e.getBoundingClientRect().left,
+		  right: window.pageXOffset + e.getBoundingClientRect().right,
+		  bottom: window.pageYOffset + e.getBoundingClientRect().bottom,
+		},
+		// Получаем позиции окна
+		windowPosition = {
+		  top: window.pageYOffset,
+		  left: window.pageXOffset,
+		  right: window.pageXOffset + document.documentElement.clientWidth,
+		  bottom: window.pageYOffset + document.documentElement.clientHeight
+		};
+
+		if (targetPosition.bottom > windowPosition.top && // Если позиция нижней части элемента больше позиции верхней чайти окна, то элемент виден сверху
+			targetPosition.top < windowPosition.bottom && // Если позиция верхней части элемента меньше позиции нижней чайти окна, то элемент виден снизу
+			targetPosition.right > windowPosition.left && // Если позиция правой стороны элемента больше позиции левой части окна, то элемент виден слева
+			targetPosition.left < windowPosition.right) { // Если позиция левой стороны элемента меньше позиции правой чайти окна, то элемент виден справа
+			//console.log('виден');
+		} else {
+			//console.log('не видно');
+			return 0;
+		};
+		
+		return 1;
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1308,7 +1379,7 @@ function bubble_sort(arr){
 		var el = document.activeElement.parentElement.parentElement;
 		el.remove();
 	}
-	function create_tree_form_from_array_gr(arr,inner){
+		function create_tree_form_from_array_gr(arr,inner,staff_en=1){
 		var i=0;
 		if(inner.tagName=='UL'){//Проверка для добавления элементов create_tree_form_from_array_gr_add
 			ul=inner;
@@ -1331,6 +1402,7 @@ function bubble_sort(arr){
 						input_v.name='value';
 						input_v.value=arr[key];
 			//STAFF
+			if(staff_en){
 				var del_a = document.createElement("a");
 				del_a.innerText="DEL";
 				del_a.href='javascript:create_tree_form_from_array_gr_del()';
@@ -1340,13 +1412,15 @@ function bubble_sort(arr){
 				add_a.innerText="ADD";
 				add_a.href="javascript:create_tree_form_from_array_gr_add()";
 				div_c.appendChild(add_a);
-
+			}
+			
 			if(Array.isArray(arr[key]) || Array.isAssociativeArray(arr[key])){
 				div_c.removeChild(input_v);
 				create_tree_form_from_array_gr(arr[key],li);
 			}
 		}
 	}
+
 	//////////////////////////////////////////
 	function create_array_from_form_gr(inner){
 		var arr=new Array();
@@ -1423,7 +1497,8 @@ function bubble_sort(arr){
 
 		var res=sig*(man*Math.pow(2,(-23)))*(Math.pow(2,(por-127)));
 		return res;
-	}////////////////////////////////////
+	}
+	////////////////////////////////////
 	/////////////////////////////////////
 	function byte_arr_from_float_gr(buf){
 		var float32	= new Float32Array(1);
@@ -1432,6 +1507,15 @@ function bubble_sort(arr){
 		//console.log(float32_ba);
 		return float32_ba;
 	}
+	function byte_arr_from_double_gr(number) {
+		var buffer = new ArrayBuffer(8);
+		var longNum = new Float64Array(buffer);
+
+		longNum[0] = number;
+
+		return Array.from(new Int8Array(buffer)).reverse();  // reverse to get little endian
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
