@@ -1379,7 +1379,8 @@ function bubble_sort(arr){
 		var el = document.activeElement.parentElement.parentElement;
 		el.remove();
 	}
-		function create_tree_form_from_array_gr(arr,inner,staff_en=1){
+	
+	function create_tree_form_from_array_gr(arr,inner,staff_en=1){
 		var i=0;
 		if(inner.tagName=='UL'){//Проверка для добавления элементов create_tree_form_from_array_gr_add
 			ul=inner;
@@ -1388,6 +1389,14 @@ function bubble_sort(arr){
 			inner.appendChild(ul);
 		}
 
+		var max_len=0;
+		for(var key in arr) {
+			if(max_len<key.length){
+				max_len=key.length
+			}
+		}
+		
+		console.log(max_len);
 		for(var key in arr) {
 			var li = document.createElement("li");
 			ul.appendChild(li);
@@ -1397,6 +1406,16 @@ function bubble_sort(arr){
 					div_c.appendChild(input_n);
 						input_n.name='name';
 						input_n.value=key;
+					
+					if(!staff_en){
+						full_hide_inner_gr(input_n);
+						var b_n=document.createElement("b");
+						div_c.insertBefore(b_n,input_n);
+							b_n.innerHTML=key;
+							b_n.style.display='inline-block';
+							b_n.style.width=max_len*9+'px';
+					}
+					
 					var input_v=document.createElement("input");
 					div_c.appendChild(input_v);
 						input_v.name='value';
@@ -1446,7 +1465,7 @@ function bubble_sort(arr){
 			}else if(inner.children[i].tagName=='DIV'){
 				arr=create_array_from_form_gr(inner.children[i]);
 			}else if(inner.children[i].tagName=='INPUT'){
-				if(inner.children[i].name=='name' && (i==(inner.childElementCount-1) || inner.children[i+1].tagName!='INPUT') ){
+				if(inner.children[i].name=='name' && (i==(inner.childElementCount-1) || inner.children[i+1].tagName!='INPUT')){
 					arr[inner.children[i].value]=inner.children[i].name;
 				}else{
 					var value=inner.children[i+1].value;
@@ -1463,6 +1482,8 @@ function bubble_sort(arr){
 				}
 			}else if(inner.children[i].tagName=='A'){
 				//
+			}else if(inner.children[i].tagName=='B'){
+				//++i;
 			}else{
 				console.log('Error:',inner.children[i].tagName);
 			}

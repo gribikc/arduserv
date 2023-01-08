@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+
+	<script language="javascript" type="text/javascript"  src="../arduserv_js_lib.js"></script>
+	<script>
+		function main_init(){
+			var test_j="{ \
+				 \"lost_cnt\":2, \
+				 \"izm_timer\":1, \
+				 \"motor\":2, \
+				 \"motor2\":true, \
+				 \"main_timer\":3 \
+				}";
+		
+			let arr=JSON.parse(test_j);//stringify
+			
+			console.log(arr);
+			var div_p = document.getElementById('tbl_db');
+			
+			create_tree_form_from_array_gr(arr,div_p,0);
+
+			var obor=new Object();//Object//Array//
+			obor=create_array_from_form_gr(div_p);
+			console.log('Востановленный массив:',obor);
+			var div_p2 = document.getElementById('tbl_db2');
+			create_tree_form_from_array_gr(obor,div_p2,0);
+		}
+	</script>
+
+</head>
+<body onload="main_init()">
+		<div style="display:block; width:100%; height:100%;" id="main_wiev_div">
+			<!---------------------------------------------------------------------------------------------------------->	
+				<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;"></div>
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="tbl_db"></div>
+				================================
+				<div id="tbl_db2"></div>
+				================================
+				<div id="tbl_db3"></div>
+			<!---------------------------------------------------------------------------------------------------------->
+		</div>
+</body>
+</html>
