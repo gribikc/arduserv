@@ -89,6 +89,12 @@
 					parser_data:function(message) {this.thather.on_save_data(message)},
 					thather:this
 				}});
+				
+			/*new singl_shot_send_gr({url:config['dev_url']+"/eeprom_write",
+					callback:() => {
+						console.log(this); // `this` указывает на объект Person
+					}	
+			});*/
 		}
 
 		on_save_data(message){
