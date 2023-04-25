@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="tipo_proga_css_lib.css">
+
+	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="tipo_proga_js_lib_gr.js"></script>
+	<script language="javascript" type="text/javascript"  src="index.js"></script>
+	<script language="javascript" type="text/javascript"  src="autopoliv_lib.js"></script>
+
+</head>
+<body onload="main_init()">
+	<!---------------------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_top_gr">
+			<a class="img_menu_up_a_gr" onclick="view_main_menu_hide_all('main_list_of_all','main_wiev_div',0);"><img class="img_menu_up_img_gr" src="icons8-menu-50.png"></a>
+				<a class="img_menu_up_a_gr" onclick="next_prev_main_wiev_div_in('r');"><img class="img_menu_up_img_gr" src="icons8-double-left-50.png"></a>
+			<a class="img_menu_up_a_gr" style="float:right;" onclick="hiden_change_inner_gr('sub_menu_right');"><img class="img_menu_up_img_gr" src="icons8-settings-50.png"></a>
+				<a class="img_menu_up_a_gr" style="float:right;" onclick="next_prev_main_wiev_div_in('f');"><img class="img_menu_up_img_gr" src="icons8-double-right-50.png"></a>
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
+			<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
+			<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>		
+		</div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_menu_icon" id='main_list_of_all' style="position:absolute;visibility:hidden;display:none;"></div>
+		<!---------------------------------------------------------------------------------------------------------->
+		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Статус" id='main_div_state' class="div_in_main_div">
+					<input id="agc_on_off_button" type="button" value="ГССН Выкл." onclick="send_form_data('/gps_off','','');">
+					<input id="agc_on_off_button" type="button" value="ГССН Вкл." onclick="send_form_data('/gps_on','','');">
+					<br>
+					<input id="agc_on_off_button" type="button" value="Низшие сбережение" onclick="send_form_data('/min_power_save','','');">
+					<input id="agc_on_off_button" type="button" value="Высшее сбережение" onclick="send_form_data('/max_power_save','','');">
+					<input id="agc_on_off_button" type="button" value="Отсутствие сбережения" onclick="send_form_data('/no_power_save','','');">
+					<br>
+					<input id="agc_on_off_button" type="button" value="Реле Выкл." onclick="send_form_data('/mot_off','','');">
+					<input id="agc_on_off_button" type="button" value="Реле Вкл."  onclick="send_form_data('/mot_on','','');">
+					<br>
+					<input id="agc_on_off_button" type="button" value="Режим сна" onclick="send_form_data('/go_to_sleep','','');">
+				</div>
+			<!--SETTINGS------------------------------------------------------------------------------------------------------->
+				<div data-name="Настройки" id='main_div_setings' class="div_in_main_div">
+					1
+				</div>
+			<!--STATUS------------------------------------------------------------------------------------------------------->
+				<div data-name="Статус" id='main_div_status' class="div_in_main_div">
+					2
+				</div>
+		</div>
+	<!---------------------------------------------------------------------------------------------------------->
+</body>
+</html>
+
+

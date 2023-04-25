@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="../tipo_proga_css_lib.css">
+
+	<script language="javascript" type="text/javascript"  src="../arduserv_js_lib.js"></script>
+	<script language="javascript" type="text/javascript"  src="scdb.js"></script>
+	<script language="javascript" type="text/javascript"  src="scdb_lib_gr.js"></script>
+</head>
+<body onload="main_init()">
+		<div style="display:block; width:100%; height:100%;" id="main_wiev_div">
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="sys_status" style="background: #CCA69E;border: 3px solid #000000;"></div>
+			<!---------------------------------------------------------------------------------------------------------->
+				<div id="">
+					DB:<input type="text" id="i_db_name">
+					TB:<input type="text" id="i_tb_name">
+					<input type="button" value="Просмотр" onclick="javascript:load_db('view');">
+					<input type="button" value="Редактирование" onclick="javascript:load_db('edit');">
+					<input type="button" value="Сохранить" onclick="javascript:parse_and_sava_db();">
+					<input type="button" value="Создать" onclick="javascript:create_db();">
+				</div>
+				<div id="tbl_db"></div>
+				================================
+				<div id="tbl_db2"></div>
+				================================
+				<div id="tbl_db3"></div>
+
+				
+			<!---------------------------------------------------------------------------------------------------------->
+		</div>
+</body>
+</html>

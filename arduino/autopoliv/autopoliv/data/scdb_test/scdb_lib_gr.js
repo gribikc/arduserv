@@ -1,0 +1,68 @@
+'use strict';
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+	class scdb_gr{
+		constructor(hub,div){
+			this.hub_handler=hub;
+			this.div=div;
+			var this_of_class=this;
+		}
+		//////////
+		create_form(stream){
+			var div_p = document.getElementById(this.div);
+			div_p.innerHTML="";
+			var add_a = document.createElement("a");
+			add_a.innerText="ADD";
+			add_a.href="javascript:create_tree_form_from_array_gr_add(1)";
+			div_p.appendChild(add_a);
+
+
+			var arr=new Object();//Object//Array//
+
+			create_tree_form_from_array_gr(stream,div_p);
+
+			arr=create_array_from_form_gr(div_p);
+
+			if(JSON.stringify(Object.assign({},stream))!=JSON.stringify(Object.assign({},arr))){
+				console.log("NOT equal!!!");
+				console.log(stream);
+				console.log(JSON.stringify(Object.assign({},stream)));
+				console.log(JSON.stringify(Object.assign({},arr)));
+			}
+
+		}
+		create_view_tree(stream){
+			var div_p = document.getElementById(this.div);
+			div_p.innerHTML="";
+			create_tree_ul_li_from_array_gr(stream,div_p);
+		}
+		/////////
+		parser_form(stream){
+			var arr=new Object();//Object//Array//
+			var div_p = document.getElementById(this.div);
+			arr=create_array_from_form_gr(div_p);
+			//console.log(JSON.stringify(Object.assign({},arr)));
+			return arr;
+		}
+		/////////
+		error(data){
+			var div_p = document.getElementById(this.div);
+			div_p.innerHTML=data;
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function save_db(arr){
+		var xmlhttprq_test = new XMLHttpRequest();
+		xmlhttprq_test.open('POST', '/db/w/test/fname_2.json', true);//, true
+		xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
+		xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlhttprq_test.send(JSON.stringify(arr,null, '\t'));
+		//console.log(JSON.stringify(arr,null, '\t'));
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
