@@ -167,7 +167,7 @@ void loop() {
 		collect_stream_data(&gnss_stream_buf);
 	
 	//GPS
-  	if(gnss_cordinate.gpgga_valid==1 && gnss_cordinate.gpvtg_valid==1){
+  	if(gnss_cordinate.gpgga_valid==1 && gnss_cordinate.gpvtg_valid==1 && gnss_cordinate.gprmc_valid==1){
   		gnss_cordinate.gpgga_valid=0;
   		gnss_cordinate.gpvtg_valid=0;
   		gnss_cordinate_valid=gnss_cordinate;
@@ -178,13 +178,21 @@ void loop() {
   		//usb_stream_buf.uart->write(uart_send_byte,96);
 
       //rtc.setTime(30, 24, 15, 17, 1, 2021);  // 17th Jan 2021 15:24:30
-      rtc.setTime(gnss_cordinate_valid.Time_s, gnss_cordinate_valid.Time_m, gnss_cordinate_valid.Time_h, 24, 4, 2023);
+      rtc.setTime(gnss_cordinate_valid.Time_s, gnss_cordinate_valid.Time_m, gnss_cordinate_valid.Time_h, gnss_cordinate_valid.day, gnss_cordinate_valid.month, gnss_cordinate_valid.year+2000);
   	}
 
   //TEST
   static int timeinfo = rtc.getTimeStruct().tm_sec;
   if(timeinfo!=rtc.getTimeStruct().tm_sec){
     timeinfo = rtc.getTimeStruct().tm_sec;
-    Serial.println(rtc.getTime("%A, %B %d %Y %H:%M:%S"));
+    //Serial.println(rtc.getTime("%A, %B %d %Y %H:%M:%S"));
+    Serial.print(rtc.getDayofWeek());
+    Serial.print("-");
+    Serial.print(rtc.getHour(true));
+    Serial.print(":");
+    Serial.print(rtc.getMinute());
+    Serial.print(":");
+    Serial.print(rtc.getSecond());
+    Serial.println();
   }
 }

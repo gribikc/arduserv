@@ -6,10 +6,15 @@ struct  {
 		int	Time_h;
 		int	Time_m;
 		int	Time_s;
+    int year;
+    int month;
+    int day;
 		float latitude_l;
 		signed int latitude_h;
 		float longitude_l;
 		signed int longitude_h;
+
+    int	gprmc_valid=0;
 		
 		double latitude;
 		double longitude;
@@ -19,23 +24,23 @@ struct  {
 		float HDOP;
 		float Altitude;
 		float Height;
-		int gpgga_valid;
+		int gpgga_valid=0;
 
 		float truetrack;
 		float	magntrack;
 		float ground_speed;
-		int	gpvtg_valid;
+		int	gpvtg_valid=0;
 		
 		unsigned int sat_in_vie;
 		unsigned int sat_snr;
 		
 		unsigned int gpgsv_siv;
 		unsigned int	gpgsv_isnr;
-		int gpgsv_valid;
+		int gpgsv_valid=0;
 		
 		unsigned int glgsv_siv;
 		unsigned int	glgsv_isnr;
-		int glgsv_valid;
+		int glgsv_valid=0;
 		
 	} gnss_cordinate,gnss_cordinate_valid;
 ///////////////////////////////////////////////////////////////////////
@@ -51,7 +56,7 @@ void nmea_parser(unsigned char in_byte){
 	static int	comma_counter;
 	static unsigned	char	nmea_buf[32];
 	static unsigned int	buf_counter;
-	static int	GPVTG_flag,GPGGA_flag,GPGSV_flag,GLGSV_flag;
+	static int	GPVTG_flag,GPGGA_flag,GPGSV_flag,GLGSV_flag,GPRMC_flag;
 
 	if(in_byte=='$' || buf_counter>=32){
 		buf_counter=0;
@@ -60,6 +65,7 @@ void nmea_parser(unsigned char in_byte){
 		GPGGA_flag=0;
 		GPGSV_flag=0;
 		GLGSV_flag=0;
+    GPRMC_flag=0;
 	}else{
 		if(in_byte==','){
 			if(comma_counter==0){
@@ -69,6 +75,7 @@ void nmea_parser(unsigned char in_byte){
 					GPVTG_flag=0;
 					GPGSV_flag=0;
 					GLGSV_flag=0;
+          GPRMC_flag=0;
 					gnss_cordinate.gpgga_valid=0;
 					gnss_cordinate.fix=0;
 					
@@ -83,6 +90,7 @@ void nmea_parser(unsigned char in_byte){
 					GPGGA_flag=0;
 					GPGSV_flag=0;
 					GLGSV_flag=0;
+          GPRMC_flag=0;
 					gnss_cordinate.gpvtg_valid=0;
 					gnss_cordinate.truetrack=0.0f;
 					gnss_cordinate.ground_speed=0.0f;
@@ -92,14 +100,49 @@ void nmea_parser(unsigned char in_byte){
 					GPVTG_flag=0;
 					GPGGA_flag=0;
 					GLGSV_flag=0;
+          GPRMC_flag=0;
 				}
 				if(nmea_buf[0]=='G' && nmea_buf[1]=='L' && nmea_buf[2]=='G' && nmea_buf[3]=='S' && nmea_buf[4]=='V'){
 					GLGSV_flag=1;
 					GPVTG_flag=0;
 					GPGGA_flag=0;
 					GPGSV_flag=0;
+          GPRMC_flag=0;
+				}
+        if(nmea_buf[0]=='G' && nmea_buf[1]=='P' && nmea_buf[2]=='R' && nmea_buf[3]=='M' && nmea_buf[4]=='C'){
+          GPRMC_flag=1;
+          GLGSV_flag=0;
+					GPVTG_flag=0;
+					GPGGA_flag=0;
+					GPGSV_flag=0;
 				}
 			}else{
+        //$GPRMC,161946.00,A,5620.52502,N,03030.98191,E,0.006,,270423,,,A*72
+        if(GPRMC_flag==1){//
+					switch(comma_counter){
+						case 2://Message number
+							if(buf_counter>0){
+								if(nmea_buf[0]=='A'){
+                  gnss_cordinate.gprmc_valid=1;
+								}else{
+                  gnss_cordinate.gprmc_valid=0;
+                }
+							}else{
+								gnss_cordinate.gprmc_valid=0;
+							}
+						break;
+            case 9://Message number
+              gnss_cordinate.year= parse_int_from_sd(&nmea_buf[4],2);
+              gnss_cordinate.month=parse_int_from_sd(&nmea_buf[2],2);
+              gnss_cordinate.day=  parse_int_from_sd(nmea_buf,2);
+              GPRMC_flag=0;
+            break;
+						default:
+						break;
+					}					
+				}
+        ///////////////////////////
+        ///////////////////////////
 				if(GLGSV_flag==1){//Sattelite GLO in view
 					switch(comma_counter){
 						case 2://Message number
