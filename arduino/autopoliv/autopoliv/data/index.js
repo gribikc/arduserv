@@ -2,7 +2,7 @@
 ///////////////////////////////////////////////////////////
 var config=new Object();
 	//////////////////////////////////////////////
-	config['remoute_serv_ip']='192.168.0.108';//'192.168.1.44';
+	config['remoute_serv_ip']='192.168.8.110';//'192.168.1.44';
 	config['remoute_serv_port']=80;
 	//////////////////////////////////////////////
 	config['dev_url']=		( (document.location.protocol=="file:" ? "http://"+config['remoute_serv_ip'] : "" ) );
@@ -11,8 +11,10 @@ var config=new Object();
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 //$(document).ready(function(){
+	let rasspisanie;
 function main_init(){
-	prog=prog=new tr_gr();
+	rasspisanie = new GR_rasspisanie("main_div_rasspisanie");
+	prog=new tr_gr();
 	//_HUB
 	//STREAM
 		//arduino_uart

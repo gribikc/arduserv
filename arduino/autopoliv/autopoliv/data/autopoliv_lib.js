@@ -17,6 +17,86 @@
 			console.log(message+'tr_gr');
 		}
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//autoboat
+	class GR_rasspisanie{
+		//Инициализация
+		constructor(id){
+			this.this=this;
+			this.main_div=document.getElementById(id);
+			this.create_form_for_new();
+		}
+		
+		create_form_for_new(){//Время: 12:30 Длительность: 5мин. Повтор:ПН ВТ СР ЧТ ПТ СБ ВС
+			this.form_m=document.createElement('FORM');
+	
+			this.main_div.appendChild(this.form_m);
+			
+				this.form_m.innerHTML+="Время: "
+					var selecthour = document.createElement("select");
+					this.form_m.appendChild(selecthour);
+					selecthour.name="hour";
+					for (var i = 0; i <= 23; i++) {
+						var option = document.createElement("option");
+						option.value = i;
+						option.text = i;
+						selecthour.appendChild(option);
+					}
+					//selecthour[3].selected=true;
+					this.form_m.innerHTML+=" час.<br>"
+					
+				this.form_m.innerHTML+=" Длительность:"
+					var selectlong = document.createElement("select");
+					this.form_m.appendChild(selectlong);
+					selectlong.name="dura";
+					for (var i = 1; i <= 59; i++) {
+						var option = document.createElement("option");
+						option.value = i;
+						option.text = i;
+						selectlong.appendChild(option);
+					}
+					this.form_m.innerHTML+=" мин.<br>"
+					
+				this.form_m.innerHTML+=" Повторять:"
+					var days=['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС',];
+					for(var i=0;i<7;i++){
+						this.form_m.innerHTML+="  &nbsp;&nbsp;&nbsp;&nbsp;"+days[i]+":";
+						var checkbox = document.createElement('input');
+						checkbox.type = "checkbox";
+						checkbox.name = "rpt"+i;
+						checkbox.value = 1;
+						this.form_m.appendChild(checkbox);
+					}
+					this.form_m.innerHTML+="<br>"
+					
+				this.form_m.innerHTML+=" Разрешить:"
+					var checkbox = document.createElement('input');
+					checkbox.type = "checkbox";
+					checkbox.name = "ena";
+					checkbox.value = 1;
+					checkbox.checked=true;
+					this.form_m.appendChild(checkbox);
+					
+				//form_m.onclick="send_form_data('/gps_off','','');";
+				var submit_button = document.createElement('input');
+					submit_button.type = "button";
+					submit_button.value="Добавить";
+					submit_button.onclick=()=> {
+						send_form_data('/task_add',this.form_m,'');
+					}
+					this.form_m.appendChild(submit_button);						
+		}
+		//////////
+		parser_data(stream){
+			//console.log(stream);
+			if(stream['fix']==0){return;}
+			key_array_to_inner(stream,'main_div_status');
+		}
+		error_event(message){
+			console.log(message+'tr_gr');
+		}
+	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,27 +134,27 @@
 	
 	function send_form_data(url,form_name,array){
 		let formData;
-		if(form_name!=""){
-			formData = new FormData(document.getElementById(form_name));
+		if(form_name!=null && typeof(form_name)=="object"){
+			formData = new FormData(form_name);
+		}else if(form_name!=""){
+			formData = new FormData(document.getElementById(form_name));//document.getElementById(form_name)
 		}else{
 			formData = new FormData();
 		}
+		
 		for(var index in array){
 			formData.append(index, array[index]);
-			//console.log(index+":"+array[index]);
+		}
+	
+		var type_xnr="POST";
+		if(array=="" && formData.length==0){///!!!
+			type_xnr="GET";
 		}
 
 		var xmlhttprq_test = new XMLHttpRequest();
-		
 		if(document.location.protocol=="file:"){
 			url="http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']+url;
 		}
-		
-		var type_xnr="POST";
-		if(array==""){///!!!
-			type_xnr="GET";
-		}
-		
 		xmlhttprq_test.open(type_xnr, url, true);//, true
 		//xmlhttprq_test.overrideMimeType('text/plain; charset=x-user-defined');
 		//xmlhttprq_test.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

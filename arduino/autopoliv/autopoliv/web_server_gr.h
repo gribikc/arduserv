@@ -2,6 +2,7 @@
 #define FORMAT_FILESYSTEM false
 #define DBG_OUTPUT_PORT Serial
 #include <WebServer.h>
+#include <unordered_map>
 #include <SPIFFS.h>
 
  #ifdef __cplusplus
@@ -44,7 +45,14 @@ class Web_server_gr{
 		String param(int k);
 
 		void init();
-		
+
+    std::unordered_map<std::string, std::string> get_map_param(){
+      std::unordered_map<std::string, std::string> arguments_map;
+      for (uint8_t i = 0; i < server->args(); ++i) {
+        arguments_map[server->argName(i).c_str()]=server->arg(i).c_str(); //web_server.server->arg(i).c_str()
+      }
+      return arguments_map;
+    }
 		
 	private:	
 	protected:

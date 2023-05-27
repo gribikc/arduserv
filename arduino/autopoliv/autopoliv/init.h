@@ -122,4 +122,11 @@ void start_init(){
       light_sleep();
     });
   ///////
+    web_server.server->on("/task_add", HTTP_POST, [&web_server]() {
+      auto map=web_server.get_map_param();
+      for(auto a:map){
+        Serial.print(a.first.c_str());
+        Serial.println(a.second.c_str());
+      }
+    });
 }

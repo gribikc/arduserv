@@ -33,6 +33,7 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;//portMUX_INITIALIZER_UN
 
 Web_server_gr web_server;
 #include "autopoliv.h"
+#include "GR_rasspisanie.h"
 
 #include "init.h"
 
@@ -49,22 +50,6 @@ void setup() {
 
   pinMode(PIN_RELE, OUTPUT);
   digitalWrite(PIN_RELE, LOW);
-  
-
-
-  EEPROM.begin(100);
-  struct a{
-    unsigned char mode=0;//[7]-on/off;[6:0]-day of week;
-    unsigned char time_h=0;
-    unsigned char time_m=0;
-    unsigned char duration=0;
-  };
-  std::vector<a> a(5);
-  EEPROM.put(1, a);
-  EEPROM.commit();
-
-
-
 }
 
 void loop() {
