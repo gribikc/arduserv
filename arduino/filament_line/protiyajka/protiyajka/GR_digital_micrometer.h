@@ -105,7 +105,7 @@ class GR_digital_micrometer{
         }
 
         float get_izm() const{
-            return izm_;
+            return -izm_;
         }
 
         void set_obr(void (*obr)(float)) {

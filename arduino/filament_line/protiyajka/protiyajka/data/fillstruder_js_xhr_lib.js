@@ -1,7 +1,7 @@
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='prot';//'192.168.1.44';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='192.168.0.140';//'prot';//'192.168.0.140';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
