@@ -29,8 +29,10 @@ int i,j,k;
 	GR_time_mesure loop_timer;
 	
 	GR_step_driver sm_prot(MOT_STEP,MOT_DIR,MOT_EN,true);//true/false направление вращение двигателя
+  //GR_step_driver sm_prot(23,21,22,true);//true/false направление вращение двигателя
+  GR_step_driver main_mot_shnek(23,21,22,true);//true/false направление вращение двигателя
+  
   ///Work Mode & EEPROM
-
     struct eedat_upr_def{
       float k_p=-0.05;
       float k_d=0.99;
@@ -62,6 +64,7 @@ int i,j,k;
 
 	void IRAM_ATTR onTimer() {
 		sm_prot.doit();
+    main_mot_shnek.doit();
 		//portENTER_CRITICAL_ISR(&timerMux);
 		////interruptCounter++;
 		//portEXIT_CRITICAL_ISR(&timerMux);

@@ -18,6 +18,8 @@
 #include "wifi_gr.h"
 #include "init.h"
 
+float ob_sec_incr=0.001;
+
 void setup(){ 
   start_init();
   //
@@ -25,6 +27,11 @@ void setup(){
   iad.set_interval(eedat_upr.iad);
 
   //EEPROM.writeByte(0, 0);
+
+  pinMode (22, OUTPUT);
+  pinMode (23, OUTPUT);
+
+  main_mot_shnek.set_ob_sec(0.0);
 }
 
 void loop(){
@@ -49,6 +56,10 @@ void loop(){
         sm_prot.set_ob_sec(out);
       }
       collect_pid_circle.write(sm_prot.get_ob_sec());
+
+
+      //main_mot_shnek.set_ob_sec(ob_sec_incr);
+      //ob_sec_incr+=0.1;
     }
 
     //Serial.print("from loop:");

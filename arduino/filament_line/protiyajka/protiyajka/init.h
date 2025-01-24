@@ -239,14 +239,40 @@ void start_init(){
 
     if(arguments_map["type"]=="set"){
       sm_prot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+      //main_mot_shnek.set_ob_sec(atof(arguments_map["speed"].c_str()));
     }else if(arguments_map["type"]=="inc"){
       sm_prot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+      //main_mot_shnek.inc_ob_sec(atof(arguments_map["speed"].c_str()));
     }else{
       //err
     }
    
     String str="OK.cur_speed:";
 		str+=sm_prot.get_ob_sec();
+
+    /*web_server.server->sendHeader(F("Access-Control-Allow-Origin"), F("*"));
+    web_server.server->sendHeader(F("Access-Control-Max-Age"), F("600"));
+    web_server.server->sendHeader(F("Access-Control-Allow-Methods"), F("PUT,POST,GET,OPTIONS"));
+    web_server.server->sendHeader(F("Access-Control-Allow-Headers"), F("*"));*/
+
+		web_server.server->send(200, "text/plan;", str);
+	});
+
+  	web_server.server->on("/motset2", HTTP_POST, [web_server]() {
+    std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
+
+    if(arguments_map["type"]=="set"){
+      //sm_prot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+      main_mot_shnek.set_ob_sec(atof(arguments_map["speed"].c_str()));
+    }else if(arguments_map["type"]=="inc"){
+      //sm_prot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+      main_mot_shnek.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+    }else{
+      //err
+    }
+   
+    String str="OK.cur_speed:";
+		str+=main_mot_shnek.get_ob_sec();
 
     /*web_server.server->sendHeader(F("Access-Control-Allow-Origin"), F("*"));
     web_server.server->sendHeader(F("Access-Control-Max-Age"), F("600"));

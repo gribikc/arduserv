@@ -71,7 +71,7 @@
 					</div>
 				</div>
 			<!--UPRAVLENIE Motorom--------------------------------------------------------------------------------------------------->
-				<div data-name="Управление Мотором" id="upr" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+				<div data-name="Управление Мотором протяжки" id="upr" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
 					<b>Управление Мотором</b><br>
 					<div id="cur_mot_speed"></div><br>
 					<div>	<a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -87,6 +87,26 @@
 						<a onclick="send_form_data('/motset','',{speed:-1.0,type:'inc'})">-1.0</a>
 						<br><br>
 						<a onclick="send_form_data('/motset','',{speed:0.0,type:'set'})">Остановить</a>
+						<!--a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">тест</a-->
+					</div><br>
+				</div>
+				<!--UPRAVLENIE Motorom--------------------------------------------------------------------------------------------------->
+				<div data-name="Управление Мотором Экструдера" id="upr" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
+					<b>Управление Мотором Экструдера</b><br>
+					<div id="cur_mot_speed"></div><br>
+					<div>	<a onclick="send_form_data('/motset2','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a onclick="send_form_data('/motset2','',{speed:0.5,type:'inc'})">+0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a onclick="send_form_data('/motset2','',{speed:1.0,type:'inc'})">+1.0</a>
+						<form id="set_mot_speed_form" onsubmit="send_form_data('/motset2','set_mot_speed_form',{type:'set'});return false;">
+							Скорости об.сек<br>
+							<input name="speed" type="text" id="set_mot_speed" value="0.5"><br>
+							<button type="submit">Установить</button>
+						</form>
+						<a onclick="send_form_data('/motset2','',{speed:-0.1,type:'inc'})">-0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="send_form_data('/motset2','',{speed:-0.5,type:'inc'})">-0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="send_form_data('/motset2','',{speed:-1.0,type:'inc'})">-1.0</a>
+						<br><br>
+						<a onclick="send_form_data('/motset2','',{speed:0.0,type:'set'})">Остановить</a>
 						<!--a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">тест</a-->
 					</div><br>
 				</div>
