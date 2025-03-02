@@ -23,7 +23,7 @@ float ob_sec_incr=0.001;
 void setup(){ 
   start_init();
   //
-  izm.fake_mode_set(false);
+  izm.fake_mode_set(true);//!!!для работы без измерителя только для теста!!!
   iad.set_interval(eedat_upr.iad);
 
   //EEPROM.writeByte(0, 0);
@@ -39,6 +39,8 @@ void loop(){
     mes_int_izm.doit();//мерим переод измерений, точнее входа в функцию для отладки
 
     float data=izm.get_izm();//получаем измерение
+    Serial.print("IZM:");
+    Serial.println(data);
     //collect_izm.add(data);//сохраняем в массив измерения
     collect_izm_circle.write(data);//сохраняем в массив измерения для передачи в web
 

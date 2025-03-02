@@ -1,3 +1,4 @@
+#include <string>
 #define FILESYSTEM SPIFFS
 #define FORMAT_FILESYSTEM false
 #define DBG_OUTPUT_PORT Serial

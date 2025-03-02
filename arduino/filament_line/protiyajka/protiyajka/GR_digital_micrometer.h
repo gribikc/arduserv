@@ -37,6 +37,7 @@ class GR_digital_micrometer{
                 izm_=1.75f+(float)((float)(random(-1000, 1000))/(float)100000.0f)+(float)((float)fake_cnt_/(float)10000.0f);
                 ++fake_cnt_;
                 if(fake_cnt_>1000) fake_cnt_=-1000;
+                //Serial.println(izm_);
                 return true;
               }
               return false;
@@ -105,7 +106,7 @@ class GR_digital_micrometer{
         }
 
         float get_izm() const{
-            return -izm_;
+            return izm_;///!!! надо с этим разобратся почемуто иногда инверсия измерений идет!!!
         }
 
         void set_obr(void (*obr)(float)) {

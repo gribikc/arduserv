@@ -68,16 +68,21 @@ void start_init(){
             tcp_ip.hasClient();//!!hz!!!//
             esp_task_wdt_deinit();
             web_server.do_web();
-            esp_task_wdt_init(3,true);
+            esp_task_wdt_config_t a;
+            a.timeout_ms=100;
+            a.idle_core_mask=0;
+            a.trigger_panic=1;
+            esp_task_wdt_init(&a);//3,true);!!!!!!!!!!!!!!!
             vTaskDelay(10);
           } 
         }    ,  "WebServer"      ,  1024*8      ,  NULL    ,  2      ,  NULL     ,  0);
 
-		//StepMotor
-		timer = timerBegin(0, 80, true);
-		timerAttachInterrupt(timer, &onTimer, true);
-		timerAlarmWrite(timer, 10, true);//1 000 000 ~ 1c
-		timerAlarmEnable(timer);
+		//StepMotor//  float fs_=100000;//KHz
+		timer = timerBegin(1000000);//0, 80, true);
+		timerAttachInterrupt(timer, &onTimer);//, true);
+		//timerAlarmWrite(timer, 10);//, true);//1 000 000 ~ 1c
+		//timerAlarmEnable(timer);
+    timerAlarm(timer, 1 * 10, true, 0);
 
 //////////////////////////////////////////
 //////////////////////////////////////////
