@@ -41,7 +41,7 @@ void start_init(){
 
     //WIFI SOFT AP
       //WiFi.softAP(eedat_upr.ap_name_host, eedat_upr.ap_key_host);//ap_name_host
-      if (!WiFi.softAP("prot", "12345678")){
+      if (!WiFi.softAP(eedat_upr.ap_name_host, eedat_upr.ap_key_host)){
         Serial.print("AP create error!!!");
       }
       IPAddress IP = WiFi.softAPIP();
@@ -68,6 +68,7 @@ void start_init(){
 		//tcp_ip.begin();
 		//izm.set_obr(obrv);
   		attachInterrupt(PIN_clk0,izm_irq,RISING);
+      //attachInterrupt(PIN_clk0,izm_irq,FALLING);FS File: tipo_proga_js_lib_gr.js, size: 3.11KB15:57:18.413 -> assert failed: xQueueSemaphoreTake queue.c:1718 (!( ( xTaskGetSchedulerState() == ( ( BaseType_t ) 0 ) ) && ( xTicksToWait != 0 ) ))
 
 		//WEB
     	web_server.init();
@@ -79,6 +80,7 @@ void start_init(){
             tcp_ip.hasClient();//!!hz!!!//
             esp_task_wdt_deinit();
             web_server.do_web();
+            wifi_do_all();////////////////!!!!!!!!!!
             esp_task_wdt_config_t a;
             a.timeout_ms=100;
             a.idle_core_mask=0;

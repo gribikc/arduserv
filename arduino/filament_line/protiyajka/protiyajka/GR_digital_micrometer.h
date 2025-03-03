@@ -22,10 +22,10 @@ class GR_digital_micrometer{
             a+=digitalRead(data_pin_);
             a+=digitalRead(data_pin_);
             data_in_buf_[wr_p]=std::make_pair( ((a>2)?true:false),t);
-            //if(a==4 || a==3 || a==2 || a==1){
-            //    Serial.print("major:");
-            //    Serial.println(a);
-            //}
+            if(a==4 || a==3 || a==2 || a==1){
+                Serial.print("major:");
+                Serial.println(a);
+            }
             ++wr_p&=mask;
         }
 
@@ -77,6 +77,7 @@ class GR_digital_micrometer{
                 }; 
                 bit_cnt_++; 
 
+                float pre_izm=izm_;
                 if (bit_cnt_ >23) { //если слово считано полностью
                     if (isin_==1){ //дюймы 
                         return 0; 
@@ -100,7 +101,12 @@ class GR_digital_micrometer{
                     }*/
                     bit_cnt_=0; 
                     xData_=0; 
-                    return 1;
+                    if((abs(pre_izm-izm_)<abs(izm_*0.05))){
+                      return 1;
+                    }else{
+                      Serial.println("error izm");
+                      return 0;
+                    }
                 } 
             }
             return 0;
@@ -122,7 +128,7 @@ class GR_digital_micrometer{
           out_s=set;
         }
 
-        void set_precision(bool set){
+        void set_precision(int set){
           precision=set;
         }
 
@@ -151,6 +157,6 @@ class GR_digital_micrometer{
         int isin_ = 0; //д=1 мм=0 
         int isfs_ = 0; //минус 
         unsigned long xData_;
-        float izm_;
+        float izm_=0.0;
         void (*obr_)(float)=nullptr;
 };
