@@ -26,6 +26,16 @@ public:
     }
 
     void doit(){
+        int max_accelerate=2000;
+        if(inc_target!=inc_){
+          if(inc_target>inc_){
+            inc_=(inc_target-inc_)<max_accelerate?inc_target:inc_+max_accelerate;
+          }else{
+            inc_=(inc_-inc_target)<max_accelerate?inc_target:inc_-max_accelerate;
+          }
+
+          if(inc_target==0)inc_=0;
+        }
         acc_+=inc_;
         if(acc_>0 && step_state_==0){
             step_state_=1;
@@ -38,25 +48,25 @@ public:
     }
 
     void set_ob_sec(float freq){
-        inc_=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
+        inc_target=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
     }
 
     void inc_ob_sec(float freq){
-        inc_+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
+        inc_target+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
+    }
+
+    void set_freq(float freq){
+        inc_target=(freq*exp32_)/fs_;
+    }
+
+    void inc_freq(float freq){
+        inc_target+=(freq*exp32_)/fs_;
     }
 
     float get_ob_sec(){
         return (get_freq()/(micro_step_*360/degres_));
-    }
+    } 
 
-    void set_freq(float freq){
-        inc_=(freq*exp32_)/fs_;
-    }
-
-    void inc_freq(float freq){
-        inc_=(freq*exp32_)/fs_;
-    }
-        
     float get_freq(){
         return (fs_/exp32_)*inc_;
     }
@@ -77,7 +87,8 @@ private:
     bool dir_=true;
 
     signed int acc_=0;
-    signed int inc_=21474836;
+    signed int inc_=0;
+    signed int inc_target=21474836;
     bool    step_state_=0;
     float fs_=100000;//KHz
     float exp32_=4294967296;
