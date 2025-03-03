@@ -1,7 +1,7 @@
 var config=new Object();
 	//////////////////////////////////////////////
 	config['dev_name']='HC-08';
-	config['remoute_serv_ip']='192.168.0.140';//'prot';//'192.168.0.140';//192.168.0.138//192.168.3.176//172.20.10.2
+	config['remoute_serv_ip']='prot.local';//'192.168.0.140';//'prot';//'192.168.0.140';//192.168.0.138//192.168.3.176//172.20.10.2
 	config['remoute_serv_port']='80';
 	//////////////////////////////////////////////
 	config['dev_url']=	 (document.location.protocol=="file:") ? ("http://"+config['remoute_serv_ip']+":"+config['remoute_serv_port']) : "" ,
@@ -25,10 +25,12 @@ var config=new Object();
 var	prog;//=new izm_gr();
 var pid_data;
 var eeprom;
+var state;
 function main_init(){
 	prog=new izm_gr();
 	pid_data=new pid_gr();
 	eeprom=new eeprom_gr({div:"eeprom_edit_div"});
+	state=new read_state_gr();
 	//_HUB
 	//STREAM
 		//
@@ -75,6 +77,8 @@ function main_init(){
 				reload_time:1000
 			};
 			new xmlhttprq_stream_gr(pid_stream_param);
+		//
+
 		//
 	//_STREAM		
 		

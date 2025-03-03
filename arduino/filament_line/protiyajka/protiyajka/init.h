@@ -7,51 +7,62 @@ void start_init(){
 	
 	//Serial
 		Serial.begin(115200,SERIAL_8N1,RXD0,TXD0);
-		Serial.print("TEST");
+		Serial.println("Hello");
 		Serial1.begin(9600,SERIAL_8N1,RXD1,TXD1);
-		Serial1.print("TEST");
+		Serial1.println("Hello");
 		#ifdef DEBUG_ON
 			debug_stream=&Serial;//&Serial;//&tcp_ipClients[0]//
 		#endif
 
 
   //EEPROM
-    EEPROM.begin(100);
+    EEPROM.begin(200);
 
     //EEPROM.write(0,1);
     //EEPROM.commit();
     if(EEPROM.read(0)>0){
       EEPROM.get(1, eedat_upr);
+      Serial.println("EEPROM read");
     }else{
       Serial.println("EEPROM not valid!");
       EEPROM.put(1, eedat_upr);
+      EEPROM.write(0, 1 );
       EEPROM.commit();
+      Serial.println("EEPROM reset");
     }
     
-    //eedat_upr.ap_name="hello from EEPROM ;)";
-    //EEPROM.put(1, eedat_upr);
-    //EEPROM.write(0, 1 );
-
-
 	//WiFi
-		//WiFi.mode(WIFI_STA);
+		//WiFi.mode(WIFI_STA);//!!!???
+    //WiFi.mode(WIFI_MODE_APSTA);
+    //WiFi.mode(WIFI_AP_STA);
 
+    Serial.print("MAC:");
     Serial.println(WiFi.macAddress());
 
+    //WIFI SOFT AP
+      //WiFi.softAP(eedat_upr.ap_name_host, eedat_upr.ap_key_host);//ap_name_host
+      if (!WiFi.softAP("prot", "12345678")){
+        Serial.print("AP create error!!!");
+      }
+      IPAddress IP = WiFi.softAPIP();
+      Serial.print("AP IP address: ");
+      Serial.println(IP);
+      Serial.print("AP Host: ");
+      Serial.println(eedat_upr.ap_name_host);
+      Serial.print("AP Key: ");
+      Serial.println(eedat_upr.ap_key_host);
 
-    String hostname = WIFI_DNAME;
-    WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
-    WiFi.setHostname(hostname.c_str()); //define hostname
-    MDNS.begin(hostname.c_str());
-    
-		//WiFi.disconnect();
-		WiFi.begin(WIFI_SSID, WIFI_KEY);
+    //WIFI MDNS
+      String hostname = eedat_upr.local_name;
+      WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
+      WiFi.setHostname(hostname.c_str()); //define hostname
+      MDNS.begin(hostname.c_str());
+      Serial.print(hostname);
+      Serial.println(".local");
 
-    WiFi.softAP("prot", "12345678");
-    IPAddress IP = WiFi.softAPIP();
-    Serial.print("AP IP address: ");
-    Serial.println(IP);
-  
+    //WIFI HOST
+		  //WiFi.disconnect();
+		  WiFi.begin(WIFI_SSID, WIFI_KEY);
 
 	//Code
 		//tcp_ip.begin();
@@ -78,11 +89,11 @@ void start_init(){
         }    ,  "WebServer"      ,  1024*8      ,  NULL    ,  2      ,  NULL     ,  0);
 
 		//StepMotor//  float fs_=100000;//KHz
-		timer = timerBegin(1000000);//0, 80, true);
-		timerAttachInterrupt(timer, &onTimer);//, true);
-		//timerAlarmWrite(timer, 10);//, true);//1 000 000 ~ 1c
-		//timerAlarmEnable(timer);
-    timerAlarm(timer, 1 * 10, true, 0);
+      timer = timerBegin(1000000);//0, 80, true);
+      timerAttachInterrupt(timer, &onTimer);//, true);
+      //timerAlarmWrite(timer, 10);//, true);//1 000 000 ~ 1c
+      //timerAlarmEnable(timer);
+      timerAlarm(timer, 1 * 10, true, 0);
 
 //////////////////////////////////////////
 //////////////////////////////////////////
@@ -91,16 +102,21 @@ void start_init(){
     str.clear();
 
     str+="{\n";
-      str+=" \"EEPROM_valid\":";      str+=String(EEPROM.read(0));            str+=",\n";EEPROM.commit();
-      str+=" \"k_p\":";               str+=String(eedat_upr.k_p);             str+=",\n";
-      str+=" \"k_d\":";               str+=String(eedat_upr.k_d);             str+=",\n";
-      str+=" \"target_diametr\":";    str+=String(eedat_upr.target_diametr);  str+=",\n";
-      str+=" \"iad\":";               str+=String(eedat_upr.iad );            str+=",\n";
-      str+=" \"ap_name_host\":\"";    str+=eedat_upr.ap_name_host;            str+="\",\n";
-      str+=" \"ap_key_host\":\"";     str+=eedat_upr.ap_key_host;             str+="\",\n";
-      str+=" \"ap_name_client\":\"";  str+=eedat_upr.ap_name_client;          str+="\",\n";
-      str+=" \"ap_key_client\":\"";   str+=eedat_upr.ap_key_client;           str+="\",\n";
-      str+=" \"local_name\":\"";      str+=eedat_upr.local_name;              str+="\"\n";
+      str+=" \"EEPROM_valid\":";        str+=String(EEPROM.read(0));            str+=",\n";EEPROM.commit();
+      str+=" \"k_p\":";                 str+=String(eedat_upr.k_p);             str+=",\n";
+      str+=" \"k_d\":";                 str+=String(eedat_upr.k_d);             str+=",\n";
+      str+=" \"target_diametr\":";      str+=String(eedat_upr.target_diametr);  str+=",\n";
+      str+=" \"iad\":";                 str+=String(eedat_upr.iad );            str+=",\n";
+      str+=" \"ap_name_host\":\"";      str+=eedat_upr.ap_name_host;            str+="\",\n";
+      str+=" \"ap_key_host\":\"";       str+=eedat_upr.ap_key_host;             str+="\",\n";
+      str+=" \"ap_name_client\":\"";    str+=eedat_upr.ap_name_client;          str+="\",\n";
+      str+=" \"ap_key_client\":\"";     str+=eedat_upr.ap_key_client;           str+="\",\n";
+      str+=" \"local_name\":\"";        str+=eedat_upr.local_name;              str+="\",\n";
+
+      str+=" \"musurer_fake_mode\":";   str+=eedat_upr.musurer_fake_mode;       str+=",\n";
+      str+=" \"musurer_sign\":";        str+=eedat_upr.musurer_sign;            str+=",\n";
+      str+=" \"musurer_signal_inv\":";  str+=eedat_upr.musurer_signal_inv;      str+=",\n";
+      str+=" \"musurer_precision\":";   str+=eedat_upr.musurer_precision;       str+="\n";
     str+="}\n";
 
     web_server.server->send(200, "text/plan;", str);
@@ -117,15 +133,30 @@ void start_init(){
       Serial.println(a.second.c_str());
     }*/
       
-    eedat_upr.k_p             =atof(arguments_map["k_p"].c_str());
-    eedat_upr.k_d             =atof(arguments_map["k_d"].c_str());
-    eedat_upr.target_diametr  =atof(arguments_map["target_diametr"].c_str());
-    eedat_upr.iad             =atoi(arguments_map["iad"].c_str());
-    eedat_upr.ap_name_host    =arguments_map["ap_name_host"].c_str();
-    eedat_upr.ap_key_host     =arguments_map["ap_key_host"].c_str();
-    eedat_upr.ap_name_client  =arguments_map["ap_name_client"].c_str();
-    eedat_upr.ap_key_client   =arguments_map["ap_key_client"].c_str();
-    eedat_upr.local_name      =arguments_map["local_name"].c_str();
+    eedat_upr.k_p                 =atof(arguments_map["k_p"].c_str());
+    eedat_upr.k_d                 =atof(arguments_map["k_d"].c_str());
+    eedat_upr.target_diametr      =atof(arguments_map["target_diametr"].c_str());
+    eedat_upr.iad                 =atoi(arguments_map["iad"].c_str());//atoi!!!
+    iad.set_interval(eedat_upr.iad);
+    
+    eedat_upr.ap_name_host        =arguments_map["ap_name_host"].c_str();
+    eedat_upr.ap_key_host         =arguments_map["ap_key_host"].c_str();
+    eedat_upr.ap_name_client      =arguments_map["ap_name_client"].c_str();
+    eedat_upr.ap_key_client       =arguments_map["ap_key_client"].c_str();
+    eedat_upr.local_name          =arguments_map["local_name"].c_str();
+
+    eedat_upr.musurer_fake_mode   =atoi(arguments_map["musurer_fake_mode"].c_str());
+    izm.fake_mode_set(eedat_upr.musurer_fake_mode>0?true:false);
+    
+    eedat_upr.musurer_sign        =atoi(arguments_map["musurer_sign"].c_str());
+    izm.set_out_s(eedat_upr.musurer_sign>0?true:false);
+    
+    eedat_upr.musurer_signal_inv  =atoi(arguments_map["musurer_signal_inv"].c_str());
+    //ебать копать
+
+    eedat_upr.musurer_precision   =atoi(arguments_map["musurer_precision"].c_str());
+    izm.set_precision(eedat_upr.musurer_precision);
+
 
     EEPROM.write(0,1);
     EEPROM.put(1, eedat_upr);
@@ -263,7 +294,7 @@ void start_init(){
 		web_server.server->send(200, "text/plan;", str);
 	});
 
-  	web_server.server->on("/motset2", HTTP_POST, [web_server]() {
+  web_server.server->on("/motset2", HTTP_POST, [web_server]() {
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
 
     if(arguments_map["type"]=="set"){
@@ -306,6 +337,7 @@ void start_init(){
     Serial.println(interval);
     if(type=="set"){
       iad.set_interval(interval);
+      eedat_upr.iad=interval;
     }
     str+="cur_speed:";
     str+=iad.get_interval();
@@ -318,12 +350,14 @@ void start_init(){
     work_model.w_mode=1;
     web_server.server->send(200, "text/plan;", str);
   });
+
   web_server.server->on("/mode_stop", HTTP_GET, [web_server]() {
     String str;
     str+="OK.";
     work_model.w_mode=0;
     web_server.server->send(200, "text/plan;", str);
   });
+
   web_server.server->on("/set_diametr", HTTP_POST, [web_server]() {
     String str;
     str+="OK.";
@@ -340,6 +374,7 @@ void start_init(){
     str+=diametr;
     web_server.server->send(200, "text/plan;", str);
   });
+
   web_server.server->on("/set_pid", HTTP_POST, [web_server]() {
     String str;
     str+="OK.";
@@ -362,5 +397,20 @@ void start_init(){
     str+=";kd:";
     str+=kd;
     web_server.server->send(200, "text/plan;", str);
+  });
+
+  web_server.server->on("/get_cur_settings", HTTP_GET, [web_server]() {
+    String str;
+      str.clear();
+
+      str+="{\n";
+        str+=" \"Mot_speed\":";         str+=String(sm_prot.get_ob_sec(),6);      str+=",\n";  
+        str+=" \"iad\":";               str+=String(iad.get_interval(),0);        str+=",\n";
+        str+=" \"diametr\":";           str+=String(eedat_upr.target_diametr,6);  str+=",\n";
+        str+=" \"pid_kp\":";             str+=String(eedat_upr.k_p,6);            str+=",\n";
+        str+=" \"pid_kd\":";             str+=String(eedat_upr.k_d,6);            str+="\n";
+      str+="}\n";
+
+      web_server.server->send(200, "text/plan;", str);
   });
 }

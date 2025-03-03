@@ -53,20 +53,20 @@
 					<input type="button" value="Стоп"	onclick="send_form_data('/mode_stop','','')"><br>
 					<div><form id="set_diametr" onsubmit="send_form_data('/set_diametr','set_diametr',{});return false;">
 						Уст. Диаметра: 
-						<input name="diametr" type="text" id="set_diametr" value="1.75">
+						<input name="diametr" type="text" id="set_diametr_val" value="1.75">
 						<button type="submit">Установить</button>
 						</form>
 					</div>
 					<div><form id="set_iad" onsubmit="send_form_data('/iadset','set_iad',{type:'set'});return false;">
 						Усреднение(I&D):
-						<input name="interval" type="text" id="set_iad" value=10>
+						<input name="interval" type="text" id="set_iad_val" value=10>
 						<button type="submit">Установить</button>
 						</form>
 					</div>
 					<div><form id="set_pid" onsubmit="send_form_data('/set_pid','set_pid',{});return false;">
 						Уст. PID <button type="submit">Установить</button><br>
-						&nbsp;&nbsp;&nbsp;&nbsp;KP:<input name="kp" type="text" value="0.1"><br>
-						&nbsp;&nbsp;&nbsp;&nbsp;KD:<input name="kd" type="text" value="0.99">
+						&nbsp;&nbsp;&nbsp;&nbsp;KP:<input name="kp" id="pid_kp" type="text" value="0.1"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;KD:<input name="kd" id="pid_kd" type="text" value="0.99">
 						</form>
 					</div>
 				</div>

@@ -81,8 +81,9 @@ class GR_digital_micrometer{
                     if (isin_==1){ //дюймы 
                         return 0; 
                     }else{ //мм
+                        //тут надо сделать проверку 1) что число больше ноля. 2) дельта между измерениями не более 10-20% 3) измерение не больше 5мм
                         izm_ =xData_;//1000.00;
-                        izm_/=1000.00;
+                        izm_/=(float)precision; //в управление через eeprom!!!
                         if (isfs_==1){ //минус
                             izm_=(float)(izm_*(-1.0f));
                         }
@@ -106,7 +107,7 @@ class GR_digital_micrometer{
         }
 
         float get_izm() const{
-            return izm_;///!!! надо с этим разобратся почемуто иногда инверсия измерений идет!!!
+            return out_s?-izm_:izm_;///!!! надо с этим разобратся почемуто иногда инверсия измерений идет!!! //в управление через eeprom!!!
         }
 
         void set_obr(void (*obr)(float)) {
@@ -117,11 +118,22 @@ class GR_digital_micrometer{
           fake_mode_=set;
         }
 
+        void set_out_s(bool set){
+          out_s=set;
+        }
+
+        void set_precision(bool set){
+          precision=set;
+        }
+
         //void (*obr)(float)=nullptr;
         int lost_cnt=0;
     private:
         bool fake_mode_=0;
         int fake_cnt_=0;
+
+        bool out_s=false;
+        int precision=1000;
     
         int data_pin_=13;
         int clk_pin_=14;

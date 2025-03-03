@@ -43,6 +43,15 @@ int i,j,k;
       String ap_name_client=WIFI_SSID;
       String ap_key_client=WIFI_KEY;
       String local_name="prot";
+      //Добавить!!!
+      //фейковый режим
+      bool musurer_fake_mode=0;
+      // инверсию значений измерений микрометра
+      bool musurer_sign=0;
+      // инверсию бит приходящих с микрометра
+      bool musurer_signal_inv=0;
+      // разрядность микрометра
+      int musurer_precision=1000;
     }eedat_upr;
 
     struct work_model_def{

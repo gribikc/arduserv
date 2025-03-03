@@ -5,6 +5,7 @@
 #include <WebServer.h>
 #include <unordered_map>
 #include <SPIFFS.h>
+#include <Update.h>
 
  #ifdef __cplusplus
   extern "C" {
@@ -200,7 +201,7 @@ void Web_server_gr::handleFileList() {
           output += "{\"type\":\"";
           output += (file.isDirectory()) ? "dir" : "file";
           output += "\",\"name\":\"";
-          output += String(file.name()).substring(1);
+          output += String(file.name());//.substring(1);//!!! тут вроде не надо обрезать символ
           output += "\"}";
           file = root.openNextFile();
       }
@@ -327,14 +328,61 @@ void Web_server_gr::init(){
 	server->on("/help", HTTP_GET, [this]() {
 		String 	html  = "<html><head></head><body>Hello world!!!;<br>\n";
 				html += "<a href=\"/list?dir=/\">/list?dir=/: File List</a><br>\n";
+        html += "<a href=\"/update\">UPDATE</a><br>\n";
 				html += "/neme.exp: Get File<br>\n";
         html += "RSSI:";
         html += WiFi.RSSI();
 				html +="<br>\nTemperature: ";
 				html += ((temprature_sens_read() - 32) / 1.8);
+        html += "<br>\nBild:";
+        html += String(__DATE__) + " " + String(__TIME__) + " Ver:0.1";
+        html += "<br>\n";
+        html += "<a href=\"/\">Main page</a><br>\n";
         html += "<br>\n</body></html>";
 		server->send(200, "text/html", html);
 	});
+
+  //UPDATE FIRMVARE
+      server->on("/update", HTTP_GET, [this]() {
+        server->sendHeader("Connection", "close");
+        const char *serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
+        server->send(200, "text/html", serverIndex);
+      });
+
+      server->on(
+        "/update", HTTP_POST,
+        [this]() {
+          server->sendHeader("Connection", "close");
+          server->send(200, "text/plain", (Update.hasError()) ? "FAIL <a href=\"/\">Main page</a>" : "OK <a href=\"/\">Main page</a>");
+          ESP.restart();
+        },
+        [this]() {
+          HTTPUpload &upload = server->upload();
+          if (upload.status == UPLOAD_FILE_START) {
+            Serial.setDebugOutput(true);
+            Serial.printf("Update: %s\n", upload.filename.c_str());
+            if (!Update.begin()) {  //start with max available size
+              Update.printError(Serial);
+            }
+          } else if (upload.status == UPLOAD_FILE_WRITE) {
+            if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+              Update.printError(Serial);
+            }
+          } else if (upload.status == UPLOAD_FILE_END) {
+            if (Update.end(true)) {  //true to set the size to the current progress
+              Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+            } else {
+              Update.printError(Serial);
+            }
+            Serial.setDebugOutput(false);
+          } else {
+            Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
+          }
+        }
+      );
+
+
+
 
 	server->begin();
 	DBG_OUTPUT_PORT.println("HTTP server started");
