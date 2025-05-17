@@ -27,6 +27,7 @@
 				this.upd_button = document.createElement("input");
 				this.upd_button.type="button";
 				this.upd_button.value="Запросить";
+				this.upd_button.setAttribute('data-translate',"eeprom_read");
 				this.upd_button.dataset.keyname=this.full_div_patch;
 				this.upd_button.onclick = function() {
 					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
@@ -40,6 +41,7 @@
 				this.save_button = document.createElement("input");
 				this.save_button.type="button";
 				this.save_button.value="Установить и Сохранить";
+				this.save_button.setAttribute('data-translate',"eeprom_set_save");
 				this.save_button.dataset.keyname=this.full_div_patch;
 				this.save_button.onclick = function() {
 					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
@@ -50,17 +52,18 @@
 				this.div_button.appendChild(this.save_button);
 
 				//Сброс
-				this.save_button = document.createElement("input");
-				this.save_button.type="button";
-				this.save_button.value="Сброс EEPROM";
-				this.save_button.dataset.keyname=this.full_div_patch;
-				this.save_button.onclick = function() {
+				this.reset_button = document.createElement("input");
+				this.reset_button.type="button";
+				this.reset_button.value="Сброс EEPROM";
+				this.reset_button.setAttribute('data-translate',"eeprom_reset");
+				this.reset_button.dataset.keyname=this.full_div_patch;
+				this.reset_button.onclick = function() {
 					var father=find_father(eeprom_gr,function() {return window[member].full_div_patch==this.dataset.keyname;});
 					if(father){
 						father[0].reset_eeprom();
 					}
 				};
-				this.div_button.appendChild(this.save_button);
+				this.div_button.appendChild(this.reset_button);
 
 				//
 

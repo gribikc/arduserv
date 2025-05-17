@@ -5,8 +5,6 @@
 	<meta http-equiv="Cache-Control" content="no-cache">
 	<LINK REL=STYLESHEET TYPE="text/css" HREF="tipo_proga_css_lib.css">
 
-
-
 	<script language="javascript" type="text/javascript"  src="tipo_proga_js_lib_gr.js"></script>
 	<script language="javascript" type="text/javascript"  src="arduserv_js_lib.js"></script>
 	
@@ -19,14 +17,21 @@
 		loadedJS.language = "javascript";
 		var head = document.getElementsByTagName('head')[0];
 		head.appendChild(loadedJS);
+		
+		//loadedJS.onerror = function() {
+		//  alert("Ошибка загрузки " + this.src);
+		//};
+		
 	</script>
 	
 	<script language="javascript" type="text/javascript"  src="fillstruder_lib_gribikc.js"></script>
 	<script language="javascript" type="text/javascript"  src="fillstruder_js_xhr_lib.js"></script>	
+	<script language="javascript" type="text/javascript"  src="lang.js"></script>
+	
 	
 
 </head>
-<body onload="main_init()">
+<body onload="main_init();initLanguage();">
 	<!---------------------------------------------------------------------------------------------------------->
 		<!---------------------------------------------------------------------------------------------------------->
 		<div class="menu_top_gr">
@@ -37,10 +42,8 @@
 		</div>
 		<!---------------------------------------------------------------------------------------------------------->
 		<div class="menu_sub_right_gr" id="sub_menu_right" align="right">
-			<a class="menu_up_a_gr" onclick="yandex_map_center_map_to(0,0,1);">Карта->Текущие положение</a><br>
-			<a class="menu_up_a_gr" onclick="config['map']['auto_move_map_to_boat'] ? config['map']['auto_move_map_to_boat']=0 : config['map']['auto_move_map_to_boat']=1;">Карта->Следовать</a><br>
-			<a class="menu_up_a_gr" onclick="hiden_change_inner_gr('sub_menu_right');">Настройки</a>		<br>
-			<a class="menu_up_a_gr" onclick="autoboat_save_settings_send_db();">Сохранить конфигурацию</a>	<br>		
+			<a class="menu_up_a_gr" onclick="changeLanguage('ru')">Русский</a><br>
+			<a class="menu_up_a_gr" onclick="changeLanguage('en')">English</a><br>	
 		</div>
 		<!---------------------------------------------------------------------------------------------------------->
 		<div class="main_menu_icon" id='main_list_of_all' style="position:absolute;visibility:hidden;display:none;"></div>
@@ -48,23 +51,23 @@
 		<div class="main_div" id="main_wiev_div" stylee="position:absolute;visibility:hidden;display:none;">
 			<!--UPRAVLENIE_Automatikoy--------------------------------------------------------------------------------------------------->
 				<div data-name="Управление Автоматикой" id="upr_izm" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
-					<b>Управление Автоматикой</b><br>
-					<input type="button" value="Старт" 	onclick="send_form_data('/mode_auto','','')">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="Стоп"	onclick="send_form_data('/mode_stop','','')"><br>
+					<b data-translate="upt_automatic_title">Управление Автоматикой</b><br>
+					<input type="button" value="Старт" 	onclick="send_form_data('/mode_auto','','')" data-translate="upt_automatic_start">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="Стоп"	onclick="send_form_data('/mode_stop','','')" data-translate="upt_automatic_stop"><br>
 					<div><form id="set_diametr" onsubmit="send_form_data('/set_diametr','set_diametr',{});return false;">
-						Уст. Диаметра: 
+						<p style="all:unset;" data-translate="upt_automatic_diameter_set">Уст. Диаметра</p> : 
 						<input name="diametr" type="text" id="set_diametr_val" value="1.75">
-						<button type="submit">Установить</button>
+						<button type="submit" data-translate="set">Установить</button>
 						</form>
 					</div>
 					<div><form id="set_iad" onsubmit="send_form_data('/iadset','set_iad',{type:'set'});return false;">
-						Усреднение(I&D):
+						<p style="all:unset;" data-translate="upt_automatic_diameter_AveragingIAD">Усреднение</p>(I&D):
 						<input name="interval" type="text" id="set_iad_val" value=10>
-						<button type="submit">Установить</button>
+						<button type="submit" data-translate="set">Установить</button>
 						</form>
 					</div>
 					<div><form id="set_pid" onsubmit="send_form_data('/set_pid','set_pid',{});return false;">
-						Уст. PID <button type="submit">Установить</button><br>
+						PID <button type="submit" data-translate="set">Установить</button><br>
 						&nbsp;&nbsp;&nbsp;&nbsp;KP:<input name="kp" id="pid_kp" type="text" value="0.1"><br>
 						&nbsp;&nbsp;&nbsp;&nbsp;KD:<input name="kd" id="pid_kd" type="text" value="0.99">
 						</form>
@@ -72,21 +75,21 @@
 				</div>
 			<!--UPRAVLENIE Motorom--------------------------------------------------------------------------------------------------->
 				<div data-name="Управление Мотором протяжки" id="upr" class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
-					<b>Управление Мотором</b><br>
+					<b data-translate="motor_set">Управление Мотором Протяжки</b><br>
 					<div id="cur_mot_speed"></div><br>
 					<div>	<a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">+0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a onclick="send_form_data('/motset','',{speed:0.5,type:'inc'})">+0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a onclick="send_form_data('/motset','',{speed:1.0,type:'inc'})">+1.0</a>
 						<form id="set_mot_speed_form" onsubmit="send_form_data('/motset','set_mot_speed_form',{type:'set'});return false;">
-							Скорости об.сек<br>
+							<p style="all:unset;" data-translate="motor_set_speed">Скорости об.сек</p><br>
 							<input name="speed" type="text" id="set_mot_speed" value="0.5"><br>
-							<button type="submit">Установить</button>
+							<button type="submit" data-translate="set">Установить</button>
 						</form>
 						<a onclick="send_form_data('/motset','',{speed:-0.1,type:'inc'})">-0.1</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						<a onclick="send_form_data('/motset','',{speed:-0.5,type:'inc'})">-0.5</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						<a onclick="send_form_data('/motset','',{speed:-1.0,type:'inc'})">-1.0</a>
 						<br><br>
-						<a onclick="send_form_data('/motset','',{speed:0.0,type:'set'})">Остановить</a>
+						<a onclick="send_form_data('/motset','',{speed:0.0,type:'set'})"><p style="all:unset;" data-translate="upt_automatic_stop">Остановить</p></a>
 						<!--a onclick="send_form_data('/motset','',{speed:0.1,type:'inc'})">тест</a-->
 					</div><br>
 				</div>
@@ -112,20 +115,20 @@
 				</div>
 			<!--GR1------------------------------------------------------------------------------------------------------->
 				<div data-name="График Измерителя" id='graph' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
-					<b>Диаметр филамента</b><br>
+					<b data-translate="filament_diameter">Диаметр филамента</b><br>
 					<div id="mma_izm"></div>
 					<!--div id="linechart_material" style="width: 900px; height: 500px"></div-->
 					<div id='linechart_izm'></div>
 				</div>
 			<!--GR2------------------------------------------------------------------------------------------------------->
 				<div data-name="График PID" id='graph_pid' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
-					<b>Выход регулятора</b><br>
+					<b data-translate="motor_speed_graph">Выход регулятора</b><br>
 					<div id="mma_pid"></div>
 					<div id="linechart_pid_div"></div>
 				</div>
 			<!--SETTINGS------------------------------------------------------------------------------------------------------->
 				<div data-name="Настройки" id='eeprom_main_div' class="div_in_main_div" style="background: #F0F0F0;border: 3px solid #000000;">
-					<b>Редактирование настроек EEPROM</b><br>
+					<b data-translate="eeprom_main">Редактирование настроек EEPROM</b><br>
 					<div id='eeprom_edit_div'></div>
 				</div>
 			<!--SETTINGS----------------------------------------------------------------------------------------------------->
