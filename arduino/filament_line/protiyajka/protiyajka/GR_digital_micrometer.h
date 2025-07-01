@@ -3,8 +3,8 @@ class GR_digital_micrometer{
         GR_digital_micrometer(int data_pin,int clk_pin):data_pin_(data_pin),clk_pin_(clk_pin){
             pinMode (data_pin_, INPUT);
             pinMode (clk_pin_, INPUT);
-            pinMode (data_pin_, INPUT_PULLUP);//INPUT_PULLDOWN 
-            pinMode (clk_pin_, INPUT_PULLUP );
+            //pinMode (data_pin_, INPUT_PULLUP);//INPUT_PULLDOWN 
+            //pinMode (clk_pin_, INPUT_PULLUP );
             //digitalWrite (data_pin_, 0);
             //digitalWrite (clk_pin_, 0);
             //attachInterrupt(clk_pin_,get_bit,RISING);
