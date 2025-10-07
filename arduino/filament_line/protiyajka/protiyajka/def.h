@@ -12,22 +12,23 @@
 //	#36-only INPUT
 //	#39-only INPUT
 
-//    	//IZM
-//    	#define PIN_data0 13 //шина данных
-//    	#define PIN_clk0 14 //шина clock
-//    
-//    	//MOT
-//    	#define MOT_EN 27
-//    	#define MOT_STEP 25
-//    	#define MOT_DIR 26
+    	//IZM
+    	#define PIN_data0 13 //шина данных
+    	#define PIN_clk0 14 //шина clock
+    
+    	//MOT
+    	#define MOT_EN 27
+    	#define MOT_STEP 25
+    	#define MOT_DIR 26
 
-//IZM
-  #define PIN_data0 27 //шина данных
-  #define PIN_clk0 26 //шина clock
-//MOT
-  #define MOT_EN 17
-  #define MOT_STEP 16
-  #define MOT_DIR 4
+//УБ
+/*  //IZM
+    #define PIN_data0 27 //шина данных
+    #define PIN_clk0 26 //шина clock
+  //MOT
+    #define MOT_EN 17
+    #define MOT_STEP 16
+    #define MOT_DIR 4*/
 
 
 //BT
