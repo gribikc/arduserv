@@ -6,10 +6,10 @@
 GR_step_driver sm_prot(X_STP,X_DIR,MOT_EN,true);//true/false направление вращение двигателя
 Encoder enc(X_Lim, Y_Lim, Z_Lim);
 
-#define To 65500
+#define To 65336
 bool tmr_flg=false;
-ISR(TIMER2_OVF_vect/*TIMER1_OVF_vect*/){
-  TCNT2/*1*/ = To; // Timer Preloading
+ISR(TIMER1_OVF_vect){
+  TCNT1 = To; // Timer Preloading
   tmr_flg=true;
 	//sm_prot.doit();
   //digitalWrite(LED_BUILTIN, digitalRead(LED_BUILTIN)?LOW:HIGH);
@@ -20,16 +20,18 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Begin...");
   // put your setup code here, to run once:
-  TCCR2A = 0;           // Init Timer1
-  TCCR2B = 0;           // Init Timer1
-  TCCR2B |= B00000001;//11;  // Prescalar = 64
-  TCNT2 = To;        // Timer Preloading
-  TIMSK2 |= B00000001;  // Enable Timer Overflow Interrupt
+  TCCR1A = 0;
+  TCCR1B = 0;
+  TCCR1B |= B00000010;
+  TCNT1 = To;
+  TIMSK1 |= B00000001;
 
-  sm_prot.set_ob_sec(0.0000025);
+  sm_prot.set_ob_sec(0.0025);//0.00003-примерно 0.5 обсек!!!
+  Serial.println(sm_prot.get_ob_sec(),6);
 }
 
-void loop() {
+
+void loop(){
   if(tmr_flg){
     tmr_flg=false;
     sm_prot.doit();
@@ -42,10 +44,15 @@ void loop() {
             // Нет события
             break;
         case 2:
-            Serial.print("Rotation | Absolute: ");
-            Serial.print(enc.getAbsolute());
-            Serial.print(" | Relative: ");
-            Serial.println(enc.getRelative());
+            //Serial.print("Rotation | Absolute: ");
+            //Serial.print(enc.getAbsolute());
+            //Serial.print(" | Relative: ");
+            //Serial.println(enc.getRelative());
+            
+            float a=static_cast<float>(enc.getRelative());
+            sm_prot.inc_ob_sec(a*0.00001);
+            Serial.println(sm_prot.get_ob_sec(),6);
+            //sm_prot.set_ob_sec(0.25);
             break;
         case 3:
             Serial.println("Button pressed");

@@ -82,7 +82,7 @@ private:
     int en_pin_=0;
     int fb_pin_=0;
     float degres_=1.8f;
-    int micro_step_=16;
+    int micro_step_=8;
     int reduction_=1;
     bool dir_=true;
 
