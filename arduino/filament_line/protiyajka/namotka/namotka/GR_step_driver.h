@@ -2,7 +2,7 @@ class GR_step_driver
 {
 
 public:
-    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,int reduction=0,bool dir=true):
+    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,int reduction=5.18,bool dir=true):
         step_pin_(step_pin),
         dir_pin_(dir_pin),
         en_pin_(en_pin),
@@ -48,15 +48,11 @@ public:
     }
 
     void set_ob_sec(float freq){
-        inc_target=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
+        inc_target=(freq*(reduction_*micro_step_*360/degres_)*exp32_)/fs_;
     }
 
     void inc_ob_sec(float freq){
-        inc_target+=(freq*(micro_step_*360/degres_)*exp32_)/fs_;
-    }
-
-    void set_freq(float freq){
-        inc_target=(freq*exp32_)/fs_;
+        inc_target+=(freq*(reduction_*micro_step_*360/degres_)*exp32_)/fs_;
     }
 
     void inc_freq(float freq){
@@ -64,15 +60,19 @@ public:
     }
 
     float get_ob_sec(){
-        return (get_freq()/(micro_step_*360/degres_));
+        return (get_freq()/(reduction_*micro_step_*360/degres_));
     } 
 
-    float get_freq(){
-        return (fs_/exp32_)*inc_;
+    void set_freq(float freq){
+        inc_target=((freq/fs_)*exp32_);
     }
 
-    signed int get_inc(){
-        return inc_;
+    float get_freq(){
+        return (fs_*static_cast<float>(inc_target)/exp32_);
+    }
+
+    signed long get_inc(){
+        return inc_target;
     }
 
 
@@ -83,15 +83,15 @@ private:
     int fb_pin_=0;
     float degres_=1.8f;
     int micro_step_=8;
-    int reduction_=1;
+    float reduction_=5.18;
     bool dir_=true;
 
-    signed int acc_=0;
-    signed int inc_=0;
-    signed int inc_target=21474836;
+    signed long acc_=0;
+    signed long inc_=0;
+    signed long inc_target=21474836;
     bool    step_state_=0;
-    float fs_=100000;//KHz
-    float exp32_=4294967296;
+    float fs_=50000;//KHz
+    float exp32_=4294967296ULL;
 
     volatile signed long int cur_odometr=0;
     volatile signed long int target_odometr=0;

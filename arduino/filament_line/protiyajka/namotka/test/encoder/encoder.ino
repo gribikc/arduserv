@@ -8,110 +8,128 @@
 
 class Encoder {
 private:
-    int pinCLK, pinDT, pinSW;
-    int absoluteCounter;
-    int relativeCounter;
-    int lastStateCLK;
+    // Используем прямую работу с портами для максимальной скорости
+    volatile uint8_t *portCLK, *portDT, *portSW;
+    uint8_t maskCLK, maskDT, maskSW;
     
-    // Переменные для обработки кнопки
-    bool buttonState;
-    bool lastButtonState;
+    int32_t absoluteCounter;
+    int8_t relativeCounter;
+    
+    uint8_t lastStateCLK : 1;
+    uint8_t buttonState : 1;
+    uint8_t lastButtonState : 1;
+    uint8_t buttonWasPressed : 1;
+    uint8_t lastHoldEvent : 3;
+    
     unsigned long buttonPressTime;
-    uint8_t lastHoldEvent;
     unsigned long lastDebounceTime;
-    bool buttonWasPressed;
+    unsigned long lastProcessTime; // Время последней обработки
     
-    // Константы времени
-    const unsigned long debounceDelay = 50;
-    const unsigned long holdDelay500 = 500;
-    const unsigned long holdDelay1000 = 1000;
-    const unsigned long holdDelay5000 = 5000;
+    // Константы времени как статические константы
+    static const unsigned long debounceDelay = 50;
+    static const unsigned long holdDelay500 = 500;
+    static const unsigned long holdDelay1000 = 1000;
+    static const unsigned long holdDelay5000 = 5000;
+    static const unsigned long minProcessInterval = 2; // Минимальный интервал между обработками (мс)
 
 public:
     // Конструктор
-    Encoder(int clk, int dt, int sw) : 
-        pinCLK(clk), 
-        pinDT(dt), 
-        pinSW(sw), 
+    Encoder(uint8_t clk, uint8_t dt, uint8_t sw) : 
         absoluteCounter(0),
         relativeCounter(0),
         lastStateCLK(0),
         buttonState(HIGH),
         lastButtonState(HIGH),
-        buttonPressTime(0),
+        buttonWasPressed(false),
         lastHoldEvent(0),
+        buttonPressTime(0),
         lastDebounceTime(0),
-        buttonWasPressed(false)
+        lastProcessTime(0)
     {
-        pinMode(pinCLK, INPUT);
-        pinMode(pinDT, INPUT);
-        pinMode(pinSW, INPUT_PULLUP);
-        lastStateCLK = digitalRead(pinCLK);
+        // Прямой доступ к портам для максимальной скорости чтения
+        portCLK = portInputRegister(digitalPinToPort(clk));
+        maskCLK = digitalPinToBitMask(clk);
+        portDT = portInputRegister(digitalPinToPort(dt));
+        maskDT = digitalPinToBitMask(dt);
+        portSW = portInputRegister(digitalPinToPort(sw));
+        maskSW = digitalPinToBitMask(sw);
+        
+        pinMode(clk, INPUT);
+        pinMode(dt, INPUT);
+        pinMode(sw, INPUT_PULLUP);
+        
+        lastStateCLK = (*portCLK & maskCLK) ? 1 : 0;
     }
 
-    // Основной метод обработки - возвращает код события
+    // Оптимизированный метод обработки с защитой от частых вызовов
     uint8_t doWork() {
-        uint8_t event = 0; // 0 - нет события
+        unsigned long currentTime = millis();
         
+        // Защита от слишком частых вызовов
+        if (currentTime - lastProcessTime < minProcessInterval) {
+            return 0;
+        }
+        lastProcessTime = currentTime;
+        
+        uint8_t event = 0;
+
         // Обработка вращения энкодера
-        int currentStateCLK = digitalRead(pinCLK);
+        uint8_t currentStateCLK = (*portCLK & maskCLK) ? 1 : 0;
         if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
-            if (digitalRead(pinDT) != currentStateCLK) {
+            uint8_t dtState = (*portDT & maskDT) ? 1 : 0;
+            if (dtState != currentStateCLK) {
                 absoluteCounter--;
                 relativeCounter--;
             } else {
                 absoluteCounter++;
                 relativeCounter++;
             }
-            event = 2; // Событие вращения
+            event = 2;
         }
         lastStateCLK = currentStateCLK;
 
-        // Обработка кнопки с антидребезгом
-        int reading = digitalRead(pinSW);
+        // Обработка кнопки
+        uint8_t reading = (*portSW & maskSW) ? HIGH : LOW;
         
         if (reading != lastButtonState) {
-            lastDebounceTime = millis();
+            lastDebounceTime = currentTime;
         }
 
-        if ((millis() - lastDebounceTime) > debounceDelay) {
+        if ((currentTime - lastDebounceTime) > debounceDelay) {
             if (reading != buttonState) {
                 buttonState = reading;
                 
                 if (buttonState == LOW) {
-                    // Кнопка нажата
-                    buttonPressTime = millis();
-                    lastHoldEvent = 0; // Сбрасываем флаги удержания
+                    buttonPressTime = currentTime;
+                    lastHoldEvent = 0;
                     buttonWasPressed = true;
-                    event = 3; // Событие нажатия
+                    event = 3;
                 } else {
-                    // Кнопка отпущена
                     if (buttonWasPressed) {
-                        event = 4; // Всегда генерируем событие отпускания
+                        event = 4;
                         buttonWasPressed = false;
                     }
-                    lastHoldEvent = 0; // Сбрасываем флаги удержания
+                    lastHoldEvent = 0;
                 }
             }
         }
 
         lastButtonState = reading;
 
-        // Обработка удержания кнопки (только если кнопка нажата)
+        // Обработка удержания
         if (buttonState == LOW && buttonWasPressed) {
-            unsigned long holdTime = millis() - buttonPressTime;
-            uint8_t newHoldEvent = 0;
+            unsigned long holdTime = currentTime - buttonPressTime;
+            uint8_t newHoldEvent = lastHoldEvent;
             
             if (holdTime >= holdDelay5000 && lastHoldEvent < 7) {
-                newHoldEvent = 7; // Удержание 5+ секунд
+                newHoldEvent = 7;
             } else if (holdTime >= holdDelay1000 && lastHoldEvent < 6) {
-                newHoldEvent = 6; // Удержание 1+ секунд
+                newHoldEvent = 6;
             } else if (holdTime >= holdDelay500 && lastHoldEvent < 5) {
-                newHoldEvent = 5; // Удержание 0.5+ секунд
+                newHoldEvent = 5;
             }
             
-            // Генерируем событие только если нашли новое событие удержания
-            if (newHoldEvent > 0 && newHoldEvent != lastHoldEvent) {
+            if (newHoldEvent != lastHoldEvent) {
                 event = newHoldEvent;
                 lastHoldEvent = newHoldEvent;
             }
@@ -120,27 +138,43 @@ public:
         return event;
     }
 
-    // Получение абсолютного значения счетчика
-    int getAbsolute() {
+    // Метод для принудительной обработки (игнорируя таймаут)
+    uint8_t doWorkForce() {
+        lastProcessTime = 0; // Сбрасываем таймер
+        return doWork();
+    }
+
+    // Быстрый inline метод для получения абсолютного значения
+    inline int32_t getAbsolute() const {
         return absoluteCounter;
     }
 
-    // Получение относительного изменения с момента последнего чтения
-    int getRelative() {
-        int result = relativeCounter;
-        relativeCounter = 0; // Сбрасываем после чтения
+    // Быстрый inline метод для относительного изменения
+    inline int8_t getRelative() {
+        int8_t result = relativeCounter;
+        relativeCounter = 0;
         return result;
     }
 
-    // Установка абсолютного значения счетчика
-    void setAbsolute(int value) {
+    // Быстрая установка абсолютного значения
+    inline void setAbsolute(int32_t value) {
         absoluteCounter = value;
     }
 
-    // Сброс относительного счетчика
-    void resetRelative() {
+    // Быстрый сброс
+    inline void resetRelative() {
         relativeCounter = 0;
     }
+    
+    // Дополнительный метод для проверки, нажата ли кнопка в данный момент
+    inline bool isButtonPressed() const {
+        return buttonState == LOW;
+    }
+    
+    // Метод для изменения минимального интервала обработки
+    //inline void setMinInterval(unsigned long interval) {
+    //    minProcessInterval = interval;
+    //}
 };
 
 // Использование класса
