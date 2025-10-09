@@ -13,7 +13,7 @@ public:
     {
         pinMode (step_pin_, OUTPUT);
         pinMode (dir_pin_, OUTPUT);
-        digitalWrite(dir_pin_,dir);
+        digitalWrite(dir_pin_,dir);//dir
         if(en_pin!=0){
             pinMode (en_pin_, OUTPUT);
         }
@@ -22,11 +22,10 @@ public:
         }
 
         digitalWrite(en_pin,0);
-        digitalWrite(en_pin,0);
     }
 
     void doit(){
-        int max_accelerate=2000;
+        int max_accelerate=20000;
         if(inc_target!=inc_){
           if(inc_target>inc_){
             inc_=(inc_target-inc_)<max_accelerate?inc_target:inc_+max_accelerate;
@@ -44,6 +43,13 @@ public:
         }else if(acc_<0 && step_state_==1){
             step_state_=0;
             digitalWrite(step_pin_,step_state_);
+        }
+        if(odometr_en){
+            if(target_odometr<cur_odometr){
+                set_ob_sec(0.0);
+                odometr_en=false;
+                digitalWrite(dir_pin_,dir_);
+            }
         }
     }
 
@@ -75,6 +81,18 @@ public:
         return inc_target;
     }
 
+    void go_inc(signed long int dist){
+        if(dist>0){
+            target_odometr=cur_odometr+dist;
+            odometr_en=true;
+        }else{
+            target_odometr=cur_odometr-dist;
+            odometr_en=true;
+            //bool a=!dir_;
+            digitalWrite(dir_pin_,false);
+        }
+    }
+
 
 private:
     int step_pin_=0;
@@ -95,6 +113,7 @@ private:
 
     volatile signed long int cur_odometr=0;
     volatile signed long int target_odometr=0;
+    bool odometr_en;
     //
     //f0=(fs*inc_)/2^32
     //1об/сек==200pps;          200*2^32/100000= 8589934,592
