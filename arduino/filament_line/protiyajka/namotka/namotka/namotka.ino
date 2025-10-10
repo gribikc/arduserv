@@ -80,7 +80,8 @@ void loop(){
               sm_prot.inc_ob_sec(-enc.getRelative()*0.01);
             }else{
               Serial.println("run turn...");
-              sm_prot.go_inc(enc.getRelative()*8288);//(8288==1;100000~12)
+              signed long int a=enc.getRelative()*-8288*1;
+              sm_prot.go_inc(a);//(8288==1;100000~12)
               sm_prot.set_ob_sec(eedat_upr.last_speed);
             }
             break;

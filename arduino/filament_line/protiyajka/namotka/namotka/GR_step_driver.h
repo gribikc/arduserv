@@ -25,32 +25,38 @@ public:
     }
 
     void doit(){
-        int max_accelerate=20000;
-        if(inc_target!=inc_){
-          if(inc_target>inc_){
-            inc_=(inc_target-inc_)<max_accelerate?inc_target:inc_+max_accelerate;
-          }else{
-            inc_=(inc_-inc_target)<max_accelerate?inc_target:inc_-max_accelerate;
-          }
+        //accelerate
+            int max_accelerate=2000;
+            int min_accelerate=2000;
+            if(inc_target!=inc_){
+                if(inc_target>inc_){
+                    inc_=(inc_target-inc_)<max_accelerate?inc_target:inc_+max_accelerate;
+                }else{
+                    inc_=(inc_-inc_target)<max_accelerate?inc_target:inc_-max_accelerate;
+                }
 
-          if(inc_target==0)inc_=0;
-        }
-        acc_+=inc_;
-        if(acc_>0 && step_state_==0){
-            step_state_=1;
-            digitalWrite(step_pin_,step_state_);
-            ++cur_odometr;
-        }else if(acc_<0 && step_state_==1){
-            step_state_=0;
-            digitalWrite(step_pin_,step_state_);
-        }
-        if(odometr_en){
-            if(target_odometr<cur_odometr){
-                set_ob_sec(0.0);
-                odometr_en=false;
-                digitalWrite(dir_pin_,dir_);
+                if(inc_target==0)inc_=0;
             }
-        }
+
+        //ACC
+            acc_+=inc_;
+            if(acc_>0 && step_state_==0){
+                step_state_=1;
+                digitalWrite(step_pin_,step_state_);
+                ++cur_odometr;
+            }else if(acc_<0 && step_state_==1){
+                step_state_=0;
+                digitalWrite(step_pin_,step_state_);
+            }
+
+        //odometr
+            if(odometr_en){
+                if(target_odometr<cur_odometr){
+                    set_ob_sec(0.0);
+                    odometr_en=false;
+                    digitalWrite(dir_pin_,dir_);
+                }
+            }
     }
 
     void set_ob_sec(float freq){
@@ -88,8 +94,8 @@ public:
         }else{
             target_odometr=cur_odometr-dist;
             odometr_en=true;
-            //bool a=!dir_;
-            digitalWrite(dir_pin_,false);
+            bool a=!dir_;
+            digitalWrite(dir_pin_,a);
         }
     }
 
