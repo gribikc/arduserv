@@ -11,6 +11,7 @@ public:
         reduction_(reduction),
         dir_(dir)
     {
+        //pinModeFast(pinNum, OUTPUT);
         pinMode (step_pin_, OUTPUT);
         pinMode (dir_pin_, OUTPUT);
         digitalWrite(dir_pin_,dir);//dir
@@ -42,6 +43,7 @@ public:
             acc_+=inc_;
             if(acc_>0 && step_state_==0){
                 step_state_=1;
+                //digitalWriteFast(pinNum, HIGH);
                 digitalWrite(step_pin_,step_state_);
                 ++cur_odometr;
             }else if(acc_<0 && step_state_==1){
@@ -97,6 +99,13 @@ public:
             bool a=!dir_;
             digitalWrite(dir_pin_,a);
         }
+    }
+
+    void dir(bool dir){
+        dir_=dir;
+        digitalWrite(dir_pin_,dir_);
+        //Serial.print(dir);
+        //Serial.println(dir_);
     }
 
 

@@ -33,8 +33,8 @@
 #define MOT_EN 8 // stepper motor enable, low level effective
 #define X_DIR 2 //X axis, stepper motor direction control
 #define X_STP 5 //x axis, stepper motor control
-#define Y_DIR 6 //y axis, stepper motor direction control
-#define Y_STP 3 //y axis, stepper motor control
+#define Y_DIR 3 //y axis, stepper motor direction control
+#define Y_STP 6 //y axis, stepper motor control
 #define Z_DIR 7 //zaxis, stepper motor direction control
 #define Z_STP 4 //z axis, stepper motor control
 
@@ -51,3 +51,6 @@
 
 #define SDA   A4
 #define SCL   A5
+
+#define LAY_S   12//A7
+

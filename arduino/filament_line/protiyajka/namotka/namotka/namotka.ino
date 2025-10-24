@@ -5,6 +5,7 @@
 
 
 GR_step_driver sm_prot(X_STP,X_DIR,MOT_EN,true);//true/false направление вращение двигателя
+GR_step_driver sm_lay(Y_STP,Y_DIR,MOT_EN,true);//true/false направление вращение двигателя
 Encoder enc(X_Lim, Y_Lim, Z_Lim);
 uint8_t event=0;
 char mode=0;//0-stop//1-run
@@ -33,6 +34,8 @@ void setup() {
   delay(500);
   digitalWrite(Led,false);
 
+  pinMode(LAY_S, INPUT);
+
   //Timer
     TCCR1A = 0;
     TCCR1B = 0;
@@ -41,6 +44,7 @@ void setup() {
     TIMSK1 |= B00000001;
 
   sm_prot.set_ob_sec(0.0);//0.00003-примерно 0.5 обсек!!!
+  sm_lay.set_ob_sec(0.0);
   mode=0;
 
 
@@ -63,11 +67,23 @@ void loop(){
   if(tmr_flg){
     tmr_flg=false;
     sm_prot.doit();
-    event = enc.doWork();
+    sm_lay.doit();
+    
+    event = enc.doWork();    //uint8_t event = enc.doWork();
+
+    //Serial.print("sensor = ");
+    sm_lay.dir(digitalRead(LAY_S));//==HIGH?true:false);
+    //int val = 0;
+    //val = digitalRead(LAY_S); 
+    //Serial.println(val);
+    //Serial.println(analogRead(LAY_S));
+    //byte v = digitalRead(LAY_S);  
+    //if (v == HIGH)  
+    //    Serial.println(1);  
+    //else  
+    //    Serial.println(0);
   }
 
-  //uint8_t event = enc.doWork();
-    
     switch (event) {
         case 0:
             // Нет события
@@ -98,6 +114,8 @@ void loop(){
 
             if(~mode&1){
               sm_prot.set_ob_sec(eedat_upr.last_speed);
+              sm_lay.set_ob_sec(eedat_upr.last_speed/10.0);
+
               Serial.print("Start...");
               Serial.println(eedat_upr.last_speed);
               mode|=1;
@@ -106,6 +124,7 @@ void loop(){
               Serial.print("Stop...");
               Serial.println(eedat_upr.last_speed);
               sm_prot.set_ob_sec(0.0);
+              sm_lay.set_ob_sec(0.0);
               mode^=1;
             }
             break;
