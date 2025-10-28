@@ -2,8 +2,11 @@
 #include "Encoder.h"
 #include "GR_step_driver.h"
 #include "EEPROM.h"
+#include "Debounce.h"
 
+#define Lay_Ki 2.75//2.96!!!//tmc229 2.5 -быстро//2.85 близко к идеалу но наверную нужно опережение
 
+Debounce lay_pos_button(LAY_S, 5);
 GR_step_driver sm_prot(X_STP,X_DIR,MOT_EN,true);//true/false направление вращение двигателя
 GR_step_driver sm_lay(Y_STP,Y_DIR,MOT_EN,true);//true/false направление вращение двигателя
 Encoder enc(X_Lim, Y_Lim, Z_Lim);
@@ -61,6 +64,39 @@ void setup() {
   }
   Serial.print("defSpeed:");
   Serial.println(eedat_upr.last_speed);
+
+  //Парковка намотчика//1 идет вниз//
+    Serial.print("Парковка намотчика...");
+    //lay_pos_button.update();
+    //sm_lay.set_ob_sec(sm_prot.get_ob_sec()/Lay_Ki);
+    //sm_lay.dir(digitalRead(LAY_S));
+    bool llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+    llps= lay_pos_button.update();
+
+    //sm_lay.set_ob_sec(eedat_upr.last_speed);
+    sm_lay.set_ob_sec(eedat_upr.last_speed);///Lay_Ki);
+    bool st_step=false;
+    Serial.print(llps);
+    while(!st_step || llps){
+      if(tmr_flg){
+        tmr_flg=false;
+        sm_lay.doit();
+        llps=lay_pos_button.update();
+        st_step=(llps||st_step)?1:0;
+        sm_lay.dir(llps);
+      }
+    }
+    sm_lay.set_ob_sec(0);
+    Serial.println("завершина");
 }
 
 void loop(){
@@ -72,7 +108,7 @@ void loop(){
     event = enc.doWork();    //uint8_t event = enc.doWork();
 
     //Serial.print("sensor = ");
-    sm_lay.dir(digitalRead(LAY_S));//==HIGH?true:false);
+    sm_lay.dir(lay_pos_button.update()); //digitalRead(LAY_S));//==HIGH?true:false);
     //int val = 0;
     //val = digitalRead(LAY_S); 
     //Serial.println(val);
@@ -94,6 +130,7 @@ void loop(){
             //Serial.print(" | Relative: ");
             if(mode&1){
               sm_prot.inc_ob_sec(-enc.getRelative()*0.01);
+              sm_lay.set_ob_sec(sm_prot.get_ob_sec()/Lay_Ki);
             }else{
               Serial.println("run turn...");
               signed long int a=enc.getRelative()*-8288*1;
@@ -114,7 +151,7 @@ void loop(){
 
             if(~mode&1){
               sm_prot.set_ob_sec(eedat_upr.last_speed);
-              sm_lay.set_ob_sec(eedat_upr.last_speed/10.0);
+              sm_lay.set_ob_sec(eedat_upr.last_speed/Lay_Ki);//30 медленно 25 медленно //20 МЕДЛЕННО
 
               Serial.print("Start...");
               Serial.println(eedat_upr.last_speed);
