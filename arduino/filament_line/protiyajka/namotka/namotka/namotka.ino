@@ -4,11 +4,12 @@
 #include "EEPROM.h"
 #include "Debounce.h"
 
-#define Lay_Ki 2.75//2.96!!!//tmc229 2.5 -быстро//2.85 близко к идеалу но наверную нужно опережение
+#define Lay_Ki 0.5 //0.5 чуть быстрее
+//0.337//2.96!!!//tmc229 2.5 -быстро//2.85 близко к идеалу но наверную нужно опережение//2.75 было хорошо!!! но не теперь
 
 Debounce lay_pos_button(LAY_S, 5);
-GR_step_driver sm_prot(X_STP,X_DIR,MOT_EN,true);//true/false направление вращение двигателя
-GR_step_driver sm_lay(Y_STP,Y_DIR,MOT_EN,true);//true/false направление вращение двигателя
+GR_step_driver sm_prot(X_STP,X_DIR,MOT_EN,0,1.8f,5.18f,true);//true/false направление вращение двигателя
+GR_step_driver sm_lay (Y_STP,Y_DIR,MOT_EN,0,1.8f,1.0f ,true);//true/false направление вращение двигателя
 Encoder enc(X_Lim, Y_Lim, Z_Lim);
 uint8_t event=0;
 char mode=0;//0-stop//1-run
@@ -83,7 +84,7 @@ void setup() {
     llps= lay_pos_button.update();
 
     //sm_lay.set_ob_sec(eedat_upr.last_speed);
-    sm_lay.set_ob_sec(eedat_upr.last_speed);///Lay_Ki);
+    sm_lay.set_ob_sec(eedat_upr.last_speed*3);///Lay_Ki);
     bool st_step=false;
     Serial.print(llps);
     while(!st_step || llps){

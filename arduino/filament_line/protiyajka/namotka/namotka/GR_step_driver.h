@@ -2,7 +2,7 @@ class GR_step_driver
 {
 
 public:
-    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,int reduction=5.18,bool dir=true):
+    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,float reduction=5.18f,bool dir=true):
         step_pin_(step_pin),
         dir_pin_(dir_pin),
         en_pin_(en_pin),
@@ -45,7 +45,7 @@ public:
                 step_state_=1;
                 //digitalWriteFast(pinNum, HIGH);
                 digitalWrite(step_pin_,step_state_);
-                ++cur_odometr;
+                dir_?++cur_odometr:--cur_odometr;
             }else if(acc_<0 && step_state_==1){
                 step_state_=0;
                 digitalWrite(step_pin_,step_state_);
@@ -94,7 +94,7 @@ public:
             target_odometr=cur_odometr+dist;
             odometr_en=true;
         }else{
-            target_odometr=cur_odometr-dist;
+            target_odometr=cur_odometr-dist;//!!!
             odometr_en=true;
             bool a=!dir_;
             digitalWrite(dir_pin_,a);
