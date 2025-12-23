@@ -19,16 +19,18 @@ int i,j,k;
 	
   //GR_step_driver(       int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,float reduction=5.18f,bool dir=true):
 	GR_step_driver laying_mot(MOT_STEP_P,MOT_DIR_P,MOT_EN_P,0,1.8f,1.0f,true);//true/false направление вращение двигателя
-  GR_step_driver main_mot(MOT_STEP_S,MOT_DIR_S,MOT_EN_S,0,1.8f,5.18f,true);//true/false направление вращение двигателя
+  GR_step_driver main_mot(MOT_STEP_S,MOT_DIR_S,MOT_EN_S,0,1.8f,4.0f,false);//true/false направление вращение двигателя//(MOT_STEP_S,MOT_DIR_S,MOT_EN_S,0,1.8f,5.18f,false)
   
   ///Work Mode & EEPROM
     struct eedat_upr_def{
-      float target_diametr=1.85f;//Lay_Ki 0.5 на один оборот намотчика инкремент?!?!?!!! !!!
-      float speed_main=0.5f;//скорость намотки
-      float lay_offset=11.0f;//скорость намотки//(8.0+3)
-      float spool_thickness=4.75;
-      float spool_width=64.5;
+      float speed_main=0.3f;//скорость намотки
+      
+      float lay_offset=3.90f;//3.90f;!!!///
+      float spool_thickness=5.0f;//4.75;
+      float target_diametr=2.0f;//1.85f;//Lay_Ki 0.5 на один оборот намотчика инкремент?!?!?!!! !!!
+      float spool_width=64.5f;//64.5f;//-target_diametr;
 
+      int mode =0;
 
       String ap_name_host="namotchik";
       String ap_key_host="12345670";
@@ -85,7 +87,9 @@ volatile bool onTimer_flg=false;
 
     //Отступ от 0 до края платформы
       laying_mot.odometr_reset();//вроде не надо
-      laying_mot.go_inc((eedat_upr.lay_offset+eedat_upr.spool_thickness)*8*200);//разбить на 2 функциональных вызов
+      laying_mot.go_inc( (eedat_upr.lay_offset+eedat_upr.spool_thickness+eedat_upr.target_diametr*0.0)*8*200 ) ;//разбить на 2 функциональных вызов
+      //laying_mot.go_inc(eedat_upr.spool_thickness*8*200);//разбить на 2 функциональных вызов
+      //laying_mot.go_inc(eedat_upr.target_diametr*8*200);//разбить на 2 функциональных вызов
       Serial.println("Парковка по концевику...завершена");
       while(laying_mot.get_ob_sec()>0.00001){
         delay(50);

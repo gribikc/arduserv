@@ -107,12 +107,18 @@ void start_init(){
     web_server.server->send(200, "text/plan;", str);
   });
 
-  web_server.server->on("/move_winder", HTTP_POST, [web_server]() {
+  web_server.server->on("/move_winder", HTTP_POST, [web_server]() {//тут сделать не только скорость но и расстояние в оборотах
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
     if(arguments_map["type"]=="set"){
       main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+      if(eedat_upr.mode==1){
+        laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
+      }
     }else if(arguments_map["type"]=="inc"){
       main_mot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+      if(eedat_upr.mode==1){
+        laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
+      }
     }else{
       //err
     }
@@ -124,16 +130,17 @@ void start_init(){
   });
  ////////////////////////////////////////// 
  //////////////////////////////////////////
-  web_server.server->on("/mode", HTTP_POST, [web_server]() {//!!! почемуто работает через гет /mode?type=set&mode=start
+  web_server.server->on("/mode_start", HTTP_GET, [web_server]() {//!!! почемуто работает через гет /mode?type=set&mode=start
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    if(arguments_map["type"]=="set"){
-      //main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
-      if(arguments_map["mode"]=="start"){
-        main_mot.set_ob_sec(eedat_upr.speed_main);
-        laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
-        laying_mot.go_inc(eedat_upr.spool_width*8*200);//targett_d
-      }
-    }
+    //if(arguments_map["type"]=="set"){
+    //  //main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+    //  if(arguments_map["mode"]=="start"){
+    //    main_mot.set_ob_sec(eedat_upr.speed_main);
+    //    laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
+    //    laying_mot.go_inc(eedat_upr.spool_width*8*200);//targett_d
+    //  }
+    //}
+    eedat_upr.mode=2;
     String str;
     str.clear();
     str+=String(laying_mot.get_odometr());

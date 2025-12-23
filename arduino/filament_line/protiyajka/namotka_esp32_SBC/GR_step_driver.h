@@ -2,7 +2,7 @@ class GR_step_driver
 {
 
 public:
-    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,float reduction=5.18f,bool dir=true):
+    GR_step_driver(int step_pin,int dir_pin,int en_pin=0,int fb_pin=0,float degres=1.8f,float reduction=5.18f,bool dir=true)://добавить микрошаг!!!
         step_pin_(step_pin),
         dir_pin_(dir_pin),
         en_pin_(en_pin),
@@ -117,7 +117,7 @@ public:
             return;
         }
         odometr_en=true;
-        target_odometr=cur_odometr+dist;
+        target_odometr=target_odometr+dist;//target_odometr=cur_odometrtarget_odometr+dist;//!!!!!!!!!!!!!!!!!!!!!!!! !!! !!! !!!
         if(target_odometr>cur_odometr){
             dir_cur_=dir_;
         }else{

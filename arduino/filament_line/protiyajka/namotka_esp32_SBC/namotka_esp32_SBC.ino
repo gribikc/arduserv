@@ -50,20 +50,30 @@ void loop(){
     laying_mot.doit();
     main_mot.doit();
 
-    /*
+   if(eedat_upr.mode==1){ 
     //Синхронизация укладчика
       //Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
-      if(laying_mot.get_ob_sec()<=0.00001){
+      if(laying_mot.get_ob_sec()==0.0f){//laying_mot.get_inc()==0//laying_mot.get_ob_sec()==0.0f
         if(laying_mot.get_odometr()==0){
-          laying_mot.go_inc(eedat_upr.spool_width*8*200);
+          laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*0)*8*200);//go_to
         }else{
-          laying_mot.go_inc(-eedat_upr.spool_width*8*200);
+          laying_mot.go_to(0/*-eedat_upr.spool_width*8*200*/);//go_inc
         }
-        laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
+        laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
         Serial.println("Програмный концевик(Мотор остановлен)");
+        Serial.print("Скорость:"); Serial.println(laying_mot.get_ob_sec());
         Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
       }
-      */
+   }
+   if(eedat_upr.mode==2){
+      eedat_upr.mode=1;
+          //Старт намотки
+        Serial.println("Старт намотки");
+        main_mot.set_ob_sec(eedat_upr.speed_main);
+        laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
+        laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr)*8*200);//targett_d
+        Serial.print("To:"); Serial.println((eedat_upr.spool_width-eedat_upr.target_diametr)*8*200);
+   }
   }
 
 
