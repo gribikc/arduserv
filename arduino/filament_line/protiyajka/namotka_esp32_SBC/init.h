@@ -13,6 +13,9 @@ void start_init(){
 		#endif
 
 
+  sys_info.write("CPU0 reset reason:"+rtc_get_reset_reason(0)+rtc_get_reset_reason(0));
+  sys_info.write("CPU1 reset reason:"+rtc_get_reset_reason(1)+rtc_get_reset_reason(1));
+
   //EEPROM
     //EEPROM.begin(200);
     ////EEPROM.write(0,1);
@@ -156,13 +159,28 @@ void start_init(){
   });
 
   web_server.server->on("/mode_stop", HTTP_GET, [web_server]() {
+    std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
+    eedat_upr.mode=3;
     String str;
+    str.clear();
     str+="OK.";
-    //work_model.w_mode=0;
     web_server.server->send(200, "text/plan;", str);
   });
 //////////////////////////////////////////
 //////////////////////////////////////////
+    web_server.server->on("/get_log", HTTP_GET, [web_server]() {
+      String str;
+      str.clear();
+
+      while(sys_info.is_readable()){
+        //auto a=sys_info.read();
+        str+="\n"+sys_info.read().first;
+      }
+      web_server.server->send(200, "text/plan;", str);
+    });
+//////////////////////////////////////////
+//////////////////////////////////////////
+
 
   //main_mot.set_ob_sec(eedat_upr.speed_main);
   //laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);

@@ -320,6 +320,12 @@ void Web_server_gr::init(){
 		String str = "TEST:OK;";
 		server->send(200, "text/json", str);
 	});
+  
+  server->on("/_RESET_CPU_", HTTP_GET, [this]() {
+		String str = "RESET CPU!!!";
+		server->send(200, "text/json", str);
+    ESP.restart();
+	});
  
 	server->on("/list", HTTP_GET, [this]() {
 		handleFileList();
