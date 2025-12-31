@@ -25,6 +25,9 @@ public:
       return std::make_pair(buf_[rd_point_], false);
     }
   }
+  std::pair<Type, bool> read_silent() {
+
+  }
 
   bool is_readable() { return (rd_point_ != wr_point_); }
 

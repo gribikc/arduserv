@@ -34,16 +34,13 @@ void setup(){
   laying_mot.set_ob_sec(0.0);
 
   //Парковка
-    Lay_Park();
-    delay(3000);
-
-  //Старт намотки
-  //main_mot.set_ob_sec(eedat_upr.speed_main);
-  //laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
-  //laying_mot.go_inc(eedat_upr.spool_width*8*200);//targett_d
+    Lay_Park();//!!!Убрать нахуй!!! сделать в лупе режим!!!
+    //delay(3000);
 
   //onTimer_fo
   timerAttachInterrupt(timer, &onTimer_fo);//, true);
+  Serial.println("Инициализация завершина!");
+  sys_info.write("Инициализация завершина!");
 }
 
 void loop(){
@@ -52,7 +49,7 @@ void loop(){
     laying_mot.doit();
     main_mot.doit();
 
-   if(eedat_upr.mode==1){ 
+   if(work_model.w_mode==1){ 
     //Синхронизация укладчика
       //Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
       if(laying_mot.get_ob_sec()==0.0f){//laying_mot.get_inc()==0//laying_mot.get_ob_sec()==0.0f
@@ -69,8 +66,8 @@ void loop(){
    }
    
    
-   if(eedat_upr.mode==2){
-      eedat_upr.mode=1;
+   if(work_model.w_mode==2){
+      work_model.w_mode=1;
           //Старт намотки
         Serial.println("Старт намотки");
         main_mot.set_ob_sec(eedat_upr.speed_main);
@@ -79,8 +76,8 @@ void loop(){
         Serial.print("To:"); Serial.println((eedat_upr.spool_width-eedat_upr.target_diametr)*8*200);
    }
 
-   if(eedat_upr.mode==3){
-      eedat_upr.mode=0;
+   if(work_model.w_mode==3){
+      work_model.w_mode=0;
           //Старт намотки
         Serial.println("Стоп намотки");
         main_mot.set_ob_sec(0);

@@ -7,6 +7,7 @@ int i,j,k;
 	#ifdef DEBUG_ON
 		Stream* debug_stream;
 	#endif
+    std::vector<String> collect_log(0);
     GR_circle_buf<String> sys_info(100);
 	
 //WiFi
@@ -33,8 +34,6 @@ int i,j,k;
       float spool_thickness=5.0f;//4.75;
       float spool_width=64.5f;//64.5f;//-target_diametr;
 
-      int mode =0;
-
       String ap_name_host="namotchik";
       String ap_key_host="12345670";
       String ap_name_client=WIFI_SSID;
@@ -48,7 +47,7 @@ int i,j,k;
     }work_model;
 
 
-Debounce lay_pos_button(LAY_S, 150);
+Debounce lay_pos_button(LAY_S, 15);
 volatile bool onTimer_flg=false;
 //Func
 	void IRAM_ATTR onTimer() {
@@ -95,6 +94,7 @@ volatile bool onTimer_flg=false;
       //laying_mot.go_inc(eedat_upr.spool_thickness*8*200);//разбить на 2 функциональных вызов
       //laying_mot.go_inc(eedat_upr.target_diametr*8*200);//разбить на 2 функциональных вызов
       Serial.println("Парковка по концевику...завершена");
+      sys_info.write("Парковка по концевику...завершена");
       while(laying_mot.get_ob_sec()>0.00001){
         delay(50);
       }
@@ -103,4 +103,5 @@ volatile bool onTimer_flg=false;
       laying_mot.odometr_reset();
       Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
       Serial.println("Парковка по отступу...завершена");
+      sys_info.write("Парковка по отступу...завершена");
   }

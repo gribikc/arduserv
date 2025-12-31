@@ -54,7 +54,7 @@ public:
         //odometr
             if(odometr_en){
                 if((dir_cur_==dir_ && target_odometr<cur_odometr) || (dir_cur_!=dir_ && target_odometr>cur_odometr)){
-                    Serial.println("ОДОМЕТР АЛЯРМ!!!!");
+                    //Serial.println("ОДОМЕТР АЛЯРМ!!!!");
                 }
                 if(target_odometr==cur_odometr){
                     //Serial.println("Одометр стоп!!!");

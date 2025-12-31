@@ -26,11 +26,16 @@ var	prog;//=new izm_gr();
 var pid_data;
 var eeprom;
 var state;
+
+var sys_data_worker;
+var get_log_worker;
 function main_init(){
-	prog=new izm_gr();
-	pid_data=new pid_gr();
-	eeprom=new eeprom_gr({div:"eeprom_edit_div"});
-	state=new read_state_gr();
+	//prog=new izm_gr();
+	//pid_data=new pid_gr();
+	//eeprom=new eeprom_gr({div:"eeprom_edit_div"});
+	//state=new read_state_gr();
+	sys_data_worker= new read_sys_info({div:sys_info_div});
+	get_log_worker = new get_log_info({div:log_info_div});
 	//_HUB
 	//STREAM
 		//
@@ -54,7 +59,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(izm_stream_param);
+			//new xmlhttprq_stream_gr(izm_stream_param);
 		//
 			pid_stream_param={
 				url   : config['dev_url']+"/get_pid_data",
@@ -76,7 +81,7 @@ function main_init(){
 				reload_en:true,
 				reload_time:1000
 			};
-			new xmlhttprq_stream_gr(pid_stream_param);
+			//new xmlhttprq_stream_gr(pid_stream_param);
 		//
 
 		//

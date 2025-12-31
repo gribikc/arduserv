@@ -340,12 +340,24 @@ void Web_server_gr::init(){
         html += WiFi.RSSI();
 				html +="<br>\nTemperature: ";
 				html += ((temprature_sens_read() - 32) / 1.8);
+        html += " ; T:";
+        html += temperatureRead();
         html += "<br>\nBild:";
         html += String(__DATE__) + " " + String(__TIME__) + " Ver:0.1";
         html += "<br>\n";
         html += "<a href=\"/\">Main page</a><br>\n";
         html += "<br>\n</body></html>";
 		server->send(200, "text/html", html);
+	});
+  server->on("/help_json", HTTP_GET, [this]() {
+		String 	str  = "";
+    str+="{\n";
+      str+=" \"RSSI\":";                str+=WiFi.RSSI();            str+=",\n";
+      str+=" \"Uptime\":";                str+=millis()/1000;        str+=",\n";
+
+      str+=" \"Temperature\":";        str+=temperatureRead();       str+="\n";
+    str+="}\n";
+		server->send(200, "text/html", str);
 	});
 
   //UPDATE FIRMVARE

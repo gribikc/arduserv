@@ -7,14 +7,22 @@ void start_init(){
 	
 	//Serial
 		Serial.begin(115200,SERIAL_8N1,RXD0,TXD0);
-		Serial.println("Hello");
+		Serial.println("Start...");
 		#ifdef DEBUG_ON
 			debug_stream=&Serial;//&Serial;//&tcp_ipClients[0]//
 		#endif
 
 
-  sys_info.write("CPU0 reset reason:"+rtc_get_reset_reason(0)+rtc_get_reset_reason(0));
-  sys_info.write("CPU1 reset reason:"+rtc_get_reset_reason(1)+rtc_get_reset_reason(1));
+    sys_info.write("Start...");
+    
+    String a;
+    a.clear();
+    a="CPU0 reset reason:"+print_reset_reason(rtc_get_reset_reason(0))+";"+verbose_print_reset_reason(rtc_get_reset_reason(0));
+    sys_info.write(a);
+    
+    a.clear();
+    a="CPU1 reset reason:"+print_reset_reason(rtc_get_reset_reason(1))+";"+verbose_print_reset_reason(rtc_get_reset_reason(1));
+    sys_info.write(a);
 
   //EEPROM
     //EEPROM.begin(200);
@@ -114,12 +122,12 @@ void start_init(){
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
     if(arguments_map["type"]=="set"){
       main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
-      if(eedat_upr.mode==1){
+      if(work_model.w_mode==1){
         laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
       }
     }else if(arguments_map["type"]=="inc"){
       main_mot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
-      if(eedat_upr.mode==1){
+      if(work_model.w_mode==1){
         laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
       }
     }else{
@@ -135,15 +143,7 @@ void start_init(){
  //////////////////////////////////////////
   web_server.server->on("/mode_start", HTTP_GET, [web_server]() {//!!! почемуто работает через гет /mode?type=set&mode=start
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    //if(arguments_map["type"]=="set"){
-    //  //main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
-    //  if(arguments_map["mode"]=="start"){
-    //    main_mot.set_ob_sec(eedat_upr.speed_main);
-    //    laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
-    //    laying_mot.go_inc(eedat_upr.spool_width*8*200);//targett_d
-    //  }
-    //}
-    eedat_upr.mode=2;
+    work_model.w_mode=2;
     String str;
     str.clear();
     str+=String(laying_mot.get_odometr());
@@ -151,16 +151,9 @@ void start_init(){
     web_server.server->send(200, "text/plan;", str);
   });
   
-  web_server.server->on("/mode_auto", HTTP_GET, [web_server]() {
-    String str;
-    str+="OK.";
-    //work_model.w_mode=1;
-    web_server.server->send(200, "text/plan;", str);
-  });
-
   web_server.server->on("/mode_stop", HTTP_GET, [web_server]() {
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    eedat_upr.mode=3;
+    work_model.w_mode=3;
     String str;
     str.clear();
     str+="OK.";
@@ -173,8 +166,11 @@ void start_init(){
       str.clear();
 
       while(sys_info.is_readable()){
-        //auto a=sys_info.read();
-        str+="\n"+sys_info.read().first;
+        //str+="\n"+sys_info.read().first;
+        collect_log.push_back(sys_info.read().first);
+      }
+      for(int i=0;i<collect_log.size();i++){
+        str+=collect_log[i]+"\n\r";
       }
       web_server.server->send(200, "text/plan;", str);
     });
