@@ -1,3 +1,4 @@
+#pragma once
 class Debounce {
   private:
     int pin;              // Пин кнопки

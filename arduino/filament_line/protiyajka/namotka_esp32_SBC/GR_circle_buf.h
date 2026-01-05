@@ -1,3 +1,4 @@
+#pragma once
 template <typename Type> class GR_circle_buf {
 public:
   GR_circle_buf(size_t size = 32) {

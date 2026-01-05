@@ -1,3 +1,4 @@
+#pragma once
 class GR_time_mesure
 {
 

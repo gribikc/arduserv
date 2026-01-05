@@ -1,3 +1,26 @@
+/*
+       _____________________
+      |_____________________|
+      |
+      |
+      |
+      |
+      |                                        ___
+      |                                ___   _/
+      |_____________________         _/     |_      0 по катушке
+      |_____________________|       |_        \___  0 по упору
+      |___________|  |__              \___
+      |_________________|
+      |
+      |                                ____ 
+      |                              _/
+      |                             |_              0 по концевику
+      |                               \____
+*/
+
+
+
+
 int i,j,k;
 
 /////
@@ -28,7 +51,7 @@ int i,j,k;
     struct eedat_upr_def{
       float speed_main=0.3f;//скорость намотки
       
-      float lay_offset=8.0f;//3.90f;!!!///
+      float lay_offset=7.0f;//3.90f;!!!///
       float target_diametr=2.0f;//1.85f;//Lay_Ki 0.5 на один оборот намотчика инкремент?!?!?!!! !!!
 
       float spool_thickness=5.0f;//4.75;
@@ -73,7 +96,7 @@ volatile bool onTimer_flg=false;
     llps= lay_pos_button.update();
     llps= lay_pos_button.update();
     llps= lay_pos_button.update();
-    laying_mot.dir(!llps);
+    laying_mot.dir(llps);//!!! //!
     laying_mot.set_ob_sec(2);///Lay_Ki);
     bool st_step=false;
     //0 нижний концевик
@@ -83,7 +106,7 @@ volatile bool onTimer_flg=false;
         onTimer_flg=false;
         llps=lay_pos_button.update();
         st_step=(llps||st_step)?1:0;
-        laying_mot.dir(!llps);      
+        laying_mot.dir(llps);      
       }
     }
 

@@ -1,0 +1,540 @@
+// Базовый класс для мотора (абстракция)
+class Motor {
+  protected:
+    float speed;  // текущая скорость
+    int32_t position; // текущая позиция (в шагах или других единицах)
+    
+  public:
+    virtual void setSpeed(float speed) = 0;
+    virtual float getSpeed() = 0;
+    virtual int32_t getPosition() = 0;
+    virtual void goTo(int32_t target) = 0;
+    virtual void stop() = 0;
+    virtual void update() = 0; // для обновления состояния
+};
+
+// Структура параметров намотчика
+struct WindingParams {
+    float spoolWidth;     // Ширина шпули (мм)
+    float targetDiameter; // Целевой диаметр намотки (мм)
+    float mainSpeed;      // Скорость главного мотора (об/сек)
+    float gearRatio;      // Передаточное отношение
+    int32_t stepsPerRev;  // Шагов на оборот
+    int32_t stepsPerMm;   // Шагов на мм
+    
+    WindingParams() : 
+        spoolWidth(100.0f), 
+        targetDiameter(10.0f), 
+        mainSpeed(5.0f),
+        gearRatio(1.0f),
+        stepsPerRev(200),
+        stepsPerMm(1600) {}
+};
+
+// Класс управления намотчиком
+class WindingMachine {
+  private:
+    // Состояния машины
+    enum State {
+        STATE_IDLE = 0,        // Ожидание (пауза)
+        STATE_WINDING = 1,     // Намотка
+        STATE_PARKING = 2,     // Парковка (возврат в начало)
+        STATE_HOMING = 3,      // Поиск нуля
+        STATE_EMERGENCY = 4,   // Аварийная остановка
+        STATE_CALIBRATION = 5  // Калибровка
+    };
+    
+    State currentState;
+    State previousState;
+    
+    // Моторы
+    Motor* mainMotor;      // Главный мотор (вращение катушки)
+    Motor* layingMotor;    // Мотор укладчика
+    
+    // Параметры
+    WindingParams params;
+    
+    // Переменные состояния
+    bool isInitialized;
+    bool isPaused;
+    uint32_t startTime;
+    float woundLength;     // Намотанная длина (м)
+    float currentDiameter; // Текущий диаметр намотки (мм)
+    int32_t parkPosition;  // Позиция для парковки
+    
+    // Приватные методы
+    void transitionTo(State newState) {
+        Serial.print("Переход из состояния ");
+        Serial.print(getStateName(previousState));
+        Serial.print(" в ");
+        Serial.println(getStateName(newState));
+        
+        previousState = currentState;
+        currentState = newState;
+        
+        // Выполняем действия при переходе
+        onStateChange(previousState, newState);
+    }
+    
+    void onStateChange(State from, State to) {
+        switch(to) {
+            case STATE_IDLE:
+                stopAllMotors();
+                isPaused = true;
+                break;
+                
+            case STATE_WINDING:
+                startWinding();
+                isPaused = false;
+                break;
+                
+            case STATE_PARKING:
+                startParking();
+                break;
+                
+            case STATE_HOMING:
+                startHoming();
+                break;
+                
+            case STATE_EMERGENCY:
+                emergencyStop();
+                break;
+                
+            case STATE_CALIBRATION:
+                startCalibration();
+                break;
+        }
+    }
+    
+    void stopAllMotors() {
+        if (mainMotor) mainMotor->setSpeed(0);
+        if (layingMotor) layingMotor->setSpeed(0);
+    }
+    
+    void startWinding() {
+        if (!isInitialized) {
+            Serial.println("Ошибка: намотчик не инициализирован!");
+            transitionTo(STATE_IDLE);
+            return;
+        }
+        
+        Serial.println("Запуск намотки");
+        
+        // Устанавливаем скорость главного мотора
+        mainMotor->setSpeed(params.mainSpeed);
+        
+        // Рассчитываем скорость укладчика
+        float layingSpeed = params.mainSpeed * params.targetDiameter;
+        layingMotor->setSpeed(layingSpeed);
+        
+        // Рассчитываем целевую позицию для укладчика
+        int32_t targetPos = (params.spoolWidth - params.targetDiameter) * 
+                           params.stepsPerMm;
+        layingMotor->goTo(targetPos);
+        
+        startTime = millis();
+        woundLength = 0;
+        
+        Serial.print("Скорость укладчика: ");
+        Serial.println(layingSpeed);
+        Serial.print("Целевая позиция: ");
+        Serial.println(targetPos);
+    }
+    
+    void startParking() {
+        Serial.println("Запуск парковки");
+        
+        // Останавливаем главный мотор
+        mainMotor->setSpeed(0);
+        
+        // Возвращаем укладчик в начальную позицию
+        layingMotor->setSpeed(2.0f); // Медленная скорость для парковки
+        layingMotor->goTo(parkPosition);
+    }
+    
+    void startHoming() {
+        Serial.println("Поиск начальной позиции");
+        // Здесь будет код поиска нуля (концевики, датчики и т.д.)
+        // Пока просто переходим в режим ожидания
+        transitionTo(STATE_IDLE);
+    }
+    
+    void emergencyStop() {
+        Serial.println("!!! АВАРИЙНАЯ ОСТАНОВКА !!!");
+        stopAllMotors();
+        isPaused = true;
+    }
+    
+    void startCalibration() {
+        Serial.println("Запуск калибровки");
+        // Код калибровки
+        // После калибровки возвращаемся в предыдущее состояние
+        transitionTo(previousState);
+    }
+    
+    // Обновление в зависимости от состояния
+    void updateIdle() {
+        // В режиме ожидания ничего не делаем
+    }
+    
+    void updateWinding() {
+        // Обновляем намотанную длину
+        uint32_t currentTime = millis();
+        float elapsedTime = (currentTime - startTime) / 1000.0f; // секунды
+        
+        woundLength = params.mainSpeed * elapsedTime * 
+                     (3.14159f * params.targetDiameter / 1000.0f); // метры
+        
+        // Проверяем достижение целевой позиции укладчиком
+        int32_t currentPos = layingMotor->getPosition();
+        int32_t targetPos = (params.spoolWidth - params.targetDiameter) * 
+                           params.stepsPerMm;
+        
+        // Если укладчик достиг цели, останавливаем намотку
+        if (abs(currentPos - targetPos) < 10) { // 10 шагов допуск
+            Serial.println("Достигнута конечная позиция укладчика");
+            transitionTo(STATE_PARKING);
+        }
+        
+        // Синхронизация скорости укладчика с главным мотором
+        float currentMainSpeed = mainMotor->getSpeed();
+        float layingSpeed = currentMainSpeed * params.targetDiameter;
+        layingMotor->setSpeed(layingSpeed);
+    }
+    
+    void updateParking() {
+        // Проверяем, достиг ли укладчик позиции парковки
+        int32_t currentPos = layingMotor->getPosition();
+        
+        if (abs(currentPos - parkPosition) < 10) { // 10 шагов допуск
+            Serial.println("Укладчик запаркован");
+            transitionTo(STATE_IDLE);
+        }
+    }
+    
+    void updateHoming() {
+        // Обновление процесса поиска начальной позиции
+        // Здесь будет логика работы с концевиками
+    }
+    
+    void updateEmergency() {
+        // В аварийном режиме ничего не делаем
+    }
+    
+    void updateCalibration() {
+        // Обновление процесса калибровки
+    }
+    
+    const char* getStateName(State state) {
+        switch(state) {
+            case STATE_IDLE: return "IDLE";
+            case STATE_WINDING: return "WINDING";
+            case STATE_PARKING: return "PARKING";
+            case STATE_HOMING: return "HOMING";
+            case STATE_EMERGENCY: return "EMERGENCY";
+            case STATE_CALIBRATION: return "CALIBRATION";
+            default: return "UNKNOWN";
+        }
+    }
+    
+  public:
+    // Конструктор
+    WindingMachine(Motor* main, Motor* laying) {
+        mainMotor = main;
+        layingMotor = laying;
+        currentState = STATE_IDLE;
+        previousState = STATE_IDLE;
+        isInitialized = false;
+        isPaused = false;
+        woundLength = 0;
+        currentDiameter = 0;
+        parkPosition = 0;
+        
+        // Устанавливаем параметры по умолчанию
+        params = WindingParams();
+    }
+    
+    // Инициализация
+    void begin() {
+        Serial.println("Инициализация намотчика...");
+        
+        // Проверяем моторы
+        if (!mainMotor || !layingMotor) {
+            Serial.println("Ошибка: моторы не подключены!");
+            return;
+        }
+        
+        // Сброс параметров
+        woundLength = 0;
+        currentDiameter = params.targetDiameter;
+        
+        // Переход в режим поиска нуля
+        transitionTo(STATE_HOMING);
+        
+        isInitialized = true;
+        Serial.println("Намотчик инициализирован");
+    }
+    
+    // Основной метод обновления (вызывать в loop)
+    void update() {
+        if (!isInitialized) return;
+        
+        // Обновляем моторы
+        if (mainMotor) mainMotor->update();
+        if (layingMotor) layingMotor->update();
+        
+        // Выполняем действия в зависимости от состояния
+        switch(currentState) {
+            case STATE_IDLE:
+                updateIdle();
+                break;
+            case STATE_WINDING:
+                updateWinding();
+                break;
+            case STATE_PARKING:
+                updateParking();
+                break;
+            case STATE_HOMING:
+                updateHoming();
+                break;
+            case STATE_EMERGENCY:
+                updateEmergency();
+                break;
+            case STATE_CALIBRATION:
+                updateCalibration();
+                break;
+        }
+    }
+    
+    // Обработка событий кнопки
+    void handleButtonEvent(uint8_t event) {
+        if (!isInitialized) return;
+        
+        switch(event) {
+            case 1: // Кнопка нажата
+                Serial.println("Кнопка нажата");
+                switch(currentState) {
+                    case STATE_IDLE:
+                        transitionTo(STATE_WINDING);
+                        break;
+                    case STATE_WINDING:
+                        transitionTo(STATE_IDLE);
+                        break;
+                    default:
+                        // В других состояниях короткое нажатие может не обрабатываться
+                        break;
+                }
+                break;
+                
+            case 2: // Кнопка отпущена
+                Serial.println("Кнопка отпущена");
+                // Можно добавить обработку, если нужно
+                break;
+                
+            case 3: // Удержание 500 мс
+                Serial.println("Удержание 500 мс - Парковка");
+                if (currentState == STATE_WINDING || currentState == STATE_IDLE) {
+                    transitionTo(STATE_PARKING);
+                }
+                break;
+                
+            case 4: // Удержание 1 сек
+                Serial.println("Удержание 1 сек - Калибровка");
+                transitionTo(STATE_CALIBRATION);
+                break;
+                
+            case 5: // Удержание 5 сек
+                Serial.println("Удержание 5 сек - Аварийный стоп");
+                transitionTo(STATE_EMERGENCY);
+                break;
+        }
+    }
+    
+    // Управление состоянием
+    void start() {
+        if (currentState == STATE_IDLE) {
+            transitionTo(STATE_WINDING);
+        }
+    }
+    
+    void stop() {
+        if (currentState == STATE_WINDING) {
+            transitionTo(STATE_IDLE);
+        }
+    }
+    
+    void park() {
+        if (currentState == STATE_WINDING || currentState == STATE_IDLE) {
+            transitionTo(STATE_PARKING);
+        }
+    }
+    
+    void emergencyStopCmd() {
+        transitionTo(STATE_EMERGENCY);
+    }
+    
+    void calibrate() {
+        transitionTo(STATE_CALIBRATION);
+    }
+    
+    // Геттеры
+    State getState() const { return currentState; }
+    const char* getStateName() const { return getStateName(currentState); }
+    bool isRunning() const { return currentState == STATE_WINDING; }
+    bool isPausedState() const { return isPaused; }
+    float getWoundLength() const { return woundLength; }
+    float getCurrentDiameter() const { return currentDiameter; }
+    
+    // Сеттеры параметров
+    void setParams(const WindingParams& newParams) {
+        params = newParams;
+        Serial.println("Параметры намотчика обновлены");
+    }
+    
+    WindingParams getParams() const {
+        return params;
+    }
+    
+    void setParkPosition(int32_t position) {
+        parkPosition = position;
+        Serial.print("Позиция парковки установлена: ");
+        Serial.println(position);
+    }
+    
+    // Отображение статуса
+    void printStatus() {
+        Serial.println("\n=== СТАТУС НАМОТЧИКА ===");
+        Serial.print("Состояние: ");
+        Serial.println(getStateName());
+        Serial.print("Намотано: ");
+        Serial.print(woundLength, 2);
+        Serial.println(" м");
+        Serial.print("Диаметр: ");
+        Serial.print(currentDiameter, 1);
+        Serial.println(" мм");
+        Serial.print("Скорость главного: ");
+        Serial.print(mainMotor ? mainMotor->getSpeed() : 0, 1);
+        Serial.println(" об/сек");
+        Serial.print("Позиция укладчика: ");
+        Serial.println(layingMotor ? layingMotor->getPosition() : 0);
+        Serial.println("====================\n");
+    }
+};
+
+// Пример реализации конкретного мотора (заглушка)
+class StepperMotor : public Motor {
+  private:
+    int pinStep, pinDir, pinEnable;
+    float currentSpeed;
+    int32_t currentPosition;
+    int32_t targetPosition;
+    bool isMoving;
+    
+  public:
+    StepperMotor(int stepPin, int dirPin, int enablePin = -1) {
+        pinStep = stepPin;
+        pinDir = dirPin;
+        pinEnable = enablePin;
+        currentSpeed = 0;
+        currentPosition = 0;
+        targetPosition = 0;
+        isMoving = false;
+        
+        pinMode(pinStep, OUTPUT);
+        pinMode(pinDir, OUTPUT);
+        if (pinEnable != -1) pinMode(pinEnable, OUTPUT);
+    }
+    
+    void setSpeed(float speed) override {
+        currentSpeed = speed;
+        // Здесь реальная реализация управления скоростью шаговика
+        Serial.print("Мотор: установлена скорость ");
+        Serial.println(speed, 2);
+    }
+    
+    float getSpeed() override {
+        return currentSpeed;
+    }
+    
+    int32_t getPosition() override {
+        return currentPosition;
+    }
+    
+    void goTo(int32_t target) override {
+        targetPosition = target;
+        isMoving = true;
+        Serial.print("Мотор: движение к позиции ");
+        Serial.println(target);
+    }
+    
+    void stop() override {
+        currentSpeed = 0;
+        isMoving = false;
+        Serial.println("Мотор: остановлен");
+    }
+    
+    void update() override {
+        // Здесь будет реальная логика шагания
+        if (isMoving && currentSpeed > 0) {
+            // Имитация движения
+            int32_t dir = (targetPosition > currentPosition) ? 1 : -1;
+            currentPosition += dir * (int32_t)(currentSpeed * 0.1); // Упрощенная модель
+            
+            if (abs(currentPosition - targetPosition) < 10) {
+                isMoving = false;
+                Serial.println("Мотор: достигнута целевая позиция");
+            }
+        }
+    }
+};
+
+// Пример использования:
+/*
+// Создаем моторы
+StepperMotor mainMotor(2, 3, 4);   // STEP, DIR, ENABLE
+StepperMotor layingMotor(5, 6, 7);
+
+// Создаем намотчик
+WindingMachine winder(&mainMotor, &layingMotor);
+
+// Кнопка
+Button controlButton(8); // Кнопка на пине 8
+
+void setup() {
+    Serial.begin(9600);
+    
+    // Инициализация намотчика
+    winder.begin();
+    
+    // Настройка параметров
+    WindingParams params;
+    params.spoolWidth = 100.0f;     // 100 мм
+    params.targetDiameter = 10.0f;  // 10 мм
+    params.mainSpeed = 5.0f;        // 5 об/сек
+    params.stepsPerMm = 1600;       // 1600 шагов/мм
+    winder.setParams(params);
+    
+    // Установка позиции парковки
+    winder.setParkPosition(0);
+}
+
+void loop() {
+    // Обработка кнопки
+    uint8_t btnEvent = controlButton.doWork();
+    if (btnEvent != 0) {
+        winder.handleButtonEvent(btnEvent);
+    }
+    
+    // Обновление состояния намотчика
+    winder.update();
+    
+    // Периодический вывод статуса
+    static unsigned long lastStatusTime = 0;
+    if (millis() - lastStatusTime > 1000) {
+        winder.printStatus();
+        lastStatusTime = millis();
+    }
+    
+    delay(10);
+}
+*/

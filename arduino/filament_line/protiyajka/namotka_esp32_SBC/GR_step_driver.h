@@ -1,3 +1,6 @@
+#pragma once
+#ifndef GR_step_driver_H
+#define GR_step_driver_H
 class GR_step_driver
 {
 
@@ -179,3 +182,4 @@ private:
     //inc_=(f0*2^32)/fs
 
 };
+#endif

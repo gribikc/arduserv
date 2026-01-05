@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #define FILESYSTEM SPIFFS
 #define FORMAT_FILESYSTEM false
