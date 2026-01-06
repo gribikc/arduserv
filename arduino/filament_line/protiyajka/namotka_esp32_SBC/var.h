@@ -55,7 +55,7 @@ int i,j,k;
       float target_diametr=2.0f;//1.85f;//Lay_Ki 0.5 на один оборот намотчика инкремент?!?!?!!! !!!
 
       float spool_thickness=5.0f;//4.75;
-      float spool_width=64.5f;//64.5f;//-target_diametr;
+      float spool_width=20.0;//64.5f;//64.5f;//-target_diametr;
 
       String ap_name_host="namotchik";
       String ap_key_host="12345670";
@@ -81,50 +81,3 @@ volatile bool onTimer_flg=false;
   void IRAM_ATTR onTimer_fo() {
     onTimer_flg=true;
 	}
-
-  void Lay_Park(){//нужно 2 метода!!! один парковка по концевику. вторая установка в 0!!!
-    //pinMode(LAY_S, INPUT);
-    Serial.println("Парковка по концевику...");
-    bool llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    llps= lay_pos_button.update();
-    laying_mot.dir(llps);//!!! //!
-    laying_mot.set_ob_sec(2);///Lay_Ki);
-    bool st_step=false;
-    //0 нижний концевик
-    //1 верхний концевик
-    while(!st_step || llps){//!!!
-      if(onTimer_flg){
-        onTimer_flg=false;
-        llps=lay_pos_button.update();
-        st_step=(llps||st_step)?1:0;
-        laying_mot.dir(llps);      
-      }
-    }
-
-    //Отступ от 0 до края платформы
-      laying_mot.odometr_reset();//вроде не надо
-      laying_mot.go_inc( (eedat_upr.lay_offset+eedat_upr.spool_thickness+eedat_upr.target_diametr*0.0)*8*200 ) ;//разбить на 2 функциональных вызов
-      //laying_mot.set_ob_sec(0);//!!!
-      //laying_mot.go_inc(eedat_upr.spool_thickness*8*200);//разбить на 2 функциональных вызов
-      //laying_mot.go_inc(eedat_upr.target_diametr*8*200);//разбить на 2 функциональных вызов
-      Serial.println("Парковка по концевику...завершена");
-      sys_info.write("Парковка по концевику...завершена");
-      while(laying_mot.get_ob_sec()>0.00001){
-        delay(50);
-      }
-      Serial.print("Скорость:");Serial.println(laying_mot.get_ob_sec());
-      Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
-      laying_mot.odometr_reset();
-      Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
-      Serial.println("Парковка по отступу...завершена");
-      sys_info.write("Парковка по отступу...завершена");
-  }

@@ -94,7 +94,7 @@ void start_init(){
 
 		//StepMotor//  float fs_=100000;//KHz
       timer = timerBegin(1000000);//0, 80, true);
-      timerAttachInterrupt(timer, &onTimer);//, true);
+      timerAttachInterrupt(timer, &onTimer_fo);//, true);
       timerAlarm(timer, 1 * 10, true, 0);
 
 //////////////////////////////////////////

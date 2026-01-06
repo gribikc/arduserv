@@ -9,7 +9,7 @@ class Debounce {
 
   public:
     // Конструктор
-    Debounce(int buttonPin, int thresholdCount = 5) {
+    Debounce(int buttonPin, int thresholdCount = 250) {
       pin = buttonPin;
       threshold = thresholdCount;
       pinMode(pin, INPUT);

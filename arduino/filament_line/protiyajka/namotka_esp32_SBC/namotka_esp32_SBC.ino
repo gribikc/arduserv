@@ -40,13 +40,13 @@ void setup(){
   laying_mot.set_ob_sec(0.0);
 
   //Парковка
-    Lay_Park();//!!!Убрать нахуй!!! сделать в лупе режим!!!
+    //Lay_Park();//!!!Убрать нахуй!!! сделать в лупе режим!!!
     //delay(3000);
 
   //onTimer_fo
   timerAttachInterrupt(timer, &onTimer_fo);//, true);
-  Serial.println("Инициализация завершина!");
-  sys_info.write("Инициализация завершина!");
+  Serial.println("Setup:Инициализация завершина!");
+  sys_info.write("Setup:Инициализация завершина!");
 }
 
 void loop(){
@@ -56,42 +56,6 @@ void loop(){
     main_mot.doit();
 
     windingmachine.doit();
-   //if(work_model.w_mode==1){ 
-   // //Синхронизация укладчика
-   //   //Serial.print("Одометр:"); Serial.println(laying_mot.get_odometr());
-   //   if(laying_mot.get_ob_sec()==0.0f){//laying_mot.get_inc()==0//laying_mot.get_ob_sec()==0.0f
-   //     if(laying_mot.get_odometr()==0){
-   //       laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200);//go_to
-   //     }else{
-   //       laying_mot.go_to(0/*-eedat_upr.spool_width*8*200*/);//go_inc
-   //     }
-   //     laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
-   //     //Serial.println("Програмный концевик(Мотор остановлен)");
-   //     //Serial.print("Скорость:"); Serial.println(laying_mot.get_ob_sec());
-   //     Serial.print("Програмный концевик(Мотор остановлен) \n\r Одометр:"); Serial.println(laying_mot.get_odometr());
-   //   }
-   //}
-   //
-   //
-   //if(work_model.w_mode==2){
-   //   work_model.w_mode=1;
-   //       //Старт намотки
-   //     Serial.println("Старт намотки");
-   //     main_mot.set_ob_sec(eedat_upr.speed_main);
-   //     laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
-   //     laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200);//targett_d
-   //     Serial.print("To:"); Serial.println((eedat_upr.spool_width-eedat_upr.target_diametr)*8*200);
-   //}
-//
-   //if(work_model.w_mode==3){
-   //   work_model.w_mode=0;
-   //       //Старт намотки
-   //     Serial.println("Стоп намотки");
-   //     main_mot.set_ob_sec(0);
-   //     laying_mot.set_ob_sec(2);
-   //     laying_mot.go_to(0);//targett_d
-   //     Serial.print("To:"); Serial.println((eedat_upr.spool_width-eedat_upr.target_diametr)*8*200);
-   //}
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -99,24 +63,31 @@ void loop(){
     
     switch(event) {
       case 1:
-        Serial.println("Кнопка нажата");
-        if(work_model.w_mode==0){
-          work_model.w_mode=2;
-        }else if(work_model.w_mode==1){
-          work_model.w_mode=3;
-        }
+        Serial.println("Loop:Кнопка нажата");
+        //windingmachine.play_pause();
         break;
       case 2:
-        Serial.println("Кнопка отпущена");
+        Serial.println("Loop:Кнопка отпущена");
+        if(myButton.get_pre_event()==3 || myButton.get_pre_event()==4){
+          Serial.println("Loop:.play_pause");
+          windingmachine.play_pause();
+        }else if(myButton.get_pre_event()==1){
+          Serial.println("Loop:.pause");
+          windingmachine.pause();
+        }else if(myButton.get_pre_event()==5){
+          Serial.println("Loop:.begin");
+          windingmachine.begin();
+        }
+
         break;
       case 3:
-        Serial.println("Удержание 500 мс");
+        Serial.println("Loop:Удержание 500 мс");
         break;
       case 4:
-        Serial.println("Удержание 1 сек");
+        Serial.println("Loop:Удержание 1 сек");
         break;
       case 5:
-        Serial.println("Удержание 5 сек");
+        Serial.println("Loop:Удержание 5 сек");
         break;
     }
 

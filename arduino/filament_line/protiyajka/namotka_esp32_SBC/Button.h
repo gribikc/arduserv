@@ -19,9 +19,12 @@ class Button {
     unsigned long holdDelay1000 = 1000;
     unsigned long holdDelay5000 = 5000;
 
+    uint8_t pre_event = 0;
+    uint8_t event=0;
+
   public:
     // Конструктор
-    Button(int buttonPin, bool pullupMode = false, int debounceThreshold = 20) {
+    Button(int buttonPin, bool pullupMode = false, int debounceThreshold = 100) {
       pin = buttonPin;
       mode = pullupMode;
       threshold = debounceThreshold;
@@ -73,8 +76,13 @@ class Button {
     // 3 - удержание 500 мс
     // 4 - удержание 1000 мс (1 сек)
     // 5 - удержание 5000 мс (5 сек)
+    uint8_t get_pre_event() {
+      return pre_event;
+    }
     uint8_t doWork() {
-      uint8_t event = 0;
+      //uint8_t event = 0;
+      pre_event=event!=0?event:pre_event;
+      event=0;
       bool currentState = update();
       bool pressed = mode ? (currentState == LOW) : (currentState == HIGH);
       unsigned long currentTime = millis();
@@ -178,6 +186,7 @@ class Button {
       pressEventSent = false;
       releaseEventSent = false;
       lastHoldEvent = 0;
+      pre_event=0;
     }
 };
 
