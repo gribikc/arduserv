@@ -108,7 +108,7 @@ class WindingMachine {
     }
 
     void play(){
-        if(!is_parking){
+        if(!is_parking || !filament_detector.update()){
             return;
         }
         if(work_mode==0){
@@ -117,9 +117,8 @@ class WindingMachine {
             main_mot.set_ob_sec(eedat_upr.speed_main);
             laying_mot.set_ob_sec(eedat_upr.speed_main*eedat_upr.target_diametr);
             
-            //laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200);//targett_d
             if(laying_mot.get_odometr()==0){
-                laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200);
+                laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*0.5)*8*200);
                 Serial.println("WM:Идём в верх");sys_info.write("WM:Идём в верх");
             }else if(laying_mot.get_odometr()==(eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200){
                 laying_mot.go_to(0);
@@ -135,11 +134,18 @@ class WindingMachine {
             Parking();
             return;
         }
+
+        if(!filament_detector.update()){
+            //Serial.println("WM:Концевик филамента 1");
+            if(work_mode!=0){
+                pause();
+            }
+        }
  
         if(work_mode==1){ 
             if(laying_mot.get_ob_sec()==0.0f){
                 if(laying_mot.get_odometr()==0){
-                    laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*1)*8*200);
+                    laying_mot.go_to((eedat_upr.spool_width-eedat_upr.target_diametr*0.5)*8*200);
                 }else{
                     laying_mot.go_to(0);
                 }

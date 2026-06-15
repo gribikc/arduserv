@@ -101,16 +101,16 @@ void start_init(){
 //////////////////////////////////////////
   web_server.server->on("/move_lay", HTTP_POST, [web_server]() {//Иногда зависает и кудато улетает... такое ощущение что go_inc тупит...!!! !!! !!!
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    if(arguments_map["type"]=="inc"){
-      laying_mot.set_ob_sec(2);
-      laying_mot.go_inc(atof(arguments_map["speed"].c_str())*1600);
-    }else if(arguments_map["type"]=="goto"){
-      laying_mot.set_ob_sec(2);
-      laying_mot.go_to(atof(arguments_map["speed"].c_str())*1600);
-    }else if(arguments_map["type"]=="odorst"){
-      laying_mot.set_ob_sec(0.0);
-      laying_mot.odometr_reset();
-    }
+    //if(arguments_map["type"]=="inc"){
+    //  laying_mot.set_ob_sec(2);
+    //  laying_mot.go_inc(atof(arguments_map["speed"].c_str())*1600);
+    //}else if(arguments_map["type"]=="goto"){
+    //  laying_mot.set_ob_sec(2);
+    //  laying_mot.go_to(atof(arguments_map["speed"].c_str())*1600);
+    //}else if(arguments_map["type"]=="odorst"){
+    //  laying_mot.set_ob_sec(0.0);
+    //  laying_mot.odometr_reset();
+    //}
     String str;
     str.clear();
     str+=String(laying_mot.get_odometr());
@@ -120,19 +120,19 @@ void start_init(){
 
   web_server.server->on("/move_winder", HTTP_POST, [web_server]() {//тут сделать не только скорость но и расстояние в оборотах
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    if(arguments_map["type"]=="set"){
-      main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
-      if(work_model.w_mode==1){
-        laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
-      }
-    }else if(arguments_map["type"]=="inc"){
-      main_mot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
-      if(work_model.w_mode==1){
-        laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
-      }
-    }else{
-      //err
-    }
+    //if(arguments_map["type"]=="set"){
+    //  main_mot.set_ob_sec(atof(arguments_map["speed"].c_str()));
+    //  if(work_model.w_mode==1){
+    //    laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
+    //  }
+    //}else if(arguments_map["type"]=="inc"){
+    //  main_mot.inc_ob_sec(atof(arguments_map["speed"].c_str()));
+    //  if(work_model.w_mode==1){
+    //    laying_mot.set_ob_sec(main_mot.get_ob_sec()*eedat_upr.target_diametr);
+    //  }
+    //}else{
+    //  //err
+    //}
     String str;
     str.clear();
     str+=String(laying_mot.get_odometr());
@@ -143,7 +143,7 @@ void start_init(){
  //////////////////////////////////////////
   web_server.server->on("/mode_start", HTTP_GET, [web_server]() {//!!! почемуто работает через гет /mode?type=set&mode=start
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    work_model.w_mode=2;
+    windingmachine.play();
     String str;
     str.clear();
     str+=String(laying_mot.get_odometr());
@@ -153,7 +153,7 @@ void start_init(){
   
   web_server.server->on("/mode_stop", HTTP_GET, [web_server]() {
     std::unordered_map<std::string, std::string> arguments_map=std::move(web_server.get_map_param());
-    work_model.w_mode=3;
+    windingmachine.pause();
     String str;
     str.clear();
     str+="OK.";

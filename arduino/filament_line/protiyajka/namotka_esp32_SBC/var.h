@@ -51,11 +51,11 @@ int i,j,k;
     struct eedat_upr_def{
       float speed_main=0.3f;//скорость намотки
       
-      float lay_offset=7.0f;//3.90f;!!!///
+      float lay_offset=6.5f;//3.90f;!!!///
       float target_diametr=2.0f;//1.85f;//Lay_Ki 0.5 на один оборот намотчика инкремент?!?!?!!! !!!
 
       float spool_thickness=5.0f;//4.75;
-      float spool_width=20.0;//64.5f;//64.5f;//-target_diametr;
+      float spool_width=64.5f;//64.5f;//-target_diametr;
 
       String ap_name_host="namotchik";
       String ap_key_host="12345670";

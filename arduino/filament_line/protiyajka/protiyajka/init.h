@@ -62,7 +62,7 @@ void start_init(){
 
     //WIFI HOST
 		  //WiFi.disconnect();
-		  WiFi.begin(WIFI_SSID, WIFI_KEY);
+		  WiFi.begin(eedat_upr.ap_name_client, eedat_upr.ap_key_client);
 
 	//Code
 		//tcp_ip.begin();

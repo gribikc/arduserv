@@ -24,14 +24,17 @@
 #include "web_server_gr.h"
 #include "var.h"
 #include "wifi_gr.h"
-#include "init.h"
 
+
+Debounce filament_detector(lsP);
 #include "WindingMachine.h"
 
 #include "Button.h"
 Button myButton(MOff);
 
 WindingMachine windingmachine(main_mot,laying_mot);
+
+#include "init.h"
 
 void setup(){ 
   start_init();
@@ -60,6 +63,7 @@ void loop(){
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     uint8_t event = myButton.doWork();
+    //filament_detector.update();
     
     switch(event) {
       case 1:
